@@ -10,6 +10,9 @@ import logging
 import textwrap
 from pathlib import Path
 from src.generators.fix_spec_downloader import download_fix_spec, parse_fix_spec, LOCAL_SPEC_PATH
+from datetime import datetime, date, time
+from typing import List, Optional, Union, Dict, Any, Literal
+from pydantic import BaseModel, Field, ConfigDict
 
 # Configure logging
 logging.basicConfig(
@@ -186,360 +189,240 @@ class {field_name}(FIXFieldBase):
                     f.write(f"    # {enum_value}: {description}\n")
 
 def to_camel_case(name):
-    """Convert a PascalCase name to camelCase."""
-    return name[0].lower() + name[1:] if name else name
-
-def generate_component_models(components, fields):
-    """
-    Generate Pydantic models for FIX components.
+    """Convert a PascalCase name to camelCase and handle Python keywords."""
+    # List of Python keywords that need special handling
+    python_keywords = {
+        'yield', 'from', 'class', 'def', 'return', 'pass', 'raise', 'break', 'continue',
+        'import', 'as', 'global', 'assert', 'if', 'else', 'elif', 'while', 'for', 'try',
+        'except', 'finally', 'with', 'lambda', 'or', 'and', 'not', 'is', 'in', 'del'
+    }
     
-    Args:
-        components: Dictionary of component definitions from the specification
-        fields: Dictionary of field definitions from the specification
-    """
+    # Convert to camelCase
+    camel_case = name[0].lower() + name[1:] if name else name
+    
+    # If it's a Python keyword, append 'Value'
+    if camel_case.lower() in python_keywords:
+        camel_case += 'Value'
+    
+    return camel_case
+
+def generate_component_models(components: Dict[str, Any], fields: Dict[str, Any], output_dir: str) -> None:
+    """Generate Pydantic models for FIX components."""
     logger.info("Generating component models...")
-    
-    # Create the components directory if it doesn't exist
-    os.makedirs(OUTPUT_DIR / "components", exist_ok=True)
-    
-    # Create the __init__.py file for the components directory
-    with open(OUTPUT_DIR / "components" / "__init__.py", 'w') as init_file:
-        init_file.write('''"""
-FIX 4.4 Component Models
+    components_dir = os.path.join(output_dir, "components")
+    os.makedirs(components_dir, exist_ok=True)
 
-This package contains Pydantic models for FIX 4.4 components.
-"""
-''')
-        
-        # Generate a model for each component
-        for component_name, component_fields in components.items():
-            file_name = f"{component_name.lower()}.py"
-            component_file_path = OUTPUT_DIR / "components" / file_name
-            
-            with open(component_file_path, 'w') as f:
-                f.write(f'''"""
-FIX 4.4 {component_name} Component
+    # Create __init__.py
+    with open(os.path.join(components_dir, "__init__.py"), "w") as f:
+        f.write("# Generated FIX component models\n")
 
-This module contains the Pydantic model for the {component_name} component.
-"""
-from datetime import datetime, date, time
-from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
-from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-''')
-                
-                # Special case for BidCompRspGrp
-                if component_name == "BidCompRspGrp":
-                    # Add import for CommissionData
-                    f.write("from src.models.fix.generated.components.commissiondata import CommissionData\n")
-                    
-                    f.write(f'''
+    for component_name, component_fields in components.items():
+        # Skip components without fields
+        if not component_fields:
+            continue
 
-class NoBidComponents(FIXMessageBase):
-    """
-    NoBidComponents group fields
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={{
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }}
-    )
-''')
-                    # Add fields to the NoBidComponents group
-                    for field in component_fields:
-                        field_name = field['name'].replace(" ", "")
-                        field_name = to_camel_case(field_name)  # Convert to camelCase
-                        required = field['required']
-                        
-                        # Skip the NoBidComponents field (it's a count field)
-                        if field_name == "noBidComponents":
-                            continue
-                        
-                        # Special handling for CommissionData
-                        if field_name == "commissionData":
-                            f.write("    commissionData: Optional[CommissionData] = None\n")
-                            continue
-                        
-                        # Get field type information
-                        field_info = fields.get(field['name'].replace(" ", ""), {})  # Use original name for lookup
-                        fix_type = field_info.get('type', 'STRING')
-                        python_type = FIX_TYPE_MAP.get(fix_type, 'str')
-                        
-                        # Make the field optional if not required
-                        if not required:
-                            python_type = f"Optional[{python_type}]"
-                        
-                        # Add field to the model with proper Field alias
-                        if 'tag' in field_info:
-                            f.write(f"    {field_name}: {python_type} = Field(None, description='{field_info.get('description', '')}', alias='{field_info['tag']}')\n")
-                        else:
-                            f.write(f"    {field_name}: {python_type} = Field(None)\n")
-                    
-                    # Add the NoBidComponents field to BidCompRspGrp
-                    f.write(f'''
+        # Create component file
+        file_path = os.path.join(components_dir, f"{component_name.lower()}.py")
+        with open(file_path, "w") as f:
+            # Write imports
+            f.write("from typing import Optional, List\n")
+            f.write("from datetime import datetime, date, time\n")
+            f.write("from pydantic import Field\n")
+            f.write("from src.models.fix.base import FIXMessageBase\n")
 
-class {component_name}(FIXMessageBase):
-    """
-    FIX 4.4 {component_name} Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={{
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }}
-    )
-    
-    # Count field for the number of bid components
-    noBidComponents: Optional[int] = Field(None, description='Number of bid components', alias='420')
-    
-    # List of bid components
-    noBidComponents_Items: List[NoBidComponents] = Field(default_factory=list)
-''')
-                else:
-                    # Handle regular components
-                    f.write(f'''
+            # Import required components
+            imported_components = set()
+            for field in component_fields:
+                if field.get('is_component', False):
+                    comp_name = field['name'].replace(" ", "")
+                    if comp_name not in imported_components:
+                        f.write(f"from src.models.fix.generated.components.{comp_name.lower()} import {comp_name}\n")
+                        imported_components.add(comp_name)
+            f.write("\n")
 
-class {component_name}(FIXMessageBase):
-    """
-    FIX 4.4 {component_name} Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={{
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }}
-    )
-''')
-                    # Add fields to the component model
-                    for field in component_fields:
-                        if field.get('is_group'):
-                            # Handle group fields
-                            group_name = field['name'].replace(" ", "")
-                            f.write(f'''
+            # Track fields that are part of groups
+            group_fields = set()
+            for field in component_fields:
+                if field.get('is_group', False):
+                    for group_field in field['fields']:
+                        field_name = to_camel_case(group_field['name'].replace(" ", ""))
+                        group_fields.add(field_name)
 
-class {group_name}(FIXMessageBase):
-    """
-    {field['name']} group fields
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={{
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }}
-    )
-''')
-                            for group_field in field['fields']:
-                                field_name = group_field['name'].replace(" ", "")
-                                field_name = to_camel_case(field_name)  # Convert to camelCase
-                                required = group_field['required']
-                                
-                                # Get field type information
-                                field_info = fields.get(field['name'].replace(" ", ""), {})  # Use original name for lookup
-                                fix_type = field_info.get('type', 'STRING')
-                                python_type = FIX_TYPE_MAP.get(fix_type, 'str')
-                                
-                                # Make the field optional if not required
-                                if not required:
-                                    python_type = f"Optional[{python_type}]"
-                                
-                                # Add field to the model with proper Field alias
-                                if 'tag' in field_info:
-                                    f.write(f"    {field_name}: {python_type} = Field(None, description='{field_info.get('description', '')}', alias='{field_info['tag']}')\n")
-                                else:
-                                    f.write(f"    {field_name}: {python_type} = Field(None)\n")
-                            
-                            # Add the group to the component
-                            group_name_camel = to_camel_case(group_name)  # Convert to camelCase
-                            f.write(f"\n    {group_name_camel}s: List[{group_name}] = Field(default_factory=list)\n")
+            # First, generate any group classes
+            for field in component_fields:
+                if field.get('is_group', False):
+                    group_name = field['name'].replace(" ", "")
+                    f.write(f"class {group_name}(FIXMessageBase):\n")
+                    f.write('    """FIX group model."""\n\n')
+
+                    # Add fields to the group
+                    for group_field in field['fields']:
+                        field_name = to_camel_case(group_field['name'].replace(" ", ""))
+                        required = group_field.get('required', False)
+
+                        if group_field.get('is_component', False):
+                            # Handle component fields
+                            comp_name = group_field['name'].replace(" ", "")
+                            python_type = comp_name
+                            if not required:
+                                python_type = f"Optional[{python_type}]"
+                                default_value = "None"
+                            else:
+                                default_value = "..."  # Pydantic's required marker
+                            f.write(f"    {field_name}: {python_type} = Field({default_value}, description='{comp_name} component')\n")
                         else:
                             # Handle regular fields
-                            field_name = field['name'].replace(" ", "")
-                            field_name = to_camel_case(field_name)  # Convert to camelCase
-                            required = field['required']
-                            
-                            # Get field type information
-                            field_info = fields.get(field['name'].replace(" ", ""), {})  # Use original name for lookup
+                            field_info = fields.get(field_name, {})  # Use original name for lookup
                             fix_type = field_info.get('type', 'STRING')
                             python_type = FIX_TYPE_MAP.get(fix_type, 'str')
                             
                             # Make the field optional if not required
                             if not required:
                                 python_type = f"Optional[{python_type}]"
+                                default_value = "None"
+                            else:
+                                default_value = "..."  # Pydantic's required marker
                             
                             # Add field to the model with proper Field alias
                             if 'tag' in field_info:
-                                f.write(f"    {field_name}: {python_type} = Field(None, description='{field_info.get('description', '')}', alias='{field_info['tag']}')\n")
+                                f.write(f"    {field_name}: {python_type} = Field({default_value}, description='{field_info.get('description', '')}', alias='{field_info['tag']}')\n")
                             else:
-                                f.write(f"    {field_name}: {python_type} = Field(None)\n")
-            
-            # Add an import statement to the __init__.py file
-            init_file.write(f"from .{component_name.lower()} import {component_name}\n")
+                                f.write(f"    {field_name}: {python_type} = Field({default_value})\n")
+                    f.write("\n")
 
-def generate_message_models(messages, fields):
-    """
-    Generate Pydantic models for FIX messages.
-    
-    Args:
-        messages: Dictionary of message type definitions from the specification
-        fields: Dictionary of field definitions from the specification
-    """
-    logger.info("Generating message models...")
-    
-    # Define header/trailer fields that are already in FIXMessageBase
-    base_fields = {
-        'BeginString', 'BodyLength', 'MsgType', 'SenderCompID', 'TargetCompID',
-        'MsgSeqNum', 'SendingTime', 'CheckSum'
-    }
-    
-    # Create the messages directory if it doesn't exist
-    os.makedirs(OUTPUT_DIR / "messages", exist_ok=True)
-    
-    # Create the __init__.py file for the messages directory
-    with open(OUTPUT_DIR / "messages" / "__init__.py", 'w') as init_file:
-        init_file.write('''"""
-FIX 4.4 Message Models
+            # Write component class
+            f.write(f"class {component_name}(FIXMessageBase):\n")
+            f.write('    """FIX component model."""\n\n')
 
-This package contains Pydantic models for FIX 4.4 messages.
-"""
-''')
-        
-        # Generate a model for each message type
-        for msg_name, msg_info in messages.items():
-            file_name = f"{msg_name.lower()}.py"
-            message_file_path = OUTPUT_DIR / "messages" / file_name
-            
-            with open(message_file_path, 'w') as f:
-                f.write(f'''"""
-FIX 4.4 {msg_name} Message
+            # Add fields
+            for field in component_fields:
+                field_name = to_camel_case(field['name'].replace(" ", ""))
+                required = field.get('required', False)
 
-This module contains the Pydantic model for the {msg_name} message.
-"""
-from datetime import datetime, date, time
-from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
-from src.models.fix.base import FIXMessageBase
-from src.models.fix.generated.fields.common import *
-''')
-                
-                # Track components and groups we need to import
-                components_to_import = set()
-                groups_to_import = set()
-                
-                # First pass: collect all components and groups
-                for field in msg_info['fields']:
-                    if field.get('is_component'):
+                if field.get('is_group', False):
+                    # Handle group fields
+                    group_name = field['name'].replace(" ", "")
+                    # Add count field
+                    f.write(f"    {field_name}: Optional[int] = Field(None, description='Number of {group_name} entries', alias='420')\n")
+                    # Add list field
+                    f.write(f"    {field_name}_items: List[{group_name}] = Field(default_factory=list)\n")
+                elif not field.get('is_group_field', False) and field_name not in group_fields:  # Skip fields that belong to a group
+                    if field.get('is_component', False):
+                        # Handle component fields
                         comp_name = field['name'].replace(" ", "")
-                        components_to_import.add(comp_name)
-                    elif field.get('is_group'):
-                        group_name = field['name'].replace(" ", "")
-                        groups_to_import.add(group_name)
-                
-                # Add imports for components and groups
-                for comp_name in sorted(components_to_import):
-                    f.write(f"from src.models.fix.generated.components.{comp_name.lower()} import {comp_name}\n")
-                
-                # Generate the message class
-                f.write(f'''
-
-class {msg_name}(FIXMessageBase):
-    """
-    FIX 4.4 {msg_name} Message
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={{
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }}
-    )
-    
-    # Set the message type for this message
-    msgType: Literal["{msg_info.get('msgtype', '')}"] = Field("{msg_info.get('msgtype', '')}", alias='35')
-    
-    # Message-specific fields
-''')
-                
-                # Generate fields
-                for field in msg_info['fields']:
-                    # Skip fields that are already in the base class
-                    if field['name'].replace(" ", "") in base_fields:
-                        continue
-                        
-                    if field.get('is_component'):
-                        comp_name = field['name'].replace(" ", "")
-                        field_name = to_camel_case(comp_name)  # Convert to camelCase
-                        f.write(f"    {field_name}: Optional[{comp_name}] = Field(None, description='{comp_name} component')\n")
-                    elif field.get('is_group'):
-                        group_name = field['name'].replace(" ", "")
-                        field_name = to_camel_case(group_name)  # Convert to camelCase
-                        f.write(f"    {field_name}: Optional[List[{group_name}]] = Field(default_factory=list, description='{group_name} group')\n")
-                    else:
-                        field_name = field['name'].replace(" ", "")
-                        field_name = to_camel_case(field_name)  # Convert to camelCase
-                        field_type = FIX_TYPE_MAP.get(field['type'], 'str')
-                        if field_type.startswith('List'):
-                            f.write(f"    {field_name}: Optional[{field_type}] = Field(default_factory=list, description='', alias='{field['tag']}')\n")
+                        python_type = comp_name
+                        if not required:
+                            python_type = f"Optional[{python_type}]"
+                            default_value = "None"
                         else:
-                            f.write(f"    {field_name}: Optional[{field_type}] = Field(None, description='', alias='{field['tag']}')\n")
-                
-                # Add model_dump method
-                f.write('''
-    def model_dump(self, **kwargs) -> Dict[str, Any]:
-        """Override model_dump to handle nested components"""
-        kwargs.setdefault('by_alias', True)
-        data = super().model_dump(**kwargs)
-        
-        # Handle repeating components
-        for field_name, value in data.items():
-            if isinstance(value, list):
-                # Set the No* field based on list length
-                no_field = f"no{field_name}"  # Convert to camelCase
-                if hasattr(self, no_field):
-                    setattr(self, no_field, len(value))
-        
-        return data
-''')
-            
-            # Add an import statement to the __init__.py file
-            init_file.write(f"from .{msg_name.lower()} import {msg_name}\n")
+                            default_value = "..."  # Pydantic's required marker
+                        f.write(f"    {field_name}: {python_type} = Field({default_value}, description='{comp_name} component')\n")
+                    else:
+                        # Handle regular fields
+                        field_info = fields.get(field_name, {})  # Use original name for lookup
+                        fix_type = field_info.get('type', 'STRING')
+                        python_type = FIX_TYPE_MAP.get(fix_type, 'str')
+                        
+                        # Make the field optional if not required
+                        if not required:
+                            python_type = f"Optional[{python_type}]"
+                            default_value = "None"
+                        else:
+                            default_value = "..."  # Pydantic's required marker
+                        
+                        # Add field to the model with proper Field alias
+                        if 'tag' in field_info:
+                            f.write(f"    {field_name}: {python_type} = Field({default_value}, description='{field_info.get('description', '')}', alias='{field_info['tag']}')\n")
+                        else:
+                            f.write(f"    {field_name}: {python_type} = Field({default_value})\n")
 
-def generate_base_models():
+            f.write("\n")
+
+def generate_message_models(messages: Dict[str, Any], fields: Dict[str, Any], components: Dict[str, Any], output_dir: str) -> None:
+    """Generate Pydantic models for FIX messages."""
+    logger.info("Generating message models...")
+    messages_dir = os.path.join(output_dir, "messages")
+    os.makedirs(messages_dir, exist_ok=True)
+
+    # Create __init__.py
+    with open(os.path.join(messages_dir, "__init__.py"), "w") as f:
+        f.write("# Generated FIX message models\n")
+
+    for message_name, message_info in messages.items():
+        # Create message file
+        file_path = os.path.join(messages_dir, f"{message_name.lower()}.py")
+        with open(file_path, "w") as f:
+            # Write imports
+            f.write("from typing import Optional, List\n")
+            f.write("from pydantic import Field\n")
+            f.write("from src.models.fix.base import FIXMessageBase\n")
+            
+            # Import required components
+            imported_components = set()
+            for field in message_info.get('fields', []):
+                if field.get('is_component', False):
+                    component_name = field['name'].replace(" ", "")
+                    if component_name not in imported_components:
+                        f.write(f"from src.models.fix.generated.components.{component_name.lower()} import {component_name}\n")
+                        imported_components.add(component_name)
+            f.write("\n")
+
+            # Write message class
+            f.write(f"class {message_name}(FIXMessageBase):\n")
+            f.write('    """FIX message model."""\n\n')
+
+            # Add fields
+            for field in message_info.get('fields', []):
+                field_name = field['name'].replace(" ", "")
+                required = field.get('required', False)
+
+                if field.get('is_component', False):
+                    # Handle component fields
+                    component_name = field_name
+                    python_type = component_name
+                    if not required:
+                        python_type = f"Optional[{python_type}]"
+                        default_value = "None"
+                    else:
+                        default_value = "..."  # Pydantic's required marker
+                    f.write(f"    {field_name.lower()}: {python_type} = Field({default_value}, description='{component_name} component')\n")
+                else:
+                    # Handle regular fields
+                    field_info = fields.get(field_name, {})  # Use original name for lookup
+                    fix_type = field_info.get('type', 'STRING')
+                    python_type = FIX_TYPE_MAP.get(fix_type, 'str')
+                    
+                    # Make the field optional if not required
+                    if not required:
+                        python_type = f"Optional[{python_type}]"
+                        default_value = "None"
+                    else:
+                        default_value = "..."  # Pydantic's required marker
+                    
+                    # Add field to the model with proper Field alias
+                    if 'tag' in field_info:
+                        f.write(f"    {field_name.lower()}: {python_type} = Field({default_value}, description='{field_info.get('description', '')}', alias='{field_info['tag']}')\n")
+                    else:
+                        f.write(f"    {field_name.lower()}: {python_type} = Field({default_value})\n")
+
+            f.write("\n")
+
+def generate_base_models(output_dir: str) -> None:
     """Generate base models for FIX messages."""
     logger.info("Generating base models...")
-    
-    with open(OUTPUT_DIR / "base.py", 'w') as f:
-        f.write('''"""
-FIX 4.4 Base Models
+    base_dir = os.path.join(output_dir, "base")
+    os.makedirs(base_dir, exist_ok=True)
 
-This module contains base models for FIX 4.4 messages.
-"""
-from datetime import datetime, date, time
-from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
-from ...base import TradeModel
+    # Create __init__.py
+    with open(os.path.join(base_dir, "__init__.py"), "w") as f:
+        f.write("# Generated FIX base models\n")
 
-class FIXMessageBase(TradeModel):
-    """
-    Base class for all FIX messages.
-    
-    This includes common header and trailer fields.
-    """
+    # Create base.py
+    base_content = '''from datetime import datetime, date, time
+from pydantic import BaseModel, ConfigDict
+
+class FIXMessageBase(BaseModel):
+    """FIX message base model."""
     model_config = ConfigDict(
         populate_by_name=True,
         validate_by_name=True,
@@ -549,33 +432,9 @@ class FIXMessageBase(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-
-    beginString: Literal["FIX.4.4"] = Field("FIX.4.4", alias='8')
-    bodyLength: Optional[int] = Field(None, alias='9')
-    msgType: str = Field(..., alias='35')
-    senderCompID: str = Field(..., alias='49')
-    targetCompID: str = Field(..., alias='56')
-    msgSeqNum: int = Field(..., alias='34')
-    sendingTime: datetime = Field(..., alias='52')
-    checkSum: Optional[str] = Field(None, alias='10')
-    
-    # Additional fields will be stored in a dictionary
-    additional_fields: Dict[str, Any] = Field(default_factory=dict)
-
-    def model_dump(self, **kwargs) -> Dict[str, Any]:
-        """
-        Convert the message to a dictionary representation.
-        
-        Returns:
-            Dict[str, Any]: Dictionary representation of the message
-        """
-        # Get base fields
-        data = super().model_dump(**kwargs)
-        # Add additional fields
-        if self.additional_fields:
-            data.update(self.additional_fields)
-        return {k: v for k, v in data.items() if v is not None}
-''')
+'''
+    with open(os.path.join(base_dir, "base.py"), "w") as f:
+        f.write(base_content)
 
 def generate_init_file():
     """Generate the __init__.py file for the generated models."""
@@ -597,24 +456,23 @@ def main():
     # Create output directories
     create_output_dirs()
     
-    # Generate base models
-    logger.info("Generating base models...")
-    generate_base_models()
-    
     # Parse FIX specification
     spec_data = parse_fix_spec(str(LOCAL_SPEC_PATH))
     if not spec_data:
         logger.error("Failed to parse FIX 4.4 specification")
         sys.exit(1)
     
+    # Generate base models
+    generate_base_models(OUTPUT_DIR)
+    
     # Generate field models
     generate_field_models(spec_data['fields'])
     
     # Generate component models
-    generate_component_models(spec_data['components'], spec_data['fields'])
+    generate_component_models(spec_data['components'], spec_data['fields'], OUTPUT_DIR)
     
     # Generate message models
-    generate_message_models(spec_data['messages'], spec_data['fields'])
+    generate_message_models(spec_data['messages'], spec_data['fields'], spec_data['components'], OUTPUT_DIR)
     
     # Generate __init__.py
     generate_init_file()
