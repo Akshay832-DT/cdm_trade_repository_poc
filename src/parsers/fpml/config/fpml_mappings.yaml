@@ -1,0 +1,40 @@
+namespaces:
+  fpml: "http://www.fpml.org/FpML-5/confirmation"
+  xsi: "http://www.w3.org/2001/XMLSchema-instance"
+
+message_types:
+  trade: "Trade"
+  confirmation: "Confirmation"
+  novation: "Novation"
+  termination: "Termination"
+  amendment: "Amendment"
+
+field_mappings:
+  trade:
+    tradeHeader:
+      partyTradeIdentifier: "partyTradeIdentifier"
+      tradeDate: "tradeDate"
+      clearedDate: "clearedDate"
+    product:
+      interestRate:
+        swapStream: "swapStream"
+      credit:
+        protectionTerms: "protectionTerms"
+        referenceInformation: "referenceInformation"
+  confirmation:
+    confirmationStatus: "confirmationStatus"
+    confirmationDate: "confirmationDate"
+    confirmationTime: "confirmationTime"
+  novation:
+    novationDate: "novationDate"
+    novationTime: "novationTime"
+    originalParty: "originalParty"
+    newParty: "newParty"
+  termination:
+    terminationDate: "terminationDate"
+    terminationTime: "terminationTime"
+    terminationReason: "terminationReason"
+  amendment:
+    amendmentDate: "amendmentDate"
+    amendmentTime: "amendmentTime"
+    amendmentReason: "amendmentReason" 

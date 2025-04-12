@@ -1,0 +1,521 @@
+## Executive Summary
+
+This document specifies the product requirements for developing a standardized trade repository system compliant with ISDA Common Domain Model (CDM) and capable of generating regulatory reports for global trade reporting regulations. The system will serve as the central data store for trade information captured from various front-office systems and will provide capabilities for regulatory compliance reporting.
+
+**Implementation Priority**: 
+- Phase 1 will focus on vanilla Interest Rate Swaps and single-name Credit Default Swaps
+- Integration with Kafka for inbound messaging
+- MySQL as the target database
+- EMIR regulatory reporting
+
+**Key Metrics**:
+- Volume: 5-10 million trades and events daily
+- Processing target: 10 million trades and events under 1 hour
+- Data retention: 7 years for terminated/cancelled trades, indefinite for active trades
+
+### 1. Introduction
+
+#### 1.1 Purpose
+This document specifies the product requirements for developing a standardized trade repository system compliant with ISDA Common Domain Model (CDM) and capable of generating regulatory reports for global trade reporting regulations. The system will serve as the central data store for trade information captured from various front-office systems and will provide capabilities for regulatory compliance reporting.
+
+#### 1.2 Scope
+The system will:
+- Receive trade information in multiple formats (FIX, FpML, ISDA CDM, and proprietary formats)
+- Transform all trades into ISDA CDM standard representation
+- Store the standardized trade data with full history
+- Generate regulatory reports for EMIR and other global regulations
+- Support high-volume processing (10,000+ messages per second)
+- Provide APIs for integration with other systems
+
+#### 1.3 Business Objectives
+- Standardize trade data across the organization using ISDA CDM
+- Ensure regulatory compliance with global trade reporting requirements
+- Reduce operational risk through standardized data models
+- Improve data quality and consistency across systems
+- Enable efficient regulatory reporting with validation capabilities
+- Support high-throughput processing for global capital markets business
+
+### 2. System Requirements
+
+#### 2.1 Core Architecture Requirements
+- Implement a modular architecture with decoupled processing components
+- Use Apache NiFi for orchestration of data flows between components
+- Integrate with Kafka for inbound messaging of FIX and FpML messages
+- Track processing metrics for each workflow step:
+  - Number of trades processed
+  - Average processing time
+  - Success/failure rates
+- Support horizontal scaling to handle processing of 10 million trades/events in under 1 hour
+- Implement containerization for deployment flexibility and scalability
+
+#### 2.2 Product Coverage Phase 1
+- **Priority Product Types**:
+  - Vanilla Interest Rate Swaps
+  - Single-name Credit Default Swaps
+- **Future Phases**:
+  - Additional Interest Rate products
+  - Additional Credit products
+  - Equity products
+  - FX products
+  - Commodity products
+
+#### 2.3 Database Requirements
+- Use MySQL as the target database for Phase 1
+- Design database schema to optimize for high-volume write operations
+- Implement appropriate indexing strategies for query performance
+- Support potential migration to other database technologies in future phases
+- Design for the data retention policy:
+  - 7 years retention for terminated or cancelled trades
+  - Indefinite retention for active trades
+
+### 3. Data Parsing & Standardization Requirements
+
+#### 3.1 Multi-Format Support
+- Support parsing of the following trade formats:
+  - **FIX Protocol**: Versions 4.2, 4.4, and 5.0 SP2
+  - **FpML**: Version 5.10 and above
+  - **ISDA CDM**: Latest version
+  - **Proprietary Formats**: Configurable via templates
+
+#### 3.2 Kafka Integration
+- Implement Kafka consumers for inbound FIX and FpML messages
+- Support multiple Kafka topics for different message types
+- Implement error handling and dead letter queues for failed message processing
+- Track message processing metrics for performance monitoring
+- Support replay capabilities for message reprocessing
+- Implement idempotent processing to prevent duplicate trades
+
+#### 3.3 Parser Capabilities
+- Each parser must:
+  - Validate input against the respective specification/schema
+  - Convert input to standardized Pydantic models
+  - Report validation errors with detailed information
+  - Support all relevant message types for each format
+  - Handle different encoding formats (UTF-8, ISO-8859-1, etc.)
+
+#### 3.4 Model Requirements
+- Generate Pydantic models for each supported format that:
+  - Enforce type validation
+  - Handle required vs. optional fields
+  - Support nested object relationships
+  - Provide serialization/deserialization methods
+  - Include documentation from specifications
+
+#### 3.5 Configuration Requirements
+- All parsing rules and mappings must be stored in YAML configuration files
+- Minimize hard coding of parsing rules or transformations
+- Provide template-based configuration for proprietary formats
+- Support runtime reconfiguration without system restart
+
+#### 3.6 Parsing Performance Requirements
+- Process input formats with minimal latency (<10ms per message)
+- Support batched parsing for improved throughput
+- Provide metrics on parsing performance and error rates
+- Scale horizontally for high-volume parsing
+
+### 4. CDM Transformation Requirements
+
+#### 4.1 Phase 1 Product Coverage
+The system must support transformation to ISDA CDM for the following priority products:
+
+- **Interest Rate Products**:
+  - Vanilla Interest Rate Swaps (IRS)
+  
+- **Credit Products**:
+  - Single-name Credit Default Swaps (CDS)
+
+#### 4.2 Future Phase Product Coverage
+In future phases, the system will be extended to support:
+
+- **Additional Interest Rate Products**:
+  - Cross Currency Swaps
+  - Forward Rate Agreements
+  - Interest Rate Options
+  - Swaptions
+  - Inflation Swaps
+
+- **Additional Credit Products**:
+  - Credit Index Swaps
+  - Credit Swaptions
+
+- **Equity Products**:
+  - Equity Swaps
+  - Equity Options
+  - Dividend Swaps
+
+- **FX Products**:
+  - FX Spot
+  - FX Forward
+  - FX Swap
+  - FX Options
+
+- **Commodity Products**:
+  - Commodity Swaps
+  - Commodity Forwards
+  - Commodity Options
+
+#### 4.3 Transformation Rules
+- Implement product-specific transformers for each product type
+- Support transformation from all input formats (FIX, FpML, proprietary) to CDM
+- Store all mapping rules in configuration files organized by:
+  - Source format (FIX, FpML, proprietary)
+  - Product category
+  - Product type
+- Support the following mapping types:
+  - Direct field mapping
+  - Conditional mapping based on field values
+  - Field value transformations
+  - Default value application
+  - Complex object construction
+
+#### 4.4 Reference Data Integration
+- Implement reference data lookups during transformation process
+- Link appropriate identifiers based on information in trade records
+- Reference data categories to include:
+  - Legal Entity Identifiers (LEIs)
+  - Unique Transaction Identifiers (UTIs)
+  - Unique Product Identifiers (UPIs)
+  - Currency codes
+  - Country codes
+  - Rate index references
+  - Credit reference entities
+- Reference data must be populated before trade processing begins
+- Implement caching of frequently used reference data for performance
+
+#### 4.5 Validation Requirements
+- Validate all transformed CDM objects against the official CDM schema
+- Implement business rule validation specific to each product type
+- Provide detailed validation results with error location and reason
+- Track validation success rates by product and source format
+
+#### 4.6 Extensibility Requirements
+- Design transformer architecture to allow easy addition of new product types
+- Support version upgrades of the ISDA CDM model
+- Enable mapping configuration updates without code changes
+- Provide a framework for custom transformation rules
+
+### 5. Data Storage Requirements
+
+#### 5.1 Database Technology
+- Use MySQL as the primary database technology for Phase 1
+- Design database schema for optimal performance with MySQL
+- Consider future migration path to other database technologies
+- Implement appropriate MySQL-specific optimizations:
+  - Proper indexing strategy
+  - Table partitioning for large datasets
+  - Query optimization
+  - Connection pooling
+
+#### 5.2 Schema Requirements
+- Generate appropriate schemas for storing ISDA CDM data
+- Support bi-temporal history tracking:
+  - Business date (as-of date from a business perspective)
+  - System date (when the record was created/modified in the system)
+- Implement soft deletion to maintain complete audit history
+- Design for optimal read and write performance with high volumes
+- Enable partitioning for large datasets
+
+#### 5.3 Data Retention Requirements
+- Implement data retention policies:
+  - 7 years retention for terminated or cancelled trades
+  - Indefinite retention for active trades
+- Design archiving strategy for older data
+- Ensure archived data remains accessible for regulatory purposes
+- Optimize storage for different data lifecycle stages
+
+#### 5.4 Performance Requirements
+- Support processing of 10 million trades and events in under 1 hour
+- Support 5-10 million trades and events daily
+- Implement query optimization for common access patterns
+- Support batch operations for bulk processing
+- Enable read/write splitting for scalability
+
+#### 5.5 Data Integrity Requirements
+- Enforce referential integrity for related data
+- Validate data against CDM schema before storage
+- Implement transactional processing where appropriate
+- Prevent data corruption during concurrent operations
+- Provide data recovery mechanisms
+
+### 6. Data Access Requirements
+
+#### 6.1 Product-Specific Data Access
+- Implement data access components organized by product categories:
+  - Interest Rate Products
+  - Equity Products
+  - Credit Products
+  - FX Products
+  - Commodity Products
+- Support product-specific operations and validations
+- Enable efficient querying based on product-specific criteria
+
+#### 6.2 Core Data Operations
+The system must support the following operations for all product types:
+- **Create**: Insert new trade records with validation
+- **Read**: Retrieve trades with filtering, sorting, and pagination
+- **Update**: Modify existing trades with full version history
+- **Soft Delete**: Mark trades as deleted while preserving history
+- **History Retrieval**: Access all historical versions of a trade
+- **Point-in-Time Queries**: "As-of" querying for any historical date
+
+#### 6.3 Database Independence
+- Abstract database interactions to support multiple backend types
+- Implement controllers to handle database-specific operations
+- Support runtime configuration of database backends
+- Enable migration between database types with minimal disruption
+
+#### 6.4 Performance Requirements
+- Optimize data access for high-volume operations
+- Support batched operations for efficiency
+- Implement connection pooling for database connections
+- Cache frequently accessed data appropriately
+- Monitor and report on data access performance
+
+#### 6.5 Concurrency and Transaction Support
+- Support concurrent access from multiple users/systems
+- Implement appropriate locking mechanisms
+- Provide transaction management with ACID properties
+- Handle transaction failures with appropriate rollback
+- Log transaction details for auditing purposes
+
+### 7. Regulatory Reporting Requirements
+
+#### 7.1 EMIR Reporting
+- Generate EMIR-compliant reports from ISDA CDM data
+- Support the latest EMIR Regulatory Technical Standards (RTS) and Implementing Technical Standards (ITS)
+- Implement EMIR-specific validations according to regulatory guidelines
+- Support both EMIR Refit and legacy formats as required
+- Generate reports within required T+1 reporting timelines
+- Support all required fields and validation rules
+- Implement jurisdiction-specific requirements for each applicable region
+
+#### 7.2 Reporting Capabilities
+- Map ISDA CDM fields to regulatory reporting fields
+- Generate and validate Unique Transaction Identifiers (UTIs)
+- Generate and validate Unique Product Identifiers (UPIs)
+- Support all required product types and asset classes
+- Handle amendments, cancellations, and corrections
+- Support delegated reporting where applicable
+
+#### 7.3 Validation Requirements
+- Implement comprehensive validation of regulatory reports
+- Validate against published regulatory schemas
+- Perform business rule validation specific to each regulation
+- Categorize validation errors by severity and type
+- Generate detailed validation reports for remediation
+- Support pre-submission validation checks
+
+#### 7.4 Output Format Requirements
+- Generate reports in all required submission formats:
+  - XML for trade repository submission
+  - CSV for internal review and analysis
+  - JSON for API consumption
+  - Other formats as required by regulations
+- Support encryption and secure transmission of reports
+
+#### 7.5 Reconciliation Requirements
+- Reconcile generated reports against source trade data
+- Support reconciliation against trade repository data
+- Identify and highlight discrepancies for resolution
+- Maintain audit trail of reconciliation activities
+- Generate reconciliation reports for regulatory compliance
+
+#### 7.6 Volume Handling
+- Design reporting system to handle 5-10 million trades and events daily
+- Support generation of regulatory reports for all trades within required timeframes
+- Implement batch processing for large report generation
+- Provide monitoring of report generation progress
+- Support retry mechanisms for failed report submissions
+
+### 8. API Requirements
+
+#### 8.1 Microservices Architecture
+- Implement RESTful microservices APIs for all system functionality
+- Organize APIs logically by business domain:
+  - Trade processing by product category
+  - Regulatory reporting
+  - System administration
+  - Monitoring and operations
+- Support versioning of all APIs to ensure backward compatibility
+- Document all APIs using OpenAPI/Swagger specifications
+
+#### 8.2 Trade Processing APIs
+- Provide product-specific endpoints for each product type across all categories
+- Support multiple input formats (FIX, FpML, CDM, proprietary JSON)
+- Implement endpoints for:
+  - New trade submission
+  - Trade lifecycle events
+  - Trade amendments
+  - Trade cancellations
+  - Trade queries with filtering capabilities
+- Support both synchronous and asynchronous processing models
+- Enable batch processing for high-volume scenarios
+
+#### 8.3 Regulatory Reporting APIs
+- Implement endpoints for regulatory report generation
+- Support on-demand and scheduled report generation
+- Provide report validation capabilities
+- Enable retrieval of historical reports
+- Support report resubmission and correction workflows
+- Offer report status tracking and notification
+
+#### 8.4 System Administration APIs
+- Provide configuration management endpoints
+- Support user and role management
+- Enable system monitoring and health checks
+- Allow for reference data management
+- Support deployment and scaling operations
+
+#### 8.5 API Performance and Security
+- Design APIs to handle high throughput (thousands of requests per second)
+- Implement appropriate authentication and authorization
+- Support rate limiting and throttling for fair resource allocation
+- Provide detailed error responses with appropriate HTTP status codes
+- Log all API access for security and audit purposes
+
+### 9. Testing and Quality Assurance Requirements
+
+#### 9.1 Test Coverage Requirements
+- Implement comprehensive testing across all system components:
+  - Unit tests for individual components
+  - Integration tests for component interactions
+  - End-to-end tests for complete workflows
+  - Performance tests for throughput validation
+  - Security tests for vulnerability assessment
+- Achieve minimum test coverage of 85% across all code
+
+#### 9.2 Test Data Requirements
+- Create comprehensive test data sets:
+  - Sample trades for all supported product types
+  - Test messages in all supported formats (FIX, FpML, CDM, proprietary)
+  - Expected CDM outputs for validation
+  - Edge cases for error handling verification
+  - Large volume datasets for performance testing
+  - Historical data for temporal testing
+
+#### 9.3 Product-Specific Testing
+- Develop specific test cases for each product type:
+  - Interest Rate products (IRS, CCS, FRA, etc.)
+  - Equity products
+  - Credit products
+  - FX products
+  - Commodity products
+- Test all lifecycle events for each product type
+- Verify product-specific validations and business rules
+
+#### 9.4 Regulatory Compliance Testing
+- Test regulatory report generation against official validation rules
+- Verify mapping from CDM to regulatory fields
+- Test regulatory validations and error handling
+- Verify compliance with submission timelines
+- Test reconciliation between source data and reports
+
+#### 9.5 Performance Testing Requirements
+- Verify system can handle 10,000+ messages per second
+- Test database read/write performance under load
+- Measure API response times under various loads
+- Test horizontal scaling capabilities
+- Verify memory and CPU utilization under load
+
+### 15. Future Extensibility Requirements
+
+#### 15.1 CDM Version Upgrades
+- Design the system to accommodate ISDA CDM version changes
+- Support side-by-side operation of multiple CDM versions during transition
+- Provide migration tools for upgrading stored data to new versions
+- Implement version-specific validators and transformers
+- Document version differences and compatibility
+
+#### 15.2 Additional Regulatory Regimes
+- Design the regulatory reporting framework to support additional regimes:
+  - MiFID II/MiFIR
+  - CFTC (Dodd-Frank)
+  - SFTR
+  - ASIC
+  - Other global regulatory requirements
+- Enable configuration-based addition of new reporting rules
+- Support multiple concurrent regulatory reporting requirements
+
+#### 15.3 New Product Types
+- Create an extensible framework for adding new product types
+- Document the process for extending the system with new products
+- Support custom product validation rules
+- Enable product-specific transformation logic
+- Provide testing frameworks for new product validation
+
+#### 15.4 Integration Capabilities
+- Design flexible integration points for connecting with:
+  - Additional trade capture systems
+  - Market data providers
+  - Reference data systems
+  - Risk management systems
+  - Compliance monitoring tools
+- Support standard integration protocols and formats
+- Document integration interfaces and requirements
+
+### 17. Key Risks and Mitigation Strategies
+
+#### 17.1 Performance Risks
+- **Risk**: System unable to process 10 million trades in the required timeframe
+- **Mitigation**:
+  - Implement performance benchmarking early in development
+  - Design for horizontal scaling from the beginning
+  - Use batch processing techniques for high-volume operations
+  - Conduct performance testing with realistic volumes
+  - Optimize database queries and indexing for MySQL
+
+#### 17.2 Data Quality Risks
+- **Risk**: Poor data quality leads to invalid regulatory reports
+- **Mitigation**:
+  - Implement comprehensive validation at each stage
+  - Create reconciliation processes to verify data integrity
+  - Develop clear error handling and reporting
+  - Provide data quality dashboards
+  - Implement data cleansing processes
+
+#### 17.3 Regulatory Compliance Risks
+- **Risk**: Failure to meet regulatory requirements or timelines
+- **Mitigation**:
+  - Regular review of regulatory requirements
+  - Maintain knowledge of upcoming regulatory changes
+  - Implement comprehensive validation against regulatory rules
+  - Establish relationships with trade repositories for validation
+  - Conduct regular compliance audits
+
+#### 17.4 Integration Risks
+- **Risk**: Issues with Kafka integration or message parsing
+- **Mitigation**:
+  - Early proof of concept for Kafka integration
+  - Comprehensive testing with real message formats
+  - Implement robust error handling and retry mechanisms
+  - Create monitoring for message flow and processing
+  - Develop message replay capabilities
+
+#### 17.5 Database Risks
+- **Risk**: MySQL performance issues under high load
+- **Mitigation**:
+  - Proper database design optimized for MySQL
+  - Implement connection pooling and query optimization
+  - Regular database health monitoring
+  - Table partitioning for large tables
+  - Develop scaling strategy for database tier
+
+ OpenID Connect
+- Role-based access control
+- API key management
+- JWT token validation
+- Session management
+
+#### 12.2 Data Protection
+- Encryption at rest
+- Encryption in transit
+- PII handling
+- Data masking for non-production environments
+- Audit logging of access
+
+#### 12.3 Secure Development
+- OWASP security guidelines
+- Dependency vulnerability scanning
+- Regular security patches
+- Penetration testing
+- Security code reviews

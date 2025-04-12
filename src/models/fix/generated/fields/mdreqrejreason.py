@@ -1,0 +1,25 @@
+
+from .base import FIXFieldBase
+from .types import FIXChar
+
+class MDReqRejReason(FIXFieldBase):
+    """FIX MDReqRejReason field."""
+    tag: str = "281"
+    name: str = "MDReqRejReason"
+    type: str = "CHAR"
+    value: FIXChar
+
+    # Enum values
+    # 0: UNKNOWN_SYMBOL
+    # 1: DUPLICATE_MD_REQ_ID
+    # 2: INSUFFICIENT_BANDWIDTH
+    # 3: INSUFFICIENT_PERMISSIONS
+    # 4: UNSUPPORTED_SUBSCRIPTION_REQUEST_TYPE
+    # 5: UNSUPPORTED_MARKET_DEPTH
+    # 6: UNSUPPORTED_MD_UPDATE_TYPE
+    # 7: UNSUPPORTED_AGGREGATED_BOOK
+    # 8: UNSUPPORTED_MD_ENTRY_TYPE
+    # 9: UNSUPPORTED_TRADING_SESSION_ID
+    # A: UNSUPPORTED_SCOPE
+    # B: UNSUPPORTED_OPEN_CLOSE_SETTLE_FLAG
+    # C: UNSUPPORTED_MD_IMPLICIT_DELETE

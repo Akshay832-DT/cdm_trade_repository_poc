@@ -1,0 +1,31 @@
+namespaces:
+  cdm: "http://www.cdm.org/6.4"
+  xsi: "http://www.w3.org/2001/XMLSchema-instance"
+
+message_types:
+  trade: "Trade"
+  event: "Event"
+  lifecycle: "LifecycleEvent"
+
+field_mappings:
+  trade:
+    tradeHeader:
+      tradeId: "tradeId"
+      tradeDate: "tradeDate"
+      tradeTime: "tradeTime"
+    product:
+      interestRate:
+        swapStream: "swapStream"
+      credit:
+        protectionTerms: "protectionTerms"
+        referenceInformation: "referenceInformation"
+  event:
+    eventType: "eventType"
+    eventDate: "eventDate"
+    eventTime: "eventTime"
+    eventDetails: "eventDetails"
+  lifecycle:
+    lifecycleType: "lifecycleType"
+    lifecycleDate: "lifecycleDate"
+    lifecycleTime: "lifecycleTime"
+    lifecycleDetails: "lifecycleDetails" 
