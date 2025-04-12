@@ -6,17 +6,17 @@ This module contains the Pydantic model for the AssignmentReport message.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
-from ..components.instrmtleggrp import InstrmtLegGrp
-from ..components.instrument import Instrument
-from ..components.parties import Parties
-from ..components.positionamountdata import PositionAmountData
-from ..components.positionqty import PositionQty
-from ..components.undinstrmtgrp import UndInstrmtGrp
+from src.models.fix.base import FIXMessageBase
+from src.models.fix.generated.fields.common import *
+from src.models.fix.generated.components.instrmtleggrp import InstrmtLegGrp
+from src.models.fix.generated.components.instrument import Instrument
+from src.models.fix.generated.components.parties import Parties
+from src.models.fix.generated.components.positionamountdata import PositionAmountData
+from src.models.fix.generated.components.positionqty import PositionQty
+from src.models.fix.generated.components.undinstrmtgrp import UndInstrmtGrp
 
 
-class AssignmentReport(TradeModel):
+class AssignmentReport(FIXMessageBase):
     """
     FIX 4.4 AssignmentReport Message
     """
@@ -30,43 +30,37 @@ class AssignmentReport(TradeModel):
         }
     )
     
-    # Standard FIX header fields
-    BeginString: Literal["FIX.4.4"] = Field(alias='8')
-    BodyLength: Optional[int] = Field(None, alias='9')
-    MsgType: Literal["AW"] = Field(alias='35')
-    SenderCompID: str = Field(..., alias='49')
-    TargetCompID: str = Field(..., alias='56')
-    MsgSeqNum: int = Field(..., alias='34')
-    SendingTime: datetime = Field(..., alias='52')
+    # Set the message type for this message
+    msgType: Literal["AW"] = Field("AW", alias='35')
     
     # Message-specific fields
-    AsgnRptID: str = Field(None, description='', alias='833')
-    TotNumAssignmentReports: Optional[int] = Field(None, description='', alias='832')
-    LastRptRequested: Optional[bool] = Field(None, description='', alias='912')
-    Account: Optional[str] = Field(None, description='', alias='1')
-    AccountType: int = Field(None, description='', alias='581')
-    Currency: Optional[str] = Field(None, description='', alias='15')
-    ThresholdAmount: Optional[float] = Field(None, description='', alias='834')
-    SettlPrice: float = Field(None, description='', alias='730')
-    SettlPriceType: int = Field(None, description='', alias='731')
-    UnderlyingSettlPrice: float = Field(None, description='', alias='732')
-    ExpireDate: Optional[date] = Field(None, description='', alias='432')
-    AssignmentMethod: str = Field(None, description='', alias='744')
-    AssignmentUnit: Optional[float] = Field(None, description='', alias='745')
-    OpenInterest: float = Field(None, description='', alias='746')
-    ExerciseMethod: str = Field(None, description='', alias='747')
-    SettlSessID: str = Field(None, description='', alias='716')
-    SettlSessSubID: str = Field(None, description='', alias='717')
-    ClearingBusinessDate: date = Field(None, description='', alias='715')
-    Text: Optional[str] = Field(None, description='', alias='58')
-    EncodedTextLen: Optional[int] = Field(None, description='', alias='354')
-    EncodedText: Optional[str] = Field(None, description='', alias='355')
-    Parties: Parties = Field(..., description='Parties component')
-    Instrument: Optional[Instrument] = None
-    InstrmtLegGrp: Optional[InstrmtLegGrp] = None
-    UndInstrmtGrp: Optional[UndInstrmtGrp] = None
-    PositionQty: PositionQty = Field(..., description='PositionQty component')
-    PositionAmountData: PositionAmountData = Field(..., description='PositionAmountData component')
+    asgnRptID: Optional[str] = Field(None, description='', alias='833')
+    totNumAssignmentReports: Optional[int] = Field(None, description='', alias='832')
+    lastRptRequested: Optional[bool] = Field(None, description='', alias='912')
+    account: Optional[str] = Field(None, description='', alias='1')
+    accountType: Optional[int] = Field(None, description='', alias='581')
+    currency: Optional[str] = Field(None, description='', alias='15')
+    thresholdAmount: Optional[float] = Field(None, description='', alias='834')
+    settlPrice: Optional[float] = Field(None, description='', alias='730')
+    settlPriceType: Optional[int] = Field(None, description='', alias='731')
+    underlyingSettlPrice: Optional[float] = Field(None, description='', alias='732')
+    expireDate: Optional[date] = Field(None, description='', alias='432')
+    assignmentMethod: Optional[str] = Field(None, description='', alias='744')
+    assignmentUnit: Optional[float] = Field(None, description='', alias='745')
+    openInterest: Optional[float] = Field(None, description='', alias='746')
+    exerciseMethod: Optional[str] = Field(None, description='', alias='747')
+    settlSessID: Optional[str] = Field(None, description='', alias='716')
+    settlSessSubID: Optional[str] = Field(None, description='', alias='717')
+    clearingBusinessDate: Optional[date] = Field(None, description='', alias='715')
+    text: Optional[str] = Field(None, description='', alias='58')
+    encodedTextLen: Optional[int] = Field(None, description='', alias='354')
+    encodedText: Optional[str] = Field(None, description='', alias='355')
+    parties: Optional[Parties] = Field(None, description='Parties component')
+    instrument: Optional[Instrument] = Field(None, description='Instrument component')
+    instrmtLegGrp: Optional[InstrmtLegGrp] = Field(None, description='InstrmtLegGrp component')
+    undInstrmtGrp: Optional[UndInstrmtGrp] = Field(None, description='UndInstrmtGrp component')
+    positionQty: Optional[PositionQty] = Field(None, description='PositionQty component')
+    positionAmountData: Optional[PositionAmountData] = Field(None, description='PositionAmountData component')
 
     def model_dump(self, **kwargs) -> Dict[str, Any]:
         """Override model_dump to handle nested components"""
@@ -77,8 +71,8 @@ class AssignmentReport(TradeModel):
         for field_name, value in data.items():
             if isinstance(value, list):
                 # Set the No* field based on list length
-                no_field = f"No{field_name[:-1]}"  # Remove 's' from plural
-                if no_field in self.__fields__:
-                    data[no_field] = len(value)
+                no_field = f"no{field_name}"  # Convert to camelCase
+                if hasattr(self, no_field):
+                    setattr(self, no_field, len(value))
         
-        return {k: v for k, v in data.items() if v is not None and (not isinstance(v, list) or v)}
+        return data

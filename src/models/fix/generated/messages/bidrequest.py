@@ -6,13 +6,13 @@ This module contains the Pydantic model for the BidRequest message.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
-from ..components.bidcompreqgrp import BidCompReqGrp
-from ..components.biddescreqgrp import BidDescReqGrp
+from src.models.fix.base import FIXMessageBase
+from src.models.fix.generated.fields.common import *
+from src.models.fix.generated.components.bidcompreqgrp import BidCompReqGrp
+from src.models.fix.generated.components.biddescreqgrp import BidDescReqGrp
 
 
-class BidRequest(TradeModel):
+class BidRequest(FIXMessageBase):
     """
     FIX 4.4 BidRequest Message
     """
@@ -26,45 +26,39 @@ class BidRequest(TradeModel):
         }
     )
     
-    # Standard FIX header fields
-    BeginString: Literal["FIX.4.4"] = Field(alias='8')
-    BodyLength: Optional[int] = Field(None, alias='9')
-    MsgType: Literal["k"] = Field(alias='35')
-    SenderCompID: str = Field(..., alias='49')
-    TargetCompID: str = Field(..., alias='56')
-    MsgSeqNum: int = Field(..., alias='34')
-    SendingTime: datetime = Field(..., alias='52')
+    # Set the message type for this message
+    msgType: Literal["k"] = Field("k", alias='35')
     
     # Message-specific fields
-    BidID: Optional[str] = Field(None, description='', alias='390')
-    ClientBidID: str = Field(None, description='', alias='391')
-    BidRequestTransType: str = Field(None, description='', alias='374')
-    ListName: Optional[str] = Field(None, description='', alias='392')
-    TotNoRelatedSym: int = Field(None, description='', alias='393')
-    BidType: int = Field(None, description='', alias='394')
-    NumTickets: Optional[int] = Field(None, description='', alias='395')
-    Currency: Optional[str] = Field(None, description='', alias='15')
-    SideValue1: Optional[float] = Field(None, description='', alias='396')
-    SideValue2: Optional[float] = Field(None, description='', alias='397')
-    LiquidityIndType: Optional[int] = Field(None, description='', alias='409')
-    WtAverageLiquidity: Optional[float] = Field(None, description='', alias='410')
-    ExchangeForPhysical: Optional[bool] = Field(None, description='', alias='411')
-    OutMainCntryUIndex: Optional[float] = Field(None, description='', alias='412')
-    CrossPercent: Optional[float] = Field(None, description='', alias='413')
-    ProgRptReqs: Optional[int] = Field(None, description='', alias='414')
-    ProgPeriodInterval: Optional[int] = Field(None, description='', alias='415')
-    IncTaxInd: Optional[int] = Field(None, description='', alias='416')
-    ForexReq: Optional[bool] = Field(None, description='', alias='121')
-    NumBidders: Optional[int] = Field(None, description='', alias='417')
-    TradeDate: Optional[date] = Field(None, description='', alias='75')
-    BidTradeType: str = Field(None, description='', alias='418')
-    BasisPxType: str = Field(None, description='', alias='419')
-    StrikeTime: Optional[datetime] = Field(None, description='', alias='443')
-    Text: Optional[str] = Field(None, description='', alias='58')
-    EncodedTextLen: Optional[int] = Field(None, description='', alias='354')
-    EncodedText: Optional[str] = Field(None, description='', alias='355')
-    BidDescReqGrp: Optional[BidDescReqGrp] = None
-    BidCompReqGrp: Optional[BidCompReqGrp] = None
+    bidID: Optional[str] = Field(None, description='', alias='390')
+    clientBidID: Optional[str] = Field(None, description='', alias='391')
+    bidRequestTransType: Optional[str] = Field(None, description='', alias='374')
+    listName: Optional[str] = Field(None, description='', alias='392')
+    totNoRelatedSym: Optional[int] = Field(None, description='', alias='393')
+    bidType: Optional[int] = Field(None, description='', alias='394')
+    numTickets: Optional[int] = Field(None, description='', alias='395')
+    currency: Optional[str] = Field(None, description='', alias='15')
+    sideValue1: Optional[float] = Field(None, description='', alias='396')
+    sideValue2: Optional[float] = Field(None, description='', alias='397')
+    liquidityIndType: Optional[int] = Field(None, description='', alias='409')
+    wtAverageLiquidity: Optional[float] = Field(None, description='', alias='410')
+    exchangeForPhysical: Optional[bool] = Field(None, description='', alias='411')
+    outMainCntryUIndex: Optional[float] = Field(None, description='', alias='412')
+    crossPercent: Optional[float] = Field(None, description='', alias='413')
+    progRptReqs: Optional[int] = Field(None, description='', alias='414')
+    progPeriodInterval: Optional[int] = Field(None, description='', alias='415')
+    incTaxInd: Optional[int] = Field(None, description='', alias='416')
+    forexReq: Optional[bool] = Field(None, description='', alias='121')
+    numBidders: Optional[int] = Field(None, description='', alias='417')
+    tradeDate: Optional[date] = Field(None, description='', alias='75')
+    bidTradeType: Optional[str] = Field(None, description='', alias='418')
+    basisPxType: Optional[str] = Field(None, description='', alias='419')
+    strikeTime: Optional[datetime] = Field(None, description='', alias='443')
+    text: Optional[str] = Field(None, description='', alias='58')
+    encodedTextLen: Optional[int] = Field(None, description='', alias='354')
+    encodedText: Optional[str] = Field(None, description='', alias='355')
+    bidDescReqGrp: Optional[BidDescReqGrp] = Field(None, description='BidDescReqGrp component')
+    bidCompReqGrp: Optional[BidCompReqGrp] = Field(None, description='BidCompReqGrp component')
 
     def model_dump(self, **kwargs) -> Dict[str, Any]:
         """Override model_dump to handle nested components"""
@@ -75,8 +69,8 @@ class BidRequest(TradeModel):
         for field_name, value in data.items():
             if isinstance(value, list):
                 # Set the No* field based on list length
-                no_field = f"No{field_name[:-1]}"  # Remove 's' from plural
-                if no_field in self.__fields__:
-                    data[no_field] = len(value)
+                no_field = f"no{field_name}"  # Convert to camelCase
+                if hasattr(self, no_field):
+                    setattr(self, no_field, len(value))
         
-        return {k: v for k, v in data.items() if v is not None and (not isinstance(v, list) or v)}
+        return data

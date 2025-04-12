@@ -6,15 +6,15 @@ This module contains the Pydantic model for the SecurityStatus message.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
-from ..components.instrmtleggrp import InstrmtLegGrp
-from ..components.instrument import Instrument
-from ..components.instrumentextension import InstrumentExtension
-from ..components.undinstrmtgrp import UndInstrmtGrp
+from src.models.fix.base import FIXMessageBase
+from src.models.fix.generated.fields.common import *
+from src.models.fix.generated.components.instrmtleggrp import InstrmtLegGrp
+from src.models.fix.generated.components.instrument import Instrument
+from src.models.fix.generated.components.instrumentextension import InstrumentExtension
+from src.models.fix.generated.components.undinstrmtgrp import UndInstrmtGrp
 
 
-class SecurityStatus(TradeModel):
+class SecurityStatus(FIXMessageBase):
     """
     FIX 4.4 SecurityStatus Message
     """
@@ -28,41 +28,35 @@ class SecurityStatus(TradeModel):
         }
     )
     
-    # Standard FIX header fields
-    BeginString: Literal["FIX.4.4"] = Field(alias='8')
-    BodyLength: Optional[int] = Field(None, alias='9')
-    MsgType: Literal["f"] = Field(alias='35')
-    SenderCompID: str = Field(..., alias='49')
-    TargetCompID: str = Field(..., alias='56')
-    MsgSeqNum: int = Field(..., alias='34')
-    SendingTime: datetime = Field(..., alias='52')
+    # Set the message type for this message
+    msgType: Literal["f"] = Field("f", alias='35')
     
     # Message-specific fields
-    SecurityStatusReqID: Optional[str] = Field(None, description='', alias='324')
-    Currency: Optional[str] = Field(None, description='', alias='15')
-    TradingSessionID: Optional[str] = Field(None, description='', alias='336')
-    TradingSessionSubID: Optional[str] = Field(None, description='', alias='625')
-    UnsolicitedIndicator: Optional[bool] = Field(None, description='', alias='325')
-    SecurityTradingStatus: Optional[int] = Field(None, description='', alias='326')
-    FinancialStatus: Optional[List[str]] = Field(None, description='', alias='291')
-    CorporateAction: Optional[List[str]] = Field(None, description='', alias='292')
-    HaltReasonChar: Optional[str] = Field(None, description='', alias='327')
-    InViewOfCommon: Optional[bool] = Field(None, description='', alias='328')
-    DueToRelated: Optional[bool] = Field(None, description='', alias='329')
-    BuyVolume: Optional[float] = Field(None, description='', alias='330')
-    SellVolume: Optional[float] = Field(None, description='', alias='331')
-    HighPx: Optional[float] = Field(None, description='', alias='332')
-    LowPx: Optional[float] = Field(None, description='', alias='333')
-    LastPx: Optional[float] = Field(None, description='', alias='31')
-    TransactTime: Optional[datetime] = Field(None, description='', alias='60')
-    Adjustment: Optional[int] = Field(None, description='', alias='334')
-    Text: Optional[str] = Field(None, description='', alias='58')
-    EncodedTextLen: Optional[int] = Field(None, description='', alias='354')
-    EncodedText: Optional[str] = Field(None, description='', alias='355')
-    Instrument: Instrument = Field(..., description='Instrument component')
-    InstrumentExtension: Optional[InstrumentExtension] = None
-    UndInstrmtGrp: Optional[UndInstrmtGrp] = None
-    InstrmtLegGrp: Optional[InstrmtLegGrp] = None
+    securityStatusReqID: Optional[str] = Field(None, description='', alias='324')
+    currency: Optional[str] = Field(None, description='', alias='15')
+    tradingSessionID: Optional[str] = Field(None, description='', alias='336')
+    tradingSessionSubID: Optional[str] = Field(None, description='', alias='625')
+    unsolicitedIndicator: Optional[bool] = Field(None, description='', alias='325')
+    securityTradingStatus: Optional[int] = Field(None, description='', alias='326')
+    financialStatus: Optional[List[str]] = Field(default_factory=list, description='', alias='291')
+    corporateAction: Optional[List[str]] = Field(default_factory=list, description='', alias='292')
+    haltReasonChar: Optional[str] = Field(None, description='', alias='327')
+    inViewOfCommon: Optional[bool] = Field(None, description='', alias='328')
+    dueToRelated: Optional[bool] = Field(None, description='', alias='329')
+    buyVolume: Optional[float] = Field(None, description='', alias='330')
+    sellVolume: Optional[float] = Field(None, description='', alias='331')
+    highPx: Optional[float] = Field(None, description='', alias='332')
+    lowPx: Optional[float] = Field(None, description='', alias='333')
+    lastPx: Optional[float] = Field(None, description='', alias='31')
+    transactTime: Optional[datetime] = Field(None, description='', alias='60')
+    adjustment: Optional[int] = Field(None, description='', alias='334')
+    text: Optional[str] = Field(None, description='', alias='58')
+    encodedTextLen: Optional[int] = Field(None, description='', alias='354')
+    encodedText: Optional[str] = Field(None, description='', alias='355')
+    instrument: Optional[Instrument] = Field(None, description='Instrument component')
+    instrumentExtension: Optional[InstrumentExtension] = Field(None, description='InstrumentExtension component')
+    undInstrmtGrp: Optional[UndInstrmtGrp] = Field(None, description='UndInstrmtGrp component')
+    instrmtLegGrp: Optional[InstrmtLegGrp] = Field(None, description='InstrmtLegGrp component')
 
     def model_dump(self, **kwargs) -> Dict[str, Any]:
         """Override model_dump to handle nested components"""
@@ -73,8 +67,8 @@ class SecurityStatus(TradeModel):
         for field_name, value in data.items():
             if isinstance(value, list):
                 # Set the No* field based on list length
-                no_field = f"No{field_name[:-1]}"  # Remove 's' from plural
-                if no_field in self.__fields__:
-                    data[no_field] = len(value)
+                no_field = f"no{field_name}"  # Convert to camelCase
+                if hasattr(self, no_field):
+                    setattr(self, no_field, len(value))
         
-        return {k: v for k, v in data.items() if v is not None and (not isinstance(v, list) or v)}
+        return data

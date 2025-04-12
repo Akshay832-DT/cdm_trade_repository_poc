@@ -6,11 +6,11 @@ This module contains the Pydantic model for the TrdCapDtGrp component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class TrdCapDtGrp(TradeModel):
+class TrdCapDtGrp(FIXMessageBase):
     """
     FIX 4.4 TrdCapDtGrp Component
     """
@@ -23,11 +23,11 @@ class TrdCapDtGrp(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    TradeDate: Optional[date] = Field(None, description='', alias='75')
-    TransactTime: Optional[datetime] = Field(None, description='', alias='60')
+    tradeDate: Optional[date] = Field(None, description='', alias='75')
+    transactTime: Optional[datetime] = Field(None, description='', alias='60')
 
 
-class NoDates(TradeModel):
+class NoDates(FIXMessageBase):
     """
     NoDates group fields
     """
@@ -40,7 +40,7 @@ class NoDates(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    TradeDate: Optional[date] = Field(None, description='', alias='75')
-    TransactTime: Optional[datetime] = Field(None, description='', alias='60')
+    tradeDate: Optional[int] = Field(None, description='', alias='580')
+    transactTime: Optional[int] = Field(None, description='', alias='580')
 
-    NoDatess: List[NoDates] = Field(default_factory=list)
+    noDatess: List[NoDates] = Field(default_factory=list)

@@ -6,11 +6,11 @@ This module contains the Pydantic model for the BidDescReqGrp component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class BidDescReqGrp(TradeModel):
+class BidDescReqGrp(FIXMessageBase):
     """
     FIX 4.4 BidDescReqGrp Component
     """
@@ -23,20 +23,20 @@ class BidDescReqGrp(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    BidDescriptorType: Optional[int] = Field(None, description='', alias='399')
-    BidDescriptor: Optional[str] = Field(None, description='', alias='400')
-    SideValueInd: Optional[int] = Field(None, description='', alias='401')
-    LiquidityValue: Optional[float] = Field(None, description='', alias='404')
-    LiquidityNumSecurities: Optional[int] = Field(None, description='', alias='441')
-    LiquidityPctLow: Optional[float] = Field(None, description='', alias='402')
-    LiquidityPctHigh: Optional[float] = Field(None, description='', alias='403')
-    EFPTrackingError: Optional[float] = Field(None, description='', alias='405')
-    FairValue: Optional[float] = Field(None, description='', alias='406')
-    OutsideIndexPct: Optional[float] = Field(None, description='', alias='407')
-    ValueOfFutures: Optional[float] = Field(None, description='', alias='408')
+    bidDescriptorType: Optional[int] = Field(None, description='', alias='399')
+    bidDescriptor: Optional[str] = Field(None, description='', alias='400')
+    sideValueInd: Optional[int] = Field(None, description='', alias='401')
+    liquidityValue: Optional[float] = Field(None, description='', alias='404')
+    liquidityNumSecurities: Optional[int] = Field(None, description='', alias='441')
+    liquidityPctLow: Optional[float] = Field(None, description='', alias='402')
+    liquidityPctHigh: Optional[float] = Field(None, description='', alias='403')
+    eFPTrackingError: Optional[float] = Field(None, description='', alias='405')
+    fairValue: Optional[float] = Field(None, description='', alias='406')
+    outsideIndexPct: Optional[float] = Field(None, description='', alias='407')
+    valueOfFutures: Optional[float] = Field(None, description='', alias='408')
 
 
-class NoBidDescriptors(TradeModel):
+class NoBidDescriptors(FIXMessageBase):
     """
     NoBidDescriptors group fields
     """
@@ -49,16 +49,16 @@ class NoBidDescriptors(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    BidDescriptorType: Optional[int] = Field(None, description='', alias='399')
-    BidDescriptor: Optional[str] = Field(None, description='', alias='400')
-    SideValueInd: Optional[int] = Field(None, description='', alias='401')
-    LiquidityValue: Optional[float] = Field(None, description='', alias='404')
-    LiquidityNumSecurities: Optional[int] = Field(None, description='', alias='441')
-    LiquidityPctLow: Optional[float] = Field(None, description='', alias='402')
-    LiquidityPctHigh: Optional[float] = Field(None, description='', alias='403')
-    EFPTrackingError: Optional[float] = Field(None, description='', alias='405')
-    FairValue: Optional[float] = Field(None, description='', alias='406')
-    OutsideIndexPct: Optional[float] = Field(None, description='', alias='407')
-    ValueOfFutures: Optional[float] = Field(None, description='', alias='408')
+    bidDescriptorType: Optional[int] = Field(None, description='', alias='398')
+    bidDescriptor: Optional[int] = Field(None, description='', alias='398')
+    sideValueInd: Optional[int] = Field(None, description='', alias='398')
+    liquidityValue: Optional[int] = Field(None, description='', alias='398')
+    liquidityNumSecurities: Optional[int] = Field(None, description='', alias='398')
+    liquidityPctLow: Optional[int] = Field(None, description='', alias='398')
+    liquidityPctHigh: Optional[int] = Field(None, description='', alias='398')
+    eFPTrackingError: Optional[int] = Field(None, description='', alias='398')
+    fairValue: Optional[int] = Field(None, description='', alias='398')
+    outsideIndexPct: Optional[int] = Field(None, description='', alias='398')
+    valueOfFutures: Optional[int] = Field(None, description='', alias='398')
 
-    NoBidDescriptorss: List[NoBidDescriptors] = Field(default_factory=list)
+    noBidDescriptorss: List[NoBidDescriptors] = Field(default_factory=list)

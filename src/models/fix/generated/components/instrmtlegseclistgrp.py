@@ -6,11 +6,11 @@ This module contains the Pydantic model for the InstrmtLegSecListGrp component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class InstrmtLegSecListGrp(TradeModel):
+class InstrmtLegSecListGrp(FIXMessageBase):
     """
     FIX 4.4 InstrmtLegSecListGrp Component
     """
@@ -23,14 +23,14 @@ class InstrmtLegSecListGrp(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    LegSwapType: Optional[int] = Field(None, description='', alias='690')
-    LegSettlType: Optional[str] = Field(None, description='', alias='587')
-    InstrumentLeg: Optional[str] = Field(None)
-    LegStipulations: Optional[str] = Field(None)
-    LegBenchmarkCurveData: Optional[str] = Field(None)
+    legSwapType: Optional[int] = Field(None, description='', alias='690')
+    legSettlType: Optional[str] = Field(None, description='', alias='587')
+    instrumentLeg: Optional[str] = Field(None)
+    legStipulations: Optional[str] = Field(None)
+    legBenchmarkCurveData: Optional[str] = Field(None)
 
 
-class NoLegs(TradeModel):
+class NoLegs(FIXMessageBase):
     """
     NoLegs group fields
     """
@@ -43,7 +43,7 @@ class NoLegs(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    LegSwapType: Optional[int] = Field(None, description='', alias='690')
-    LegSettlType: Optional[str] = Field(None, description='', alias='587')
+    legSwapType: Optional[int] = Field(None, description='', alias='555')
+    legSettlType: Optional[int] = Field(None, description='', alias='555')
 
-    NoLegss: List[NoLegs] = Field(default_factory=list)
+    noLegss: List[NoLegs] = Field(default_factory=list)

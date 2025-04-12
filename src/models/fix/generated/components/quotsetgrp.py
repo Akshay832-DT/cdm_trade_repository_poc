@@ -6,11 +6,11 @@ This module contains the Pydantic model for the QuotSetGrp component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class QuotSetGrp(TradeModel):
+class QuotSetGrp(FIXMessageBase):
     """
     FIX 4.4 QuotSetGrp Component
     """
@@ -23,15 +23,15 @@ class QuotSetGrp(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    QuoteSetID: str = Field(None, description='', alias='302')
-    QuoteSetValidUntilTime: Optional[datetime] = Field(None, description='', alias='367')
-    TotNoQuoteEntries: int = Field(None, description='', alias='304')
-    LastFragment: Optional[bool] = Field(None, description='', alias='893')
-    UnderlyingInstrument: Optional[str] = Field(None)
-    QuotEntryGrp: str = Field(None)
+    quoteSetID: str = Field(None, description='', alias='302')
+    quoteSetValidUntilTime: Optional[datetime] = Field(None, description='', alias='367')
+    totNoQuoteEntries: int = Field(None, description='', alias='304')
+    lastFragment: Optional[bool] = Field(None, description='', alias='893')
+    underlyingInstrument: Optional[str] = Field(None)
+    quotEntryGrp: str = Field(None)
 
 
-class NoQuoteSets(TradeModel):
+class NoQuoteSets(FIXMessageBase):
     """
     NoQuoteSets group fields
     """
@@ -44,9 +44,9 @@ class NoQuoteSets(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    QuoteSetID: str = Field(None, description='', alias='302')
-    QuoteSetValidUntilTime: Optional[datetime] = Field(None, description='', alias='367')
-    TotNoQuoteEntries: int = Field(None, description='', alias='304')
-    LastFragment: Optional[bool] = Field(None, description='', alias='893')
+    quoteSetID: int = Field(None, description='', alias='296')
+    quoteSetValidUntilTime: Optional[int] = Field(None, description='', alias='296')
+    totNoQuoteEntries: int = Field(None, description='', alias='296')
+    lastFragment: Optional[int] = Field(None, description='', alias='296')
 
-    NoQuoteSetss: List[NoQuoteSets] = Field(default_factory=list)
+    noQuoteSetss: List[NoQuoteSets] = Field(default_factory=list)

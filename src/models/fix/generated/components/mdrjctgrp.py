@@ -6,11 +6,11 @@ This module contains the Pydantic model for the MDRjctGrp component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class MDRjctGrp(TradeModel):
+class MDRjctGrp(FIXMessageBase):
     """
     FIX 4.4 MDRjctGrp Component
     """
@@ -23,10 +23,10 @@ class MDRjctGrp(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    AltMDSourceID: Optional[str] = Field(None, description='', alias='817')
+    altMDSourceID: Optional[str] = Field(None, description='', alias='817')
 
 
-class NoAltMDSource(TradeModel):
+class NoAltMDSource(FIXMessageBase):
     """
     NoAltMDSource group fields
     """
@@ -39,6 +39,6 @@ class NoAltMDSource(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    AltMDSourceID: Optional[str] = Field(None, description='', alias='817')
+    altMDSourceID: Optional[int] = Field(None, description='', alias='816')
 
-    NoAltMDSources: List[NoAltMDSource] = Field(default_factory=list)
+    noAltMDSources: List[NoAltMDSource] = Field(default_factory=list)

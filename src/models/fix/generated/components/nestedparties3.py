@@ -6,11 +6,11 @@ This module contains the Pydantic model for the NestedParties3 component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class NestedParties3(TradeModel):
+class NestedParties3(FIXMessageBase):
     """
     FIX 4.4 NestedParties3 Component
     """
@@ -23,13 +23,13 @@ class NestedParties3(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    Nested3PartyID: Optional[str] = Field(None, description='', alias='949')
-    Nested3PartyIDSource: Optional[str] = Field(None, description='', alias='950')
-    Nested3PartyRole: Optional[int] = Field(None, description='', alias='951')
-    NstdPtys3SubGrp: Optional[str] = Field(None)
+    nested3PartyID: Optional[str] = Field(None, description='', alias='949')
+    nested3PartyIDSource: Optional[str] = Field(None, description='', alias='950')
+    nested3PartyRole: Optional[int] = Field(None, description='', alias='951')
+    nstdPtys3SubGrp: Optional[str] = Field(None)
 
 
-class NoNested3PartyIDs(TradeModel):
+class NoNested3PartyIDs(FIXMessageBase):
     """
     NoNested3PartyIDs group fields
     """
@@ -42,8 +42,8 @@ class NoNested3PartyIDs(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    Nested3PartyID: Optional[str] = Field(None, description='', alias='949')
-    Nested3PartyIDSource: Optional[str] = Field(None, description='', alias='950')
-    Nested3PartyRole: Optional[int] = Field(None, description='', alias='951')
+    nested3PartyID: Optional[int] = Field(None, description='', alias='948')
+    nested3PartyIDSource: Optional[int] = Field(None, description='', alias='948')
+    nested3PartyRole: Optional[int] = Field(None, description='', alias='948')
 
-    NoNested3PartyIDss: List[NoNested3PartyIDs] = Field(default_factory=list)
+    noNested3PartyIDss: List[NoNested3PartyIDs] = Field(default_factory=list)

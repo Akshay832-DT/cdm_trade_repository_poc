@@ -6,13 +6,13 @@ This module contains the Pydantic model for the ListStrikePrice message.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
-from ..components.instrmtstrkpxgrp import InstrmtStrkPxGrp
-from ..components.undinstrmtstrkpxgrp import UndInstrmtStrkPxGrp
+from src.models.fix.base import FIXMessageBase
+from src.models.fix.generated.fields.common import *
+from src.models.fix.generated.components.instrmtstrkpxgrp import InstrmtStrkPxGrp
+from src.models.fix.generated.components.undinstrmtstrkpxgrp import UndInstrmtStrkPxGrp
 
 
-class ListStrikePrice(TradeModel):
+class ListStrikePrice(FIXMessageBase):
     """
     FIX 4.4 ListStrikePrice Message
     """
@@ -26,21 +26,15 @@ class ListStrikePrice(TradeModel):
         }
     )
     
-    # Standard FIX header fields
-    BeginString: Literal["FIX.4.4"] = Field(alias='8')
-    BodyLength: Optional[int] = Field(None, alias='9')
-    MsgType: Literal["m"] = Field(alias='35')
-    SenderCompID: str = Field(..., alias='49')
-    TargetCompID: str = Field(..., alias='56')
-    MsgSeqNum: int = Field(..., alias='34')
-    SendingTime: datetime = Field(..., alias='52')
+    # Set the message type for this message
+    msgType: Literal["m"] = Field("m", alias='35')
     
     # Message-specific fields
-    ListID: str = Field(None, description='', alias='66')
-    TotNoStrikes: int = Field(None, description='', alias='422')
-    LastFragment: Optional[bool] = Field(None, description='', alias='893')
-    InstrmtStrkPxGrp: InstrmtStrkPxGrp = Field(..., description='InstrmtStrkPxGrp component')
-    UndInstrmtStrkPxGrp: Optional[UndInstrmtStrkPxGrp] = None
+    listID: Optional[str] = Field(None, description='', alias='66')
+    totNoStrikes: Optional[int] = Field(None, description='', alias='422')
+    lastFragment: Optional[bool] = Field(None, description='', alias='893')
+    instrmtStrkPxGrp: Optional[InstrmtStrkPxGrp] = Field(None, description='InstrmtStrkPxGrp component')
+    undInstrmtStrkPxGrp: Optional[UndInstrmtStrkPxGrp] = Field(None, description='UndInstrmtStrkPxGrp component')
 
     def model_dump(self, **kwargs) -> Dict[str, Any]:
         """Override model_dump to handle nested components"""
@@ -51,8 +45,8 @@ class ListStrikePrice(TradeModel):
         for field_name, value in data.items():
             if isinstance(value, list):
                 # Set the No* field based on list length
-                no_field = f"No{field_name[:-1]}"  # Remove 's' from plural
-                if no_field in self.__fields__:
-                    data[no_field] = len(value)
+                no_field = f"no{field_name}"  # Convert to camelCase
+                if hasattr(self, no_field):
+                    setattr(self, no_field, len(value))
         
-        return {k: v for k, v in data.items() if v is not None and (not isinstance(v, list) or v)}
+        return data

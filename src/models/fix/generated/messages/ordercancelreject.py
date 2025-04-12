@@ -6,11 +6,11 @@ This module contains the Pydantic model for the OrderCancelReject message.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.base import FIXMessageBase
+from src.models.fix.generated.fields.common import *
 
 
-class OrderCancelReject(TradeModel):
+class OrderCancelReject(FIXMessageBase):
     """
     FIX 4.4 OrderCancelReject Message
     """
@@ -24,37 +24,31 @@ class OrderCancelReject(TradeModel):
         }
     )
     
-    # Standard FIX header fields
-    BeginString: Literal["FIX.4.4"] = Field(alias='8')
-    BodyLength: Optional[int] = Field(None, alias='9')
-    MsgType: Literal["9"] = Field(alias='35')
-    SenderCompID: str = Field(..., alias='49')
-    TargetCompID: str = Field(..., alias='56')
-    MsgSeqNum: int = Field(..., alias='34')
-    SendingTime: datetime = Field(..., alias='52')
+    # Set the message type for this message
+    msgType: Literal["9"] = Field("9", alias='35')
     
     # Message-specific fields
-    OrderID: str = Field(None, description='', alias='37')
-    SecondaryOrderID: Optional[str] = Field(None, description='', alias='198')
-    SecondaryClOrdID: Optional[str] = Field(None, description='', alias='526')
-    ClOrdID: str = Field(None, description='', alias='11')
-    ClOrdLinkID: Optional[str] = Field(None, description='', alias='583')
-    OrigClOrdID: str = Field(None, description='', alias='41')
-    OrdStatus: str = Field(None, description='', alias='39')
-    WorkingIndicator: Optional[bool] = Field(None, description='', alias='636')
-    OrigOrdModTime: Optional[datetime] = Field(None, description='', alias='586')
-    ListID: Optional[str] = Field(None, description='', alias='66')
-    Account: Optional[str] = Field(None, description='', alias='1')
-    AcctIDSource: Optional[int] = Field(None, description='', alias='660')
-    AccountType: Optional[int] = Field(None, description='', alias='581')
-    TradeOriginationDate: Optional[date] = Field(None, description='', alias='229')
-    TradeDate: Optional[date] = Field(None, description='', alias='75')
-    TransactTime: Optional[datetime] = Field(None, description='', alias='60')
-    CxlRejResponseTo: str = Field(None, description='', alias='434')
-    CxlRejReason: Optional[int] = Field(None, description='', alias='102')
-    Text: Optional[str] = Field(None, description='', alias='58')
-    EncodedTextLen: Optional[int] = Field(None, description='', alias='354')
-    EncodedText: Optional[str] = Field(None, description='', alias='355')
+    orderID: Optional[str] = Field(None, description='', alias='37')
+    secondaryOrderID: Optional[str] = Field(None, description='', alias='198')
+    secondaryClOrdID: Optional[str] = Field(None, description='', alias='526')
+    clOrdID: Optional[str] = Field(None, description='', alias='11')
+    clOrdLinkID: Optional[str] = Field(None, description='', alias='583')
+    origClOrdID: Optional[str] = Field(None, description='', alias='41')
+    ordStatus: Optional[str] = Field(None, description='', alias='39')
+    workingIndicator: Optional[bool] = Field(None, description='', alias='636')
+    origOrdModTime: Optional[datetime] = Field(None, description='', alias='586')
+    listID: Optional[str] = Field(None, description='', alias='66')
+    account: Optional[str] = Field(None, description='', alias='1')
+    acctIDSource: Optional[int] = Field(None, description='', alias='660')
+    accountType: Optional[int] = Field(None, description='', alias='581')
+    tradeOriginationDate: Optional[date] = Field(None, description='', alias='229')
+    tradeDate: Optional[date] = Field(None, description='', alias='75')
+    transactTime: Optional[datetime] = Field(None, description='', alias='60')
+    cxlRejResponseTo: Optional[str] = Field(None, description='', alias='434')
+    cxlRejReason: Optional[int] = Field(None, description='', alias='102')
+    text: Optional[str] = Field(None, description='', alias='58')
+    encodedTextLen: Optional[int] = Field(None, description='', alias='354')
+    encodedText: Optional[str] = Field(None, description='', alias='355')
 
     def model_dump(self, **kwargs) -> Dict[str, Any]:
         """Override model_dump to handle nested components"""
@@ -65,8 +59,8 @@ class OrderCancelReject(TradeModel):
         for field_name, value in data.items():
             if isinstance(value, list):
                 # Set the No* field based on list length
-                no_field = f"No{field_name[:-1]}"  # Remove 's' from plural
-                if no_field in self.__fields__:
-                    data[no_field] = len(value)
+                no_field = f"no{field_name}"  # Convert to camelCase
+                if hasattr(self, no_field):
+                    setattr(self, no_field, len(value))
         
-        return {k: v for k, v in data.items() if v is not None and (not isinstance(v, list) or v)}
+        return data

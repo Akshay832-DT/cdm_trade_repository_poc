@@ -6,11 +6,11 @@ This module contains the Pydantic model for the UnderlyingStipulations component
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class UnderlyingStipulations(TradeModel):
+class UnderlyingStipulations(FIXMessageBase):
     """
     FIX 4.4 UnderlyingStipulations Component
     """
@@ -23,11 +23,11 @@ class UnderlyingStipulations(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    UnderlyingStipType: Optional[str] = Field(None, description='', alias='888')
-    UnderlyingStipValue: Optional[str] = Field(None, description='', alias='889')
+    underlyingStipType: Optional[str] = Field(None, description='', alias='888')
+    underlyingStipValue: Optional[str] = Field(None, description='', alias='889')
 
 
-class NoUnderlyingStips(TradeModel):
+class NoUnderlyingStips(FIXMessageBase):
     """
     NoUnderlyingStips group fields
     """
@@ -40,7 +40,7 @@ class NoUnderlyingStips(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    UnderlyingStipType: Optional[str] = Field(None, description='', alias='888')
-    UnderlyingStipValue: Optional[str] = Field(None, description='', alias='889')
+    underlyingStipType: Optional[int] = Field(None, description='', alias='887')
+    underlyingStipValue: Optional[int] = Field(None, description='', alias='887')
 
-    NoUnderlyingStipss: List[NoUnderlyingStips] = Field(default_factory=list)
+    noUnderlyingStipss: List[NoUnderlyingStips] = Field(default_factory=list)

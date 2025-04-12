@@ -6,11 +6,11 @@ This module contains the Pydantic model for the ContAmtGrp component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class ContAmtGrp(TradeModel):
+class ContAmtGrp(FIXMessageBase):
     """
     FIX 4.4 ContAmtGrp Component
     """
@@ -23,12 +23,12 @@ class ContAmtGrp(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    ContAmtType: Optional[int] = Field(None, description='', alias='519')
-    ContAmtValue: Optional[float] = Field(None, description='', alias='520')
-    ContAmtCurr: Optional[str] = Field(None, description='', alias='521')
+    contAmtType: Optional[int] = Field(None, description='', alias='519')
+    contAmtValue: Optional[float] = Field(None, description='', alias='520')
+    contAmtCurr: Optional[str] = Field(None, description='', alias='521')
 
 
-class NoContAmts(TradeModel):
+class NoContAmts(FIXMessageBase):
     """
     NoContAmts group fields
     """
@@ -41,8 +41,8 @@ class NoContAmts(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    ContAmtType: Optional[int] = Field(None, description='', alias='519')
-    ContAmtValue: Optional[float] = Field(None, description='', alias='520')
-    ContAmtCurr: Optional[str] = Field(None, description='', alias='521')
+    contAmtType: Optional[int] = Field(None, description='', alias='518')
+    contAmtValue: Optional[int] = Field(None, description='', alias='518')
+    contAmtCurr: Optional[int] = Field(None, description='', alias='518')
 
-    NoContAmtss: List[NoContAmts] = Field(default_factory=list)
+    noContAmtss: List[NoContAmts] = Field(default_factory=list)

@@ -6,11 +6,11 @@ This module contains the Pydantic model for the CpctyConfGrp component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class CpctyConfGrp(TradeModel):
+class CpctyConfGrp(FIXMessageBase):
     """
     FIX 4.4 CpctyConfGrp Component
     """
@@ -23,12 +23,12 @@ class CpctyConfGrp(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    OrderCapacity: str = Field(None, description='', alias='528')
-    OrderRestrictions: Optional[List[str]] = Field(None, description='', alias='529')
-    OrderCapacityQty: float = Field(None, description='', alias='863')
+    orderCapacity: str = Field(None, description='', alias='528')
+    orderRestrictions: Optional[List[str]] = Field(None, description='', alias='529')
+    orderCapacityQty: float = Field(None, description='', alias='863')
 
 
-class NoCapacities(TradeModel):
+class NoCapacities(FIXMessageBase):
     """
     NoCapacities group fields
     """
@@ -41,8 +41,8 @@ class NoCapacities(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    OrderCapacity: str = Field(None, description='', alias='528')
-    OrderRestrictions: Optional[List[str]] = Field(None, description='', alias='529')
-    OrderCapacityQty: float = Field(None, description='', alias='863')
+    orderCapacity: int = Field(None, description='', alias='862')
+    orderRestrictions: Optional[int] = Field(None, description='', alias='862')
+    orderCapacityQty: int = Field(None, description='', alias='862')
 
-    NoCapacitiess: List[NoCapacities] = Field(default_factory=list)
+    noCapacitiess: List[NoCapacities] = Field(default_factory=list)

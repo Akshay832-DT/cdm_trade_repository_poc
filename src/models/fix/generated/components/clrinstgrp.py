@@ -6,11 +6,11 @@ This module contains the Pydantic model for the ClrInstGrp component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class ClrInstGrp(TradeModel):
+class ClrInstGrp(FIXMessageBase):
     """
     FIX 4.4 ClrInstGrp Component
     """
@@ -23,10 +23,10 @@ class ClrInstGrp(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    ClearingInstruction: Optional[int] = Field(None, description='', alias='577')
+    clearingInstruction: Optional[int] = Field(None, description='', alias='577')
 
 
-class NoClearingInstructions(TradeModel):
+class NoClearingInstructions(FIXMessageBase):
     """
     NoClearingInstructions group fields
     """
@@ -39,6 +39,6 @@ class NoClearingInstructions(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    ClearingInstruction: Optional[int] = Field(None, description='', alias='577')
+    clearingInstruction: Optional[int] = Field(None, description='', alias='576')
 
-    NoClearingInstructionss: List[NoClearingInstructions] = Field(default_factory=list)
+    noClearingInstructionss: List[NoClearingInstructions] = Field(default_factory=list)

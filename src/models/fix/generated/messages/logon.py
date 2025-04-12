@@ -6,11 +6,11 @@ This module contains the Pydantic model for the Logon message.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.base import FIXMessageBase
+from src.models.fix.generated.fields.common import *
 
 
-class Logon(TradeModel):
+class Logon(FIXMessageBase):
     """
     FIX 4.4 Logon Message
     """
@@ -24,29 +24,23 @@ class Logon(TradeModel):
         }
     )
     
-    # Standard FIX header fields
-    BeginString: Literal["FIX.4.4"] = Field(alias='8')
-    BodyLength: Optional[int] = Field(None, alias='9')
-    MsgType: Literal["A"] = Field(alias='35')
-    SenderCompID: str = Field(..., alias='49')
-    TargetCompID: str = Field(..., alias='56')
-    MsgSeqNum: int = Field(..., alias='34')
-    SendingTime: datetime = Field(..., alias='52')
+    # Set the message type for this message
+    msgType: Literal["A"] = Field("A", alias='35')
     
     # Message-specific fields
-    EncryptMethod: int = Field(None, description='', alias='98')
-    HeartBtInt: int = Field(None, description='', alias='108')
-    RawDataLength: Optional[int] = Field(None, description='', alias='95')
-    RawData: Optional[str] = Field(None, description='', alias='96')
-    ResetSeqNumFlag: Optional[bool] = Field(None, description='', alias='141')
-    NextExpectedMsgSeqNum: Optional[int] = Field(None, description='', alias='789')
-    MaxMessageSize: Optional[int] = Field(None, description='', alias='383')
-    RefMsgType: Optional[str] = Field(None, description='', alias='372')
-    MsgDirection: Optional[str] = Field(None, description='', alias='385')
-    TestMessageIndicator: Optional[bool] = Field(None, description='', alias='464')
-    Username: Optional[str] = Field(None, description='', alias='553')
-    Password: Optional[str] = Field(None, description='', alias='554')
-    NoMsgTypess: Optional[List[NoMsgTypes]] = Field(default_factory=list, description='List of NoMsgTypes components')
+    encryptMethod: Optional[int] = Field(None, description='', alias='98')
+    heartBtInt: Optional[int] = Field(None, description='', alias='108')
+    rawDataLength: Optional[int] = Field(None, description='', alias='95')
+    rawData: Optional[str] = Field(None, description='', alias='96')
+    resetSeqNumFlag: Optional[bool] = Field(None, description='', alias='141')
+    nextExpectedMsgSeqNum: Optional[int] = Field(None, description='', alias='789')
+    maxMessageSize: Optional[int] = Field(None, description='', alias='383')
+    refMsgType: Optional[str] = Field(None, description='', alias='372')
+    msgDirection: Optional[str] = Field(None, description='', alias='385')
+    testMessageIndicator: Optional[bool] = Field(None, description='', alias='464')
+    username: Optional[str] = Field(None, description='', alias='553')
+    password: Optional[str] = Field(None, description='', alias='554')
+    noMsgTypes: Optional[List[NoMsgTypes]] = Field(default_factory=list, description='NoMsgTypes group')
 
     def model_dump(self, **kwargs) -> Dict[str, Any]:
         """Override model_dump to handle nested components"""
@@ -57,8 +51,8 @@ class Logon(TradeModel):
         for field_name, value in data.items():
             if isinstance(value, list):
                 # Set the No* field based on list length
-                no_field = f"No{field_name[:-1]}"  # Remove 's' from plural
-                if no_field in self.__fields__:
-                    data[no_field] = len(value)
+                no_field = f"no{field_name}"  # Convert to camelCase
+                if hasattr(self, no_field):
+                    setattr(self, no_field, len(value))
         
-        return {k: v for k, v in data.items() if v is not None and (not isinstance(v, list) or v)}
+        return data

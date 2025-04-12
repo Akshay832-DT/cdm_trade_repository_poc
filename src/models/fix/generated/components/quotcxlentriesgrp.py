@@ -6,11 +6,11 @@ This module contains the Pydantic model for the QuotCxlEntriesGrp component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class QuotCxlEntriesGrp(TradeModel):
+class QuotCxlEntriesGrp(FIXMessageBase):
     """
     FIX 4.4 QuotCxlEntriesGrp Component
     """
@@ -23,13 +23,13 @@ class QuotCxlEntriesGrp(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    Instrument: Optional[str] = Field(None)
-    FinancingDetails: Optional[str] = Field(None)
-    UndInstrmtGrp: Optional[str] = Field(None)
-    InstrmtLegGrp: Optional[str] = Field(None)
+    instrument: Optional[str] = Field(None)
+    financingDetails: Optional[str] = Field(None)
+    undInstrmtGrp: Optional[str] = Field(None)
+    instrmtLegGrp: Optional[str] = Field(None)
 
 
-class NoQuoteEntries(TradeModel):
+class NoQuoteEntries(FIXMessageBase):
     """
     NoQuoteEntries group fields
     """
@@ -43,4 +43,4 @@ class NoQuoteEntries(TradeModel):
         }
     )
 
-    NoQuoteEntriess: List[NoQuoteEntries] = Field(default_factory=list)
+    noQuoteEntriess: List[NoQuoteEntries] = Field(default_factory=list)

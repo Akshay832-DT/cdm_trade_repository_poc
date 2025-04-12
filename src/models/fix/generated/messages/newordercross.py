@@ -6,21 +6,21 @@ This module contains the Pydantic model for the NewOrderCross message.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
-from ..components.discretioninstructions import DiscretionInstructions
-from ..components.instrmtleggrp import InstrmtLegGrp
-from ..components.instrument import Instrument
-from ..components.peginstructions import PegInstructions
-from ..components.sidecrossordmodgrp import SideCrossOrdModGrp
-from ..components.spreadorbenchmarkcurvedata import SpreadOrBenchmarkCurveData
-from ..components.stipulations import Stipulations
-from ..components.trdgsesgrp import TrdgSesGrp
-from ..components.undinstrmtgrp import UndInstrmtGrp
-from ..components.yielddata import YieldData
+from src.models.fix.base import FIXMessageBase
+from src.models.fix.generated.fields.common import *
+from src.models.fix.generated.components.discretioninstructions import DiscretionInstructions
+from src.models.fix.generated.components.instrmtleggrp import InstrmtLegGrp
+from src.models.fix.generated.components.instrument import Instrument
+from src.models.fix.generated.components.peginstructions import PegInstructions
+from src.models.fix.generated.components.sidecrossordmodgrp import SideCrossOrdModGrp
+from src.models.fix.generated.components.spreadorbenchmarkcurvedata import SpreadOrBenchmarkCurveData
+from src.models.fix.generated.components.stipulations import Stipulations
+from src.models.fix.generated.components.trdgsesgrp import TrdgSesGrp
+from src.models.fix.generated.components.undinstrmtgrp import UndInstrmtGrp
+from src.models.fix.generated.components.yielddata import YieldData
 
 
-class NewOrderCross(TradeModel):
+class NewOrderCross(FIXMessageBase):
     """
     FIX 4.4 NewOrderCross Message
     """
@@ -34,61 +34,55 @@ class NewOrderCross(TradeModel):
         }
     )
     
-    # Standard FIX header fields
-    BeginString: Literal["FIX.4.4"] = Field(alias='8')
-    BodyLength: Optional[int] = Field(None, alias='9')
-    MsgType: Literal["s"] = Field(alias='35')
-    SenderCompID: str = Field(..., alias='49')
-    TargetCompID: str = Field(..., alias='56')
-    MsgSeqNum: int = Field(..., alias='34')
-    SendingTime: datetime = Field(..., alias='52')
+    # Set the message type for this message
+    msgType: Literal["s"] = Field("s", alias='35')
     
     # Message-specific fields
-    CrossID: str = Field(None, description='', alias='548')
-    CrossType: int = Field(None, description='', alias='549')
-    CrossPrioritization: int = Field(None, description='', alias='550')
-    SettlType: Optional[str] = Field(None, description='', alias='63')
-    SettlDate: Optional[date] = Field(None, description='', alias='64')
-    HandlInst: Optional[str] = Field(None, description='', alias='21')
-    ExecInst: Optional[List[str]] = Field(None, description='', alias='18')
-    MinQty: Optional[float] = Field(None, description='', alias='110')
-    MaxFloor: Optional[float] = Field(None, description='', alias='111')
-    ExDestination: Optional[str] = Field(None, description='', alias='100')
-    ProcessCode: Optional[str] = Field(None, description='', alias='81')
-    PrevClosePx: Optional[float] = Field(None, description='', alias='140')
-    LocateReqd: Optional[bool] = Field(None, description='', alias='114')
-    TransactTime: datetime = Field(None, description='', alias='60')
-    OrdType: str = Field(None, description='', alias='40')
-    PriceType: Optional[int] = Field(None, description='', alias='423')
-    Price: Optional[float] = Field(None, description='', alias='44')
-    StopPx: Optional[float] = Field(None, description='', alias='99')
-    Currency: Optional[str] = Field(None, description='', alias='15')
-    ComplianceID: Optional[str] = Field(None, description='', alias='376')
-    IOIID: Optional[str] = Field(None, description='', alias='23')
-    QuoteID: Optional[str] = Field(None, description='', alias='117')
-    TimeInForce: Optional[str] = Field(None, description='', alias='59')
-    EffectiveTime: Optional[datetime] = Field(None, description='', alias='168')
-    ExpireDate: Optional[date] = Field(None, description='', alias='432')
-    ExpireTime: Optional[datetime] = Field(None, description='', alias='126')
-    GTBookingInst: Optional[int] = Field(None, description='', alias='427')
-    MaxShow: Optional[float] = Field(None, description='', alias='210')
-    TargetStrategy: Optional[int] = Field(None, description='', alias='847')
-    TargetStrategyParameters: Optional[str] = Field(None, description='', alias='848')
-    ParticipationRate: Optional[float] = Field(None, description='', alias='849')
-    CancellationRights: Optional[str] = Field(None, description='', alias='480')
-    MoneyLaunderingStatus: Optional[str] = Field(None, description='', alias='481')
-    RegistID: Optional[str] = Field(None, description='', alias='513')
-    Designation: Optional[str] = Field(None, description='', alias='494')
-    SideCrossOrdModGrp: SideCrossOrdModGrp = Field(..., description='SideCrossOrdModGrp component')
-    Instrument: Instrument = Field(..., description='Instrument component')
-    UndInstrmtGrp: Optional[UndInstrmtGrp] = None
-    InstrmtLegGrp: Optional[InstrmtLegGrp] = None
-    TrdgSesGrp: Optional[TrdgSesGrp] = None
-    Stipulations: Optional[Stipulations] = None
-    SpreadOrBenchmarkCurveData: Optional[SpreadOrBenchmarkCurveData] = None
-    YieldData: Optional[YieldData] = None
-    PegInstructions: Optional[PegInstructions] = None
-    DiscretionInstructions: Optional[DiscretionInstructions] = None
+    crossID: Optional[str] = Field(None, description='', alias='548')
+    crossType: Optional[int] = Field(None, description='', alias='549')
+    crossPrioritization: Optional[int] = Field(None, description='', alias='550')
+    settlType: Optional[str] = Field(None, description='', alias='63')
+    settlDate: Optional[date] = Field(None, description='', alias='64')
+    handlInst: Optional[str] = Field(None, description='', alias='21')
+    execInst: Optional[List[str]] = Field(default_factory=list, description='', alias='18')
+    minQty: Optional[float] = Field(None, description='', alias='110')
+    maxFloor: Optional[float] = Field(None, description='', alias='111')
+    exDestination: Optional[str] = Field(None, description='', alias='100')
+    processCode: Optional[str] = Field(None, description='', alias='81')
+    prevClosePx: Optional[float] = Field(None, description='', alias='140')
+    locateReqd: Optional[bool] = Field(None, description='', alias='114')
+    transactTime: Optional[datetime] = Field(None, description='', alias='60')
+    ordType: Optional[str] = Field(None, description='', alias='40')
+    priceType: Optional[int] = Field(None, description='', alias='423')
+    price: Optional[float] = Field(None, description='', alias='44')
+    stopPx: Optional[float] = Field(None, description='', alias='99')
+    currency: Optional[str] = Field(None, description='', alias='15')
+    complianceID: Optional[str] = Field(None, description='', alias='376')
+    iOIID: Optional[str] = Field(None, description='', alias='23')
+    quoteID: Optional[str] = Field(None, description='', alias='117')
+    timeInForce: Optional[str] = Field(None, description='', alias='59')
+    effectiveTime: Optional[datetime] = Field(None, description='', alias='168')
+    expireDate: Optional[date] = Field(None, description='', alias='432')
+    expireTime: Optional[datetime] = Field(None, description='', alias='126')
+    gTBookingInst: Optional[int] = Field(None, description='', alias='427')
+    maxShow: Optional[float] = Field(None, description='', alias='210')
+    targetStrategy: Optional[int] = Field(None, description='', alias='847')
+    targetStrategyParameters: Optional[str] = Field(None, description='', alias='848')
+    participationRate: Optional[float] = Field(None, description='', alias='849')
+    cancellationRights: Optional[str] = Field(None, description='', alias='480')
+    moneyLaunderingStatus: Optional[str] = Field(None, description='', alias='481')
+    registID: Optional[str] = Field(None, description='', alias='513')
+    designation: Optional[str] = Field(None, description='', alias='494')
+    sideCrossOrdModGrp: Optional[SideCrossOrdModGrp] = Field(None, description='SideCrossOrdModGrp component')
+    instrument: Optional[Instrument] = Field(None, description='Instrument component')
+    undInstrmtGrp: Optional[UndInstrmtGrp] = Field(None, description='UndInstrmtGrp component')
+    instrmtLegGrp: Optional[InstrmtLegGrp] = Field(None, description='InstrmtLegGrp component')
+    trdgSesGrp: Optional[TrdgSesGrp] = Field(None, description='TrdgSesGrp component')
+    stipulations: Optional[Stipulations] = Field(None, description='Stipulations component')
+    spreadOrBenchmarkCurveData: Optional[SpreadOrBenchmarkCurveData] = Field(None, description='SpreadOrBenchmarkCurveData component')
+    yieldData: Optional[YieldData] = Field(None, description='YieldData component')
+    pegInstructions: Optional[PegInstructions] = Field(None, description='PegInstructions component')
+    discretionInstructions: Optional[DiscretionInstructions] = Field(None, description='DiscretionInstructions component')
 
     def model_dump(self, **kwargs) -> Dict[str, Any]:
         """Override model_dump to handle nested components"""
@@ -99,8 +93,8 @@ class NewOrderCross(TradeModel):
         for field_name, value in data.items():
             if isinstance(value, list):
                 # Set the No* field based on list length
-                no_field = f"No{field_name[:-1]}"  # Remove 's' from plural
-                if no_field in self.__fields__:
-                    data[no_field] = len(value)
+                no_field = f"no{field_name}"  # Convert to camelCase
+                if hasattr(self, no_field):
+                    setattr(self, no_field, len(value))
         
-        return {k: v for k, v in data.items() if v is not None and (not isinstance(v, list) or v)}
+        return data

@@ -6,13 +6,13 @@ This module contains the Pydantic model for the MassQuoteAcknowledgement message
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
-from ..components.parties import Parties
-from ..components.quotsetackgrp import QuotSetAckGrp
+from src.models.fix.base import FIXMessageBase
+from src.models.fix.generated.fields.common import *
+from src.models.fix.generated.components.parties import Parties
+from src.models.fix.generated.components.quotsetackgrp import QuotSetAckGrp
 
 
-class MassQuoteAcknowledgement(TradeModel):
+class MassQuoteAcknowledgement(FIXMessageBase):
     """
     FIX 4.4 MassQuoteAcknowledgement Message
     """
@@ -26,30 +26,24 @@ class MassQuoteAcknowledgement(TradeModel):
         }
     )
     
-    # Standard FIX header fields
-    BeginString: Literal["FIX.4.4"] = Field(alias='8')
-    BodyLength: Optional[int] = Field(None, alias='9')
-    MsgType: Literal["b"] = Field(alias='35')
-    SenderCompID: str = Field(..., alias='49')
-    TargetCompID: str = Field(..., alias='56')
-    MsgSeqNum: int = Field(..., alias='34')
-    SendingTime: datetime = Field(..., alias='52')
+    # Set the message type for this message
+    msgType: Literal["b"] = Field("b", alias='35')
     
     # Message-specific fields
-    QuoteReqID: Optional[str] = Field(None, description='', alias='131')
-    QuoteID: Optional[str] = Field(None, description='', alias='117')
-    QuoteStatus: int = Field(None, description='', alias='297')
-    QuoteRejectReason: Optional[int] = Field(None, description='', alias='300')
-    QuoteResponseLevel: Optional[int] = Field(None, description='', alias='301')
-    QuoteType: Optional[int] = Field(None, description='', alias='537')
-    Account: Optional[str] = Field(None, description='', alias='1')
-    AcctIDSource: Optional[int] = Field(None, description='', alias='660')
-    AccountType: Optional[int] = Field(None, description='', alias='581')
-    Text: Optional[str] = Field(None, description='', alias='58')
-    EncodedTextLen: Optional[int] = Field(None, description='', alias='354')
-    EncodedText: Optional[str] = Field(None, description='', alias='355')
-    Parties: Optional[Parties] = None
-    QuotSetAckGrp: Optional[QuotSetAckGrp] = None
+    quoteReqID: Optional[str] = Field(None, description='', alias='131')
+    quoteID: Optional[str] = Field(None, description='', alias='117')
+    quoteStatus: Optional[int] = Field(None, description='', alias='297')
+    quoteRejectReason: Optional[int] = Field(None, description='', alias='300')
+    quoteResponseLevel: Optional[int] = Field(None, description='', alias='301')
+    quoteType: Optional[int] = Field(None, description='', alias='537')
+    account: Optional[str] = Field(None, description='', alias='1')
+    acctIDSource: Optional[int] = Field(None, description='', alias='660')
+    accountType: Optional[int] = Field(None, description='', alias='581')
+    text: Optional[str] = Field(None, description='', alias='58')
+    encodedTextLen: Optional[int] = Field(None, description='', alias='354')
+    encodedText: Optional[str] = Field(None, description='', alias='355')
+    parties: Optional[Parties] = Field(None, description='Parties component')
+    quotSetAckGrp: Optional[QuotSetAckGrp] = Field(None, description='QuotSetAckGrp component')
 
     def model_dump(self, **kwargs) -> Dict[str, Any]:
         """Override model_dump to handle nested components"""
@@ -60,8 +54,8 @@ class MassQuoteAcknowledgement(TradeModel):
         for field_name, value in data.items():
             if isinstance(value, list):
                 # Set the No* field based on list length
-                no_field = f"No{field_name[:-1]}"  # Remove 's' from plural
-                if no_field in self.__fields__:
-                    data[no_field] = len(value)
+                no_field = f"no{field_name}"  # Convert to camelCase
+                if hasattr(self, no_field):
+                    setattr(self, no_field, len(value))
         
-        return {k: v for k, v in data.items() if v is not None and (not isinstance(v, list) or v)}
+        return data

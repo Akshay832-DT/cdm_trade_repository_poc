@@ -6,11 +6,11 @@ This module contains the Pydantic model for the LinesOfTextGrp component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class LinesOfTextGrp(TradeModel):
+class LinesOfTextGrp(FIXMessageBase):
     """
     FIX 4.4 LinesOfTextGrp Component
     """
@@ -23,12 +23,12 @@ class LinesOfTextGrp(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    Text: str = Field(None, description='', alias='58')
-    EncodedTextLen: Optional[int] = Field(None, description='', alias='354')
-    EncodedText: Optional[str] = Field(None, description='', alias='355')
+    text: str = Field(None, description='', alias='58')
+    encodedTextLen: Optional[int] = Field(None, description='', alias='354')
+    encodedText: Optional[str] = Field(None, description='', alias='355')
 
 
-class NoLinesOfText(TradeModel):
+class NoLinesOfText(FIXMessageBase):
     """
     NoLinesOfText group fields
     """
@@ -41,8 +41,8 @@ class NoLinesOfText(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    Text: str = Field(None, description='', alias='58')
-    EncodedTextLen: Optional[int] = Field(None, description='', alias='354')
-    EncodedText: Optional[str] = Field(None, description='', alias='355')
+    text: int = Field(None, description='', alias='33')
+    encodedTextLen: Optional[int] = Field(None, description='', alias='33')
+    encodedText: Optional[int] = Field(None, description='', alias='33')
 
-    NoLinesOfTexts: List[NoLinesOfText] = Field(default_factory=list)
+    noLinesOfTexts: List[NoLinesOfText] = Field(default_factory=list)

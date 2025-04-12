@@ -6,11 +6,11 @@ This module contains the Pydantic model for the RgstDistInstGrp component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class RgstDistInstGrp(TradeModel):
+class RgstDistInstGrp(FIXMessageBase):
     """
     FIX 4.4 RgstDistInstGrp Component
     """
@@ -23,17 +23,17 @@ class RgstDistInstGrp(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    DistribPaymentMethod: Optional[int] = Field(None, description='', alias='477')
-    DistribPercentage: Optional[float] = Field(None, description='', alias='512')
-    CashDistribCurr: Optional[str] = Field(None, description='', alias='478')
-    CashDistribAgentName: Optional[str] = Field(None, description='', alias='498')
-    CashDistribAgentCode: Optional[str] = Field(None, description='', alias='499')
-    CashDistribAgentAcctNumber: Optional[str] = Field(None, description='', alias='500')
-    CashDistribPayRef: Optional[str] = Field(None, description='', alias='501')
-    CashDistribAgentAcctName: Optional[str] = Field(None, description='', alias='502')
+    distribPaymentMethod: Optional[int] = Field(None, description='', alias='477')
+    distribPercentage: Optional[float] = Field(None, description='', alias='512')
+    cashDistribCurr: Optional[str] = Field(None, description='', alias='478')
+    cashDistribAgentName: Optional[str] = Field(None, description='', alias='498')
+    cashDistribAgentCode: Optional[str] = Field(None, description='', alias='499')
+    cashDistribAgentAcctNumber: Optional[str] = Field(None, description='', alias='500')
+    cashDistribPayRef: Optional[str] = Field(None, description='', alias='501')
+    cashDistribAgentAcctName: Optional[str] = Field(None, description='', alias='502')
 
 
-class NoDistribInsts(TradeModel):
+class NoDistribInsts(FIXMessageBase):
     """
     NoDistribInsts group fields
     """
@@ -46,13 +46,13 @@ class NoDistribInsts(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    DistribPaymentMethod: Optional[int] = Field(None, description='', alias='477')
-    DistribPercentage: Optional[float] = Field(None, description='', alias='512')
-    CashDistribCurr: Optional[str] = Field(None, description='', alias='478')
-    CashDistribAgentName: Optional[str] = Field(None, description='', alias='498')
-    CashDistribAgentCode: Optional[str] = Field(None, description='', alias='499')
-    CashDistribAgentAcctNumber: Optional[str] = Field(None, description='', alias='500')
-    CashDistribPayRef: Optional[str] = Field(None, description='', alias='501')
-    CashDistribAgentAcctName: Optional[str] = Field(None, description='', alias='502')
+    distribPaymentMethod: Optional[int] = Field(None, description='', alias='510')
+    distribPercentage: Optional[int] = Field(None, description='', alias='510')
+    cashDistribCurr: Optional[int] = Field(None, description='', alias='510')
+    cashDistribAgentName: Optional[int] = Field(None, description='', alias='510')
+    cashDistribAgentCode: Optional[int] = Field(None, description='', alias='510')
+    cashDistribAgentAcctNumber: Optional[int] = Field(None, description='', alias='510')
+    cashDistribPayRef: Optional[int] = Field(None, description='', alias='510')
+    cashDistribAgentAcctName: Optional[int] = Field(None, description='', alias='510')
 
-    NoDistribInstss: List[NoDistribInsts] = Field(default_factory=list)
+    noDistribInstss: List[NoDistribInsts] = Field(default_factory=list)

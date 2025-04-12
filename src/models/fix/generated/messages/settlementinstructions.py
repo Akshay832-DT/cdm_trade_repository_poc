@@ -6,12 +6,12 @@ This module contains the Pydantic model for the SettlementInstructions message.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
-from ..components.settlinstgrp import SettlInstGrp
+from src.models.fix.base import FIXMessageBase
+from src.models.fix.generated.fields.common import *
+from src.models.fix.generated.components.settlinstgrp import SettlInstGrp
 
 
-class SettlementInstructions(TradeModel):
+class SettlementInstructions(FIXMessageBase):
     """
     FIX 4.4 SettlementInstructions Message
     """
@@ -25,26 +25,20 @@ class SettlementInstructions(TradeModel):
         }
     )
     
-    # Standard FIX header fields
-    BeginString: Literal["FIX.4.4"] = Field(alias='8')
-    BodyLength: Optional[int] = Field(None, alias='9')
-    MsgType: Literal["T"] = Field(alias='35')
-    SenderCompID: str = Field(..., alias='49')
-    TargetCompID: str = Field(..., alias='56')
-    MsgSeqNum: int = Field(..., alias='34')
-    SendingTime: datetime = Field(..., alias='52')
+    # Set the message type for this message
+    msgType: Literal["T"] = Field("T", alias='35')
     
     # Message-specific fields
-    SettlInstMsgID: str = Field(None, description='', alias='777')
-    SettlInstReqID: Optional[str] = Field(None, description='', alias='791')
-    SettlInstMode: str = Field(None, description='', alias='160')
-    SettlInstReqRejCode: Optional[int] = Field(None, description='', alias='792')
-    Text: Optional[str] = Field(None, description='', alias='58')
-    EncodedTextLen: Optional[int] = Field(None, description='', alias='354')
-    EncodedText: Optional[str] = Field(None, description='', alias='355')
-    ClOrdID: Optional[str] = Field(None, description='', alias='11')
-    TransactTime: datetime = Field(None, description='', alias='60')
-    SettlInstGrp: Optional[SettlInstGrp] = None
+    settlInstMsgID: Optional[str] = Field(None, description='', alias='777')
+    settlInstReqID: Optional[str] = Field(None, description='', alias='791')
+    settlInstMode: Optional[str] = Field(None, description='', alias='160')
+    settlInstReqRejCode: Optional[int] = Field(None, description='', alias='792')
+    text: Optional[str] = Field(None, description='', alias='58')
+    encodedTextLen: Optional[int] = Field(None, description='', alias='354')
+    encodedText: Optional[str] = Field(None, description='', alias='355')
+    clOrdID: Optional[str] = Field(None, description='', alias='11')
+    transactTime: Optional[datetime] = Field(None, description='', alias='60')
+    settlInstGrp: Optional[SettlInstGrp] = Field(None, description='SettlInstGrp component')
 
     def model_dump(self, **kwargs) -> Dict[str, Any]:
         """Override model_dump to handle nested components"""
@@ -55,8 +49,8 @@ class SettlementInstructions(TradeModel):
         for field_name, value in data.items():
             if isinstance(value, list):
                 # Set the No* field based on list length
-                no_field = f"No{field_name[:-1]}"  # Remove 's' from plural
-                if no_field in self.__fields__:
-                    data[no_field] = len(value)
+                no_field = f"no{field_name}"  # Convert to camelCase
+                if hasattr(self, no_field):
+                    setattr(self, no_field, len(value))
         
-        return {k: v for k, v in data.items() if v is not None and (not isinstance(v, list) or v)}
+        return data

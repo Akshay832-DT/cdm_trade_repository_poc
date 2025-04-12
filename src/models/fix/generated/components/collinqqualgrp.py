@@ -6,11 +6,11 @@ This module contains the Pydantic model for the CollInqQualGrp component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class CollInqQualGrp(TradeModel):
+class CollInqQualGrp(FIXMessageBase):
     """
     FIX 4.4 CollInqQualGrp Component
     """
@@ -23,10 +23,10 @@ class CollInqQualGrp(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    CollInquiryQualifier: Optional[int] = Field(None, description='', alias='896')
+    collInquiryQualifier: Optional[int] = Field(None, description='', alias='896')
 
 
-class NoCollInquiryQualifier(TradeModel):
+class NoCollInquiryQualifier(FIXMessageBase):
     """
     NoCollInquiryQualifier group fields
     """
@@ -39,6 +39,6 @@ class NoCollInquiryQualifier(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    CollInquiryQualifier: Optional[int] = Field(None, description='', alias='896')
+    collInquiryQualifier: Optional[int] = Field(None, description='', alias='938')
 
-    NoCollInquiryQualifiers: List[NoCollInquiryQualifier] = Field(default_factory=list)
+    noCollInquiryQualifiers: List[NoCollInquiryQualifier] = Field(default_factory=list)

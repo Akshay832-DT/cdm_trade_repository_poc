@@ -6,11 +6,11 @@ This module contains the Pydantic model for the SecListGrp component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class SecListGrp(TradeModel):
+class SecListGrp(FIXMessageBase):
     """
     FIX 4.4 SecListGrp Component
     """
@@ -23,26 +23,26 @@ class SecListGrp(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    Currency: Optional[str] = Field(None, description='', alias='15')
-    RoundLot: Optional[float] = Field(None, description='', alias='561')
-    MinTradeVol: Optional[float] = Field(None, description='', alias='562')
-    TradingSessionID: Optional[str] = Field(None, description='', alias='336')
-    TradingSessionSubID: Optional[str] = Field(None, description='', alias='625')
-    ExpirationCycle: Optional[int] = Field(None, description='', alias='827')
-    Text: Optional[str] = Field(None, description='', alias='58')
-    EncodedTextLen: Optional[int] = Field(None, description='', alias='354')
-    EncodedText: Optional[str] = Field(None, description='', alias='355')
-    Instrument: Optional[str] = Field(None)
-    InstrumentExtension: Optional[str] = Field(None)
-    FinancingDetails: Optional[str] = Field(None)
-    UndInstrmtGrp: Optional[str] = Field(None)
-    Stipulations: Optional[str] = Field(None)
-    InstrmtLegSecListGrp: Optional[str] = Field(None)
-    SpreadOrBenchmarkCurveData: Optional[str] = Field(None)
-    YieldData: Optional[str] = Field(None)
+    currency: Optional[str] = Field(None, description='', alias='15')
+    roundLot: Optional[float] = Field(None, description='', alias='561')
+    minTradeVol: Optional[float] = Field(None, description='', alias='562')
+    tradingSessionID: Optional[str] = Field(None, description='', alias='336')
+    tradingSessionSubID: Optional[str] = Field(None, description='', alias='625')
+    expirationCycle: Optional[int] = Field(None, description='', alias='827')
+    text: Optional[str] = Field(None, description='', alias='58')
+    encodedTextLen: Optional[int] = Field(None, description='', alias='354')
+    encodedText: Optional[str] = Field(None, description='', alias='355')
+    instrument: Optional[str] = Field(None)
+    instrumentExtension: Optional[str] = Field(None)
+    financingDetails: Optional[str] = Field(None)
+    undInstrmtGrp: Optional[str] = Field(None)
+    stipulations: Optional[str] = Field(None)
+    instrmtLegSecListGrp: Optional[str] = Field(None)
+    spreadOrBenchmarkCurveData: Optional[str] = Field(None)
+    yieldData: Optional[str] = Field(None)
 
 
-class NoRelatedSym(TradeModel):
+class NoRelatedSym(FIXMessageBase):
     """
     NoRelatedSym group fields
     """
@@ -55,14 +55,14 @@ class NoRelatedSym(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    Currency: Optional[str] = Field(None, description='', alias='15')
-    RoundLot: Optional[float] = Field(None, description='', alias='561')
-    MinTradeVol: Optional[float] = Field(None, description='', alias='562')
-    TradingSessionID: Optional[str] = Field(None, description='', alias='336')
-    TradingSessionSubID: Optional[str] = Field(None, description='', alias='625')
-    ExpirationCycle: Optional[int] = Field(None, description='', alias='827')
-    Text: Optional[str] = Field(None, description='', alias='58')
-    EncodedTextLen: Optional[int] = Field(None, description='', alias='354')
-    EncodedText: Optional[str] = Field(None, description='', alias='355')
+    currency: Optional[int] = Field(None, description='', alias='146')
+    roundLot: Optional[int] = Field(None, description='', alias='146')
+    minTradeVol: Optional[int] = Field(None, description='', alias='146')
+    tradingSessionID: Optional[int] = Field(None, description='', alias='146')
+    tradingSessionSubID: Optional[int] = Field(None, description='', alias='146')
+    expirationCycle: Optional[int] = Field(None, description='', alias='146')
+    text: Optional[int] = Field(None, description='', alias='146')
+    encodedTextLen: Optional[int] = Field(None, description='', alias='146')
+    encodedText: Optional[int] = Field(None, description='', alias='146')
 
-    NoRelatedSyms: List[NoRelatedSym] = Field(default_factory=list)
+    noRelatedSyms: List[NoRelatedSym] = Field(default_factory=list)

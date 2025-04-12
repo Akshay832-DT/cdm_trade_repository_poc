@@ -6,13 +6,13 @@ This module contains the Pydantic model for the DerivativeSecurityList message.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
-from ..components.relsymderivsecgrp import RelSymDerivSecGrp
-from ..components.underlyinginstrument import UnderlyingInstrument
+from src.models.fix.base import FIXMessageBase
+from src.models.fix.generated.fields.common import *
+from src.models.fix.generated.components.relsymderivsecgrp import RelSymDerivSecGrp
+from src.models.fix.generated.components.underlyinginstrument import UnderlyingInstrument
 
 
-class DerivativeSecurityList(TradeModel):
+class DerivativeSecurityList(FIXMessageBase):
     """
     FIX 4.4 DerivativeSecurityList Message
     """
@@ -26,23 +26,17 @@ class DerivativeSecurityList(TradeModel):
         }
     )
     
-    # Standard FIX header fields
-    BeginString: Literal["FIX.4.4"] = Field(alias='8')
-    BodyLength: Optional[int] = Field(None, alias='9')
-    MsgType: Literal["AA"] = Field(alias='35')
-    SenderCompID: str = Field(..., alias='49')
-    TargetCompID: str = Field(..., alias='56')
-    MsgSeqNum: int = Field(..., alias='34')
-    SendingTime: datetime = Field(..., alias='52')
+    # Set the message type for this message
+    msgType: Literal["AA"] = Field("AA", alias='35')
     
     # Message-specific fields
-    SecurityReqID: str = Field(None, description='', alias='320')
-    SecurityResponseID: str = Field(None, description='', alias='322')
-    SecurityRequestResult: int = Field(None, description='', alias='560')
-    TotNoRelatedSym: Optional[int] = Field(None, description='', alias='393')
-    LastFragment: Optional[bool] = Field(None, description='', alias='893')
-    UnderlyingInstrument: Optional[UnderlyingInstrument] = None
-    RelSymDerivSecGrp: Optional[RelSymDerivSecGrp] = None
+    securityReqID: Optional[str] = Field(None, description='', alias='320')
+    securityResponseID: Optional[str] = Field(None, description='', alias='322')
+    securityRequestResult: Optional[int] = Field(None, description='', alias='560')
+    totNoRelatedSym: Optional[int] = Field(None, description='', alias='393')
+    lastFragment: Optional[bool] = Field(None, description='', alias='893')
+    underlyingInstrument: Optional[UnderlyingInstrument] = Field(None, description='UnderlyingInstrument component')
+    relSymDerivSecGrp: Optional[RelSymDerivSecGrp] = Field(None, description='RelSymDerivSecGrp component')
 
     def model_dump(self, **kwargs) -> Dict[str, Any]:
         """Override model_dump to handle nested components"""
@@ -53,8 +47,8 @@ class DerivativeSecurityList(TradeModel):
         for field_name, value in data.items():
             if isinstance(value, list):
                 # Set the No* field based on list length
-                no_field = f"No{field_name[:-1]}"  # Remove 's' from plural
-                if no_field in self.__fields__:
-                    data[no_field] = len(value)
+                no_field = f"no{field_name}"  # Convert to camelCase
+                if hasattr(self, no_field):
+                    setattr(self, no_field, len(value))
         
-        return {k: v for k, v in data.items() if v is not None and (not isinstance(v, list) or v)}
+        return data

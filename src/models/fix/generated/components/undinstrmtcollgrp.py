@@ -6,11 +6,11 @@ This module contains the Pydantic model for the UndInstrmtCollGrp component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class UndInstrmtCollGrp(TradeModel):
+class UndInstrmtCollGrp(FIXMessageBase):
     """
     FIX 4.4 UndInstrmtCollGrp Component
     """
@@ -23,11 +23,11 @@ class UndInstrmtCollGrp(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    CollAction: Optional[int] = Field(None, description='', alias='944')
-    UnderlyingInstrument: Optional[str] = Field(None)
+    collAction: Optional[int] = Field(None, description='', alias='944')
+    underlyingInstrument: Optional[str] = Field(None)
 
 
-class NoUnderlyings(TradeModel):
+class NoUnderlyings(FIXMessageBase):
     """
     NoUnderlyings group fields
     """
@@ -40,6 +40,6 @@ class NoUnderlyings(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    CollAction: Optional[int] = Field(None, description='', alias='944')
+    collAction: Optional[int] = Field(None, description='', alias='711')
 
-    NoUnderlyingss: List[NoUnderlyings] = Field(default_factory=list)
+    noUnderlyingss: List[NoUnderlyings] = Field(default_factory=list)

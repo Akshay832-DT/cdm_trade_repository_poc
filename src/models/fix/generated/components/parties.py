@@ -6,11 +6,11 @@ This module contains the Pydantic model for the Parties component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class Parties(TradeModel):
+class Parties(FIXMessageBase):
     """
     FIX 4.4 Parties Component
     """
@@ -23,13 +23,13 @@ class Parties(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    PartyID: Optional[str] = Field(None, description='', alias='448')
-    PartyIDSource: Optional[str] = Field(None, description='', alias='447')
-    PartyRole: Optional[int] = Field(None, description='', alias='452')
-    PtysSubGrp: Optional[str] = Field(None)
+    partyID: Optional[str] = Field(None, description='', alias='448')
+    partyIDSource: Optional[str] = Field(None, description='', alias='447')
+    partyRole: Optional[int] = Field(None, description='', alias='452')
+    ptysSubGrp: Optional[str] = Field(None)
 
 
-class NoPartyIDs(TradeModel):
+class NoPartyIDs(FIXMessageBase):
     """
     NoPartyIDs group fields
     """
@@ -42,8 +42,8 @@ class NoPartyIDs(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    PartyID: Optional[str] = Field(None, description='', alias='448')
-    PartyIDSource: Optional[str] = Field(None, description='', alias='447')
-    PartyRole: Optional[int] = Field(None, description='', alias='452')
+    partyID: Optional[int] = Field(None, description='', alias='453')
+    partyIDSource: Optional[int] = Field(None, description='', alias='453')
+    partyRole: Optional[int] = Field(None, description='', alias='453')
 
-    NoPartyIDss: List[NoPartyIDs] = Field(default_factory=list)
+    noPartyIDss: List[NoPartyIDs] = Field(default_factory=list)

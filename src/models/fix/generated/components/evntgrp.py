@@ -6,11 +6,11 @@ This module contains the Pydantic model for the EvntGrp component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class EvntGrp(TradeModel):
+class EvntGrp(FIXMessageBase):
     """
     FIX 4.4 EvntGrp Component
     """
@@ -23,13 +23,13 @@ class EvntGrp(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    EventType: Optional[int] = Field(None, description='', alias='865')
-    EventDate: Optional[date] = Field(None, description='', alias='866')
-    EventPx: Optional[float] = Field(None, description='', alias='867')
-    EventText: Optional[str] = Field(None, description='', alias='868')
+    eventType: Optional[int] = Field(None, description='', alias='865')
+    eventDate: Optional[date] = Field(None, description='', alias='866')
+    eventPx: Optional[float] = Field(None, description='', alias='867')
+    eventText: Optional[str] = Field(None, description='', alias='868')
 
 
-class NoEvents(TradeModel):
+class NoEvents(FIXMessageBase):
     """
     NoEvents group fields
     """
@@ -42,9 +42,9 @@ class NoEvents(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    EventType: Optional[int] = Field(None, description='', alias='865')
-    EventDate: Optional[date] = Field(None, description='', alias='866')
-    EventPx: Optional[float] = Field(None, description='', alias='867')
-    EventText: Optional[str] = Field(None, description='', alias='868')
+    eventType: Optional[int] = Field(None, description='', alias='864')
+    eventDate: Optional[int] = Field(None, description='', alias='864')
+    eventPx: Optional[int] = Field(None, description='', alias='864')
+    eventText: Optional[int] = Field(None, description='', alias='864')
 
-    NoEventss: List[NoEvents] = Field(default_factory=list)
+    noEventss: List[NoEvents] = Field(default_factory=list)

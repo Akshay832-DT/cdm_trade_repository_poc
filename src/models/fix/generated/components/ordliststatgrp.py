@@ -6,11 +6,11 @@ This module contains the Pydantic model for the OrdListStatGrp component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class OrdListStatGrp(TradeModel):
+class OrdListStatGrp(FIXMessageBase):
     """
     FIX 4.4 OrdListStatGrp Component
     """
@@ -23,21 +23,21 @@ class OrdListStatGrp(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    ClOrdID: str = Field(None, description='', alias='11')
-    SecondaryClOrdID: Optional[str] = Field(None, description='', alias='526')
-    CumQty: float = Field(None, description='', alias='14')
-    OrdStatus: str = Field(None, description='', alias='39')
-    WorkingIndicator: Optional[bool] = Field(None, description='', alias='636')
-    LeavesQty: float = Field(None, description='', alias='151')
-    CxlQty: float = Field(None, description='', alias='84')
-    AvgPx: float = Field(None, description='', alias='6')
-    OrdRejReason: Optional[int] = Field(None, description='', alias='103')
-    Text: Optional[str] = Field(None, description='', alias='58')
-    EncodedTextLen: Optional[int] = Field(None, description='', alias='354')
-    EncodedText: Optional[str] = Field(None, description='', alias='355')
+    clOrdID: str = Field(None, description='', alias='11')
+    secondaryClOrdID: Optional[str] = Field(None, description='', alias='526')
+    cumQty: float = Field(None, description='', alias='14')
+    ordStatus: str = Field(None, description='', alias='39')
+    workingIndicator: Optional[bool] = Field(None, description='', alias='636')
+    leavesQty: float = Field(None, description='', alias='151')
+    cxlQty: float = Field(None, description='', alias='84')
+    avgPx: float = Field(None, description='', alias='6')
+    ordRejReason: Optional[int] = Field(None, description='', alias='103')
+    text: Optional[str] = Field(None, description='', alias='58')
+    encodedTextLen: Optional[int] = Field(None, description='', alias='354')
+    encodedText: Optional[str] = Field(None, description='', alias='355')
 
 
-class NoOrders(TradeModel):
+class NoOrders(FIXMessageBase):
     """
     NoOrders group fields
     """
@@ -50,17 +50,17 @@ class NoOrders(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    ClOrdID: str = Field(None, description='', alias='11')
-    SecondaryClOrdID: Optional[str] = Field(None, description='', alias='526')
-    CumQty: float = Field(None, description='', alias='14')
-    OrdStatus: str = Field(None, description='', alias='39')
-    WorkingIndicator: Optional[bool] = Field(None, description='', alias='636')
-    LeavesQty: float = Field(None, description='', alias='151')
-    CxlQty: float = Field(None, description='', alias='84')
-    AvgPx: float = Field(None, description='', alias='6')
-    OrdRejReason: Optional[int] = Field(None, description='', alias='103')
-    Text: Optional[str] = Field(None, description='', alias='58')
-    EncodedTextLen: Optional[int] = Field(None, description='', alias='354')
-    EncodedText: Optional[str] = Field(None, description='', alias='355')
+    clOrdID: int = Field(None, description='', alias='73')
+    secondaryClOrdID: Optional[int] = Field(None, description='', alias='73')
+    cumQty: int = Field(None, description='', alias='73')
+    ordStatus: int = Field(None, description='', alias='73')
+    workingIndicator: Optional[int] = Field(None, description='', alias='73')
+    leavesQty: int = Field(None, description='', alias='73')
+    cxlQty: int = Field(None, description='', alias='73')
+    avgPx: int = Field(None, description='', alias='73')
+    ordRejReason: Optional[int] = Field(None, description='', alias='73')
+    text: Optional[int] = Field(None, description='', alias='73')
+    encodedTextLen: Optional[int] = Field(None, description='', alias='73')
+    encodedText: Optional[int] = Field(None, description='', alias='73')
 
-    NoOrderss: List[NoOrders] = Field(default_factory=list)
+    noOrderss: List[NoOrders] = Field(default_factory=list)

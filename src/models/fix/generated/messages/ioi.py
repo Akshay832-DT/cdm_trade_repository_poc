@@ -6,21 +6,21 @@ This module contains the Pydantic model for the IOI message.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
-from ..components.financingdetails import FinancingDetails
-from ..components.ioiqualgrp import IOIQualGrp
-from ..components.instrmtlegioigrp import InstrmtLegIOIGrp
-from ..components.instrument import Instrument
-from ..components.orderqtydata import OrderQtyData
-from ..components.routinggrp import RoutingGrp
-from ..components.spreadorbenchmarkcurvedata import SpreadOrBenchmarkCurveData
-from ..components.stipulations import Stipulations
-from ..components.undinstrmtgrp import UndInstrmtGrp
-from ..components.yielddata import YieldData
+from src.models.fix.base import FIXMessageBase
+from src.models.fix.generated.fields.common import *
+from src.models.fix.generated.components.financingdetails import FinancingDetails
+from src.models.fix.generated.components.ioiqualgrp import IOIQualGrp
+from src.models.fix.generated.components.instrmtlegioigrp import InstrmtLegIOIGrp
+from src.models.fix.generated.components.instrument import Instrument
+from src.models.fix.generated.components.orderqtydata import OrderQtyData
+from src.models.fix.generated.components.routinggrp import RoutingGrp
+from src.models.fix.generated.components.spreadorbenchmarkcurvedata import SpreadOrBenchmarkCurveData
+from src.models.fix.generated.components.stipulations import Stipulations
+from src.models.fix.generated.components.undinstrmtgrp import UndInstrmtGrp
+from src.models.fix.generated.components.yielddata import YieldData
 
 
-class IOI(TradeModel):
+class IOI(FIXMessageBase):
     """
     FIX 4.4 IOI Message
     """
@@ -34,43 +34,37 @@ class IOI(TradeModel):
         }
     )
     
-    # Standard FIX header fields
-    BeginString: Literal["FIX.4.4"] = Field(alias='8')
-    BodyLength: Optional[int] = Field(None, alias='9')
-    MsgType: Literal["6"] = Field(alias='35')
-    SenderCompID: str = Field(..., alias='49')
-    TargetCompID: str = Field(..., alias='56')
-    MsgSeqNum: int = Field(..., alias='34')
-    SendingTime: datetime = Field(..., alias='52')
+    # Set the message type for this message
+    msgType: Literal["6"] = Field("6", alias='35')
     
     # Message-specific fields
-    IOIID: str = Field(None, description='', alias='23')
-    IOITransType: str = Field(None, description='', alias='28')
-    IOIRefID: Optional[str] = Field(None, description='', alias='26')
-    Side: str = Field(None, description='', alias='54')
-    QtyType: Optional[int] = Field(None, description='', alias='854')
-    IOIQty: str = Field(None, description='', alias='27')
-    Currency: Optional[str] = Field(None, description='', alias='15')
-    PriceType: Optional[int] = Field(None, description='', alias='423')
-    Price: Optional[float] = Field(None, description='', alias='44')
-    ValidUntilTime: Optional[datetime] = Field(None, description='', alias='62')
-    IOIQltyInd: Optional[str] = Field(None, description='', alias='25')
-    IOINaturalFlag: Optional[bool] = Field(None, description='', alias='130')
-    Text: Optional[str] = Field(None, description='', alias='58')
-    EncodedTextLen: Optional[int] = Field(None, description='', alias='354')
-    EncodedText: Optional[str] = Field(None, description='', alias='355')
-    TransactTime: Optional[datetime] = Field(None, description='', alias='60')
-    URLLink: Optional[str] = Field(None, description='', alias='149')
-    Instrument: Instrument = Field(..., description='Instrument component')
-    FinancingDetails: Optional[FinancingDetails] = None
-    UndInstrmtGrp: Optional[UndInstrmtGrp] = None
-    OrderQtyData: Optional[OrderQtyData] = None
-    Stipulations: Optional[Stipulations] = None
-    InstrmtLegIOIGrp: Optional[InstrmtLegIOIGrp] = None
-    IOIQualGrp: Optional[IOIQualGrp] = None
-    RoutingGrp: Optional[RoutingGrp] = None
-    SpreadOrBenchmarkCurveData: Optional[SpreadOrBenchmarkCurveData] = None
-    YieldData: Optional[YieldData] = None
+    iOIID: Optional[str] = Field(None, description='', alias='23')
+    iOITransType: Optional[str] = Field(None, description='', alias='28')
+    iOIRefID: Optional[str] = Field(None, description='', alias='26')
+    side: Optional[str] = Field(None, description='', alias='54')
+    qtyType: Optional[int] = Field(None, description='', alias='854')
+    iOIQty: Optional[str] = Field(None, description='', alias='27')
+    currency: Optional[str] = Field(None, description='', alias='15')
+    priceType: Optional[int] = Field(None, description='', alias='423')
+    price: Optional[float] = Field(None, description='', alias='44')
+    validUntilTime: Optional[datetime] = Field(None, description='', alias='62')
+    iOIQltyInd: Optional[str] = Field(None, description='', alias='25')
+    iOINaturalFlag: Optional[bool] = Field(None, description='', alias='130')
+    text: Optional[str] = Field(None, description='', alias='58')
+    encodedTextLen: Optional[int] = Field(None, description='', alias='354')
+    encodedText: Optional[str] = Field(None, description='', alias='355')
+    transactTime: Optional[datetime] = Field(None, description='', alias='60')
+    uRLLink: Optional[str] = Field(None, description='', alias='149')
+    instrument: Optional[Instrument] = Field(None, description='Instrument component')
+    financingDetails: Optional[FinancingDetails] = Field(None, description='FinancingDetails component')
+    undInstrmtGrp: Optional[UndInstrmtGrp] = Field(None, description='UndInstrmtGrp component')
+    orderQtyData: Optional[OrderQtyData] = Field(None, description='OrderQtyData component')
+    stipulations: Optional[Stipulations] = Field(None, description='Stipulations component')
+    instrmtLegIOIGrp: Optional[InstrmtLegIOIGrp] = Field(None, description='InstrmtLegIOIGrp component')
+    iOIQualGrp: Optional[IOIQualGrp] = Field(None, description='IOIQualGrp component')
+    routingGrp: Optional[RoutingGrp] = Field(None, description='RoutingGrp component')
+    spreadOrBenchmarkCurveData: Optional[SpreadOrBenchmarkCurveData] = Field(None, description='SpreadOrBenchmarkCurveData component')
+    yieldData: Optional[YieldData] = Field(None, description='YieldData component')
 
     def model_dump(self, **kwargs) -> Dict[str, Any]:
         """Override model_dump to handle nested components"""
@@ -81,8 +75,8 @@ class IOI(TradeModel):
         for field_name, value in data.items():
             if isinstance(value, list):
                 # Set the No* field based on list length
-                no_field = f"No{field_name[:-1]}"  # Remove 's' from plural
-                if no_field in self.__fields__:
-                    data[no_field] = len(value)
+                no_field = f"no{field_name}"  # Convert to camelCase
+                if hasattr(self, no_field):
+                    setattr(self, no_field, len(value))
         
-        return {k: v for k, v in data.items() if v is not None and (not isinstance(v, list) or v)}
+        return data

@@ -6,13 +6,13 @@ This module contains the Pydantic model for the AllocationInstructionAck message
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
-from ..components.allocackgrp import AllocAckGrp
-from ..components.parties import Parties
+from src.models.fix.base import FIXMessageBase
+from src.models.fix.generated.fields.common import *
+from src.models.fix.generated.components.allocackgrp import AllocAckGrp
+from src.models.fix.generated.components.parties import Parties
 
 
-class AllocationInstructionAck(TradeModel):
+class AllocationInstructionAck(FIXMessageBase):
     """
     FIX 4.4 AllocationInstructionAck Message
     """
@@ -26,32 +26,26 @@ class AllocationInstructionAck(TradeModel):
         }
     )
     
-    # Standard FIX header fields
-    BeginString: Literal["FIX.4.4"] = Field(alias='8')
-    BodyLength: Optional[int] = Field(None, alias='9')
-    MsgType: Literal["P"] = Field(alias='35')
-    SenderCompID: str = Field(..., alias='49')
-    TargetCompID: str = Field(..., alias='56')
-    MsgSeqNum: int = Field(..., alias='34')
-    SendingTime: datetime = Field(..., alias='52')
+    # Set the message type for this message
+    msgType: Literal["P"] = Field("P", alias='35')
     
     # Message-specific fields
-    AllocID: str = Field(None, description='', alias='70')
-    SecondaryAllocID: Optional[str] = Field(None, description='', alias='793')
-    TradeDate: Optional[date] = Field(None, description='', alias='75')
-    TransactTime: datetime = Field(None, description='', alias='60')
-    AllocStatus: int = Field(None, description='', alias='87')
-    AllocRejCode: Optional[int] = Field(None, description='', alias='88')
-    AllocType: Optional[int] = Field(None, description='', alias='626')
-    AllocIntermedReqType: Optional[int] = Field(None, description='', alias='808')
-    MatchStatus: Optional[str] = Field(None, description='', alias='573')
-    Product: Optional[int] = Field(None, description='', alias='460')
-    SecurityType: Optional[str] = Field(None, description='', alias='167')
-    Text: Optional[str] = Field(None, description='', alias='58')
-    EncodedTextLen: Optional[int] = Field(None, description='', alias='354')
-    EncodedText: Optional[str] = Field(None, description='', alias='355')
-    Parties: Optional[Parties] = None
-    AllocAckGrp: Optional[AllocAckGrp] = None
+    allocID: Optional[str] = Field(None, description='', alias='70')
+    secondaryAllocID: Optional[str] = Field(None, description='', alias='793')
+    tradeDate: Optional[date] = Field(None, description='', alias='75')
+    transactTime: Optional[datetime] = Field(None, description='', alias='60')
+    allocStatus: Optional[int] = Field(None, description='', alias='87')
+    allocRejCode: Optional[int] = Field(None, description='', alias='88')
+    allocType: Optional[int] = Field(None, description='', alias='626')
+    allocIntermedReqType: Optional[int] = Field(None, description='', alias='808')
+    matchStatus: Optional[str] = Field(None, description='', alias='573')
+    product: Optional[int] = Field(None, description='', alias='460')
+    securityType: Optional[str] = Field(None, description='', alias='167')
+    text: Optional[str] = Field(None, description='', alias='58')
+    encodedTextLen: Optional[int] = Field(None, description='', alias='354')
+    encodedText: Optional[str] = Field(None, description='', alias='355')
+    parties: Optional[Parties] = Field(None, description='Parties component')
+    allocAckGrp: Optional[AllocAckGrp] = Field(None, description='AllocAckGrp component')
 
     def model_dump(self, **kwargs) -> Dict[str, Any]:
         """Override model_dump to handle nested components"""
@@ -62,8 +56,8 @@ class AllocationInstructionAck(TradeModel):
         for field_name, value in data.items():
             if isinstance(value, list):
                 # Set the No* field based on list length
-                no_field = f"No{field_name[:-1]}"  # Remove 's' from plural
-                if no_field in self.__fields__:
-                    data[no_field] = len(value)
+                no_field = f"no{field_name}"  # Convert to camelCase
+                if hasattr(self, no_field):
+                    setattr(self, no_field, len(value))
         
-        return {k: v for k, v in data.items() if v is not None and (not isinstance(v, list) or v)}
+        return data

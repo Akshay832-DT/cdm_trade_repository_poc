@@ -6,16 +6,16 @@ This module contains the Pydantic model for the News message.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
-from ..components.instrmtgrp import InstrmtGrp
-from ..components.instrmtleggrp import InstrmtLegGrp
-from ..components.linesoftextgrp import LinesOfTextGrp
-from ..components.routinggrp import RoutingGrp
-from ..components.undinstrmtgrp import UndInstrmtGrp
+from src.models.fix.base import FIXMessageBase
+from src.models.fix.generated.fields.common import *
+from src.models.fix.generated.components.instrmtgrp import InstrmtGrp
+from src.models.fix.generated.components.instrmtleggrp import InstrmtLegGrp
+from src.models.fix.generated.components.linesoftextgrp import LinesOfTextGrp
+from src.models.fix.generated.components.routinggrp import RoutingGrp
+from src.models.fix.generated.components.undinstrmtgrp import UndInstrmtGrp
 
 
-class News(TradeModel):
+class News(FIXMessageBase):
     """
     FIX 4.4 News Message
     """
@@ -29,29 +29,23 @@ class News(TradeModel):
         }
     )
     
-    # Standard FIX header fields
-    BeginString: Literal["FIX.4.4"] = Field(alias='8')
-    BodyLength: Optional[int] = Field(None, alias='9')
-    MsgType: Literal["B"] = Field(alias='35')
-    SenderCompID: str = Field(..., alias='49')
-    TargetCompID: str = Field(..., alias='56')
-    MsgSeqNum: int = Field(..., alias='34')
-    SendingTime: datetime = Field(..., alias='52')
+    # Set the message type for this message
+    msgType: Literal["B"] = Field("B", alias='35')
     
     # Message-specific fields
-    OrigTime: Optional[datetime] = Field(None, description='', alias='42')
-    Urgency: Optional[str] = Field(None, description='', alias='61')
-    Headline: str = Field(None, description='', alias='148')
-    EncodedHeadlineLen: Optional[int] = Field(None, description='', alias='358')
-    EncodedHeadline: Optional[str] = Field(None, description='', alias='359')
-    URLLink: Optional[str] = Field(None, description='', alias='149')
-    RawDataLength: Optional[int] = Field(None, description='', alias='95')
-    RawData: Optional[str] = Field(None, description='', alias='96')
-    RoutingGrp: Optional[RoutingGrp] = None
-    InstrmtGrp: Optional[InstrmtGrp] = None
-    InstrmtLegGrp: Optional[InstrmtLegGrp] = None
-    UndInstrmtGrp: Optional[UndInstrmtGrp] = None
-    LinesOfTextGrp: LinesOfTextGrp = Field(..., description='LinesOfTextGrp component')
+    origTime: Optional[datetime] = Field(None, description='', alias='42')
+    urgency: Optional[str] = Field(None, description='', alias='61')
+    headline: Optional[str] = Field(None, description='', alias='148')
+    encodedHeadlineLen: Optional[int] = Field(None, description='', alias='358')
+    encodedHeadline: Optional[str] = Field(None, description='', alias='359')
+    uRLLink: Optional[str] = Field(None, description='', alias='149')
+    rawDataLength: Optional[int] = Field(None, description='', alias='95')
+    rawData: Optional[str] = Field(None, description='', alias='96')
+    routingGrp: Optional[RoutingGrp] = Field(None, description='RoutingGrp component')
+    instrmtGrp: Optional[InstrmtGrp] = Field(None, description='InstrmtGrp component')
+    instrmtLegGrp: Optional[InstrmtLegGrp] = Field(None, description='InstrmtLegGrp component')
+    undInstrmtGrp: Optional[UndInstrmtGrp] = Field(None, description='UndInstrmtGrp component')
+    linesOfTextGrp: Optional[LinesOfTextGrp] = Field(None, description='LinesOfTextGrp component')
 
     def model_dump(self, **kwargs) -> Dict[str, Any]:
         """Override model_dump to handle nested components"""
@@ -62,8 +56,8 @@ class News(TradeModel):
         for field_name, value in data.items():
             if isinstance(value, list):
                 # Set the No* field based on list length
-                no_field = f"No{field_name[:-1]}"  # Remove 's' from plural
-                if no_field in self.__fields__:
-                    data[no_field] = len(value)
+                no_field = f"no{field_name}"  # Convert to camelCase
+                if hasattr(self, no_field):
+                    setattr(self, no_field, len(value))
         
-        return {k: v for k, v in data.items() if v is not None and (not isinstance(v, list) or v)}
+        return data

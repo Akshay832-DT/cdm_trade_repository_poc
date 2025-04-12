@@ -6,11 +6,11 @@ This module contains the Pydantic model for the UndSecAltIDGrp component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class UndSecAltIDGrp(TradeModel):
+class UndSecAltIDGrp(FIXMessageBase):
     """
     FIX 4.4 UndSecAltIDGrp Component
     """
@@ -23,11 +23,11 @@ class UndSecAltIDGrp(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    UnderlyingSecurityAltID: Optional[str] = Field(None, description='', alias='458')
-    UnderlyingSecurityAltIDSource: Optional[str] = Field(None, description='', alias='459')
+    underlyingSecurityAltID: Optional[str] = Field(None, description='', alias='458')
+    underlyingSecurityAltIDSource: Optional[str] = Field(None, description='', alias='459')
 
 
-class NoUnderlyingSecurityAltID(TradeModel):
+class NoUnderlyingSecurityAltID(FIXMessageBase):
     """
     NoUnderlyingSecurityAltID group fields
     """
@@ -40,7 +40,7 @@ class NoUnderlyingSecurityAltID(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    UnderlyingSecurityAltID: Optional[str] = Field(None, description='', alias='458')
-    UnderlyingSecurityAltIDSource: Optional[str] = Field(None, description='', alias='459')
+    underlyingSecurityAltID: Optional[int] = Field(None, description='', alias='457')
+    underlyingSecurityAltIDSource: Optional[int] = Field(None, description='', alias='457')
 
-    NoUnderlyingSecurityAltIDs: List[NoUnderlyingSecurityAltID] = Field(default_factory=list)
+    noUnderlyingSecurityAltIDs: List[NoUnderlyingSecurityAltID] = Field(default_factory=list)

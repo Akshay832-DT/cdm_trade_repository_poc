@@ -6,11 +6,11 @@ This module contains the Pydantic model for the TrdgSesGrp component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class TrdgSesGrp(TradeModel):
+class TrdgSesGrp(FIXMessageBase):
     """
     FIX 4.4 TrdgSesGrp Component
     """
@@ -23,11 +23,11 @@ class TrdgSesGrp(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    TradingSessionID: Optional[str] = Field(None, description='', alias='336')
-    TradingSessionSubID: Optional[str] = Field(None, description='', alias='625')
+    tradingSessionID: Optional[str] = Field(None, description='', alias='336')
+    tradingSessionSubID: Optional[str] = Field(None, description='', alias='625')
 
 
-class NoTradingSessions(TradeModel):
+class NoTradingSessions(FIXMessageBase):
     """
     NoTradingSessions group fields
     """
@@ -40,7 +40,7 @@ class NoTradingSessions(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    TradingSessionID: Optional[str] = Field(None, description='', alias='336')
-    TradingSessionSubID: Optional[str] = Field(None, description='', alias='625')
+    tradingSessionID: Optional[int] = Field(None, description='', alias='386')
+    tradingSessionSubID: Optional[int] = Field(None, description='', alias='386')
 
-    NoTradingSessionss: List[NoTradingSessions] = Field(default_factory=list)
+    noTradingSessionss: List[NoTradingSessions] = Field(default_factory=list)

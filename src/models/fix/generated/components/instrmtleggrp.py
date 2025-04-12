@@ -6,11 +6,11 @@ This module contains the Pydantic model for the InstrmtLegGrp component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class InstrmtLegGrp(TradeModel):
+class InstrmtLegGrp(FIXMessageBase):
     """
     FIX 4.4 InstrmtLegGrp Component
     """
@@ -23,10 +23,10 @@ class InstrmtLegGrp(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    InstrumentLeg: Optional[str] = Field(None)
+    instrumentLeg: Optional[str] = Field(None)
 
 
-class NoLegs(TradeModel):
+class NoLegs(FIXMessageBase):
     """
     NoLegs group fields
     """
@@ -40,4 +40,4 @@ class NoLegs(TradeModel):
         }
     )
 
-    NoLegss: List[NoLegs] = Field(default_factory=list)
+    noLegss: List[NoLegs] = Field(default_factory=list)

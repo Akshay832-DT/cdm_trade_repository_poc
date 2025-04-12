@@ -6,11 +6,11 @@ This module contains the Pydantic model for the UndInstrmtGrp component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class UndInstrmtGrp(TradeModel):
+class UndInstrmtGrp(FIXMessageBase):
     """
     FIX 4.4 UndInstrmtGrp Component
     """
@@ -23,10 +23,10 @@ class UndInstrmtGrp(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    UnderlyingInstrument: Optional[str] = Field(None)
+    underlyingInstrument: Optional[str] = Field(None)
 
 
-class NoUnderlyings(TradeModel):
+class NoUnderlyings(FIXMessageBase):
     """
     NoUnderlyings group fields
     """
@@ -40,4 +40,4 @@ class NoUnderlyings(TradeModel):
         }
     )
 
-    NoUnderlyingss: List[NoUnderlyings] = Field(default_factory=list)
+    noUnderlyingss: List[NoUnderlyings] = Field(default_factory=list)

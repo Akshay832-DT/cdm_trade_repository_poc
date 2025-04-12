@@ -6,11 +6,11 @@ This module contains the Pydantic model for the SideCrossOrdCxlGrp component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class SideCrossOrdCxlGrp(TradeModel):
+class SideCrossOrdCxlGrp(FIXMessageBase):
     """
     FIX 4.4 SideCrossOrdCxlGrp Component
     """
@@ -23,23 +23,23 @@ class SideCrossOrdCxlGrp(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    Side: str = Field(None, description='', alias='54')
-    OrigClOrdID: str = Field(None, description='', alias='41')
-    ClOrdID: str = Field(None, description='', alias='11')
-    SecondaryClOrdID: Optional[str] = Field(None, description='', alias='526')
-    ClOrdLinkID: Optional[str] = Field(None, description='', alias='583')
-    OrigOrdModTime: Optional[datetime] = Field(None, description='', alias='586')
-    TradeOriginationDate: Optional[date] = Field(None, description='', alias='229')
-    TradeDate: Optional[date] = Field(None, description='', alias='75')
-    ComplianceID: Optional[str] = Field(None, description='', alias='376')
-    Text: Optional[str] = Field(None, description='', alias='58')
-    EncodedTextLen: Optional[int] = Field(None, description='', alias='354')
-    EncodedText: Optional[str] = Field(None, description='', alias='355')
-    Parties: Optional[str] = Field(None)
-    OrderQtyData: str = Field(None)
+    side: str = Field(None, description='', alias='54')
+    origClOrdID: str = Field(None, description='', alias='41')
+    clOrdID: str = Field(None, description='', alias='11')
+    secondaryClOrdID: Optional[str] = Field(None, description='', alias='526')
+    clOrdLinkID: Optional[str] = Field(None, description='', alias='583')
+    origOrdModTime: Optional[datetime] = Field(None, description='', alias='586')
+    tradeOriginationDate: Optional[date] = Field(None, description='', alias='229')
+    tradeDate: Optional[date] = Field(None, description='', alias='75')
+    complianceID: Optional[str] = Field(None, description='', alias='376')
+    text: Optional[str] = Field(None, description='', alias='58')
+    encodedTextLen: Optional[int] = Field(None, description='', alias='354')
+    encodedText: Optional[str] = Field(None, description='', alias='355')
+    parties: Optional[str] = Field(None)
+    orderQtyData: str = Field(None)
 
 
-class NoSides(TradeModel):
+class NoSides(FIXMessageBase):
     """
     NoSides group fields
     """
@@ -52,17 +52,17 @@ class NoSides(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    Side: str = Field(None, description='', alias='54')
-    OrigClOrdID: str = Field(None, description='', alias='41')
-    ClOrdID: str = Field(None, description='', alias='11')
-    SecondaryClOrdID: Optional[str] = Field(None, description='', alias='526')
-    ClOrdLinkID: Optional[str] = Field(None, description='', alias='583')
-    OrigOrdModTime: Optional[datetime] = Field(None, description='', alias='586')
-    TradeOriginationDate: Optional[date] = Field(None, description='', alias='229')
-    TradeDate: Optional[date] = Field(None, description='', alias='75')
-    ComplianceID: Optional[str] = Field(None, description='', alias='376')
-    Text: Optional[str] = Field(None, description='', alias='58')
-    EncodedTextLen: Optional[int] = Field(None, description='', alias='354')
-    EncodedText: Optional[str] = Field(None, description='', alias='355')
+    side: int = Field(None, description='', alias='552')
+    origClOrdID: int = Field(None, description='', alias='552')
+    clOrdID: int = Field(None, description='', alias='552')
+    secondaryClOrdID: Optional[int] = Field(None, description='', alias='552')
+    clOrdLinkID: Optional[int] = Field(None, description='', alias='552')
+    origOrdModTime: Optional[int] = Field(None, description='', alias='552')
+    tradeOriginationDate: Optional[int] = Field(None, description='', alias='552')
+    tradeDate: Optional[int] = Field(None, description='', alias='552')
+    complianceID: Optional[int] = Field(None, description='', alias='552')
+    text: Optional[int] = Field(None, description='', alias='552')
+    encodedTextLen: Optional[int] = Field(None, description='', alias='552')
+    encodedText: Optional[int] = Field(None, description='', alias='552')
 
-    NoSidess: List[NoSides] = Field(default_factory=list)
+    noSidess: List[NoSides] = Field(default_factory=list)

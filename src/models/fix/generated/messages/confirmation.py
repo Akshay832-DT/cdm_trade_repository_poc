@@ -6,26 +6,26 @@ This module contains the Pydantic model for the Confirmation message.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
-from ..components.commissiondata import CommissionData
-from ..components.cpctyconfgrp import CpctyConfGrp
-from ..components.financingdetails import FinancingDetails
-from ..components.instrmtleggrp import InstrmtLegGrp
-from ..components.instrument import Instrument
-from ..components.instrumentextension import InstrumentExtension
-from ..components.miscfeesgrp import MiscFeesGrp
-from ..components.ordallocgrp import OrdAllocGrp
-from ..components.parties import Parties
-from ..components.settlinstructionsdata import SettlInstructionsData
-from ..components.spreadorbenchmarkcurvedata import SpreadOrBenchmarkCurveData
-from ..components.stipulations import Stipulations
-from ..components.trdregtimestamps import TrdRegTimestamps
-from ..components.undinstrmtgrp import UndInstrmtGrp
-from ..components.yielddata import YieldData
+from src.models.fix.base import FIXMessageBase
+from src.models.fix.generated.fields.common import *
+from src.models.fix.generated.components.commissiondata import CommissionData
+from src.models.fix.generated.components.cpctyconfgrp import CpctyConfGrp
+from src.models.fix.generated.components.financingdetails import FinancingDetails
+from src.models.fix.generated.components.instrmtleggrp import InstrmtLegGrp
+from src.models.fix.generated.components.instrument import Instrument
+from src.models.fix.generated.components.instrumentextension import InstrumentExtension
+from src.models.fix.generated.components.miscfeesgrp import MiscFeesGrp
+from src.models.fix.generated.components.ordallocgrp import OrdAllocGrp
+from src.models.fix.generated.components.parties import Parties
+from src.models.fix.generated.components.settlinstructionsdata import SettlInstructionsData
+from src.models.fix.generated.components.spreadorbenchmarkcurvedata import SpreadOrBenchmarkCurveData
+from src.models.fix.generated.components.stipulations import Stipulations
+from src.models.fix.generated.components.trdregtimestamps import TrdRegTimestamps
+from src.models.fix.generated.components.undinstrmtgrp import UndInstrmtGrp
+from src.models.fix.generated.components.yielddata import YieldData
 
 
-class Confirmation(TradeModel):
+class Confirmation(FIXMessageBase):
     """
     FIX 4.4 Confirmation Message
     """
@@ -39,81 +39,75 @@ class Confirmation(TradeModel):
         }
     )
     
-    # Standard FIX header fields
-    BeginString: Literal["FIX.4.4"] = Field(alias='8')
-    BodyLength: Optional[int] = Field(None, alias='9')
-    MsgType: Literal["AK"] = Field(alias='35')
-    SenderCompID: str = Field(..., alias='49')
-    TargetCompID: str = Field(..., alias='56')
-    MsgSeqNum: int = Field(..., alias='34')
-    SendingTime: datetime = Field(..., alias='52')
+    # Set the message type for this message
+    msgType: Literal["AK"] = Field("AK", alias='35')
     
     # Message-specific fields
-    ConfirmID: str = Field(None, description='', alias='664')
-    ConfirmRefID: Optional[str] = Field(None, description='', alias='772')
-    ConfirmReqID: Optional[str] = Field(None, description='', alias='859')
-    ConfirmTransType: int = Field(None, description='', alias='666')
-    ConfirmType: int = Field(None, description='', alias='773')
-    CopyMsgIndicator: Optional[bool] = Field(None, description='', alias='797')
-    LegalConfirm: Optional[bool] = Field(None, description='', alias='650')
-    ConfirmStatus: int = Field(None, description='', alias='665')
-    AllocID: Optional[str] = Field(None, description='', alias='70')
-    SecondaryAllocID: Optional[str] = Field(None, description='', alias='793')
-    IndividualAllocID: Optional[str] = Field(None, description='', alias='467')
-    TransactTime: datetime = Field(None, description='', alias='60')
-    TradeDate: date = Field(None, description='', alias='75')
-    AllocQty: float = Field(None, description='', alias='80')
-    QtyType: Optional[int] = Field(None, description='', alias='854')
-    Side: str = Field(None, description='', alias='54')
-    Currency: Optional[str] = Field(None, description='', alias='15')
-    LastMkt: Optional[str] = Field(None, description='', alias='30')
-    AllocAccount: str = Field(None, description='', alias='79')
-    AllocAcctIDSource: Optional[int] = Field(None, description='', alias='661')
-    AllocAccountType: Optional[int] = Field(None, description='', alias='798')
-    AvgPx: float = Field(None, description='', alias='6')
-    AvgPxPrecision: Optional[int] = Field(None, description='', alias='74')
-    PriceType: Optional[int] = Field(None, description='', alias='423')
-    AvgParPx: Optional[float] = Field(None, description='', alias='860')
-    ReportedPx: Optional[float] = Field(None, description='', alias='861')
-    Text: Optional[str] = Field(None, description='', alias='58')
-    EncodedTextLen: Optional[int] = Field(None, description='', alias='354')
-    EncodedText: Optional[str] = Field(None, description='', alias='355')
-    ProcessCode: Optional[str] = Field(None, description='', alias='81')
-    GrossTradeAmt: float = Field(None, description='', alias='381')
-    NumDaysInterest: Optional[int] = Field(None, description='', alias='157')
-    ExDate: Optional[date] = Field(None, description='', alias='230')
-    AccruedInterestRate: Optional[float] = Field(None, description='', alias='158')
-    AccruedInterestAmt: Optional[float] = Field(None, description='', alias='159')
-    InterestAtMaturity: Optional[float] = Field(None, description='', alias='738')
-    EndAccruedInterestAmt: Optional[float] = Field(None, description='', alias='920')
-    StartCash: Optional[float] = Field(None, description='', alias='921')
-    EndCash: Optional[float] = Field(None, description='', alias='922')
-    Concession: Optional[float] = Field(None, description='', alias='238')
-    TotalTakedown: Optional[float] = Field(None, description='', alias='237')
-    NetMoney: float = Field(None, description='', alias='118')
-    MaturityNetMoney: Optional[float] = Field(None, description='', alias='890')
-    SettlCurrAmt: Optional[float] = Field(None, description='', alias='119')
-    SettlCurrency: Optional[str] = Field(None, description='', alias='120')
-    SettlCurrFxRate: Optional[float] = Field(None, description='', alias='155')
-    SettlCurrFxRateCalc: Optional[str] = Field(None, description='', alias='156')
-    SettlType: Optional[str] = Field(None, description='', alias='63')
-    SettlDate: Optional[date] = Field(None, description='', alias='64')
-    SharedCommission: Optional[float] = Field(None, description='', alias='858')
-    Parties: Optional[Parties] = None
-    OrdAllocGrp: Optional[OrdAllocGrp] = None
-    TrdRegTimestamps: Optional[TrdRegTimestamps] = None
-    Instrument: Instrument = Field(..., description='Instrument component')
-    InstrumentExtension: Optional[InstrumentExtension] = None
-    FinancingDetails: Optional[FinancingDetails] = None
-    UndInstrmtGrp: UndInstrmtGrp = Field(..., description='UndInstrmtGrp component')
-    InstrmtLegGrp: InstrmtLegGrp = Field(..., description='InstrmtLegGrp component')
-    YieldData: Optional[YieldData] = None
-    CpctyConfGrp: CpctyConfGrp = Field(..., description='CpctyConfGrp component')
-    SpreadOrBenchmarkCurveData: Optional[SpreadOrBenchmarkCurveData] = None
-    SettlInstructionsData: Optional[SettlInstructionsData] = None
-    CommissionData: Optional[CommissionData] = None
-    Stipulations: Optional[Stipulations] = None
-    MiscFeesGrp: Optional[MiscFeesGrp] = None
+    confirmID: Optional[str] = Field(None, description='', alias='664')
+    confirmRefID: Optional[str] = Field(None, description='', alias='772')
+    confirmReqID: Optional[str] = Field(None, description='', alias='859')
+    confirmTransType: Optional[int] = Field(None, description='', alias='666')
+    confirmType: Optional[int] = Field(None, description='', alias='773')
+    copyMsgIndicator: Optional[bool] = Field(None, description='', alias='797')
+    legalConfirm: Optional[bool] = Field(None, description='', alias='650')
+    confirmStatus: Optional[int] = Field(None, description='', alias='665')
+    allocID: Optional[str] = Field(None, description='', alias='70')
+    secondaryAllocID: Optional[str] = Field(None, description='', alias='793')
+    individualAllocID: Optional[str] = Field(None, description='', alias='467')
+    transactTime: Optional[datetime] = Field(None, description='', alias='60')
+    tradeDate: Optional[date] = Field(None, description='', alias='75')
+    allocQty: Optional[float] = Field(None, description='', alias='80')
+    qtyType: Optional[int] = Field(None, description='', alias='854')
+    side: Optional[str] = Field(None, description='', alias='54')
+    currency: Optional[str] = Field(None, description='', alias='15')
+    lastMkt: Optional[str] = Field(None, description='', alias='30')
+    allocAccount: Optional[str] = Field(None, description='', alias='79')
+    allocAcctIDSource: Optional[int] = Field(None, description='', alias='661')
+    allocAccountType: Optional[int] = Field(None, description='', alias='798')
+    avgPx: Optional[float] = Field(None, description='', alias='6')
+    avgPxPrecision: Optional[int] = Field(None, description='', alias='74')
+    priceType: Optional[int] = Field(None, description='', alias='423')
+    avgParPx: Optional[float] = Field(None, description='', alias='860')
+    reportedPx: Optional[float] = Field(None, description='', alias='861')
+    text: Optional[str] = Field(None, description='', alias='58')
+    encodedTextLen: Optional[int] = Field(None, description='', alias='354')
+    encodedText: Optional[str] = Field(None, description='', alias='355')
+    processCode: Optional[str] = Field(None, description='', alias='81')
+    grossTradeAmt: Optional[float] = Field(None, description='', alias='381')
+    numDaysInterest: Optional[int] = Field(None, description='', alias='157')
+    exDate: Optional[date] = Field(None, description='', alias='230')
+    accruedInterestRate: Optional[float] = Field(None, description='', alias='158')
+    accruedInterestAmt: Optional[float] = Field(None, description='', alias='159')
+    interestAtMaturity: Optional[float] = Field(None, description='', alias='738')
+    endAccruedInterestAmt: Optional[float] = Field(None, description='', alias='920')
+    startCash: Optional[float] = Field(None, description='', alias='921')
+    endCash: Optional[float] = Field(None, description='', alias='922')
+    concession: Optional[float] = Field(None, description='', alias='238')
+    totalTakedown: Optional[float] = Field(None, description='', alias='237')
+    netMoney: Optional[float] = Field(None, description='', alias='118')
+    maturityNetMoney: Optional[float] = Field(None, description='', alias='890')
+    settlCurrAmt: Optional[float] = Field(None, description='', alias='119')
+    settlCurrency: Optional[str] = Field(None, description='', alias='120')
+    settlCurrFxRate: Optional[float] = Field(None, description='', alias='155')
+    settlCurrFxRateCalc: Optional[str] = Field(None, description='', alias='156')
+    settlType: Optional[str] = Field(None, description='', alias='63')
+    settlDate: Optional[date] = Field(None, description='', alias='64')
+    sharedCommission: Optional[float] = Field(None, description='', alias='858')
+    parties: Optional[Parties] = Field(None, description='Parties component')
+    ordAllocGrp: Optional[OrdAllocGrp] = Field(None, description='OrdAllocGrp component')
+    trdRegTimestamps: Optional[TrdRegTimestamps] = Field(None, description='TrdRegTimestamps component')
+    instrument: Optional[Instrument] = Field(None, description='Instrument component')
+    instrumentExtension: Optional[InstrumentExtension] = Field(None, description='InstrumentExtension component')
+    financingDetails: Optional[FinancingDetails] = Field(None, description='FinancingDetails component')
+    undInstrmtGrp: Optional[UndInstrmtGrp] = Field(None, description='UndInstrmtGrp component')
+    instrmtLegGrp: Optional[InstrmtLegGrp] = Field(None, description='InstrmtLegGrp component')
+    yieldData: Optional[YieldData] = Field(None, description='YieldData component')
+    cpctyConfGrp: Optional[CpctyConfGrp] = Field(None, description='CpctyConfGrp component')
+    spreadOrBenchmarkCurveData: Optional[SpreadOrBenchmarkCurveData] = Field(None, description='SpreadOrBenchmarkCurveData component')
+    settlInstructionsData: Optional[SettlInstructionsData] = Field(None, description='SettlInstructionsData component')
+    commissionData: Optional[CommissionData] = Field(None, description='CommissionData component')
+    stipulations: Optional[Stipulations] = Field(None, description='Stipulations component')
+    miscFeesGrp: Optional[MiscFeesGrp] = Field(None, description='MiscFeesGrp component')
 
     def model_dump(self, **kwargs) -> Dict[str, Any]:
         """Override model_dump to handle nested components"""
@@ -124,8 +118,8 @@ class Confirmation(TradeModel):
         for field_name, value in data.items():
             if isinstance(value, list):
                 # Set the No* field based on list length
-                no_field = f"No{field_name[:-1]}"  # Remove 's' from plural
-                if no_field in self.__fields__:
-                    data[no_field] = len(value)
+                no_field = f"no{field_name}"  # Convert to camelCase
+                if hasattr(self, no_field):
+                    setattr(self, no_field, len(value))
         
-        return {k: v for k, v in data.items() if v is not None and (not isinstance(v, list) or v)}
+        return data

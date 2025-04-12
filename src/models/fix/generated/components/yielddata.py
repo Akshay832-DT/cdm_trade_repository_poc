@@ -6,11 +6,11 @@ This module contains the Pydantic model for the YieldData component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class YieldData(TradeModel):
+class YieldData(FIXMessageBase):
     """
     FIX 4.4 YieldData Component
     """
@@ -23,9 +23,9 @@ class YieldData(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    YieldType: Optional[str] = Field(None, description='', alias='235')
-    Yield: Optional[float] = Field(None, description='', alias='236')
-    YieldCalcDate: Optional[date] = Field(None, description='', alias='701')
-    YieldRedemptionDate: Optional[date] = Field(None, description='', alias='696')
-    YieldRedemptionPrice: Optional[float] = Field(None, description='', alias='697')
-    YieldRedemptionPriceType: Optional[int] = Field(None, description='', alias='698')
+    yieldType: Optional[str] = Field(None, description='', alias='235')
+    yield: Optional[float] = Field(None, description='', alias='236')
+    yieldCalcDate: Optional[date] = Field(None, description='', alias='701')
+    yieldRedemptionDate: Optional[date] = Field(None, description='', alias='696')
+    yieldRedemptionPrice: Optional[float] = Field(None, description='', alias='697')
+    yieldRedemptionPriceType: Optional[int] = Field(None, description='', alias='698')

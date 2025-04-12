@@ -185,6 +185,10 @@ class {field_name}(FIXFieldBase):
                 for enum_value, description in field_values.items():
                     f.write(f"    # {enum_value}: {description}\n")
 
+def to_camel_case(name):
+    """Convert a PascalCase name to camelCase."""
+    return name[0].lower() + name[1:] if name else name
+
 def generate_component_models(components, fields):
     """
     Generate Pydantic models for FIX components.
@@ -221,18 +225,18 @@ This module contains the Pydantic model for the {component_name} component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 ''')
                 
                 # Special case for BidCompRspGrp
                 if component_name == "BidCompRspGrp":
                     # Add import for CommissionData
-                    f.write("from .commissiondata import CommissionData\n")
+                    f.write("from src.models.fix.generated.components.commissiondata import CommissionData\n")
                     
                     f.write(f'''
 
-class NoBidComponents(TradeModel):
+class NoBidComponents(FIXMessageBase):
     """
     NoBidComponents group fields
     """
@@ -249,19 +253,20 @@ class NoBidComponents(TradeModel):
                     # Add fields to the NoBidComponents group
                     for field in component_fields:
                         field_name = field['name'].replace(" ", "")
+                        field_name = to_camel_case(field_name)  # Convert to camelCase
                         required = field['required']
                         
                         # Skip the NoBidComponents field (it's a count field)
-                        if field_name == "NoBidComponents":
+                        if field_name == "noBidComponents":
                             continue
                         
                         # Special handling for CommissionData
-                        if field_name == "CommissionData":
-                            f.write("    CommissionData: Optional[CommissionData] = None\n")
+                        if field_name == "commissionData":
+                            f.write("    commissionData: Optional[CommissionData] = None\n")
                             continue
                         
                         # Get field type information
-                        field_info = fields.get(field_name, {})
+                        field_info = fields.get(field['name'].replace(" ", ""), {})  # Use original name for lookup
                         fix_type = field_info.get('type', 'STRING')
                         python_type = FIX_TYPE_MAP.get(fix_type, 'str')
                         
@@ -278,7 +283,7 @@ class NoBidComponents(TradeModel):
                     # Add the NoBidComponents field to BidCompRspGrp
                     f.write(f'''
 
-class {component_name}(TradeModel):
+class {component_name}(FIXMessageBase):
     """
     FIX 4.4 {component_name} Component
     """
@@ -293,16 +298,16 @@ class {component_name}(TradeModel):
     )
     
     # Count field for the number of bid components
-    NoBidComponents: Optional[int] = Field(None, description='Number of bid components', alias='420')
+    noBidComponents: Optional[int] = Field(None, description='Number of bid components', alias='420')
     
     # List of bid components
-    NoBidComponents_Items: List[NoBidComponents] = Field(default_factory=list)
+    noBidComponents_Items: List[NoBidComponents] = Field(default_factory=list)
 ''')
                 else:
                     # Handle regular components
                     f.write(f'''
 
-class {component_name}(TradeModel):
+class {component_name}(FIXMessageBase):
     """
     FIX 4.4 {component_name} Component
     """
@@ -323,7 +328,7 @@ class {component_name}(TradeModel):
                             group_name = field['name'].replace(" ", "")
                             f.write(f'''
 
-class {group_name}(TradeModel):
+class {group_name}(FIXMessageBase):
     """
     {field['name']} group fields
     """
@@ -339,10 +344,11 @@ class {group_name}(TradeModel):
 ''')
                             for group_field in field['fields']:
                                 field_name = group_field['name'].replace(" ", "")
+                                field_name = to_camel_case(field_name)  # Convert to camelCase
                                 required = group_field['required']
                                 
                                 # Get field type information
-                                field_info = fields.get(field_name, {})
+                                field_info = fields.get(field['name'].replace(" ", ""), {})  # Use original name for lookup
                                 fix_type = field_info.get('type', 'STRING')
                                 python_type = FIX_TYPE_MAP.get(fix_type, 'str')
                                 
@@ -357,14 +363,16 @@ class {group_name}(TradeModel):
                                     f.write(f"    {field_name}: {python_type} = Field(None)\n")
                             
                             # Add the group to the component
-                            f.write(f"\n    {group_name}s: List[{group_name}] = Field(default_factory=list)\n")
+                            group_name_camel = to_camel_case(group_name)  # Convert to camelCase
+                            f.write(f"\n    {group_name_camel}s: List[{group_name}] = Field(default_factory=list)\n")
                         else:
                             # Handle regular fields
                             field_name = field['name'].replace(" ", "")
+                            field_name = to_camel_case(field_name)  # Convert to camelCase
                             required = field['required']
                             
                             # Get field type information
-                            field_info = fields.get(field_name, {})
+                            field_info = fields.get(field['name'].replace(" ", ""), {})  # Use original name for lookup
                             fix_type = field_info.get('type', 'STRING')
                             python_type = FIX_TYPE_MAP.get(fix_type, 'str')
                             
@@ -390,6 +398,12 @@ def generate_message_models(messages, fields):
         fields: Dictionary of field definitions from the specification
     """
     logger.info("Generating message models...")
+    
+    # Define header/trailer fields that are already in FIXMessageBase
+    base_fields = {
+        'BeginString', 'BodyLength', 'MsgType', 'SenderCompID', 'TargetCompID',
+        'MsgSeqNum', 'SendingTime', 'CheckSum'
+    }
     
     # Create the messages directory if it doesn't exist
     os.makedirs(OUTPUT_DIR / "messages", exist_ok=True)
@@ -417,8 +431,8 @@ This module contains the Pydantic model for the {msg_name} message.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.base import FIXMessageBase
+from src.models.fix.generated.fields.common import *
 ''')
                 
                 # Track components and groups we need to import
@@ -436,12 +450,12 @@ from ...base import TradeModel
                 
                 # Add imports for components and groups
                 for comp_name in sorted(components_to_import):
-                    f.write(f"from ..components.{comp_name.lower()} import {comp_name}\n")
+                    f.write(f"from src.models.fix.generated.components.{comp_name.lower()} import {comp_name}\n")
                 
                 # Generate the message class
                 f.write(f'''
 
-class {msg_name}(TradeModel):
+class {msg_name}(FIXMessageBase):
     """
     FIX 4.4 {msg_name} Message
     """
@@ -455,63 +469,34 @@ class {msg_name}(TradeModel):
         }}
     )
     
-    # Standard FIX header fields
-    BeginString: Literal["FIX.4.4"] = Field(alias='8')
-    BodyLength: Optional[int] = Field(None, alias='9')
-    MsgType: Literal["{msg_info['msgtype']}"] = Field(alias='35')
-    SenderCompID: str = Field(..., alias='49')
-    TargetCompID: str = Field(..., alias='56')
-    MsgSeqNum: int = Field(..., alias='34')
-    SendingTime: datetime = Field(..., alias='52')
+    # Set the message type for this message
+    msgType: Literal["{msg_info.get('msgtype', '')}"] = Field("{msg_info.get('msgtype', '')}", alias='35')
     
     # Message-specific fields
 ''')
                 
-                # Add fields to the message model
+                # Generate fields
                 for field in msg_info['fields']:
-                    if field.get('is_group'):
-                        # Handle group fields
-                        group_name = field['name'].replace(" ", "")
-                        required = field['required']
+                    # Skip fields that are already in the base class
+                    if field['name'].replace(" ", "") in base_fields:
+                        continue
                         
-                        # Add the group to the message
-                        if required:
-                            f.write(f"    {group_name}s: List[{group_name}] = Field(..., description='List of {group_name} components')\n")
-                        else:
-                            f.write(f"    {group_name}s: Optional[List[{group_name}]] = Field(default_factory=list, description='List of {group_name} components')\n")
-                    elif field.get('is_component'):
-                        # Handle component fields
+                    if field.get('is_component'):
                         comp_name = field['name'].replace(" ", "")
-                        required = field['required']
-                        
-                        # Add the component to the message
-                        if required:
-                            f.write(f"    {comp_name}: {comp_name} = Field(..., description='{field['name']} component')\n")
-                        else:
-                            f.write(f"    {comp_name}: Optional[{comp_name}] = None\n")
+                        field_name = to_camel_case(comp_name)  # Convert to camelCase
+                        f.write(f"    {field_name}: Optional[{comp_name}] = Field(None, description='{comp_name} component')\n")
+                    elif field.get('is_group'):
+                        group_name = field['name'].replace(" ", "")
+                        field_name = to_camel_case(group_name)  # Convert to camelCase
+                        f.write(f"    {field_name}: Optional[List[{group_name}]] = Field(default_factory=list, description='{group_name} group')\n")
                     else:
-                        # Handle regular fields
                         field_name = field['name'].replace(" ", "")
-                        required = field['required']
-                        
-                        # Skip header fields that are already included
-                        if field.get('tag') in ('8', '9', '35', '49', '56', '34', '52'):
-                            continue
-                            
-                        # Get field type information
-                        field_info = fields.get(field_name, {})
-                        fix_type = field_info.get('type', 'STRING')
-                        python_type = FIX_TYPE_MAP.get(fix_type, 'str')
-                        
-                        # Make the field optional if not required
-                        if not required:
-                            python_type = f"Optional[{python_type}]"
-                        
-                        # Add field to the model with proper Field alias
-                        if 'tag' in field_info:
-                            f.write(f"    {field_name}: {python_type} = Field(None, description='{field_info.get('description', '')}', alias='{field_info['tag']}')\n")
+                        field_name = to_camel_case(field_name)  # Convert to camelCase
+                        field_type = FIX_TYPE_MAP.get(field['type'], 'str')
+                        if field_type.startswith('List'):
+                            f.write(f"    {field_name}: Optional[{field_type}] = Field(default_factory=list, description='', alias='{field['tag']}')\n")
                         else:
-                            f.write(f"    {field_name}: {python_type} = Field(None)\n")
+                            f.write(f"    {field_name}: Optional[{field_type}] = Field(None, description='', alias='{field['tag']}')\n")
                 
                 # Add model_dump method
                 f.write('''
@@ -524,11 +509,11 @@ class {msg_name}(TradeModel):
         for field_name, value in data.items():
             if isinstance(value, list):
                 # Set the No* field based on list length
-                no_field = f"No{field_name[:-1]}"  # Remove 's' from plural
-                if no_field in self.__fields__:
-                    data[no_field] = len(value)
+                no_field = f"no{field_name}"  # Convert to camelCase
+                if hasattr(self, no_field):
+                    setattr(self, no_field, len(value))
         
-        return {k: v for k, v in data.items() if v is not None and (not isinstance(v, list) or v)}
+        return data
 ''')
             
             # Add an import statement to the __init__.py file
@@ -565,14 +550,14 @@ class FIXMessageBase(TradeModel):
         }
     )
 
-    BeginString: Literal["FIX.4.4"] = Field("FIX.4.4", alias='8')
-    BodyLength: Optional[int] = Field(None, alias='9')
-    MsgType: str = Field(..., alias='35')
-    SenderCompID: str = Field(..., alias='49')
-    TargetCompID: str = Field(..., alias='56')
-    MsgSeqNum: int = Field(..., alias='34')
-    SendingTime: datetime = Field(..., alias='52')
-    CheckSum: Optional[str] = Field(None, alias='10')
+    beginString: Literal["FIX.4.4"] = Field("FIX.4.4", alias='8')
+    bodyLength: Optional[int] = Field(None, alias='9')
+    msgType: str = Field(..., alias='35')
+    senderCompID: str = Field(..., alias='49')
+    targetCompID: str = Field(..., alias='56')
+    msgSeqNum: int = Field(..., alias='34')
+    sendingTime: datetime = Field(..., alias='52')
+    checkSum: Optional[str] = Field(None, alias='10')
     
     # Additional fields will be stored in a dictionary
     additional_fields: Dict[str, Any] = Field(default_factory=dict)

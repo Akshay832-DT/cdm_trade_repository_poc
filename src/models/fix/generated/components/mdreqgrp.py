@@ -6,11 +6,11 @@ This module contains the Pydantic model for the MDReqGrp component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class MDReqGrp(TradeModel):
+class MDReqGrp(FIXMessageBase):
     """
     FIX 4.4 MDReqGrp Component
     """
@@ -23,10 +23,10 @@ class MDReqGrp(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    MDEntryType: str = Field(None, description='', alias='269')
+    mDEntryType: str = Field(None, description='', alias='269')
 
 
-class NoMDEntryTypes(TradeModel):
+class NoMDEntryTypes(FIXMessageBase):
     """
     NoMDEntryTypes group fields
     """
@@ -39,6 +39,6 @@ class NoMDEntryTypes(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    MDEntryType: str = Field(None, description='', alias='269')
+    mDEntryType: int = Field(None, description='', alias='267')
 
-    NoMDEntryTypess: List[NoMDEntryTypes] = Field(default_factory=list)
+    noMDEntryTypess: List[NoMDEntryTypes] = Field(default_factory=list)

@@ -6,11 +6,11 @@ This module contains the Pydantic model for the PositionAmountData component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class PositionAmountData(TradeModel):
+class PositionAmountData(FIXMessageBase):
     """
     FIX 4.4 PositionAmountData Component
     """
@@ -23,11 +23,11 @@ class PositionAmountData(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    PosAmtType: Optional[str] = Field(None, description='', alias='707')
-    PosAmt: Optional[float] = Field(None, description='', alias='708')
+    posAmtType: Optional[str] = Field(None, description='', alias='707')
+    posAmt: Optional[float] = Field(None, description='', alias='708')
 
 
-class NoPosAmt(TradeModel):
+class NoPosAmt(FIXMessageBase):
     """
     NoPosAmt group fields
     """
@@ -40,7 +40,7 @@ class NoPosAmt(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    PosAmtType: Optional[str] = Field(None, description='', alias='707')
-    PosAmt: Optional[float] = Field(None, description='', alias='708')
+    posAmtType: Optional[int] = Field(None, description='', alias='753')
+    posAmt: Optional[int] = Field(None, description='', alias='753')
 
-    NoPosAmts: List[NoPosAmt] = Field(default_factory=list)
+    noPosAmts: List[NoPosAmt] = Field(default_factory=list)

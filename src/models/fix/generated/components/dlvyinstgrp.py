@@ -6,11 +6,11 @@ This module contains the Pydantic model for the DlvyInstGrp component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class DlvyInstGrp(TradeModel):
+class DlvyInstGrp(FIXMessageBase):
     """
     FIX 4.4 DlvyInstGrp Component
     """
@@ -23,12 +23,12 @@ class DlvyInstGrp(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    SettlInstSource: Optional[str] = Field(None, description='', alias='165')
-    DlvyInstType: Optional[str] = Field(None, description='', alias='787')
-    SettlParties: Optional[str] = Field(None)
+    settlInstSource: Optional[str] = Field(None, description='', alias='165')
+    dlvyInstType: Optional[str] = Field(None, description='', alias='787')
+    settlParties: Optional[str] = Field(None)
 
 
-class NoDlvyInst(TradeModel):
+class NoDlvyInst(FIXMessageBase):
     """
     NoDlvyInst group fields
     """
@@ -41,7 +41,7 @@ class NoDlvyInst(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    SettlInstSource: Optional[str] = Field(None, description='', alias='165')
-    DlvyInstType: Optional[str] = Field(None, description='', alias='787')
+    settlInstSource: Optional[int] = Field(None, description='', alias='85')
+    dlvyInstType: Optional[int] = Field(None, description='', alias='85')
 
-    NoDlvyInsts: List[NoDlvyInst] = Field(default_factory=list)
+    noDlvyInsts: List[NoDlvyInst] = Field(default_factory=list)

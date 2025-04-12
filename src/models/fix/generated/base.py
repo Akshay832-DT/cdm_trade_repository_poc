@@ -24,14 +24,14 @@ class FIXMessageBase(TradeModel):
         }
     )
 
-    BeginString: Literal["FIX.4.4"] = Field("FIX.4.4", alias='8')
-    BodyLength: Optional[int] = Field(None, alias='9')
-    MsgType: str = Field(..., alias='35')
-    SenderCompID: str = Field(..., alias='49')
-    TargetCompID: str = Field(..., alias='56')
-    MsgSeqNum: int = Field(..., alias='34')
-    SendingTime: datetime = Field(..., alias='52')
-    CheckSum: Optional[str] = Field(None, alias='10')
+    beginString: Literal["FIX.4.4"] = Field("FIX.4.4", alias='8')
+    bodyLength: Optional[int] = Field(None, alias='9')
+    msgType: str = Field(..., alias='35')
+    senderCompID: str = Field(..., alias='49')
+    targetCompID: str = Field(..., alias='56')
+    msgSeqNum: int = Field(..., alias='34')
+    sendingTime: datetime = Field(..., alias='52')
+    checkSum: Optional[str] = Field(None, alias='10')
     
     # Additional fields will be stored in a dictionary
     additional_fields: Dict[str, Any] = Field(default_factory=dict)

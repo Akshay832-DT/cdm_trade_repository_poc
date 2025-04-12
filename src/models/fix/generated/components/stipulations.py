@@ -6,11 +6,11 @@ This module contains the Pydantic model for the Stipulations component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class Stipulations(TradeModel):
+class Stipulations(FIXMessageBase):
     """
     FIX 4.4 Stipulations Component
     """
@@ -23,11 +23,11 @@ class Stipulations(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    StipulationType: Optional[str] = Field(None, description='', alias='233')
-    StipulationValue: Optional[str] = Field(None, description='', alias='234')
+    stipulationType: Optional[str] = Field(None, description='', alias='233')
+    stipulationValue: Optional[str] = Field(None, description='', alias='234')
 
 
-class NoStipulations(TradeModel):
+class NoStipulations(FIXMessageBase):
     """
     NoStipulations group fields
     """
@@ -40,7 +40,7 @@ class NoStipulations(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    StipulationType: Optional[str] = Field(None, description='', alias='233')
-    StipulationValue: Optional[str] = Field(None, description='', alias='234')
+    stipulationType: Optional[int] = Field(None, description='', alias='232')
+    stipulationValue: Optional[int] = Field(None, description='', alias='232')
 
-    NoStipulationss: List[NoStipulations] = Field(default_factory=list)
+    noStipulationss: List[NoStipulations] = Field(default_factory=list)

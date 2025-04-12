@@ -6,14 +6,14 @@ This module contains the Pydantic model for the OrderMassCancelReport message.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
-from ..components.affectedordgrp import AffectedOrdGrp
-from ..components.instrument import Instrument
-from ..components.underlyinginstrument import UnderlyingInstrument
+from src.models.fix.base import FIXMessageBase
+from src.models.fix.generated.fields.common import *
+from src.models.fix.generated.components.affectedordgrp import AffectedOrdGrp
+from src.models.fix.generated.components.instrument import Instrument
+from src.models.fix.generated.components.underlyinginstrument import UnderlyingInstrument
 
 
-class OrderMassCancelReport(TradeModel):
+class OrderMassCancelReport(FIXMessageBase):
     """
     FIX 4.4 OrderMassCancelReport Message
     """
@@ -27,34 +27,28 @@ class OrderMassCancelReport(TradeModel):
         }
     )
     
-    # Standard FIX header fields
-    BeginString: Literal["FIX.4.4"] = Field(alias='8')
-    BodyLength: Optional[int] = Field(None, alias='9')
-    MsgType: Literal["r"] = Field(alias='35')
-    SenderCompID: str = Field(..., alias='49')
-    TargetCompID: str = Field(..., alias='56')
-    MsgSeqNum: int = Field(..., alias='34')
-    SendingTime: datetime = Field(..., alias='52')
+    # Set the message type for this message
+    msgType: Literal["r"] = Field("r", alias='35')
     
     # Message-specific fields
-    ClOrdID: Optional[str] = Field(None, description='', alias='11')
-    SecondaryClOrdID: Optional[str] = Field(None, description='', alias='526')
-    OrderID: str = Field(None, description='', alias='37')
-    SecondaryOrderID: Optional[str] = Field(None, description='', alias='198')
-    MassCancelRequestType: str = Field(None, description='', alias='530')
-    MassCancelResponse: str = Field(None, description='', alias='531')
-    MassCancelRejectReason: Optional[str] = Field(None, description='', alias='532')
-    TotalAffectedOrders: Optional[int] = Field(None, description='', alias='533')
-    TradingSessionID: Optional[str] = Field(None, description='', alias='336')
-    TradingSessionSubID: Optional[str] = Field(None, description='', alias='625')
-    Side: Optional[str] = Field(None, description='', alias='54')
-    TransactTime: Optional[datetime] = Field(None, description='', alias='60')
-    Text: Optional[str] = Field(None, description='', alias='58')
-    EncodedTextLen: Optional[int] = Field(None, description='', alias='354')
-    EncodedText: Optional[str] = Field(None, description='', alias='355')
-    AffectedOrdGrp: Optional[AffectedOrdGrp] = None
-    Instrument: Optional[Instrument] = None
-    UnderlyingInstrument: Optional[UnderlyingInstrument] = None
+    clOrdID: Optional[str] = Field(None, description='', alias='11')
+    secondaryClOrdID: Optional[str] = Field(None, description='', alias='526')
+    orderID: Optional[str] = Field(None, description='', alias='37')
+    secondaryOrderID: Optional[str] = Field(None, description='', alias='198')
+    massCancelRequestType: Optional[str] = Field(None, description='', alias='530')
+    massCancelResponse: Optional[str] = Field(None, description='', alias='531')
+    massCancelRejectReason: Optional[str] = Field(None, description='', alias='532')
+    totalAffectedOrders: Optional[int] = Field(None, description='', alias='533')
+    tradingSessionID: Optional[str] = Field(None, description='', alias='336')
+    tradingSessionSubID: Optional[str] = Field(None, description='', alias='625')
+    side: Optional[str] = Field(None, description='', alias='54')
+    transactTime: Optional[datetime] = Field(None, description='', alias='60')
+    text: Optional[str] = Field(None, description='', alias='58')
+    encodedTextLen: Optional[int] = Field(None, description='', alias='354')
+    encodedText: Optional[str] = Field(None, description='', alias='355')
+    affectedOrdGrp: Optional[AffectedOrdGrp] = Field(None, description='AffectedOrdGrp component')
+    instrument: Optional[Instrument] = Field(None, description='Instrument component')
+    underlyingInstrument: Optional[UnderlyingInstrument] = Field(None, description='UnderlyingInstrument component')
 
     def model_dump(self, **kwargs) -> Dict[str, Any]:
         """Override model_dump to handle nested components"""
@@ -65,8 +59,8 @@ class OrderMassCancelReport(TradeModel):
         for field_name, value in data.items():
             if isinstance(value, list):
                 # Set the No* field based on list length
-                no_field = f"No{field_name[:-1]}"  # Remove 's' from plural
-                if no_field in self.__fields__:
-                    data[no_field] = len(value)
+                no_field = f"no{field_name}"  # Convert to camelCase
+                if hasattr(self, no_field):
+                    setattr(self, no_field, len(value))
         
-        return {k: v for k, v in data.items() if v is not None and (not isinstance(v, list) or v)}
+        return data

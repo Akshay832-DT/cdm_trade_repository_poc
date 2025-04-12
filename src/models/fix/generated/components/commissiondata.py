@@ -6,11 +6,11 @@ This module contains the Pydantic model for the CommissionData component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class CommissionData(TradeModel):
+class CommissionData(FIXMessageBase):
     """
     FIX 4.4 CommissionData Component
     """
@@ -23,7 +23,7 @@ class CommissionData(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    Commission: Optional[float] = Field(None, description='', alias='12')
-    CommType: Optional[str] = Field(None, description='', alias='13')
-    CommCurrency: Optional[str] = Field(None, description='', alias='479')
-    FundRenewWaiv: Optional[str] = Field(None, description='', alias='497')
+    commission: Optional[float] = Field(None, description='', alias='12')
+    commType: Optional[str] = Field(None, description='', alias='13')
+    commCurrency: Optional[str] = Field(None, description='', alias='479')
+    fundRenewWaiv: Optional[str] = Field(None, description='', alias='497')

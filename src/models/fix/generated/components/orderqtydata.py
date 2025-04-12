@@ -6,11 +6,11 @@ This module contains the Pydantic model for the OrderQtyData component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class OrderQtyData(TradeModel):
+class OrderQtyData(FIXMessageBase):
     """
     FIX 4.4 OrderQtyData Component
     """
@@ -23,8 +23,8 @@ class OrderQtyData(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    OrderQty: Optional[float] = Field(None, description='', alias='38')
-    CashOrderQty: Optional[float] = Field(None, description='', alias='152')
-    OrderPercent: Optional[float] = Field(None, description='', alias='516')
-    RoundingDirection: Optional[str] = Field(None, description='', alias='468')
-    RoundingModulus: Optional[float] = Field(None, description='', alias='469')
+    orderQty: Optional[float] = Field(None, description='', alias='38')
+    cashOrderQty: Optional[float] = Field(None, description='', alias='152')
+    orderPercent: Optional[float] = Field(None, description='', alias='516')
+    roundingDirection: Optional[str] = Field(None, description='', alias='468')
+    roundingModulus: Optional[float] = Field(None, description='', alias='469')

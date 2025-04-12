@@ -6,11 +6,11 @@ This module contains the Pydantic model for the QuotEntryAckGrp component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class QuotEntryAckGrp(TradeModel):
+class QuotEntryAckGrp(FIXMessageBase):
     """
     FIX 4.4 QuotEntryAckGrp Component
     """
@@ -23,36 +23,36 @@ class QuotEntryAckGrp(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    QuoteEntryID: Optional[str] = Field(None, description='', alias='299')
-    BidPx: Optional[float] = Field(None, description='', alias='132')
-    OfferPx: Optional[float] = Field(None, description='', alias='133')
-    BidSize: Optional[float] = Field(None, description='', alias='134')
-    OfferSize: Optional[float] = Field(None, description='', alias='135')
-    ValidUntilTime: Optional[datetime] = Field(None, description='', alias='62')
-    BidSpotRate: Optional[float] = Field(None, description='', alias='188')
-    OfferSpotRate: Optional[float] = Field(None, description='', alias='190')
-    BidForwardPoints: Optional[float] = Field(None, description='', alias='189')
-    OfferForwardPoints: Optional[float] = Field(None, description='', alias='191')
-    MidPx: Optional[float] = Field(None, description='', alias='631')
-    BidYield: Optional[float] = Field(None, description='', alias='632')
-    MidYield: Optional[float] = Field(None, description='', alias='633')
-    OfferYield: Optional[float] = Field(None, description='', alias='634')
-    TransactTime: Optional[datetime] = Field(None, description='', alias='60')
-    TradingSessionID: Optional[str] = Field(None, description='', alias='336')
-    TradingSessionSubID: Optional[str] = Field(None, description='', alias='625')
-    SettlDate: Optional[date] = Field(None, description='', alias='64')
-    OrdType: Optional[str] = Field(None, description='', alias='40')
-    SettlDate2: Optional[date] = Field(None, description='', alias='193')
-    OrderQty2: Optional[float] = Field(None, description='', alias='192')
-    BidForwardPoints2: Optional[float] = Field(None, description='', alias='642')
-    OfferForwardPoints2: Optional[float] = Field(None, description='', alias='643')
-    Currency: Optional[str] = Field(None, description='', alias='15')
-    QuoteEntryRejectReason: Optional[int] = Field(None, description='', alias='368')
-    Instrument: Optional[str] = Field(None)
-    InstrmtLegGrp: Optional[str] = Field(None)
+    quoteEntryID: Optional[str] = Field(None, description='', alias='299')
+    bidPx: Optional[float] = Field(None, description='', alias='132')
+    offerPx: Optional[float] = Field(None, description='', alias='133')
+    bidSize: Optional[float] = Field(None, description='', alias='134')
+    offerSize: Optional[float] = Field(None, description='', alias='135')
+    validUntilTime: Optional[datetime] = Field(None, description='', alias='62')
+    bidSpotRate: Optional[float] = Field(None, description='', alias='188')
+    offerSpotRate: Optional[float] = Field(None, description='', alias='190')
+    bidForwardPoints: Optional[float] = Field(None, description='', alias='189')
+    offerForwardPoints: Optional[float] = Field(None, description='', alias='191')
+    midPx: Optional[float] = Field(None, description='', alias='631')
+    bidYield: Optional[float] = Field(None, description='', alias='632')
+    midYield: Optional[float] = Field(None, description='', alias='633')
+    offerYield: Optional[float] = Field(None, description='', alias='634')
+    transactTime: Optional[datetime] = Field(None, description='', alias='60')
+    tradingSessionID: Optional[str] = Field(None, description='', alias='336')
+    tradingSessionSubID: Optional[str] = Field(None, description='', alias='625')
+    settlDate: Optional[date] = Field(None, description='', alias='64')
+    ordType: Optional[str] = Field(None, description='', alias='40')
+    settlDate2: Optional[date] = Field(None, description='', alias='193')
+    orderQty2: Optional[float] = Field(None, description='', alias='192')
+    bidForwardPoints2: Optional[float] = Field(None, description='', alias='642')
+    offerForwardPoints2: Optional[float] = Field(None, description='', alias='643')
+    currency: Optional[str] = Field(None, description='', alias='15')
+    quoteEntryRejectReason: Optional[int] = Field(None, description='', alias='368')
+    instrument: Optional[str] = Field(None)
+    instrmtLegGrp: Optional[str] = Field(None)
 
 
-class NoQuoteEntries(TradeModel):
+class NoQuoteEntries(FIXMessageBase):
     """
     NoQuoteEntries group fields
     """
@@ -65,30 +65,30 @@ class NoQuoteEntries(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    QuoteEntryID: Optional[str] = Field(None, description='', alias='299')
-    BidPx: Optional[float] = Field(None, description='', alias='132')
-    OfferPx: Optional[float] = Field(None, description='', alias='133')
-    BidSize: Optional[float] = Field(None, description='', alias='134')
-    OfferSize: Optional[float] = Field(None, description='', alias='135')
-    ValidUntilTime: Optional[datetime] = Field(None, description='', alias='62')
-    BidSpotRate: Optional[float] = Field(None, description='', alias='188')
-    OfferSpotRate: Optional[float] = Field(None, description='', alias='190')
-    BidForwardPoints: Optional[float] = Field(None, description='', alias='189')
-    OfferForwardPoints: Optional[float] = Field(None, description='', alias='191')
-    MidPx: Optional[float] = Field(None, description='', alias='631')
-    BidYield: Optional[float] = Field(None, description='', alias='632')
-    MidYield: Optional[float] = Field(None, description='', alias='633')
-    OfferYield: Optional[float] = Field(None, description='', alias='634')
-    TransactTime: Optional[datetime] = Field(None, description='', alias='60')
-    TradingSessionID: Optional[str] = Field(None, description='', alias='336')
-    TradingSessionSubID: Optional[str] = Field(None, description='', alias='625')
-    SettlDate: Optional[date] = Field(None, description='', alias='64')
-    OrdType: Optional[str] = Field(None, description='', alias='40')
-    SettlDate2: Optional[date] = Field(None, description='', alias='193')
-    OrderQty2: Optional[float] = Field(None, description='', alias='192')
-    BidForwardPoints2: Optional[float] = Field(None, description='', alias='642')
-    OfferForwardPoints2: Optional[float] = Field(None, description='', alias='643')
-    Currency: Optional[str] = Field(None, description='', alias='15')
-    QuoteEntryRejectReason: Optional[int] = Field(None, description='', alias='368')
+    quoteEntryID: Optional[int] = Field(None, description='', alias='295')
+    bidPx: Optional[int] = Field(None, description='', alias='295')
+    offerPx: Optional[int] = Field(None, description='', alias='295')
+    bidSize: Optional[int] = Field(None, description='', alias='295')
+    offerSize: Optional[int] = Field(None, description='', alias='295')
+    validUntilTime: Optional[int] = Field(None, description='', alias='295')
+    bidSpotRate: Optional[int] = Field(None, description='', alias='295')
+    offerSpotRate: Optional[int] = Field(None, description='', alias='295')
+    bidForwardPoints: Optional[int] = Field(None, description='', alias='295')
+    offerForwardPoints: Optional[int] = Field(None, description='', alias='295')
+    midPx: Optional[int] = Field(None, description='', alias='295')
+    bidYield: Optional[int] = Field(None, description='', alias='295')
+    midYield: Optional[int] = Field(None, description='', alias='295')
+    offerYield: Optional[int] = Field(None, description='', alias='295')
+    transactTime: Optional[int] = Field(None, description='', alias='295')
+    tradingSessionID: Optional[int] = Field(None, description='', alias='295')
+    tradingSessionSubID: Optional[int] = Field(None, description='', alias='295')
+    settlDate: Optional[int] = Field(None, description='', alias='295')
+    ordType: Optional[int] = Field(None, description='', alias='295')
+    settlDate2: Optional[int] = Field(None, description='', alias='295')
+    orderQty2: Optional[int] = Field(None, description='', alias='295')
+    bidForwardPoints2: Optional[int] = Field(None, description='', alias='295')
+    offerForwardPoints2: Optional[int] = Field(None, description='', alias='295')
+    currency: Optional[int] = Field(None, description='', alias='295')
+    quoteEntryRejectReason: Optional[int] = Field(None, description='', alias='295')
 
-    NoQuoteEntriess: List[NoQuoteEntries] = Field(default_factory=list)
+    noQuoteEntriess: List[NoQuoteEntries] = Field(default_factory=list)

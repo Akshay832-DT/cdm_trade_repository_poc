@@ -6,11 +6,11 @@ This module contains the Pydantic model for the TrdRegTimestamps component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class TrdRegTimestamps(TradeModel):
+class TrdRegTimestamps(FIXMessageBase):
     """
     FIX 4.4 TrdRegTimestamps Component
     """
@@ -23,12 +23,12 @@ class TrdRegTimestamps(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    TrdRegTimestamp: Optional[datetime] = Field(None, description='', alias='769')
-    TrdRegTimestampType: Optional[int] = Field(None, description='', alias='770')
-    TrdRegTimestampOrigin: Optional[str] = Field(None, description='', alias='771')
+    trdRegTimestamp: Optional[datetime] = Field(None, description='', alias='769')
+    trdRegTimestampType: Optional[int] = Field(None, description='', alias='770')
+    trdRegTimestampOrigin: Optional[str] = Field(None, description='', alias='771')
 
 
-class NoTrdRegTimestamps(TradeModel):
+class NoTrdRegTimestamps(FIXMessageBase):
     """
     NoTrdRegTimestamps group fields
     """
@@ -41,8 +41,8 @@ class NoTrdRegTimestamps(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    TrdRegTimestamp: Optional[datetime] = Field(None, description='', alias='769')
-    TrdRegTimestampType: Optional[int] = Field(None, description='', alias='770')
-    TrdRegTimestampOrigin: Optional[str] = Field(None, description='', alias='771')
+    trdRegTimestamp: Optional[int] = Field(None, description='', alias='768')
+    trdRegTimestampType: Optional[int] = Field(None, description='', alias='768')
+    trdRegTimestampOrigin: Optional[int] = Field(None, description='', alias='768')
 
-    NoTrdRegTimestampss: List[NoTrdRegTimestamps] = Field(default_factory=list)
+    noTrdRegTimestampss: List[NoTrdRegTimestamps] = Field(default_factory=list)

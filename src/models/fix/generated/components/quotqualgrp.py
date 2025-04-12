@@ -6,11 +6,11 @@ This module contains the Pydantic model for the QuotQualGrp component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class QuotQualGrp(TradeModel):
+class QuotQualGrp(FIXMessageBase):
     """
     FIX 4.4 QuotQualGrp Component
     """
@@ -23,10 +23,10 @@ class QuotQualGrp(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    QuoteQualifier: Optional[str] = Field(None, description='', alias='695')
+    quoteQualifier: Optional[str] = Field(None, description='', alias='695')
 
 
-class NoQuoteQualifiers(TradeModel):
+class NoQuoteQualifiers(FIXMessageBase):
     """
     NoQuoteQualifiers group fields
     """
@@ -39,6 +39,6 @@ class NoQuoteQualifiers(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    QuoteQualifier: Optional[str] = Field(None, description='', alias='695')
+    quoteQualifier: Optional[int] = Field(None, description='', alias='735')
 
-    NoQuoteQualifierss: List[NoQuoteQualifiers] = Field(default_factory=list)
+    noQuoteQualifierss: List[NoQuoteQualifiers] = Field(default_factory=list)

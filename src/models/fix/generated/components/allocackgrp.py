@@ -6,11 +6,11 @@ This module contains the Pydantic model for the AllocAckGrp component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class AllocAckGrp(TradeModel):
+class AllocAckGrp(FIXMessageBase):
     """
     FIX 4.4 AllocAckGrp Component
     """
@@ -23,17 +23,17 @@ class AllocAckGrp(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    AllocAccount: Optional[str] = Field(None, description='', alias='79')
-    AllocAcctIDSource: Optional[int] = Field(None, description='', alias='661')
-    AllocPrice: Optional[float] = Field(None, description='', alias='366')
-    IndividualAllocID: Optional[str] = Field(None, description='', alias='467')
-    IndividualAllocRejCode: Optional[int] = Field(None, description='', alias='776')
-    AllocText: Optional[str] = Field(None, description='', alias='161')
-    EncodedAllocTextLen: Optional[int] = Field(None, description='', alias='360')
-    EncodedAllocText: Optional[str] = Field(None, description='', alias='361')
+    allocAccount: Optional[str] = Field(None, description='', alias='79')
+    allocAcctIDSource: Optional[int] = Field(None, description='', alias='661')
+    allocPrice: Optional[float] = Field(None, description='', alias='366')
+    individualAllocID: Optional[str] = Field(None, description='', alias='467')
+    individualAllocRejCode: Optional[int] = Field(None, description='', alias='776')
+    allocText: Optional[str] = Field(None, description='', alias='161')
+    encodedAllocTextLen: Optional[int] = Field(None, description='', alias='360')
+    encodedAllocText: Optional[str] = Field(None, description='', alias='361')
 
 
-class NoAllocs(TradeModel):
+class NoAllocs(FIXMessageBase):
     """
     NoAllocs group fields
     """
@@ -46,13 +46,13 @@ class NoAllocs(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    AllocAccount: Optional[str] = Field(None, description='', alias='79')
-    AllocAcctIDSource: Optional[int] = Field(None, description='', alias='661')
-    AllocPrice: Optional[float] = Field(None, description='', alias='366')
-    IndividualAllocID: Optional[str] = Field(None, description='', alias='467')
-    IndividualAllocRejCode: Optional[int] = Field(None, description='', alias='776')
-    AllocText: Optional[str] = Field(None, description='', alias='161')
-    EncodedAllocTextLen: Optional[int] = Field(None, description='', alias='360')
-    EncodedAllocText: Optional[str] = Field(None, description='', alias='361')
+    allocAccount: Optional[int] = Field(None, description='', alias='78')
+    allocAcctIDSource: Optional[int] = Field(None, description='', alias='78')
+    allocPrice: Optional[int] = Field(None, description='', alias='78')
+    individualAllocID: Optional[int] = Field(None, description='', alias='78')
+    individualAllocRejCode: Optional[int] = Field(None, description='', alias='78')
+    allocText: Optional[int] = Field(None, description='', alias='78')
+    encodedAllocTextLen: Optional[int] = Field(None, description='', alias='78')
+    encodedAllocText: Optional[int] = Field(None, description='', alias='78')
 
-    NoAllocss: List[NoAllocs] = Field(default_factory=list)
+    noAllocss: List[NoAllocs] = Field(default_factory=list)

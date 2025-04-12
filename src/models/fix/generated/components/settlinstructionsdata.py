@@ -6,11 +6,11 @@ This module contains the Pydantic model for the SettlInstructionsData component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class SettlInstructionsData(TradeModel):
+class SettlInstructionsData(FIXMessageBase):
     """
     FIX 4.4 SettlInstructionsData Component
     """
@@ -23,8 +23,8 @@ class SettlInstructionsData(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    SettlDeliveryType: Optional[int] = Field(None, description='', alias='172')
-    StandInstDbType: Optional[int] = Field(None, description='', alias='169')
-    StandInstDbName: Optional[str] = Field(None, description='', alias='170')
-    StandInstDbID: Optional[str] = Field(None, description='', alias='171')
-    DlvyInstGrp: Optional[str] = Field(None)
+    settlDeliveryType: Optional[int] = Field(None, description='', alias='172')
+    standInstDbType: Optional[int] = Field(None, description='', alias='169')
+    standInstDbName: Optional[str] = Field(None, description='', alias='170')
+    standInstDbID: Optional[str] = Field(None, description='', alias='171')
+    dlvyInstGrp: Optional[str] = Field(None)

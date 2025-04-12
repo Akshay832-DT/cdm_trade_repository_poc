@@ -6,11 +6,11 @@ This module contains the Pydantic model for the PosUndInstrmtGrp component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class PosUndInstrmtGrp(TradeModel):
+class PosUndInstrmtGrp(FIXMessageBase):
     """
     FIX 4.4 PosUndInstrmtGrp Component
     """
@@ -23,12 +23,12 @@ class PosUndInstrmtGrp(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    UnderlyingSettlPrice: float = Field(None, description='', alias='732')
-    UnderlyingSettlPriceType: int = Field(None, description='', alias='733')
-    UnderlyingInstrument: Optional[str] = Field(None)
+    underlyingSettlPrice: float = Field(None, description='', alias='732')
+    underlyingSettlPriceType: int = Field(None, description='', alias='733')
+    underlyingInstrument: Optional[str] = Field(None)
 
 
-class NoUnderlyings(TradeModel):
+class NoUnderlyings(FIXMessageBase):
     """
     NoUnderlyings group fields
     """
@@ -41,7 +41,7 @@ class NoUnderlyings(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    UnderlyingSettlPrice: float = Field(None, description='', alias='732')
-    UnderlyingSettlPriceType: int = Field(None, description='', alias='733')
+    underlyingSettlPrice: int = Field(None, description='', alias='711')
+    underlyingSettlPriceType: int = Field(None, description='', alias='711')
 
-    NoUnderlyingss: List[NoUnderlyings] = Field(default_factory=list)
+    noUnderlyingss: List[NoUnderlyings] = Field(default_factory=list)

@@ -6,11 +6,11 @@ This module contains the Pydantic model for the UserRequest message.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.base import FIXMessageBase
+from src.models.fix.generated.fields.common import *
 
 
-class UserRequest(TradeModel):
+class UserRequest(FIXMessageBase):
     """
     FIX 4.4 UserRequest Message
     """
@@ -24,23 +24,17 @@ class UserRequest(TradeModel):
         }
     )
     
-    # Standard FIX header fields
-    BeginString: Literal["FIX.4.4"] = Field(alias='8')
-    BodyLength: Optional[int] = Field(None, alias='9')
-    MsgType: Literal["BE"] = Field(alias='35')
-    SenderCompID: str = Field(..., alias='49')
-    TargetCompID: str = Field(..., alias='56')
-    MsgSeqNum: int = Field(..., alias='34')
-    SendingTime: datetime = Field(..., alias='52')
+    # Set the message type for this message
+    msgType: Literal["BE"] = Field("BE", alias='35')
     
     # Message-specific fields
-    UserRequestID: str = Field(None, description='', alias='923')
-    UserRequestType: int = Field(None, description='', alias='924')
-    Username: str = Field(None, description='', alias='553')
-    Password: Optional[str] = Field(None, description='', alias='554')
-    NewPassword: Optional[str] = Field(None, description='', alias='925')
-    RawDataLength: Optional[int] = Field(None, description='', alias='95')
-    RawData: Optional[str] = Field(None, description='', alias='96')
+    userRequestID: Optional[str] = Field(None, description='', alias='923')
+    userRequestType: Optional[int] = Field(None, description='', alias='924')
+    username: Optional[str] = Field(None, description='', alias='553')
+    password: Optional[str] = Field(None, description='', alias='554')
+    newPassword: Optional[str] = Field(None, description='', alias='925')
+    rawDataLength: Optional[int] = Field(None, description='', alias='95')
+    rawData: Optional[str] = Field(None, description='', alias='96')
 
     def model_dump(self, **kwargs) -> Dict[str, Any]:
         """Override model_dump to handle nested components"""
@@ -51,8 +45,8 @@ class UserRequest(TradeModel):
         for field_name, value in data.items():
             if isinstance(value, list):
                 # Set the No* field based on list length
-                no_field = f"No{field_name[:-1]}"  # Remove 's' from plural
-                if no_field in self.__fields__:
-                    data[no_field] = len(value)
+                no_field = f"no{field_name}"  # Convert to camelCase
+                if hasattr(self, no_field):
+                    setattr(self, no_field, len(value))
         
-        return {k: v for k, v in data.items() if v is not None and (not isinstance(v, list) or v)}
+        return data

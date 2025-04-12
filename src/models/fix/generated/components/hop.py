@@ -6,11 +6,11 @@ This module contains the Pydantic model for the Hop component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class Hop(TradeModel):
+class Hop(FIXMessageBase):
     """
     FIX 4.4 Hop Component
     """
@@ -23,12 +23,12 @@ class Hop(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    HopCompID: Optional[str] = Field(None, description='', alias='628')
-    HopSendingTime: Optional[datetime] = Field(None, description='', alias='629')
-    HopRefID: Optional[int] = Field(None, description='', alias='630')
+    hopCompID: Optional[str] = Field(None, description='', alias='628')
+    hopSendingTime: Optional[datetime] = Field(None, description='', alias='629')
+    hopRefID: Optional[int] = Field(None, description='', alias='630')
 
 
-class NoHops(TradeModel):
+class NoHops(FIXMessageBase):
     """
     NoHops group fields
     """
@@ -41,8 +41,8 @@ class NoHops(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    HopCompID: Optional[str] = Field(None, description='', alias='628')
-    HopSendingTime: Optional[datetime] = Field(None, description='', alias='629')
-    HopRefID: Optional[int] = Field(None, description='', alias='630')
+    hopCompID: Optional[int] = Field(None, description='', alias='627')
+    hopSendingTime: Optional[int] = Field(None, description='', alias='627')
+    hopRefID: Optional[int] = Field(None, description='', alias='627')
 
-    NoHopss: List[NoHops] = Field(default_factory=list)
+    noHopss: List[NoHops] = Field(default_factory=list)

@@ -6,21 +6,21 @@ This module contains the Pydantic model for the TradeCaptureReport message.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
-from ..components.financingdetails import FinancingDetails
-from ..components.instrument import Instrument
-from ..components.orderqtydata import OrderQtyData
-from ..components.positionamountdata import PositionAmountData
-from ..components.spreadorbenchmarkcurvedata import SpreadOrBenchmarkCurveData
-from ..components.trdcaprptsidegrp import TrdCapRptSideGrp
-from ..components.trdinstrmtleggrp import TrdInstrmtLegGrp
-from ..components.trdregtimestamps import TrdRegTimestamps
-from ..components.undinstrmtgrp import UndInstrmtGrp
-from ..components.yielddata import YieldData
+from src.models.fix.base import FIXMessageBase
+from src.models.fix.generated.fields.common import *
+from src.models.fix.generated.components.financingdetails import FinancingDetails
+from src.models.fix.generated.components.instrument import Instrument
+from src.models.fix.generated.components.orderqtydata import OrderQtyData
+from src.models.fix.generated.components.positionamountdata import PositionAmountData
+from src.models.fix.generated.components.spreadorbenchmarkcurvedata import SpreadOrBenchmarkCurveData
+from src.models.fix.generated.components.trdcaprptsidegrp import TrdCapRptSideGrp
+from src.models.fix.generated.components.trdinstrmtleggrp import TrdInstrmtLegGrp
+from src.models.fix.generated.components.trdregtimestamps import TrdRegTimestamps
+from src.models.fix.generated.components.undinstrmtgrp import UndInstrmtGrp
+from src.models.fix.generated.components.yielddata import YieldData
 
 
-class TradeCaptureReport(TradeModel):
+class TradeCaptureReport(FIXMessageBase):
     """
     FIX 4.4 TradeCaptureReport Message
     """
@@ -34,73 +34,67 @@ class TradeCaptureReport(TradeModel):
         }
     )
     
-    # Standard FIX header fields
-    BeginString: Literal["FIX.4.4"] = Field(alias='8')
-    BodyLength: Optional[int] = Field(None, alias='9')
-    MsgType: Literal["AE"] = Field(alias='35')
-    SenderCompID: str = Field(..., alias='49')
-    TargetCompID: str = Field(..., alias='56')
-    MsgSeqNum: int = Field(..., alias='34')
-    SendingTime: datetime = Field(..., alias='52')
+    # Set the message type for this message
+    msgType: Literal["AE"] = Field("AE", alias='35')
     
     # Message-specific fields
-    TradeReportID: str = Field(None, description='', alias='571')
-    TradeReportTransType: Optional[int] = Field(None, description='', alias='487')
-    TradeReportType: Optional[int] = Field(None, description='', alias='856')
-    TradeRequestID: Optional[str] = Field(None, description='', alias='568')
-    TrdType: Optional[int] = Field(None, description='', alias='828')
-    TrdSubType: Optional[int] = Field(None, description='', alias='829')
-    SecondaryTrdType: Optional[int] = Field(None, description='', alias='855')
-    TransferReason: Optional[str] = Field(None, description='', alias='830')
-    ExecType: Optional[str] = Field(None, description='', alias='150')
-    TotNumTradeReports: Optional[int] = Field(None, description='', alias='748')
-    LastRptRequested: Optional[bool] = Field(None, description='', alias='912')
-    UnsolicitedIndicator: Optional[bool] = Field(None, description='', alias='325')
-    SubscriptionRequestType: Optional[str] = Field(None, description='', alias='263')
-    TradeReportRefID: Optional[str] = Field(None, description='', alias='572')
-    SecondaryTradeReportRefID: Optional[str] = Field(None, description='', alias='881')
-    SecondaryTradeReportID: Optional[str] = Field(None, description='', alias='818')
-    TradeLinkID: Optional[str] = Field(None, description='', alias='820')
-    TrdMatchID: Optional[str] = Field(None, description='', alias='880')
-    ExecID: Optional[str] = Field(None, description='', alias='17')
-    OrdStatus: Optional[str] = Field(None, description='', alias='39')
-    SecondaryExecID: Optional[str] = Field(None, description='', alias='527')
-    ExecRestatementReason: Optional[int] = Field(None, description='', alias='378')
-    PreviouslyReported: bool = Field(None, description='', alias='570')
-    PriceType: Optional[int] = Field(None, description='', alias='423')
-    QtyType: Optional[int] = Field(None, description='', alias='854')
-    UnderlyingTradingSessionID: Optional[str] = Field(None, description='', alias='822')
-    UnderlyingTradingSessionSubID: Optional[str] = Field(None, description='', alias='823')
-    LastQty: float = Field(None, description='', alias='32')
-    LastPx: float = Field(None, description='', alias='31')
-    LastParPx: Optional[float] = Field(None, description='', alias='669')
-    LastSpotRate: Optional[float] = Field(None, description='', alias='194')
-    LastForwardPoints: Optional[float] = Field(None, description='', alias='195')
-    LastMkt: Optional[str] = Field(None, description='', alias='30')
-    TradeDate: date = Field(None, description='', alias='75')
-    ClearingBusinessDate: Optional[date] = Field(None, description='', alias='715')
-    AvgPx: Optional[float] = Field(None, description='', alias='6')
-    AvgPxIndicator: Optional[int] = Field(None, description='', alias='819')
-    MultiLegReportingType: Optional[str] = Field(None, description='', alias='442')
-    TradeLegRefID: Optional[str] = Field(None, description='', alias='824')
-    TransactTime: datetime = Field(None, description='', alias='60')
-    SettlType: Optional[str] = Field(None, description='', alias='63')
-    SettlDate: Optional[date] = Field(None, description='', alias='64')
-    MatchStatus: Optional[str] = Field(None, description='', alias='573')
-    MatchType: Optional[str] = Field(None, description='', alias='574')
-    CopyMsgIndicator: Optional[bool] = Field(None, description='', alias='797')
-    PublishTrdIndicator: Optional[bool] = Field(None, description='', alias='852')
-    ShortSaleReason: Optional[int] = Field(None, description='', alias='853')
-    Instrument: Instrument = Field(..., description='Instrument component')
-    FinancingDetails: Optional[FinancingDetails] = None
-    OrderQtyData: Optional[OrderQtyData] = None
-    YieldData: Optional[YieldData] = None
-    UndInstrmtGrp: Optional[UndInstrmtGrp] = None
-    SpreadOrBenchmarkCurveData: Optional[SpreadOrBenchmarkCurveData] = None
-    PositionAmountData: Optional[PositionAmountData] = None
-    TrdInstrmtLegGrp: Optional[TrdInstrmtLegGrp] = None
-    TrdRegTimestamps: Optional[TrdRegTimestamps] = None
-    TrdCapRptSideGrp: TrdCapRptSideGrp = Field(..., description='TrdCapRptSideGrp component')
+    tradeReportID: Optional[str] = Field(None, description='', alias='571')
+    tradeReportTransType: Optional[int] = Field(None, description='', alias='487')
+    tradeReportType: Optional[int] = Field(None, description='', alias='856')
+    tradeRequestID: Optional[str] = Field(None, description='', alias='568')
+    trdType: Optional[int] = Field(None, description='', alias='828')
+    trdSubType: Optional[int] = Field(None, description='', alias='829')
+    secondaryTrdType: Optional[int] = Field(None, description='', alias='855')
+    transferReason: Optional[str] = Field(None, description='', alias='830')
+    execType: Optional[str] = Field(None, description='', alias='150')
+    totNumTradeReports: Optional[int] = Field(None, description='', alias='748')
+    lastRptRequested: Optional[bool] = Field(None, description='', alias='912')
+    unsolicitedIndicator: Optional[bool] = Field(None, description='', alias='325')
+    subscriptionRequestType: Optional[str] = Field(None, description='', alias='263')
+    tradeReportRefID: Optional[str] = Field(None, description='', alias='572')
+    secondaryTradeReportRefID: Optional[str] = Field(None, description='', alias='881')
+    secondaryTradeReportID: Optional[str] = Field(None, description='', alias='818')
+    tradeLinkID: Optional[str] = Field(None, description='', alias='820')
+    trdMatchID: Optional[str] = Field(None, description='', alias='880')
+    execID: Optional[str] = Field(None, description='', alias='17')
+    ordStatus: Optional[str] = Field(None, description='', alias='39')
+    secondaryExecID: Optional[str] = Field(None, description='', alias='527')
+    execRestatementReason: Optional[int] = Field(None, description='', alias='378')
+    previouslyReported: Optional[bool] = Field(None, description='', alias='570')
+    priceType: Optional[int] = Field(None, description='', alias='423')
+    qtyType: Optional[int] = Field(None, description='', alias='854')
+    underlyingTradingSessionID: Optional[str] = Field(None, description='', alias='822')
+    underlyingTradingSessionSubID: Optional[str] = Field(None, description='', alias='823')
+    lastQty: Optional[float] = Field(None, description='', alias='32')
+    lastPx: Optional[float] = Field(None, description='', alias='31')
+    lastParPx: Optional[float] = Field(None, description='', alias='669')
+    lastSpotRate: Optional[float] = Field(None, description='', alias='194')
+    lastForwardPoints: Optional[float] = Field(None, description='', alias='195')
+    lastMkt: Optional[str] = Field(None, description='', alias='30')
+    tradeDate: Optional[date] = Field(None, description='', alias='75')
+    clearingBusinessDate: Optional[date] = Field(None, description='', alias='715')
+    avgPx: Optional[float] = Field(None, description='', alias='6')
+    avgPxIndicator: Optional[int] = Field(None, description='', alias='819')
+    multiLegReportingType: Optional[str] = Field(None, description='', alias='442')
+    tradeLegRefID: Optional[str] = Field(None, description='', alias='824')
+    transactTime: Optional[datetime] = Field(None, description='', alias='60')
+    settlType: Optional[str] = Field(None, description='', alias='63')
+    settlDate: Optional[date] = Field(None, description='', alias='64')
+    matchStatus: Optional[str] = Field(None, description='', alias='573')
+    matchType: Optional[str] = Field(None, description='', alias='574')
+    copyMsgIndicator: Optional[bool] = Field(None, description='', alias='797')
+    publishTrdIndicator: Optional[bool] = Field(None, description='', alias='852')
+    shortSaleReason: Optional[int] = Field(None, description='', alias='853')
+    instrument: Optional[Instrument] = Field(None, description='Instrument component')
+    financingDetails: Optional[FinancingDetails] = Field(None, description='FinancingDetails component')
+    orderQtyData: Optional[OrderQtyData] = Field(None, description='OrderQtyData component')
+    yieldData: Optional[YieldData] = Field(None, description='YieldData component')
+    undInstrmtGrp: Optional[UndInstrmtGrp] = Field(None, description='UndInstrmtGrp component')
+    spreadOrBenchmarkCurveData: Optional[SpreadOrBenchmarkCurveData] = Field(None, description='SpreadOrBenchmarkCurveData component')
+    positionAmountData: Optional[PositionAmountData] = Field(None, description='PositionAmountData component')
+    trdInstrmtLegGrp: Optional[TrdInstrmtLegGrp] = Field(None, description='TrdInstrmtLegGrp component')
+    trdRegTimestamps: Optional[TrdRegTimestamps] = Field(None, description='TrdRegTimestamps component')
+    trdCapRptSideGrp: Optional[TrdCapRptSideGrp] = Field(None, description='TrdCapRptSideGrp component')
 
     def model_dump(self, **kwargs) -> Dict[str, Any]:
         """Override model_dump to handle nested components"""
@@ -111,8 +105,8 @@ class TradeCaptureReport(TradeModel):
         for field_name, value in data.items():
             if isinstance(value, list):
                 # Set the No* field based on list length
-                no_field = f"No{field_name[:-1]}"  # Remove 's' from plural
-                if no_field in self.__fields__:
-                    data[no_field] = len(value)
+                no_field = f"no{field_name}"  # Convert to camelCase
+                if hasattr(self, no_field):
+                    setattr(self, no_field, len(value))
         
-        return {k: v for k, v in data.items() if v is not None and (not isinstance(v, list) or v)}
+        return data

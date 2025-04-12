@@ -6,11 +6,11 @@ This module contains the Pydantic model for the ExecAllocGrp component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class ExecAllocGrp(TradeModel):
+class ExecAllocGrp(FIXMessageBase):
     """
     FIX 4.4 ExecAllocGrp Component
     """
@@ -23,15 +23,15 @@ class ExecAllocGrp(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    LastQty: Optional[float] = Field(None, description='', alias='32')
-    ExecID: Optional[str] = Field(None, description='', alias='17')
-    SecondaryExecID: Optional[str] = Field(None, description='', alias='527')
-    LastPx: Optional[float] = Field(None, description='', alias='31')
-    LastParPx: Optional[float] = Field(None, description='', alias='669')
-    LastCapacity: Optional[str] = Field(None, description='', alias='29')
+    lastQty: Optional[float] = Field(None, description='', alias='32')
+    execID: Optional[str] = Field(None, description='', alias='17')
+    secondaryExecID: Optional[str] = Field(None, description='', alias='527')
+    lastPx: Optional[float] = Field(None, description='', alias='31')
+    lastParPx: Optional[float] = Field(None, description='', alias='669')
+    lastCapacity: Optional[str] = Field(None, description='', alias='29')
 
 
-class NoExecs(TradeModel):
+class NoExecs(FIXMessageBase):
     """
     NoExecs group fields
     """
@@ -44,11 +44,11 @@ class NoExecs(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    LastQty: Optional[float] = Field(None, description='', alias='32')
-    ExecID: Optional[str] = Field(None, description='', alias='17')
-    SecondaryExecID: Optional[str] = Field(None, description='', alias='527')
-    LastPx: Optional[float] = Field(None, description='', alias='31')
-    LastParPx: Optional[float] = Field(None, description='', alias='669')
-    LastCapacity: Optional[str] = Field(None, description='', alias='29')
+    lastQty: Optional[int] = Field(None, description='', alias='124')
+    execID: Optional[int] = Field(None, description='', alias='124')
+    secondaryExecID: Optional[int] = Field(None, description='', alias='124')
+    lastPx: Optional[int] = Field(None, description='', alias='124')
+    lastParPx: Optional[int] = Field(None, description='', alias='124')
+    lastCapacity: Optional[int] = Field(None, description='', alias='124')
 
-    NoExecss: List[NoExecs] = Field(default_factory=list)
+    noExecss: List[NoExecs] = Field(default_factory=list)

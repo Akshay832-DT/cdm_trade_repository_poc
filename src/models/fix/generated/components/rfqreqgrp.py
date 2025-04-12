@@ -6,11 +6,11 @@ This module contains the Pydantic model for the RFQReqGrp component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class RFQReqGrp(TradeModel):
+class RFQReqGrp(FIXMessageBase):
     """
     FIX 4.4 RFQReqGrp Component
     """
@@ -23,17 +23,17 @@ class RFQReqGrp(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    PrevClosePx: Optional[float] = Field(None, description='', alias='140')
-    QuoteRequestType: Optional[int] = Field(None, description='', alias='303')
-    QuoteType: Optional[int] = Field(None, description='', alias='537')
-    TradingSessionID: Optional[str] = Field(None, description='', alias='336')
-    TradingSessionSubID: Optional[str] = Field(None, description='', alias='625')
-    Instrument: str = Field(None)
-    UndInstrmtGrp: Optional[str] = Field(None)
-    InstrmtLegGrp: Optional[str] = Field(None)
+    prevClosePx: Optional[float] = Field(None, description='', alias='140')
+    quoteRequestType: Optional[int] = Field(None, description='', alias='303')
+    quoteType: Optional[int] = Field(None, description='', alias='537')
+    tradingSessionID: Optional[str] = Field(None, description='', alias='336')
+    tradingSessionSubID: Optional[str] = Field(None, description='', alias='625')
+    instrument: str = Field(None)
+    undInstrmtGrp: Optional[str] = Field(None)
+    instrmtLegGrp: Optional[str] = Field(None)
 
 
-class NoRelatedSym(TradeModel):
+class NoRelatedSym(FIXMessageBase):
     """
     NoRelatedSym group fields
     """
@@ -46,10 +46,10 @@ class NoRelatedSym(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    PrevClosePx: Optional[float] = Field(None, description='', alias='140')
-    QuoteRequestType: Optional[int] = Field(None, description='', alias='303')
-    QuoteType: Optional[int] = Field(None, description='', alias='537')
-    TradingSessionID: Optional[str] = Field(None, description='', alias='336')
-    TradingSessionSubID: Optional[str] = Field(None, description='', alias='625')
+    prevClosePx: Optional[int] = Field(None, description='', alias='146')
+    quoteRequestType: Optional[int] = Field(None, description='', alias='146')
+    quoteType: Optional[int] = Field(None, description='', alias='146')
+    tradingSessionID: Optional[int] = Field(None, description='', alias='146')
+    tradingSessionSubID: Optional[int] = Field(None, description='', alias='146')
 
-    NoRelatedSyms: List[NoRelatedSym] = Field(default_factory=list)
+    noRelatedSyms: List[NoRelatedSym] = Field(default_factory=list)

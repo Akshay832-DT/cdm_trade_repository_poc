@@ -6,11 +6,11 @@ This module contains the Pydantic model for the LegStipulations component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class LegStipulations(TradeModel):
+class LegStipulations(FIXMessageBase):
     """
     FIX 4.4 LegStipulations Component
     """
@@ -23,11 +23,11 @@ class LegStipulations(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    LegStipulationType: Optional[str] = Field(None, description='', alias='688')
-    LegStipulationValue: Optional[str] = Field(None, description='', alias='689')
+    legStipulationType: Optional[str] = Field(None, description='', alias='688')
+    legStipulationValue: Optional[str] = Field(None, description='', alias='689')
 
 
-class NoLegStipulations(TradeModel):
+class NoLegStipulations(FIXMessageBase):
     """
     NoLegStipulations group fields
     """
@@ -40,7 +40,7 @@ class NoLegStipulations(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    LegStipulationType: Optional[str] = Field(None, description='', alias='688')
-    LegStipulationValue: Optional[str] = Field(None, description='', alias='689')
+    legStipulationType: Optional[int] = Field(None, description='', alias='683')
+    legStipulationValue: Optional[int] = Field(None, description='', alias='683')
 
-    NoLegStipulationss: List[NoLegStipulations] = Field(default_factory=list)
+    noLegStipulationss: List[NoLegStipulations] = Field(default_factory=list)

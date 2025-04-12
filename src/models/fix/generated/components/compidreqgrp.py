@@ -6,11 +6,11 @@ This module contains the Pydantic model for the CompIDReqGrp component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class CompIDReqGrp(TradeModel):
+class CompIDReqGrp(FIXMessageBase):
     """
     FIX 4.4 CompIDReqGrp Component
     """
@@ -23,13 +23,13 @@ class CompIDReqGrp(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    RefCompID: Optional[str] = Field(None, description='', alias='930')
-    RefSubID: Optional[str] = Field(None, description='', alias='931')
-    LocationID: Optional[str] = Field(None, description='', alias='283')
-    DeskID: Optional[str] = Field(None, description='', alias='284')
+    refCompID: Optional[str] = Field(None, description='', alias='930')
+    refSubID: Optional[str] = Field(None, description='', alias='931')
+    locationID: Optional[str] = Field(None, description='', alias='283')
+    deskID: Optional[str] = Field(None, description='', alias='284')
 
 
-class NoCompIDs(TradeModel):
+class NoCompIDs(FIXMessageBase):
     """
     NoCompIDs group fields
     """
@@ -42,9 +42,9 @@ class NoCompIDs(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    RefCompID: Optional[str] = Field(None, description='', alias='930')
-    RefSubID: Optional[str] = Field(None, description='', alias='931')
-    LocationID: Optional[str] = Field(None, description='', alias='283')
-    DeskID: Optional[str] = Field(None, description='', alias='284')
+    refCompID: Optional[int] = Field(None, description='', alias='936')
+    refSubID: Optional[int] = Field(None, description='', alias='936')
+    locationID: Optional[int] = Field(None, description='', alias='936')
+    deskID: Optional[int] = Field(None, description='', alias='936')
 
-    NoCompIDss: List[NoCompIDs] = Field(default_factory=list)
+    noCompIDss: List[NoCompIDs] = Field(default_factory=list)

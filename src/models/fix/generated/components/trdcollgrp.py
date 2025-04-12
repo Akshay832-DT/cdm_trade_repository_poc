@@ -6,11 +6,11 @@ This module contains the Pydantic model for the TrdCollGrp component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class TrdCollGrp(TradeModel):
+class TrdCollGrp(FIXMessageBase):
     """
     FIX 4.4 TrdCollGrp Component
     """
@@ -23,11 +23,11 @@ class TrdCollGrp(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    TradeReportID: Optional[str] = Field(None, description='', alias='571')
-    SecondaryTradeReportID: Optional[str] = Field(None, description='', alias='818')
+    tradeReportID: Optional[str] = Field(None, description='', alias='571')
+    secondaryTradeReportID: Optional[str] = Field(None, description='', alias='818')
 
 
-class NoTrades(TradeModel):
+class NoTrades(FIXMessageBase):
     """
     NoTrades group fields
     """
@@ -40,7 +40,7 @@ class NoTrades(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    TradeReportID: Optional[str] = Field(None, description='', alias='571')
-    SecondaryTradeReportID: Optional[str] = Field(None, description='', alias='818')
+    tradeReportID: Optional[int] = Field(None, description='', alias='897')
+    secondaryTradeReportID: Optional[int] = Field(None, description='', alias='897')
 
-    NoTradess: List[NoTrades] = Field(default_factory=list)
+    noTradess: List[NoTrades] = Field(default_factory=list)

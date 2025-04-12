@@ -6,11 +6,11 @@ This module contains the Pydantic model for the AffectedOrdGrp component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class AffectedOrdGrp(TradeModel):
+class AffectedOrdGrp(FIXMessageBase):
     """
     FIX 4.4 AffectedOrdGrp Component
     """
@@ -23,12 +23,12 @@ class AffectedOrdGrp(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    OrigClOrdID: Optional[str] = Field(None, description='', alias='41')
-    AffectedOrderID: Optional[str] = Field(None, description='', alias='535')
-    AffectedSecondaryOrderID: Optional[str] = Field(None, description='', alias='536')
+    origClOrdID: Optional[str] = Field(None, description='', alias='41')
+    affectedOrderID: Optional[str] = Field(None, description='', alias='535')
+    affectedSecondaryOrderID: Optional[str] = Field(None, description='', alias='536')
 
 
-class NoAffectedOrders(TradeModel):
+class NoAffectedOrders(FIXMessageBase):
     """
     NoAffectedOrders group fields
     """
@@ -41,8 +41,8 @@ class NoAffectedOrders(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    OrigClOrdID: Optional[str] = Field(None, description='', alias='41')
-    AffectedOrderID: Optional[str] = Field(None, description='', alias='535')
-    AffectedSecondaryOrderID: Optional[str] = Field(None, description='', alias='536')
+    origClOrdID: Optional[int] = Field(None, description='', alias='534')
+    affectedOrderID: Optional[int] = Field(None, description='', alias='534')
+    affectedSecondaryOrderID: Optional[int] = Field(None, description='', alias='534')
 
-    NoAffectedOrderss: List[NoAffectedOrders] = Field(default_factory=list)
+    noAffectedOrderss: List[NoAffectedOrders] = Field(default_factory=list)

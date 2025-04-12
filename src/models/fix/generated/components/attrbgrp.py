@@ -6,11 +6,11 @@ This module contains the Pydantic model for the AttrbGrp component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class AttrbGrp(TradeModel):
+class AttrbGrp(FIXMessageBase):
     """
     FIX 4.4 AttrbGrp Component
     """
@@ -23,11 +23,11 @@ class AttrbGrp(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    InstrAttribType: Optional[int] = Field(None, description='', alias='871')
-    InstrAttribValue: Optional[str] = Field(None, description='', alias='872')
+    instrAttribType: Optional[int] = Field(None, description='', alias='871')
+    instrAttribValue: Optional[str] = Field(None, description='', alias='872')
 
 
-class NoInstrAttrib(TradeModel):
+class NoInstrAttrib(FIXMessageBase):
     """
     NoInstrAttrib group fields
     """
@@ -40,7 +40,7 @@ class NoInstrAttrib(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    InstrAttribType: Optional[int] = Field(None, description='', alias='871')
-    InstrAttribValue: Optional[str] = Field(None, description='', alias='872')
+    instrAttribType: Optional[int] = Field(None, description='', alias='870')
+    instrAttribValue: Optional[int] = Field(None, description='', alias='870')
 
-    NoInstrAttribs: List[NoInstrAttrib] = Field(default_factory=list)
+    noInstrAttribs: List[NoInstrAttrib] = Field(default_factory=list)

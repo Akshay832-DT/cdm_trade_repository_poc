@@ -6,11 +6,11 @@ This module contains the Pydantic model for the MiscFeesGrp component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class MiscFeesGrp(TradeModel):
+class MiscFeesGrp(FIXMessageBase):
     """
     FIX 4.4 MiscFeesGrp Component
     """
@@ -23,13 +23,13 @@ class MiscFeesGrp(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    MiscFeeAmt: Optional[float] = Field(None, description='', alias='137')
-    MiscFeeCurr: Optional[str] = Field(None, description='', alias='138')
-    MiscFeeType: Optional[str] = Field(None, description='', alias='139')
-    MiscFeeBasis: Optional[int] = Field(None, description='', alias='891')
+    miscFeeAmt: Optional[float] = Field(None, description='', alias='137')
+    miscFeeCurr: Optional[str] = Field(None, description='', alias='138')
+    miscFeeType: Optional[str] = Field(None, description='', alias='139')
+    miscFeeBasis: Optional[int] = Field(None, description='', alias='891')
 
 
-class NoMiscFees(TradeModel):
+class NoMiscFees(FIXMessageBase):
     """
     NoMiscFees group fields
     """
@@ -42,9 +42,9 @@ class NoMiscFees(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    MiscFeeAmt: Optional[float] = Field(None, description='', alias='137')
-    MiscFeeCurr: Optional[str] = Field(None, description='', alias='138')
-    MiscFeeType: Optional[str] = Field(None, description='', alias='139')
-    MiscFeeBasis: Optional[int] = Field(None, description='', alias='891')
+    miscFeeAmt: Optional[int] = Field(None, description='', alias='136')
+    miscFeeCurr: Optional[int] = Field(None, description='', alias='136')
+    miscFeeType: Optional[int] = Field(None, description='', alias='136')
+    miscFeeBasis: Optional[int] = Field(None, description='', alias='136')
 
-    NoMiscFeess: List[NoMiscFees] = Field(default_factory=list)
+    noMiscFeess: List[NoMiscFees] = Field(default_factory=list)

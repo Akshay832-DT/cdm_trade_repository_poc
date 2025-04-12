@@ -6,11 +6,11 @@ This module contains the Pydantic model for the SettlParties component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class SettlParties(TradeModel):
+class SettlParties(FIXMessageBase):
     """
     FIX 4.4 SettlParties Component
     """
@@ -23,13 +23,13 @@ class SettlParties(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    SettlPartyID: Optional[str] = Field(None, description='', alias='782')
-    SettlPartyIDSource: Optional[str] = Field(None, description='', alias='783')
-    SettlPartyRole: Optional[int] = Field(None, description='', alias='784')
-    SettlPtysSubGrp: Optional[str] = Field(None)
+    settlPartyID: Optional[str] = Field(None, description='', alias='782')
+    settlPartyIDSource: Optional[str] = Field(None, description='', alias='783')
+    settlPartyRole: Optional[int] = Field(None, description='', alias='784')
+    settlPtysSubGrp: Optional[str] = Field(None)
 
 
-class NoSettlPartyIDs(TradeModel):
+class NoSettlPartyIDs(FIXMessageBase):
     """
     NoSettlPartyIDs group fields
     """
@@ -42,8 +42,8 @@ class NoSettlPartyIDs(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    SettlPartyID: Optional[str] = Field(None, description='', alias='782')
-    SettlPartyIDSource: Optional[str] = Field(None, description='', alias='783')
-    SettlPartyRole: Optional[int] = Field(None, description='', alias='784')
+    settlPartyID: Optional[int] = Field(None, description='', alias='781')
+    settlPartyIDSource: Optional[int] = Field(None, description='', alias='781')
+    settlPartyRole: Optional[int] = Field(None, description='', alias='781')
 
-    NoSettlPartyIDss: List[NoSettlPartyIDs] = Field(default_factory=list)
+    noSettlPartyIDss: List[NoSettlPartyIDs] = Field(default_factory=list)

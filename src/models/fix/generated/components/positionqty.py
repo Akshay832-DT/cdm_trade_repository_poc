@@ -6,11 +6,11 @@ This module contains the Pydantic model for the PositionQty component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class PositionQty(TradeModel):
+class PositionQty(FIXMessageBase):
     """
     FIX 4.4 PositionQty Component
     """
@@ -23,14 +23,14 @@ class PositionQty(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    PosType: Optional[str] = Field(None, description='', alias='703')
-    LongQty: Optional[float] = Field(None, description='', alias='704')
-    ShortQty: Optional[float] = Field(None, description='', alias='705')
-    PosQtyStatus: Optional[int] = Field(None, description='', alias='706')
-    NestedParties: Optional[str] = Field(None)
+    posType: Optional[str] = Field(None, description='', alias='703')
+    longQty: Optional[float] = Field(None, description='', alias='704')
+    shortQty: Optional[float] = Field(None, description='', alias='705')
+    posQtyStatus: Optional[int] = Field(None, description='', alias='706')
+    nestedParties: Optional[str] = Field(None)
 
 
-class NoPositions(TradeModel):
+class NoPositions(FIXMessageBase):
     """
     NoPositions group fields
     """
@@ -43,9 +43,9 @@ class NoPositions(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    PosType: Optional[str] = Field(None, description='', alias='703')
-    LongQty: Optional[float] = Field(None, description='', alias='704')
-    ShortQty: Optional[float] = Field(None, description='', alias='705')
-    PosQtyStatus: Optional[int] = Field(None, description='', alias='706')
+    posType: Optional[int] = Field(None, description='', alias='702')
+    longQty: Optional[int] = Field(None, description='', alias='702')
+    shortQty: Optional[int] = Field(None, description='', alias='702')
+    posQtyStatus: Optional[int] = Field(None, description='', alias='702')
 
-    NoPositionss: List[NoPositions] = Field(default_factory=list)
+    noPositionss: List[NoPositions] = Field(default_factory=list)

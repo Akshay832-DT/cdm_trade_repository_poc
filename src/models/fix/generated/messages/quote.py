@@ -6,21 +6,21 @@ This module contains the Pydantic model for the Quote message.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
-from ..components.financingdetails import FinancingDetails
-from ..components.instrument import Instrument
-from ..components.legquotgrp import LegQuotGrp
-from ..components.orderqtydata import OrderQtyData
-from ..components.parties import Parties
-from ..components.quotqualgrp import QuotQualGrp
-from ..components.spreadorbenchmarkcurvedata import SpreadOrBenchmarkCurveData
-from ..components.stipulations import Stipulations
-from ..components.undinstrmtgrp import UndInstrmtGrp
-from ..components.yielddata import YieldData
+from src.models.fix.base import FIXMessageBase
+from src.models.fix.generated.fields.common import *
+from src.models.fix.generated.components.financingdetails import FinancingDetails
+from src.models.fix.generated.components.instrument import Instrument
+from src.models.fix.generated.components.legquotgrp import LegQuotGrp
+from src.models.fix.generated.components.orderqtydata import OrderQtyData
+from src.models.fix.generated.components.parties import Parties
+from src.models.fix.generated.components.quotqualgrp import QuotQualGrp
+from src.models.fix.generated.components.spreadorbenchmarkcurvedata import SpreadOrBenchmarkCurveData
+from src.models.fix.generated.components.stipulations import Stipulations
+from src.models.fix.generated.components.undinstrmtgrp import UndInstrmtGrp
+from src.models.fix.generated.components.yielddata import YieldData
 
 
-class Quote(TradeModel):
+class Quote(FIXMessageBase):
     """
     FIX 4.4 Quote Message
     """
@@ -34,75 +34,69 @@ class Quote(TradeModel):
         }
     )
     
-    # Standard FIX header fields
-    BeginString: Literal["FIX.4.4"] = Field(alias='8')
-    BodyLength: Optional[int] = Field(None, alias='9')
-    MsgType: Literal["S"] = Field(alias='35')
-    SenderCompID: str = Field(..., alias='49')
-    TargetCompID: str = Field(..., alias='56')
-    MsgSeqNum: int = Field(..., alias='34')
-    SendingTime: datetime = Field(..., alias='52')
+    # Set the message type for this message
+    msgType: Literal["S"] = Field("S", alias='35')
     
     # Message-specific fields
-    QuoteReqID: Optional[str] = Field(None, description='', alias='131')
-    QuoteID: str = Field(None, description='', alias='117')
-    QuoteRespID: Optional[str] = Field(None, description='', alias='693')
-    QuoteType: Optional[int] = Field(None, description='', alias='537')
-    QuoteResponseLevel: Optional[int] = Field(None, description='', alias='301')
-    TradingSessionID: Optional[str] = Field(None, description='', alias='336')
-    TradingSessionSubID: Optional[str] = Field(None, description='', alias='625')
-    Side: Optional[str] = Field(None, description='', alias='54')
-    SettlType: Optional[str] = Field(None, description='', alias='63')
-    SettlDate: Optional[date] = Field(None, description='', alias='64')
-    SettlDate2: Optional[date] = Field(None, description='', alias='193')
-    OrderQty2: Optional[float] = Field(None, description='', alias='192')
-    Currency: Optional[str] = Field(None, description='', alias='15')
-    Account: Optional[str] = Field(None, description='', alias='1')
-    AcctIDSource: Optional[int] = Field(None, description='', alias='660')
-    AccountType: Optional[int] = Field(None, description='', alias='581')
-    BidPx: Optional[float] = Field(None, description='', alias='132')
-    OfferPx: Optional[float] = Field(None, description='', alias='133')
-    MktBidPx: Optional[float] = Field(None, description='', alias='645')
-    MktOfferPx: Optional[float] = Field(None, description='', alias='646')
-    MinBidSize: Optional[float] = Field(None, description='', alias='647')
-    BidSize: Optional[float] = Field(None, description='', alias='134')
-    MinOfferSize: Optional[float] = Field(None, description='', alias='648')
-    OfferSize: Optional[float] = Field(None, description='', alias='135')
-    ValidUntilTime: Optional[datetime] = Field(None, description='', alias='62')
-    BidSpotRate: Optional[float] = Field(None, description='', alias='188')
-    OfferSpotRate: Optional[float] = Field(None, description='', alias='190')
-    BidForwardPoints: Optional[float] = Field(None, description='', alias='189')
-    OfferForwardPoints: Optional[float] = Field(None, description='', alias='191')
-    MidPx: Optional[float] = Field(None, description='', alias='631')
-    BidYield: Optional[float] = Field(None, description='', alias='632')
-    MidYield: Optional[float] = Field(None, description='', alias='633')
-    OfferYield: Optional[float] = Field(None, description='', alias='634')
-    TransactTime: Optional[datetime] = Field(None, description='', alias='60')
-    OrdType: Optional[str] = Field(None, description='', alias='40')
-    BidForwardPoints2: Optional[float] = Field(None, description='', alias='642')
-    OfferForwardPoints2: Optional[float] = Field(None, description='', alias='643')
-    SettlCurrBidFxRate: Optional[float] = Field(None, description='', alias='656')
-    SettlCurrOfferFxRate: Optional[float] = Field(None, description='', alias='657')
-    SettlCurrFxRateCalc: Optional[str] = Field(None, description='', alias='156')
-    CommType: Optional[str] = Field(None, description='', alias='13')
-    Commission: Optional[float] = Field(None, description='', alias='12')
-    CustOrderCapacity: Optional[int] = Field(None, description='', alias='582')
-    ExDestination: Optional[str] = Field(None, description='', alias='100')
-    OrderCapacity: Optional[str] = Field(None, description='', alias='528')
-    PriceType: Optional[int] = Field(None, description='', alias='423')
-    Text: Optional[str] = Field(None, description='', alias='58')
-    EncodedTextLen: Optional[int] = Field(None, description='', alias='354')
-    EncodedText: Optional[str] = Field(None, description='', alias='355')
-    QuotQualGrp: Optional[QuotQualGrp] = None
-    Parties: Optional[Parties] = None
-    Instrument: Instrument = Field(..., description='Instrument component')
-    FinancingDetails: Optional[FinancingDetails] = None
-    UndInstrmtGrp: Optional[UndInstrmtGrp] = None
-    OrderQtyData: Optional[OrderQtyData] = None
-    Stipulations: Optional[Stipulations] = None
-    LegQuotGrp: Optional[LegQuotGrp] = None
-    SpreadOrBenchmarkCurveData: Optional[SpreadOrBenchmarkCurveData] = None
-    YieldData: Optional[YieldData] = None
+    quoteReqID: Optional[str] = Field(None, description='', alias='131')
+    quoteID: Optional[str] = Field(None, description='', alias='117')
+    quoteRespID: Optional[str] = Field(None, description='', alias='693')
+    quoteType: Optional[int] = Field(None, description='', alias='537')
+    quoteResponseLevel: Optional[int] = Field(None, description='', alias='301')
+    tradingSessionID: Optional[str] = Field(None, description='', alias='336')
+    tradingSessionSubID: Optional[str] = Field(None, description='', alias='625')
+    side: Optional[str] = Field(None, description='', alias='54')
+    settlType: Optional[str] = Field(None, description='', alias='63')
+    settlDate: Optional[date] = Field(None, description='', alias='64')
+    settlDate2: Optional[date] = Field(None, description='', alias='193')
+    orderQty2: Optional[float] = Field(None, description='', alias='192')
+    currency: Optional[str] = Field(None, description='', alias='15')
+    account: Optional[str] = Field(None, description='', alias='1')
+    acctIDSource: Optional[int] = Field(None, description='', alias='660')
+    accountType: Optional[int] = Field(None, description='', alias='581')
+    bidPx: Optional[float] = Field(None, description='', alias='132')
+    offerPx: Optional[float] = Field(None, description='', alias='133')
+    mktBidPx: Optional[float] = Field(None, description='', alias='645')
+    mktOfferPx: Optional[float] = Field(None, description='', alias='646')
+    minBidSize: Optional[float] = Field(None, description='', alias='647')
+    bidSize: Optional[float] = Field(None, description='', alias='134')
+    minOfferSize: Optional[float] = Field(None, description='', alias='648')
+    offerSize: Optional[float] = Field(None, description='', alias='135')
+    validUntilTime: Optional[datetime] = Field(None, description='', alias='62')
+    bidSpotRate: Optional[float] = Field(None, description='', alias='188')
+    offerSpotRate: Optional[float] = Field(None, description='', alias='190')
+    bidForwardPoints: Optional[float] = Field(None, description='', alias='189')
+    offerForwardPoints: Optional[float] = Field(None, description='', alias='191')
+    midPx: Optional[float] = Field(None, description='', alias='631')
+    bidYield: Optional[float] = Field(None, description='', alias='632')
+    midYield: Optional[float] = Field(None, description='', alias='633')
+    offerYield: Optional[float] = Field(None, description='', alias='634')
+    transactTime: Optional[datetime] = Field(None, description='', alias='60')
+    ordType: Optional[str] = Field(None, description='', alias='40')
+    bidForwardPoints2: Optional[float] = Field(None, description='', alias='642')
+    offerForwardPoints2: Optional[float] = Field(None, description='', alias='643')
+    settlCurrBidFxRate: Optional[float] = Field(None, description='', alias='656')
+    settlCurrOfferFxRate: Optional[float] = Field(None, description='', alias='657')
+    settlCurrFxRateCalc: Optional[str] = Field(None, description='', alias='156')
+    commType: Optional[str] = Field(None, description='', alias='13')
+    commission: Optional[float] = Field(None, description='', alias='12')
+    custOrderCapacity: Optional[int] = Field(None, description='', alias='582')
+    exDestination: Optional[str] = Field(None, description='', alias='100')
+    orderCapacity: Optional[str] = Field(None, description='', alias='528')
+    priceType: Optional[int] = Field(None, description='', alias='423')
+    text: Optional[str] = Field(None, description='', alias='58')
+    encodedTextLen: Optional[int] = Field(None, description='', alias='354')
+    encodedText: Optional[str] = Field(None, description='', alias='355')
+    quotQualGrp: Optional[QuotQualGrp] = Field(None, description='QuotQualGrp component')
+    parties: Optional[Parties] = Field(None, description='Parties component')
+    instrument: Optional[Instrument] = Field(None, description='Instrument component')
+    financingDetails: Optional[FinancingDetails] = Field(None, description='FinancingDetails component')
+    undInstrmtGrp: Optional[UndInstrmtGrp] = Field(None, description='UndInstrmtGrp component')
+    orderQtyData: Optional[OrderQtyData] = Field(None, description='OrderQtyData component')
+    stipulations: Optional[Stipulations] = Field(None, description='Stipulations component')
+    legQuotGrp: Optional[LegQuotGrp] = Field(None, description='LegQuotGrp component')
+    spreadOrBenchmarkCurveData: Optional[SpreadOrBenchmarkCurveData] = Field(None, description='SpreadOrBenchmarkCurveData component')
+    yieldData: Optional[YieldData] = Field(None, description='YieldData component')
 
     def model_dump(self, **kwargs) -> Dict[str, Any]:
         """Override model_dump to handle nested components"""
@@ -113,8 +107,8 @@ class Quote(TradeModel):
         for field_name, value in data.items():
             if isinstance(value, list):
                 # Set the No* field based on list length
-                no_field = f"No{field_name[:-1]}"  # Remove 's' from plural
-                if no_field in self.__fields__:
-                    data[no_field] = len(value)
+                no_field = f"no{field_name}"  # Convert to camelCase
+                if hasattr(self, no_field):
+                    setattr(self, no_field, len(value))
         
-        return {k: v for k, v in data.items() if v is not None and (not isinstance(v, list) or v)}
+        return data

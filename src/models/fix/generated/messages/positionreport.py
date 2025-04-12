@@ -6,17 +6,17 @@ This module contains the Pydantic model for the PositionReport message.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
-from ..components.instrmtleggrp import InstrmtLegGrp
-from ..components.instrument import Instrument
-from ..components.parties import Parties
-from ..components.posundinstrmtgrp import PosUndInstrmtGrp
-from ..components.positionamountdata import PositionAmountData
-from ..components.positionqty import PositionQty
+from src.models.fix.base import FIXMessageBase
+from src.models.fix.generated.fields.common import *
+from src.models.fix.generated.components.instrmtleggrp import InstrmtLegGrp
+from src.models.fix.generated.components.instrument import Instrument
+from src.models.fix.generated.components.parties import Parties
+from src.models.fix.generated.components.posundinstrmtgrp import PosUndInstrmtGrp
+from src.models.fix.generated.components.positionamountdata import PositionAmountData
+from src.models.fix.generated.components.positionqty import PositionQty
 
 
-class PositionReport(TradeModel):
+class PositionReport(FIXMessageBase):
     """
     FIX 4.4 PositionReport Message
     """
@@ -30,44 +30,38 @@ class PositionReport(TradeModel):
         }
     )
     
-    # Standard FIX header fields
-    BeginString: Literal["FIX.4.4"] = Field(alias='8')
-    BodyLength: Optional[int] = Field(None, alias='9')
-    MsgType: Literal["AP"] = Field(alias='35')
-    SenderCompID: str = Field(..., alias='49')
-    TargetCompID: str = Field(..., alias='56')
-    MsgSeqNum: int = Field(..., alias='34')
-    SendingTime: datetime = Field(..., alias='52')
+    # Set the message type for this message
+    msgType: Literal["AP"] = Field("AP", alias='35')
     
     # Message-specific fields
-    PosMaintRptID: str = Field(None, description='', alias='721')
-    PosReqID: Optional[str] = Field(None, description='', alias='710')
-    PosReqType: Optional[int] = Field(None, description='', alias='724')
-    SubscriptionRequestType: Optional[str] = Field(None, description='', alias='263')
-    TotalNumPosReports: Optional[int] = Field(None, description='', alias='727')
-    UnsolicitedIndicator: Optional[bool] = Field(None, description='', alias='325')
-    PosReqResult: int = Field(None, description='', alias='728')
-    ClearingBusinessDate: date = Field(None, description='', alias='715')
-    SettlSessID: Optional[str] = Field(None, description='', alias='716')
-    SettlSessSubID: Optional[str] = Field(None, description='', alias='717')
-    Account: str = Field(None, description='', alias='1')
-    AcctIDSource: Optional[int] = Field(None, description='', alias='660')
-    AccountType: int = Field(None, description='', alias='581')
-    Currency: Optional[str] = Field(None, description='', alias='15')
-    SettlPrice: float = Field(None, description='', alias='730')
-    SettlPriceType: int = Field(None, description='', alias='731')
-    PriorSettlPrice: float = Field(None, description='', alias='734')
-    RegistStatus: Optional[str] = Field(None, description='', alias='506')
-    DeliveryDate: Optional[date] = Field(None, description='', alias='743')
-    Text: Optional[str] = Field(None, description='', alias='58')
-    EncodedTextLen: Optional[int] = Field(None, description='', alias='354')
-    EncodedText: Optional[str] = Field(None, description='', alias='355')
-    Parties: Parties = Field(..., description='Parties component')
-    Instrument: Optional[Instrument] = None
-    InstrmtLegGrp: Optional[InstrmtLegGrp] = None
-    PosUndInstrmtGrp: Optional[PosUndInstrmtGrp] = None
-    PositionQty: PositionQty = Field(..., description='PositionQty component')
-    PositionAmountData: PositionAmountData = Field(..., description='PositionAmountData component')
+    posMaintRptID: Optional[str] = Field(None, description='', alias='721')
+    posReqID: Optional[str] = Field(None, description='', alias='710')
+    posReqType: Optional[int] = Field(None, description='', alias='724')
+    subscriptionRequestType: Optional[str] = Field(None, description='', alias='263')
+    totalNumPosReports: Optional[int] = Field(None, description='', alias='727')
+    unsolicitedIndicator: Optional[bool] = Field(None, description='', alias='325')
+    posReqResult: Optional[int] = Field(None, description='', alias='728')
+    clearingBusinessDate: Optional[date] = Field(None, description='', alias='715')
+    settlSessID: Optional[str] = Field(None, description='', alias='716')
+    settlSessSubID: Optional[str] = Field(None, description='', alias='717')
+    account: Optional[str] = Field(None, description='', alias='1')
+    acctIDSource: Optional[int] = Field(None, description='', alias='660')
+    accountType: Optional[int] = Field(None, description='', alias='581')
+    currency: Optional[str] = Field(None, description='', alias='15')
+    settlPrice: Optional[float] = Field(None, description='', alias='730')
+    settlPriceType: Optional[int] = Field(None, description='', alias='731')
+    priorSettlPrice: Optional[float] = Field(None, description='', alias='734')
+    registStatus: Optional[str] = Field(None, description='', alias='506')
+    deliveryDate: Optional[date] = Field(None, description='', alias='743')
+    text: Optional[str] = Field(None, description='', alias='58')
+    encodedTextLen: Optional[int] = Field(None, description='', alias='354')
+    encodedText: Optional[str] = Field(None, description='', alias='355')
+    parties: Optional[Parties] = Field(None, description='Parties component')
+    instrument: Optional[Instrument] = Field(None, description='Instrument component')
+    instrmtLegGrp: Optional[InstrmtLegGrp] = Field(None, description='InstrmtLegGrp component')
+    posUndInstrmtGrp: Optional[PosUndInstrmtGrp] = Field(None, description='PosUndInstrmtGrp component')
+    positionQty: Optional[PositionQty] = Field(None, description='PositionQty component')
+    positionAmountData: Optional[PositionAmountData] = Field(None, description='PositionAmountData component')
 
     def model_dump(self, **kwargs) -> Dict[str, Any]:
         """Override model_dump to handle nested components"""
@@ -78,8 +72,8 @@ class PositionReport(TradeModel):
         for field_name, value in data.items():
             if isinstance(value, list):
                 # Set the No* field based on list length
-                no_field = f"No{field_name[:-1]}"  # Remove 's' from plural
-                if no_field in self.__fields__:
-                    data[no_field] = len(value)
+                no_field = f"no{field_name}"  # Convert to camelCase
+                if hasattr(self, no_field):
+                    setattr(self, no_field, len(value))
         
-        return {k: v for k, v in data.items() if v is not None and (not isinstance(v, list) or v)}
+        return data

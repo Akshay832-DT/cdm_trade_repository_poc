@@ -6,11 +6,11 @@ This module contains the Pydantic model for the NstdPtys2SubGrp component.
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
-from ..fields.common import *
-from ...base import TradeModel
+from src.models.fix.generated.fields.common import *
+from src.models.fix.base import FIXMessageBase
 
 
-class NstdPtys2SubGrp(TradeModel):
+class NstdPtys2SubGrp(FIXMessageBase):
     """
     FIX 4.4 NstdPtys2SubGrp Component
     """
@@ -23,11 +23,11 @@ class NstdPtys2SubGrp(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    Nested2PartySubID: Optional[str] = Field(None, description='', alias='760')
-    Nested2PartySubIDType: Optional[int] = Field(None, description='', alias='807')
+    nested2PartySubID: Optional[str] = Field(None, description='', alias='760')
+    nested2PartySubIDType: Optional[int] = Field(None, description='', alias='807')
 
 
-class NoNested2PartySubIDs(TradeModel):
+class NoNested2PartySubIDs(FIXMessageBase):
     """
     NoNested2PartySubIDs group fields
     """
@@ -40,7 +40,7 @@ class NoNested2PartySubIDs(TradeModel):
             time: lambda v: v.isoformat()
         }
     )
-    Nested2PartySubID: Optional[str] = Field(None, description='', alias='760')
-    Nested2PartySubIDType: Optional[int] = Field(None, description='', alias='807')
+    nested2PartySubID: Optional[int] = Field(None, description='', alias='806')
+    nested2PartySubIDType: Optional[int] = Field(None, description='', alias='806')
 
-    NoNested2PartySubIDss: List[NoNested2PartySubIDs] = Field(default_factory=list)
+    noNested2PartySubIDss: List[NoNested2PartySubIDs] = Field(default_factory=list)
