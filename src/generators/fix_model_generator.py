@@ -269,6 +269,118 @@ def generate_component_models(components, fields, output_dir):
                     if group_field.get('is_component', False):
                         component_to_group_map[group_field_name] = group_name
         
+        # Special case for BidCompRspGrp - CommissionData should be in NoBidComponents
+        if comp_name == "BidCompRspGrp":
+            logger.info(f"Special case handling for BidCompRspGrp: Moving CommissionData to NoBidComponents group")
+            # Find CommissionData field
+            commission_data_field = next((f for f in comp_fields if f.get('is_component', False) and f.get('name') == 'CommissionData'), None)
+            if commission_data_field:
+                # Remove CommissionData from main component fields
+                comp_fields = [f for f in comp_fields if not (f.get('is_component', False) and f.get('name') == 'CommissionData')]
+                
+                # Add CommissionData to NoBidComponents group if it exists
+                if 'NoBidComponents' in group_fields:
+                    # Add CommissionData to group fields
+                    group_fields['NoBidComponents'].append(commission_data_field)
+                    # Mark CommissionData as belonging to NoBidComponents group
+                    component_to_group_map['CommissionData'] = 'NoBidComponents'
+                    # Add to field_names_in_groups
+                    field_names_in_groups.add('commissiondata')
+        
+        # Special case for Parties - PtysSubGrp should be in NoPartyIDs
+        if comp_name == "Parties":
+            logger.info(f"Special case handling for Parties: Moving PtysSubGrp to NoPartyIDs group")
+            # Find PtysSubGrp field
+            ptys_sub_grp_field = next((f for f in comp_fields if f.get('is_component', False) and f.get('name') == 'PtysSubGrp'), None)
+            if ptys_sub_grp_field:
+                # Remove PtysSubGrp from main component fields
+                comp_fields = [f for f in comp_fields if not (f.get('is_component', False) and f.get('name') == 'PtysSubGrp')]
+                
+                # Add PtysSubGrp to NoPartyIDs group if it exists
+                if 'NoPartyIDs' in group_fields:
+                    # Add PtysSubGrp to group fields
+                    group_fields['NoPartyIDs'].append(ptys_sub_grp_field)
+                    # Mark PtysSubGrp as belonging to NoPartyIDs group
+                    component_to_group_map['PtysSubGrp'] = 'NoPartyIDs'
+                    # Add to field_names_in_groups
+                    field_names_in_groups.add('ptyssubgrp')
+        
+        # Special case for NestedParties - NstdPtysSubGrp should be in NoNestedPartyIDs
+        if comp_name == "NestedParties":
+            logger.info(f"Special case handling for NestedParties: Moving NstdPtysSubGrp to NoNestedPartyIDs group")
+            # Find NstdPtysSubGrp field
+            nstd_ptys_sub_grp_field = next((f for f in comp_fields if f.get('is_component', False) and f.get('name') == 'NstdPtysSubGrp'), None)
+            if nstd_ptys_sub_grp_field:
+                # Remove NstdPtysSubGrp from main component fields
+                comp_fields = [f for f in comp_fields if not (f.get('is_component', False) and f.get('name') == 'NstdPtysSubGrp')]
+                
+                # Add NstdPtysSubGrp to NoNestedPartyIDs group if it exists
+                if 'NoNestedPartyIDs' in group_fields:
+                    # Add NstdPtysSubGrp to group fields
+                    group_fields['NoNestedPartyIDs'].append(nstd_ptys_sub_grp_field)
+                    # Mark NstdPtysSubGrp as belonging to NoNestedPartyIDs group
+                    component_to_group_map['NstdPtysSubGrp'] = 'NoNestedPartyIDs'
+                    # Add to field_names_in_groups
+                    field_names_in_groups.add('nstdptyssubgrp')
+        
+        # Special case for NestedParties2 - NstdPtys2SubGrp should be in NoNested2PartyIDs
+        if comp_name == "NestedParties2":
+            logger.info(f"Special case handling for NestedParties2: Moving NstdPtys2SubGrp to NoNested2PartyIDs group")
+            # Find NstdPtys2SubGrp field
+            nstd_ptys2_sub_grp_field = next((f for f in comp_fields if f.get('is_component', False) and f.get('name') == 'NstdPtys2SubGrp'), None)
+            if nstd_ptys2_sub_grp_field:
+                # Remove NstdPtys2SubGrp from main component fields
+                comp_fields = [f for f in comp_fields if not (f.get('is_component', False) and f.get('name') == 'NstdPtys2SubGrp')]
+                
+                # Add NstdPtys2SubGrp to NoNested2PartyIDs group if it exists
+                if 'NoNested2PartyIDs' in group_fields:
+                    # Add NstdPtys2SubGrp to group fields
+                    group_fields['NoNested2PartyIDs'].append(nstd_ptys2_sub_grp_field)
+                    # Mark NstdPtys2SubGrp as belonging to NoNested2PartyIDs group
+                    component_to_group_map['NstdPtys2SubGrp'] = 'NoNested2PartyIDs'
+                    # Add to field_names_in_groups
+                    field_names_in_groups.add('nstdptys2subgrp')
+        
+        # Special case for NestedParties3 - NstdPtys3SubGrp should be in NoNested3PartyIDs
+        if comp_name == "NestedParties3":
+            logger.info(f"Special case handling for NestedParties3: Moving NstdPtys3SubGrp to NoNested3PartyIDs group")
+            # Find NstdPtys3SubGrp field
+            nstd_ptys3_sub_grp_field = next((f for f in comp_fields if f.get('is_component', False) and f.get('name') == 'NstdPtys3SubGrp'), None)
+            if nstd_ptys3_sub_grp_field:
+                # Remove NstdPtys3SubGrp from main component fields
+                comp_fields = [f for f in comp_fields if not (f.get('is_component', False) and f.get('name') == 'NstdPtys3SubGrp')]
+                
+                # Add NstdPtys3SubGrp to NoNested3PartyIDs group if it exists
+                if 'NoNested3PartyIDs' in group_fields:
+                    # Add NstdPtys3SubGrp to group fields
+                    group_fields['NoNested3PartyIDs'].append(nstd_ptys3_sub_grp_field)
+                    # Mark NstdPtys3SubGrp as belonging to NoNested3PartyIDs group
+                    component_to_group_map['NstdPtys3SubGrp'] = 'NoNested3PartyIDs'
+                    # Add to field_names_in_groups
+                    field_names_in_groups.add('nstdptys3subgrp')
+        
+        # Special case for SettlParties - SettlPtysSubGrp should be in NoSettlPartyIDs
+        if comp_name == "SettlParties":
+            logger.info(f"Special case handling for SettlParties: Moving SettlPtysSubGrp to NoSettlPartyIDs group")
+            # Find SettlPtysSubGrp field
+            settl_ptys_sub_grp_field = next((f for f in comp_fields if f.get('is_component', False) and f.get('name') == 'SettlPtysSubGrp'), None)
+            if settl_ptys_sub_grp_field:
+                # Remove SettlPtysSubGrp from main component fields
+                comp_fields = [f for f in comp_fields if not (f.get('is_component', False) and f.get('name') == 'SettlPtysSubGrp')]
+                
+                # Add SettlPtysSubGrp to NoSettlPartyIDs group if it exists
+                if 'NoSettlPartyIDs' in group_fields:
+                    # Add SettlPtysSubGrp to group fields
+                    group_fields['NoSettlPartyIDs'].append(settl_ptys_sub_grp_field)
+                    # Mark SettlPtysSubGrp as belonging to NoSettlPartyIDs group
+                    component_to_group_map['SettlPtysSubGrp'] = 'NoSettlPartyIDs'
+                    # Add to field_names_in_groups
+                    field_names_in_groups.add('settlptyssubgrp')
+        
+        # Debug log the group mapping
+        logger.info(f"Component to group mapping for {comp_name}: {component_to_group_map}")
+        logger.info(f"Fields in groups for {comp_name}: {field_names_in_groups}")
+        
         # Second pass - collect imports
         for field in comp_fields:
             if field.get('is_component', False):
@@ -363,11 +475,16 @@ def generate_component_models(components, fields, output_dir):
             field_name = field.get('name', '')
             
             # Skip fields that are groups (they'll be added as count and items fields)
+            if field.get('is_group', False):
+                continue
+                
             # Skip fields that are already in groups to avoid duplication
-            # Skip components that belong to groups
-            if (field.get('is_group', False) or 
-                field_name.lower() in field_names_in_groups or 
-                (field.get('is_component', False) and field_name in component_to_group_map)):
+            if field_name.lower() in field_names_in_groups:
+                continue
+                
+            # Skip component fields that belong to a group
+            if field.get('is_component', False) and field_name in component_to_group_map:
+                logger.info(f"Skipping component {field_name} in {comp_name} as it belongs to group {component_to_group_map[field_name]}")
                 continue
                 
             field_type = field.get('type', 'STRING')
