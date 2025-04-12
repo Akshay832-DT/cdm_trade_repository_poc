@@ -207,236 +207,176 @@ def to_camel_case(name):
     
     return camel_case
 
-def generate_component_models(components: Dict[str, Any], fields: Dict[str, Any], output_dir: str) -> None:
+def generate_component_models(components, fields, output_dir):
     """Generate Pydantic models for FIX components."""
     logger.info("Generating component models...")
     components_dir = os.path.join(output_dir, "components")
     os.makedirs(components_dir, exist_ok=True)
 
     # Create __init__.py
-    with open(os.path.join(components_dir, "__init__.py"), "w") as f:
-        f.write("# Generated FIX component models\n")
+    init_path = os.path.join(components_dir, "__init__.py")
+    with open(init_path, "w") as f:
+        f.write("# FIX 4.4 Component models\n")
 
-    for component_name, component_fields in components.items():
-        # Skip components without fields
-        if not component_fields:
-            continue
+    for comp_name, comp_fields in components.items():
+        # Set to track imported components to avoid duplicates
+        imported_components = set()
+        
+        # Import preamble
+        imports = [
+            '"""\n',
+            f"FIX 4.4 {comp_name} Component\n\n",
+            f"This module contains the Pydantic model for the {comp_name} component.\n",
+            '"""\n',
+            "from datetime import datetime, date, time\n",
+            "from typing import List, Optional, Union, Dict, Any, Literal\n",
+            "from pydantic import BaseModel, Field, ConfigDict\n",
+            "from src.models.fix.generated.fields.common import *\n",
+            "from src.models.fix.base import FIXMessageBase\n"
+        ]
 
-        # Create component file
-        file_path = os.path.join(components_dir, f"{component_name.lower()}.py")
-        with open(file_path, "w") as f:
-            # Write imports
-            f.write("\"\"\"\n")
-            f.write(f"FIX 4.4 {component_name} Component\n\n")
-            f.write(f"This module contains the Pydantic model for the {component_name} component.\n")
-            f.write("\"\"\"\n")
-            f.write("from datetime import datetime, date, time\n")
-            f.write("from typing import List, Optional, Union, Dict, Any, Literal\n")
-            f.write("from pydantic import BaseModel, Field, ConfigDict\n")
-            f.write("from src.models.fix.generated.fields.common import *\n")
-            f.write("from src.models.fix.base import FIXMessageBase\n")
-
-            # Track imported components
-            imported_components = set()
+        # Track group fields and components
+        group_fields = {}
+        field_names_in_groups = set()
+        
+        # First pass - identify groups and components
+        for field in comp_fields:
+            field_name = field.get('name', '')
             
-            # Identify all components needed for imports
-            for field in component_fields:
-                # Components in the main component
+            # Add components to imports
+            if field.get('is_component', False) and field_name not in imported_components:
+                imports.append(f"from src.models.fix.generated.components.{field_name.lower()} import {field_name}\n")
+                imported_components.add(field_name)
+            
+            # Collect group fields
+            if field.get('is_group', False):
+                group_name = field_name
+                group_fields[group_name] = field.get('fields', [])
+                
+                # Track fields that are in groups to avoid duplication
+                for group_field in field.get('fields', []):
+                    group_field_name = group_field.get('name', '')
+                    field_names_in_groups.add(group_field_name.lower())
+                    
+                    # Also import any components used in groups
+                    if group_field.get('is_component', False) and group_field_name not in imported_components:
+                        imports.append(f"from src.models.fix.generated.components.{group_field_name.lower()} import {group_field_name}\n")
+                        imported_components.add(group_field_name)
+        
+        # Add blank line after imports
+        imports.append("\n\n")
+        
+        # Generate group classes
+        group_classes = []
+        for group_name, group_field_list in group_fields.items():
+            class_name = group_name.replace("No", "")
+            group_class = [
+                f"class {class_name}(FIXMessageBase):\n",
+                f'    """\n',
+                f"    {class_name} group fields\n",
+                f'    """\n',
+                f"    model_config = ConfigDict(\n",
+                f"        populate_by_name=True,\n",
+                f"        validate_by_name=True,\n",
+                f"        json_encoders={{\n",
+                f"            datetime: lambda v: v.isoformat(),\n",
+                f"            date: lambda v: v.isoformat(),\n",
+                f"            time: lambda v: v.isoformat()\n",
+                f"        }}\n",
+                f"    )\n",
+                f"    \n"
+            ]
+            
+            # Add fields to the group class
+            for field in group_field_list:
+                field_name = field.get('name', '')
+                field_type = field.get('type', 'STRING')
+                tag = field.get('tag', '')
+                description = field.get('description', '')
+                required = field.get('required', False)
+                
                 if field.get('is_component', False):
-                    comp_name = field['name'].replace(" ", "")
-                    if comp_name not in imported_components:
-                        f.write(f"from src.models.fix.generated.components.{comp_name.lower()} import {comp_name}\n")
-                        imported_components.add(comp_name)
-                
-                # Components in groups
-                if field.get('is_group', False):
-                    for group_field in field.get('fields', []):
-                        if group_field.get('is_component', False):
-                            comp_name = group_field['name'].replace(" ", "")
-                            if comp_name not in imported_components:
-                                f.write(f"from src.models.fix.generated.components.{comp_name.lower()} import {comp_name}\n")
-                                imported_components.add(comp_name)
-            
-            f.write("\n\n")
-
-            # First, generate group classes
-            for field in component_fields:
-                if field.get('is_group', False):
-                    group_name = field['name'].replace(" ", "")
-                    f.write(f"class {group_name}(FIXMessageBase):\n")
-                    f.write('    """\n')
-                    f.write(f'    {group_name} group fields\n')
-                    f.write('    """\n')
-                    f.write('    model_config = ConfigDict(\n')
-                    f.write('        populate_by_name=True,\n')
-                    f.write('        validate_by_name=True,\n')
-                    f.write('        json_encoders={\n')
-                    f.write('            datetime: lambda v: v.isoformat(),\n')
-                    f.write('            date: lambda v: v.isoformat(),\n')
-                    f.write('            time: lambda v: v.isoformat()\n')
-                    f.write('        }\n')
-                    f.write('    )\n')
-                    f.write('    \n')
-
-                    # Add fields to the group
-                    for group_field in field.get('fields', []):
-                        field_name = to_camel_case(group_field['name'].replace(" ", ""))
-                        required = group_field.get('required', False)
-
-                        if group_field.get('is_component', False):
-                            # Handle component fields
-                            comp_name = group_field['name'].replace(" ", "")
-                            python_type = comp_name
-                            if not required:
-                                python_type = f"Optional[{python_type}]"
-                                default_value = "None"
-                            else:
-                                default_value = "..."  # Pydantic's required marker
-                            f.write(f"    {field_name}: {python_type} = Field({default_value}, description='{comp_name} component')\n")
-                        else:
-                            # Handle regular fields
-                            field_info = fields.get(field_name, {})  # Use original name for lookup
-                            if not field_info:
-                                # Try the original name if camelCase lookup failed
-                                field_info = fields.get(group_field['name'], {})
-                            
-                            fix_type = field_info.get('type', 'STRING')
-                            python_type = FIX_TYPE_MAP.get(fix_type, 'str')
-                            
-                            # Make the field optional if not required
-                            if not required:
-                                python_type = f"Optional[{python_type}]"
-                                default_value = "None"
-                            else:
-                                default_value = "..."  # Pydantic's required marker
-                            
-                            # Add field to the model with proper Field alias
-                            tag = None
-                            if 'tag' in field_info:
-                                tag = field_info['tag']
-                            elif 'tag' in group_field:
-                                tag = group_field['tag']
-                            else:
-                                # Look up the tag by field name
-                                for f_name, f_info in fields.items():
-                                    if f_name.lower() == field_name.lower() or f_name.lower() == group_field['name'].lower():
-                                        tag = f_info.get('tag')
-                                        break
-                            
-                            if tag:
-                                f.write(f"    {field_name}: {python_type} = Field({default_value}, description='', alias='{tag}')\n")
-                            else:
-                                f.write(f"    {field_name}: {python_type} = Field({default_value})\n")
-                    
-                    f.write("\n\n")
-
-            # Write component class
-            f.write(f"class {component_name}(FIXMessageBase):\n")
-            f.write('    """\n')
-            f.write(f'    FIX 4.4 {component_name} Component\n')
-            f.write('    """\n')
-            f.write('    model_config = ConfigDict(\n')
-            f.write('        populate_by_name=True,\n')
-            f.write('        validate_by_name=True,\n')
-            f.write('        json_encoders={\n')
-            f.write('            datetime: lambda v: v.isoformat(),\n')
-            f.write('            date: lambda v: v.isoformat(),\n')
-            f.write('            time: lambda v: v.isoformat()\n')
-            f.write('        }\n')
-            f.write('    )\n')
-            f.write('    \n')
-
-            # Add non-group fields to main component
-            for field in component_fields:
-                if not field.get('is_group', False):
-                    field_name = to_camel_case(field['name'].replace(" ", ""))
-                    required = field.get('required', False)
-
-                    if field.get('is_component', False):
-                        # Handle component fields
-                        comp_name = field['name'].replace(" ", "")
-                        python_type = comp_name
-                        if not required:
-                            python_type = f"Optional[{python_type}]"
-                            default_value = "None"
-                        else:
-                            default_value = "..."  # Pydantic's required marker
-                        f.write(f"    {field_name}: {python_type} = Field({default_value}, description='{comp_name} component')\n")
+                    # Handle component fields
+                    if required:
+                        group_class.append(f"    {to_camel_case(field_name)}: {field_name} = Field(..., description='{field_name} component')\n")
                     else:
-                        # Handle regular fields
-                        field_info = fields.get(field_name, {})  # Use original name for lookup
-                        if not field_info:
-                            # Try the original name if camelCase lookup failed
-                            field_info = fields.get(field['name'], {})
-                            
-                        fix_type = field_info.get('type', 'STRING')
-                        python_type = FIX_TYPE_MAP.get(fix_type, 'str')
-                        
-                        # Make the field optional if not required
-                        if not required:
-                            python_type = f"Optional[{python_type}]"
-                            default_value = "None"
-                        else:
-                            default_value = "..."  # Pydantic's required marker
-                        
-                        # Add field to the model with proper Field alias
-                        tag = None
-                        if 'tag' in field_info:
-                            tag = field_info['tag']
-                        elif 'tag' in field:
-                            tag = field['tag']
-                        else:
-                            # Look up the tag by field name
-                            for f_name, f_info in fields.items():
-                                if f_name.lower() == field_name.lower() or f_name.lower() == field['name'].lower():
-                                    tag = f_info.get('tag')
-                                    break
-                        
-                        if tag:
-                            f.write(f"    {field_name}: {python_type} = Field({default_value}, description='', alias='{tag}')\n")
-                        else:
-                            f.write(f"    {field_name}: {python_type} = Field({default_value})\n")
-                
-                # Add group count and list fields
+                        group_class.append(f"    {to_camel_case(field_name)}: Optional[{field_name}] = Field(None, description='{field_name} component')\n")
                 else:
-                    group_name = field['name'].replace(" ", "")
-                    
-                    # Find the tag for the group count field
-                    count_tag = None
-                    count_field_name = f"No{group_name}"
-                    
-                    # First, try to find the count field directly in the fields dictionary
-                    for f_name, f_info in fields.items():
-                        if f_name == count_field_name:
-                            count_tag = f_info.get('tag')
-                            break
-                    
-                    # If not found, try to match by various name formats
-                    if not count_tag:
-                        for f_name, f_info in fields.items():
-                            name_variations = [
-                                f"No{group_name}",
-                                f"No{field['name'].replace(' ', '')}",
-                                f"No{to_camel_case(field['name']).capitalize()}",
-                                f"No{to_camel_case(field['name'])}",
-                                f"no{field['name'].lower().replace(' ', '')}"
-                            ]
-                            if f_name in name_variations or f_name.lower() in [n.lower() for n in name_variations]:
-                                count_tag = f_info.get('tag')
-                                break
-                    
-                    # Add count field - always required for groups
-                    count_field_name = f"no{to_camel_case(group_name)}"
-                    if count_tag:
-                        f.write(f"    {count_field_name}: Optional[int] = Field(None, description='Number of {group_name} entries', alias='{count_tag}')\n")
+                    # Handle regular fields
+                    python_type = FIX_TYPE_MAP.get(field_type, 'str')
+                    if required:
+                        group_class.append(f"    {to_camel_case(field_name)}: {python_type} = Field(..., description='{description}', alias='{tag}')\n")
                     else:
-                        # If we can't find the tag, use a descriptive field name without alias
-                        f.write(f"    {count_field_name}: Optional[int] = Field(None, description='Number of {group_name} entries')\n")
-                    
-                    # Add list field
-                    f.write(f"    {count_field_name}_items: List[{group_name}] = Field(default_factory=list)\n")
-
-            f.write("\n")
+                        group_class.append(f"    {to_camel_case(field_name)}: Optional[{python_type}] = Field(None, description='{description}', alias='{tag}')\n")
+            
+            group_class.append("\n\n")
+            group_classes.extend(group_class)
+        
+        # Generate the main component class
+        component_class = [
+            f"class {comp_name}(FIXMessageBase):\n",
+            f'    """\n',
+            f"    FIX 4.4 {comp_name} Component\n",
+            f'    """\n',
+            f"    model_config = ConfigDict(\n",
+            f"        populate_by_name=True,\n",
+            f"        validate_by_name=True,\n",
+            f"        json_encoders={{\n",
+            f"            datetime: lambda v: v.isoformat(),\n",
+            f"            date: lambda v: v.isoformat(),\n",
+            f"            time: lambda v: v.isoformat()\n",
+            f"        }}\n",
+            f"    )\n",
+            f"    \n"
+        ]
+        
+        # Add fields to the component class (excluding those in groups)
+        for field in comp_fields:
+            field_name = field.get('name', '')
+            
+            # Skip fields that are groups (they'll be added as count and items fields)
+            # Also skip fields that are already in groups to avoid duplication
+            if field.get('is_group', False) or field_name.lower() in field_names_in_groups:
+                continue
+                
+            field_type = field.get('type', 'STRING')
+            tag = field.get('tag', '')
+            description = field.get('description', '')
+            required = field.get('required', False)
+            
+            if field.get('is_component', False):
+                # Handle component fields
+                if required:
+                    component_class.append(f"    {to_camel_case(field_name)}: {field_name} = Field(..., description='{field_name} component')\n")
+                else:
+                    component_class.append(f"    {to_camel_case(field_name)}: Optional[{field_name}] = Field(None, description='{field_name} component')\n")
+            else:
+                # Handle regular fields
+                python_type = FIX_TYPE_MAP.get(field_type, 'str')
+                if required:
+                    component_class.append(f"    {to_camel_case(field_name)}: {python_type} = Field(..., description='{description}', alias='{tag}')\n")
+                else:
+                    component_class.append(f"    {to_camel_case(field_name)}: Optional[{python_type}] = Field(None, description='{description}', alias='{tag}')\n")
+        
+        # Add the group count and items fields
+        for group_name in group_fields:
+            # Find the group field to get its tag
+            group_field = next((f for f in comp_fields if f.get('name') == group_name), None)
+            if group_field:
+                tag = group_field.get('tag', '')
+                class_name = group_name.replace("No", "")
+                # Use the original group name (without duplicating "no")
+                count_field_name = to_camel_case(group_name)
+                items_field_name = f"{count_field_name}_items"
+                component_class.append(f"    {count_field_name}: Optional[int] = Field(None, description='Number of {class_name} entries', alias='{tag}')\n")
+                component_class.append(f"    {items_field_name}: List[{class_name}] = Field(default_factory=list)\n")
+        
+        # Write file
+        file_path = os.path.join(components_dir, f"{comp_name.lower()}.py")
+        with open(file_path, "w") as f:
+            f.writelines(imports)
+            f.writelines(group_classes)
+            f.writelines(component_class)
 
 def generate_message_models(messages: Dict[str, Any], fields: Dict[str, Any], components: Dict[str, Any], output_dir: str) -> None:
     """Generate Pydantic models for FIX messages."""
