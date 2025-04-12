@@ -218,7 +218,18 @@ def generate_component_models(components, fields, output_dir):
     with open(init_path, "w") as f:
         f.write("# FIX 4.4 Component models\n")
 
+    # Track which component files have been written to avoid duplicates
+    written_components = set()
+
     for comp_name, comp_fields in components.items():
+        # Skip if we've already written this component file
+        if comp_name.lower() in written_components:
+            logger.info(f"Skipping duplicate component {comp_name} (already processed)")
+            continue
+
+        # Mark this component as written
+        written_components.add(comp_name.lower())
+        
         # Set to track imported components to avoid duplicates
         imported_components = set()
         
@@ -235,33 +246,49 @@ def generate_component_models(components, fields, output_dir):
             "from src.models.fix.base import FIXMessageBase\n"
         ]
 
-        # Track group fields and components
+        # Track the mapping of components to their respective groups
+        component_to_group_map = {}
         group_fields = {}
         field_names_in_groups = set()
         
-        # First pass - identify groups and components
+        # First pass - identify groups and their components
         for field in comp_fields:
             field_name = field.get('name', '')
             
-            # Add components to imports
-            if field.get('is_component', False) and field_name not in imported_components:
-                imports.append(f"from src.models.fix.generated.components.{field_name.lower()} import {field_name}\n")
-                imported_components.add(field_name)
-            
-            # Collect group fields
+            # Collect group fields and their components
             if field.get('is_group', False):
                 group_name = field_name
                 group_fields[group_name] = field.get('fields', [])
                 
-                # Track fields that are in groups to avoid duplication
+                # Track which components belong to this group
                 for group_field in field.get('fields', []):
                     group_field_name = group_field.get('name', '')
                     field_names_in_groups.add(group_field_name.lower())
                     
-                    # Also import any components used in groups
-                    if group_field.get('is_component', False) and group_field_name not in imported_components:
-                        imports.append(f"from src.models.fix.generated.components.{group_field_name.lower()} import {group_field_name}\n")
-                        imported_components.add(group_field_name)
+                    # If this is a component, map it to this group
+                    if group_field.get('is_component', False):
+                        component_to_group_map[group_field_name] = group_name
+        
+        # Second pass - collect imports
+        for field in comp_fields:
+            if field.get('is_component', False):
+                comp_name_to_import = field.get('name', '')
+                if comp_name_to_import and comp_name_to_import not in imported_components:
+                    # Don't import the component itself to avoid circular imports
+                    if comp_name_to_import.lower() != comp_name.lower():
+                        imports.append(f"from src.models.fix.generated.components.{comp_name_to_import.lower()} import {comp_name_to_import}\n")
+                        imported_components.add(comp_name_to_import)
+        
+        # Also add imports for components in groups
+        for group_name, group_fields_list in group_fields.items():
+            for field in group_fields_list:
+                if field.get('is_component', False):
+                    comp_name_to_import = field.get('name', '')
+                    if comp_name_to_import and comp_name_to_import not in imported_components:
+                        # Don't import the component itself to avoid circular imports
+                        if comp_name_to_import.lower() != comp_name.lower():
+                            imports.append(f"from src.models.fix.generated.components.{comp_name_to_import.lower()} import {comp_name_to_import}\n")
+                            imported_components.add(comp_name_to_import)
         
         # Add blank line after imports
         imports.append("\n\n")
@@ -336,8 +363,11 @@ def generate_component_models(components, fields, output_dir):
             field_name = field.get('name', '')
             
             # Skip fields that are groups (they'll be added as count and items fields)
-            # Also skip fields that are already in groups to avoid duplication
-            if field.get('is_group', False) or field_name.lower() in field_names_in_groups:
+            # Skip fields that are already in groups to avoid duplication
+            # Skip components that belong to groups
+            if (field.get('is_group', False) or 
+                field_name.lower() in field_names_in_groups or 
+                (field.get('is_component', False) and field_name in component_to_group_map)):
                 continue
                 
             field_type = field.get('type', 'STRING')
@@ -346,7 +376,7 @@ def generate_component_models(components, fields, output_dir):
             required = field.get('required', False)
             
             if field.get('is_component', False):
-                # Handle component fields
+                # Handle component fields (only if they don't belong to a group)
                 if required:
                     component_class.append(f"    {to_camel_case(field_name)}: {field_name} = Field(..., description='{field_name} component')\n")
                 else:
@@ -370,11 +400,49 @@ def generate_component_models(components, fields, output_dir):
                 # Use camelCase for the field name
                 count_field_name = to_camel_case(group_name)
                 items_field_name = f"{count_field_name}_items"
+                
+                # Add debug logging
+                logger.info(f"Looking for tag for group: {group_name}, initial tag value: '{tag}'")
+                
+                # Look up the tag in the fields dictionary if it's empty
+                if not tag:
+                    # Try to find the tag from the fields dictionary
+                    field_info = fields.get(group_name, {})
+                    tag = field_info.get('tag', '')
+                    logger.info(f"  Looked up tag in fields[{group_name}]: '{tag}'")
+                    
+                    # If still empty, try to normalize the name - handle "No" prefix
+                    if not tag and group_name.startswith('No'):
+                        # Sometimes the field name in the fields dictionary doesn't have the "No" prefix
+                        base_name = group_name[2:]  # Remove "No" prefix
+                        # Try with "No" prefix first
+                        field_info = fields.get(f"No{base_name}", {})
+                        tag = field_info.get('tag', '')
+                        logger.info(f"  Looked up tag in fields[No{base_name}]: '{tag}'")
+                        
+                        if not tag:
+                            # Try without "No" prefix
+                            field_info = fields.get(base_name, {})
+                            tag = field_info.get('tag', '')
+                            logger.info(f"  Looked up tag in fields[{base_name}]: '{tag}'")
+                            
+                    # If we still don't have a tag, let's try lowercase names
+                    if not tag:
+                        lower_name = group_name.lower()
+                        for field_name, field_data in fields.items():
+                            if field_name.lower() == lower_name:
+                                tag = field_data.get('tag', '')
+                                logger.info(f"  Found matching field using lowercase comparison: {field_name} with tag: '{tag}'")
+                                break
+                
+                logger.info(f"Final tag for {group_name}: '{tag}'")
+                
                 component_class.append(f"    {count_field_name}: Optional[int] = Field(None, description='Number of {class_name} entries', alias='{tag}')\n")
                 component_class.append(f"    {items_field_name}: List[{class_name}] = Field(default_factory=list)\n")
         
         # Write file
         file_path = os.path.join(components_dir, f"{comp_name.lower()}.py")
+        logger.info(f"Writing component file for {comp_name}")
         with open(file_path, "w") as f:
             f.writelines(imports)
             f.writelines(group_classes)
