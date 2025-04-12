@@ -10,24 +10,6 @@ from src.models.fix.generated.fields.common import *
 from src.models.fix.base import FIXMessageBase
 
 
-class AffectedOrdGrp(FIXMessageBase):
-    """
-    FIX 4.4 AffectedOrdGrp Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    origClOrdID: Optional[str] = Field(None, description='', alias='41')
-    affectedOrderID: Optional[str] = Field(None, description='', alias='535')
-    affectedSecondaryOrderID: Optional[str] = Field(None, description='', alias='536')
-
-
 class NoAffectedOrders(FIXMessageBase):
     """
     NoAffectedOrders group fields
@@ -41,8 +23,25 @@ class NoAffectedOrders(FIXMessageBase):
             time: lambda v: v.isoformat()
         }
     )
-    origClOrdID: Optional[int] = Field(None, description='', alias='534')
-    affectedOrderID: Optional[int] = Field(None, description='', alias='534')
-    affectedSecondaryOrderID: Optional[int] = Field(None, description='', alias='534')
+    
+    origClOrdID: Optional[str] = Field(None, description='', alias='41')
+    affectedOrderID: Optional[str] = Field(None, description='', alias='535')
+    affectedSecondaryOrderID: Optional[str] = Field(None, description='', alias='536')
 
-    noAffectedOrderss: List[NoAffectedOrders] = Field(default_factory=list)
+
+class AffectedOrdGrp(FIXMessageBase):
+    """
+    FIX 4.4 AffectedOrdGrp Component
+    """
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_by_name=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat(),
+            date: lambda v: v.isoformat(),
+            time: lambda v: v.isoformat()
+        }
+    )
+    
+    noAffectedOrders: Optional[int] = Field(None, description='Number of affected orders', alias='534')
+    noAffectedOrders_items: List[NoAffectedOrders] = Field(default_factory=list)

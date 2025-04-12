@@ -226,9 +226,14 @@ def generate_component_models(components: Dict[str, Any], fields: Dict[str, Any]
         file_path = os.path.join(components_dir, f"{component_name.lower()}.py")
         with open(file_path, "w") as f:
             # Write imports
-            f.write("from typing import Optional, List\n")
+            f.write("\"\"\"\n")
+            f.write(f"FIX 4.4 {component_name} Component\n\n")
+            f.write(f"This module contains the Pydantic model for the {component_name} component.\n")
+            f.write("\"\"\"\n")
             f.write("from datetime import datetime, date, time\n")
-            f.write("from pydantic import Field\n")
+            f.write("from typing import List, Optional, Union, Dict, Any, Literal\n")
+            f.write("from pydantic import BaseModel, Field, ConfigDict\n")
+            f.write("from src.models.fix.generated.fields.common import *\n")
             f.write("from src.models.fix.base import FIXMessageBase\n")
 
             # Track imported components
@@ -252,14 +257,26 @@ def generate_component_models(components: Dict[str, Any], fields: Dict[str, Any]
                                 f.write(f"from src.models.fix.generated.components.{comp_name.lower()} import {comp_name}\n")
                                 imported_components.add(comp_name)
             
-            f.write("\n")
+            f.write("\n\n")
 
             # First, generate group classes
             for field in component_fields:
                 if field.get('is_group', False):
                     group_name = field['name'].replace(" ", "")
                     f.write(f"class {group_name}(FIXMessageBase):\n")
-                    f.write('    """FIX group model."""\n\n')
+                    f.write('    """\n')
+                    f.write(f'    {group_name} group fields\n')
+                    f.write('    """\n')
+                    f.write('    model_config = ConfigDict(\n')
+                    f.write('        populate_by_name=True,\n')
+                    f.write('        validate_by_name=True,\n')
+                    f.write('        json_encoders={\n')
+                    f.write('            datetime: lambda v: v.isoformat(),\n')
+                    f.write('            date: lambda v: v.isoformat(),\n')
+                    f.write('            time: lambda v: v.isoformat()\n')
+                    f.write('        }\n')
+                    f.write('    )\n')
+                    f.write('    \n')
 
                     # Add fields to the group
                     for group_field in field.get('fields', []):
@@ -294,25 +311,40 @@ def generate_component_models(components: Dict[str, Any], fields: Dict[str, Any]
                                 default_value = "..."  # Pydantic's required marker
                             
                             # Add field to the model with proper Field alias
+                            tag = None
                             if 'tag' in field_info:
-                                f.write(f"    {field_name}: {python_type} = Field({default_value}, description='{field_info.get('description', '')}', alias='{field_info['tag']}')\n")
+                                tag = field_info['tag']
+                            elif 'tag' in group_field:
+                                tag = group_field['tag']
                             else:
-                                # We need to find the tag - lookup by name in fields dictionary
-                                tag = None
+                                # Look up the tag by field name
                                 for f_name, f_info in fields.items():
                                     if f_name.lower() == field_name.lower() or f_name.lower() == group_field['name'].lower():
                                         tag = f_info.get('tag')
                                         break
-                                
-                                if tag:
-                                    f.write(f"    {field_name}: {python_type} = Field({default_value}, description='', alias='{tag}')\n")
-                                else:
-                                    f.write(f"    {field_name}: {python_type} = Field({default_value})\n")
-                    f.write("\n")
+                            
+                            if tag:
+                                f.write(f"    {field_name}: {python_type} = Field({default_value}, description='', alias='{tag}')\n")
+                            else:
+                                f.write(f"    {field_name}: {python_type} = Field({default_value})\n")
+                    
+                    f.write("\n\n")
 
             # Write component class
             f.write(f"class {component_name}(FIXMessageBase):\n")
-            f.write('    """FIX component model."""\n\n')
+            f.write('    """\n')
+            f.write(f'    FIX 4.4 {component_name} Component\n')
+            f.write('    """\n')
+            f.write('    model_config = ConfigDict(\n')
+            f.write('        populate_by_name=True,\n')
+            f.write('        validate_by_name=True,\n')
+            f.write('        json_encoders={\n')
+            f.write('            datetime: lambda v: v.isoformat(),\n')
+            f.write('            date: lambda v: v.isoformat(),\n')
+            f.write('            time: lambda v: v.isoformat()\n')
+            f.write('        }\n')
+            f.write('    )\n')
+            f.write('    \n')
 
             # Add non-group fields to main component
             for field in component_fields:
@@ -348,40 +380,61 @@ def generate_component_models(components: Dict[str, Any], fields: Dict[str, Any]
                             default_value = "..."  # Pydantic's required marker
                         
                         # Add field to the model with proper Field alias
+                        tag = None
                         if 'tag' in field_info:
-                            f.write(f"    {field_name}: {python_type} = Field({default_value}, description='{field_info.get('description', '')}', alias='{field_info['tag']}')\n")
+                            tag = field_info['tag']
+                        elif 'tag' in field:
+                            tag = field['tag']
                         else:
-                            # We need to find the tag - lookup by name in fields dictionary
-                            tag = None
+                            # Look up the tag by field name
                             for f_name, f_info in fields.items():
                                 if f_name.lower() == field_name.lower() or f_name.lower() == field['name'].lower():
                                     tag = f_info.get('tag')
                                     break
-                            
-                            if tag:
-                                f.write(f"    {field_name}: {python_type} = Field({default_value}, description='', alias='{tag}')\n")
-                            else:
-                                f.write(f"    {field_name}: {python_type} = Field({default_value})\n")
+                        
+                        if tag:
+                            f.write(f"    {field_name}: {python_type} = Field({default_value}, description='', alias='{tag}')\n")
+                        else:
+                            f.write(f"    {field_name}: {python_type} = Field({default_value})\n")
                 
                 # Add group count and list fields
                 else:
                     group_name = field['name'].replace(" ", "")
-                    field_name = to_camel_case(group_name)
                     
                     # Find the tag for the group count field
                     count_tag = None
+                    count_field_name = f"No{group_name}"
+                    
+                    # First, try to find the count field directly in the fields dictionary
                     for f_name, f_info in fields.items():
-                        if f_name.lower() == field_name.lower() or f_name.lower() == field['name'].lower():
+                        if f_name == count_field_name:
                             count_tag = f_info.get('tag')
                             break
                     
+                    # If not found, try to match by various name formats
+                    if not count_tag:
+                        for f_name, f_info in fields.items():
+                            name_variations = [
+                                f"No{group_name}",
+                                f"No{field['name'].replace(' ', '')}",
+                                f"No{to_camel_case(field['name']).capitalize()}",
+                                f"No{to_camel_case(field['name'])}",
+                                f"no{field['name'].lower().replace(' ', '')}"
+                            ]
+                            if f_name in name_variations or f_name.lower() in [n.lower() for n in name_variations]:
+                                count_tag = f_info.get('tag')
+                                break
+                    
                     # Add count field - always required for groups
+                    count_field_name = f"no{to_camel_case(group_name)}"
                     if count_tag:
-                        f.write(f"    {field_name}: int = Field(..., description='Number of {group_name} entries', alias='{count_tag}')\n")
+                        f.write(f"    {count_field_name}: Optional[int] = Field(None, description='Number of {group_name} entries', alias='{count_tag}')\n")
                     else:
-                        f.write(f"    {field_name}: int = Field(..., description='Number of {group_name} entries', alias='420')\n")
+                        # If we can't find the tag, use a descriptive field name without alias
+                        f.write(f"    {count_field_name}: Optional[int] = Field(None, description='Number of {group_name} entries')\n")
+                    
                     # Add list field
-                    f.write(f"    {field_name}_items: List[{group_name}] = Field(default_factory=list)\n")
+                    f.write(f"    {count_field_name}_items: List[{group_name}] = Field(default_factory=list)\n")
 
             f.write("\n")
 
