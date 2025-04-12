@@ -13,6 +13,7 @@ from src.generators.fix_spec_downloader import download_fix_spec, parse_fix_spec
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
+import json
 
 # Configure logging
 logging.basicConfig(
@@ -230,25 +231,30 @@ def generate_component_models(components: Dict[str, Any], fields: Dict[str, Any]
             f.write("from pydantic import Field\n")
             f.write("from src.models.fix.base import FIXMessageBase\n")
 
-            # Import required components
+            # Track imported components
             imported_components = set()
+            
+            # Identify all components needed for imports
             for field in component_fields:
+                # Components in the main component
                 if field.get('is_component', False):
                     comp_name = field['name'].replace(" ", "")
                     if comp_name not in imported_components:
                         f.write(f"from src.models.fix.generated.components.{comp_name.lower()} import {comp_name}\n")
                         imported_components.add(comp_name)
+                
+                # Components in groups
+                if field.get('is_group', False):
+                    for group_field in field.get('fields', []):
+                        if group_field.get('is_component', False):
+                            comp_name = group_field['name'].replace(" ", "")
+                            if comp_name not in imported_components:
+                                f.write(f"from src.models.fix.generated.components.{comp_name.lower()} import {comp_name}\n")
+                                imported_components.add(comp_name)
+            
             f.write("\n")
 
-            # Track fields that are part of groups
-            group_fields = set()
-            for field in component_fields:
-                if field.get('is_group', False):
-                    for group_field in field['fields']:
-                        field_name = to_camel_case(group_field['name'].replace(" ", ""))
-                        group_fields.add(field_name)
-
-            # First, generate any group classes
+            # First, generate group classes
             for field in component_fields:
                 if field.get('is_group', False):
                     group_name = field['name'].replace(" ", "")
@@ -256,7 +262,7 @@ def generate_component_models(components: Dict[str, Any], fields: Dict[str, Any]
                     f.write('    """FIX group model."""\n\n')
 
                     # Add fields to the group
-                    for group_field in field['fields']:
+                    for group_field in field.get('fields', []):
                         field_name = to_camel_case(group_field['name'].replace(" ", ""))
                         required = group_field.get('required', False)
 
@@ -273,6 +279,10 @@ def generate_component_models(components: Dict[str, Any], fields: Dict[str, Any]
                         else:
                             # Handle regular fields
                             field_info = fields.get(field_name, {})  # Use original name for lookup
+                            if not field_info:
+                                # Try the original name if camelCase lookup failed
+                                field_info = fields.get(group_field['name'], {})
+                            
                             fix_type = field_info.get('type', 'STRING')
                             python_type = FIX_TYPE_MAP.get(fix_type, 'str')
                             
@@ -287,26 +297,29 @@ def generate_component_models(components: Dict[str, Any], fields: Dict[str, Any]
                             if 'tag' in field_info:
                                 f.write(f"    {field_name}: {python_type} = Field({default_value}, description='{field_info.get('description', '')}', alias='{field_info['tag']}')\n")
                             else:
-                                f.write(f"    {field_name}: {python_type} = Field({default_value})\n")
+                                # We need to find the tag - lookup by name in fields dictionary
+                                tag = None
+                                for f_name, f_info in fields.items():
+                                    if f_name.lower() == field_name.lower() or f_name.lower() == group_field['name'].lower():
+                                        tag = f_info.get('tag')
+                                        break
+                                
+                                if tag:
+                                    f.write(f"    {field_name}: {python_type} = Field({default_value}, description='', alias='{tag}')\n")
+                                else:
+                                    f.write(f"    {field_name}: {python_type} = Field({default_value})\n")
                     f.write("\n")
 
             # Write component class
             f.write(f"class {component_name}(FIXMessageBase):\n")
             f.write('    """FIX component model."""\n\n')
 
-            # Add fields
+            # Add non-group fields to main component
             for field in component_fields:
-                field_name = to_camel_case(field['name'].replace(" ", ""))
-                required = field.get('required', False)
+                if not field.get('is_group', False):
+                    field_name = to_camel_case(field['name'].replace(" ", ""))
+                    required = field.get('required', False)
 
-                if field.get('is_group', False):
-                    # Handle group fields
-                    group_name = field['name'].replace(" ", "")
-                    # Add count field
-                    f.write(f"    {field_name}: Optional[int] = Field(None, description='Number of {group_name} entries', alias='420')\n")
-                    # Add list field
-                    f.write(f"    {field_name}_items: List[{group_name}] = Field(default_factory=list)\n")
-                elif not field.get('is_group_field', False) and field_name not in group_fields:  # Skip fields that belong to a group
                     if field.get('is_component', False):
                         # Handle component fields
                         comp_name = field['name'].replace(" ", "")
@@ -320,6 +333,10 @@ def generate_component_models(components: Dict[str, Any], fields: Dict[str, Any]
                     else:
                         # Handle regular fields
                         field_info = fields.get(field_name, {})  # Use original name for lookup
+                        if not field_info:
+                            # Try the original name if camelCase lookup failed
+                            field_info = fields.get(field['name'], {})
+                            
                         fix_type = field_info.get('type', 'STRING')
                         python_type = FIX_TYPE_MAP.get(fix_type, 'str')
                         
@@ -334,7 +351,37 @@ def generate_component_models(components: Dict[str, Any], fields: Dict[str, Any]
                         if 'tag' in field_info:
                             f.write(f"    {field_name}: {python_type} = Field({default_value}, description='{field_info.get('description', '')}', alias='{field_info['tag']}')\n")
                         else:
-                            f.write(f"    {field_name}: {python_type} = Field({default_value})\n")
+                            # We need to find the tag - lookup by name in fields dictionary
+                            tag = None
+                            for f_name, f_info in fields.items():
+                                if f_name.lower() == field_name.lower() or f_name.lower() == field['name'].lower():
+                                    tag = f_info.get('tag')
+                                    break
+                            
+                            if tag:
+                                f.write(f"    {field_name}: {python_type} = Field({default_value}, description='', alias='{tag}')\n")
+                            else:
+                                f.write(f"    {field_name}: {python_type} = Field({default_value})\n")
+                
+                # Add group count and list fields
+                else:
+                    group_name = field['name'].replace(" ", "")
+                    field_name = to_camel_case(group_name)
+                    
+                    # Find the tag for the group count field
+                    count_tag = None
+                    for f_name, f_info in fields.items():
+                        if f_name.lower() == field_name.lower() or f_name.lower() == field['name'].lower():
+                            count_tag = f_info.get('tag')
+                            break
+                    
+                    # Add count field - always required for groups
+                    if count_tag:
+                        f.write(f"    {field_name}: int = Field(..., description='Number of {group_name} entries', alias='{count_tag}')\n")
+                    else:
+                        f.write(f"    {field_name}: int = Field(..., description='Number of {group_name} entries', alias='420')\n")
+                    # Add list field
+                    f.write(f"    {field_name}_items: List[{group_name}] = Field(default_factory=list)\n")
 
             f.write("\n")
 
