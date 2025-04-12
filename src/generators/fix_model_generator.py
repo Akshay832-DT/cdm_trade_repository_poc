@@ -269,7 +269,8 @@ def generate_component_models(components, fields, output_dir):
         # Generate group classes
         group_classes = []
         for group_name, group_field_list in group_fields.items():
-            class_name = group_name.replace("No", "")
+            # Keep the original name including "No" prefix
+            class_name = group_name
             group_class = [
                 f"class {class_name}(FIXMessageBase):\n",
                 f'    """\n',
@@ -364,8 +365,9 @@ def generate_component_models(components, fields, output_dir):
             group_field = next((f for f in comp_fields if f.get('name') == group_name), None)
             if group_field:
                 tag = group_field.get('tag', '')
-                class_name = group_name.replace("No", "")
-                # Use the original group name (without duplicating "no")
+                # Use the original group name for the class
+                class_name = group_name
+                # Use camelCase for the field name
                 count_field_name = to_camel_case(group_name)
                 items_field_name = f"{count_field_name}_items"
                 component_class.append(f"    {count_field_name}: Optional[int] = Field(None, description='Number of {class_name} entries', alias='{tag}')\n")
