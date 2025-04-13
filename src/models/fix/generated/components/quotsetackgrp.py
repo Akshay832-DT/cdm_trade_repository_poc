@@ -8,26 +8,8 @@ from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
 from src.models.fix.generated.fields.common import *
 from src.models.fix.base import FIXMessageBase
-
-
-class QuotSetAckGrp(FIXMessageBase):
-    """
-    FIX 4.4 QuotSetAckGrp Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    quoteSetID: Optional[str] = Field(None, description='', alias='302')
-    totNoQuoteEntries: Optional[int] = Field(None, description='', alias='304')
-    lastFragment: Optional[bool] = Field(None, description='', alias='893')
-    underlyingInstrument: Optional[str] = Field(None)
-    quotEntryAckGrp: Optional[str] = Field(None)
+from src.models.fix.generated.components.underlyinginstrument import UnderlyingInstrument
+from src.models.fix.generated.components.quotentryackgrp import QuotEntryAckGrp
 
 
 class NoQuoteSets(FIXMessageBase):
@@ -43,8 +25,27 @@ class NoQuoteSets(FIXMessageBase):
             time: lambda v: v.isoformat()
         }
     )
-    quoteSetID: Optional[int] = Field(None, description='', alias='296')
-    totNoQuoteEntries: Optional[int] = Field(None, description='', alias='296')
-    lastFragment: Optional[int] = Field(None, description='', alias='296')
+    
+    quoteSetID: Optional[str] = Field(None, description='', alias='302')
+    totNoQuoteEntries: Optional[int] = Field(None, description='', alias='304')
+    lastFragment: Optional[bool] = Field(None, description='', alias='893')
 
-    noQuoteSetss: List[NoQuoteSets] = Field(default_factory=list)
+
+class QuotSetAckGrp(FIXMessageBase):
+    """
+    FIX 4.4 QuotSetAckGrp Component
+    """
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_by_name=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat(),
+            date: lambda v: v.isoformat(),
+            time: lambda v: v.isoformat()
+        }
+    )
+    
+    underlyingInstrument: Optional[UnderlyingInstrument] = Field(None, description='UnderlyingInstrument component')
+    quotEntryAckGrp: Optional[QuotEntryAckGrp] = Field(None, description='QuotEntryAckGrp component')
+    noQuoteSets: Optional[int] = Field(None, description='Number of NoQuoteSets entries', alias='296')
+    noQuoteSets_items: List[NoQuoteSets] = Field(default_factory=list)

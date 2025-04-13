@@ -10,32 +10,6 @@ from src.models.fix.generated.fields.common import *
 from src.models.fix.base import FIXMessageBase
 
 
-class BidDescReqGrp(FIXMessageBase):
-    """
-    FIX 4.4 BidDescReqGrp Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    bidDescriptorType: Optional[int] = Field(None, description='', alias='399')
-    bidDescriptor: Optional[str] = Field(None, description='', alias='400')
-    sideValueInd: Optional[int] = Field(None, description='', alias='401')
-    liquidityValue: Optional[float] = Field(None, description='', alias='404')
-    liquidityNumSecurities: Optional[int] = Field(None, description='', alias='441')
-    liquidityPctLow: Optional[float] = Field(None, description='', alias='402')
-    liquidityPctHigh: Optional[float] = Field(None, description='', alias='403')
-    eFPTrackingError: Optional[float] = Field(None, description='', alias='405')
-    fairValue: Optional[float] = Field(None, description='', alias='406')
-    outsideIndexPct: Optional[float] = Field(None, description='', alias='407')
-    valueOfFutures: Optional[float] = Field(None, description='', alias='408')
-
-
 class NoBidDescriptors(FIXMessageBase):
     """
     NoBidDescriptors group fields
@@ -49,16 +23,33 @@ class NoBidDescriptors(FIXMessageBase):
             time: lambda v: v.isoformat()
         }
     )
-    bidDescriptorType: Optional[int] = Field(None, description='', alias='398')
-    bidDescriptor: Optional[int] = Field(None, description='', alias='398')
-    sideValueInd: Optional[int] = Field(None, description='', alias='398')
-    liquidityValue: Optional[int] = Field(None, description='', alias='398')
-    liquidityNumSecurities: Optional[int] = Field(None, description='', alias='398')
-    liquidityPctLow: Optional[int] = Field(None, description='', alias='398')
-    liquidityPctHigh: Optional[int] = Field(None, description='', alias='398')
-    eFPTrackingError: Optional[int] = Field(None, description='', alias='398')
-    fairValue: Optional[int] = Field(None, description='', alias='398')
-    outsideIndexPct: Optional[int] = Field(None, description='', alias='398')
-    valueOfFutures: Optional[int] = Field(None, description='', alias='398')
+    
+    bidDescriptorType: Optional[int] = Field(None, description='', alias='399')
+    bidDescriptor: Optional[str] = Field(None, description='', alias='400')
+    sideValueInd: Optional[int] = Field(None, description='', alias='401')
+    liquidityValue: Optional[float] = Field(None, description='', alias='404')
+    liquidityNumSecurities: Optional[int] = Field(None, description='', alias='441')
+    liquidityPctLow: Optional[float] = Field(None, description='', alias='402')
+    liquidityPctHigh: Optional[float] = Field(None, description='', alias='403')
+    eFPTrackingError: Optional[float] = Field(None, description='', alias='405')
+    fairValue: Optional[float] = Field(None, description='', alias='406')
+    outsideIndexPct: Optional[float] = Field(None, description='', alias='407')
+    valueOfFutures: Optional[float] = Field(None, description='', alias='408')
 
-    noBidDescriptorss: List[NoBidDescriptors] = Field(default_factory=list)
+
+class BidDescReqGrp(FIXMessageBase):
+    """
+    FIX 4.4 BidDescReqGrp Component
+    """
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_by_name=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat(),
+            date: lambda v: v.isoformat(),
+            time: lambda v: v.isoformat()
+        }
+    )
+    
+    noBidDescriptors: Optional[int] = Field(None, description='Number of NoBidDescriptors entries', alias='398')
+    noBidDescriptors_items: List[NoBidDescriptors] = Field(default_factory=list)

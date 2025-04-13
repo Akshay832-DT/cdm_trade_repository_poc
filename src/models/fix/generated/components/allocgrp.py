@@ -8,11 +8,16 @@ from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
 from src.models.fix.generated.fields.common import *
 from src.models.fix.base import FIXMessageBase
+from src.models.fix.generated.components.nestedparties import NestedParties
+from src.models.fix.generated.components.commissiondata import CommissionData
+from src.models.fix.generated.components.miscfeesgrp import MiscFeesGrp
+from src.models.fix.generated.components.clrinstgrp import ClrInstGrp
+from src.models.fix.generated.components.settlinstructionsdata import SettlInstructionsData
 
 
-class AllocGrp(FIXMessageBase):
+class NoAllocs(FIXMessageBase):
     """
-    FIX 4.4 AllocGrp Component
+    NoAllocs group fields
     """
     model_config = ConfigDict(
         populate_by_name=True,
@@ -23,6 +28,7 @@ class AllocGrp(FIXMessageBase):
             time: lambda v: v.isoformat()
         }
     )
+    
     allocAccount: Optional[str] = Field(None, description='', alias='79')
     allocAcctIDSource: Optional[int] = Field(None, description='', alias='661')
     matchStatus: Optional[str] = Field(None, description='', alias='573')
@@ -46,16 +52,11 @@ class AllocGrp(FIXMessageBase):
     allocAccruedInterestAmt: Optional[float] = Field(None, description='', alias='742')
     allocInterestAtMaturity: Optional[float] = Field(None, description='', alias='741')
     allocSettlInstType: Optional[int] = Field(None, description='', alias='780')
-    nestedParties: Optional[str] = Field(None)
-    commissionData: Optional[str] = Field(None)
-    miscFeesGrp: Optional[str] = Field(None)
-    clrInstGrp: Optional[str] = Field(None)
-    settlInstructionsData: Optional[str] = Field(None)
 
 
-class NoAllocs(FIXMessageBase):
+class AllocGrp(FIXMessageBase):
     """
-    NoAllocs group fields
+    FIX 4.4 AllocGrp Component
     """
     model_config = ConfigDict(
         populate_by_name=True,
@@ -66,28 +67,11 @@ class NoAllocs(FIXMessageBase):
             time: lambda v: v.isoformat()
         }
     )
-    allocAccount: Optional[int] = Field(None, description='', alias='78')
-    allocAcctIDSource: Optional[int] = Field(None, description='', alias='78')
-    matchStatus: Optional[int] = Field(None, description='', alias='78')
-    allocPrice: Optional[int] = Field(None, description='', alias='78')
-    allocQty: Optional[int] = Field(None, description='', alias='78')
-    individualAllocID: Optional[int] = Field(None, description='', alias='78')
-    processCode: Optional[int] = Field(None, description='', alias='78')
-    notifyBrokerOfCredit: Optional[int] = Field(None, description='', alias='78')
-    allocHandlInst: Optional[int] = Field(None, description='', alias='78')
-    allocText: Optional[int] = Field(None, description='', alias='78')
-    encodedAllocTextLen: Optional[int] = Field(None, description='', alias='78')
-    encodedAllocText: Optional[int] = Field(None, description='', alias='78')
-    allocAvgPx: Optional[int] = Field(None, description='', alias='78')
-    allocNetMoney: Optional[int] = Field(None, description='', alias='78')
-    settlCurrAmt: Optional[int] = Field(None, description='', alias='78')
-    allocSettlCurrAmt: Optional[int] = Field(None, description='', alias='78')
-    settlCurrency: Optional[int] = Field(None, description='', alias='78')
-    allocSettlCurrency: Optional[int] = Field(None, description='', alias='78')
-    settlCurrFxRate: Optional[int] = Field(None, description='', alias='78')
-    settlCurrFxRateCalc: Optional[int] = Field(None, description='', alias='78')
-    allocAccruedInterestAmt: Optional[int] = Field(None, description='', alias='78')
-    allocInterestAtMaturity: Optional[int] = Field(None, description='', alias='78')
-    allocSettlInstType: Optional[int] = Field(None, description='', alias='78')
-
-    noAllocss: List[NoAllocs] = Field(default_factory=list)
+    
+    nestedParties: Optional[NestedParties] = Field(None, description='NestedParties component')
+    commissionData: Optional[CommissionData] = Field(None, description='CommissionData component')
+    miscFeesGrp: Optional[MiscFeesGrp] = Field(None, description='MiscFeesGrp component')
+    clrInstGrp: Optional[ClrInstGrp] = Field(None, description='ClrInstGrp component')
+    settlInstructionsData: Optional[SettlInstructionsData] = Field(None, description='SettlInstructionsData component')
+    noAllocs: Optional[int] = Field(None, description='Number of NoAllocs entries', alias='78')
+    noAllocs_items: List[NoAllocs] = Field(default_factory=list)

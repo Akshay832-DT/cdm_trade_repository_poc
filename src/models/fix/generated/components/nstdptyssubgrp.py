@@ -10,23 +10,6 @@ from src.models.fix.generated.fields.common import *
 from src.models.fix.base import FIXMessageBase
 
 
-class NstdPtysSubGrp(FIXMessageBase):
-    """
-    FIX 4.4 NstdPtysSubGrp Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    nestedPartySubID: Optional[str] = Field(None, description='', alias='545')
-    nestedPartySubIDType: Optional[int] = Field(None, description='', alias='805')
-
-
 class NoNestedPartySubIDs(FIXMessageBase):
     """
     NoNestedPartySubIDs group fields
@@ -40,7 +23,24 @@ class NoNestedPartySubIDs(FIXMessageBase):
             time: lambda v: v.isoformat()
         }
     )
-    nestedPartySubID: Optional[int] = Field(None, description='', alias='804')
-    nestedPartySubIDType: Optional[int] = Field(None, description='', alias='804')
+    
+    nestedPartySubID: Optional[str] = Field(None, description='', alias='545')
+    nestedPartySubIDType: Optional[int] = Field(None, description='', alias='805')
 
-    noNestedPartySubIDss: List[NoNestedPartySubIDs] = Field(default_factory=list)
+
+class NstdPtysSubGrp(FIXMessageBase):
+    """
+    FIX 4.4 NstdPtysSubGrp Component
+    """
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_by_name=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat(),
+            date: lambda v: v.isoformat(),
+            time: lambda v: v.isoformat()
+        }
+    )
+    
+    noNestedPartySubIDs: Optional[int] = Field(None, description='Number of NoNestedPartySubIDs entries', alias='804')
+    noNestedPartySubIDs_items: List[NoNestedPartySubIDs] = Field(default_factory=list)

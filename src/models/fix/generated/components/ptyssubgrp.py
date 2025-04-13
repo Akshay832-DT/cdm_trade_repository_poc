@@ -10,23 +10,6 @@ from src.models.fix.generated.fields.common import *
 from src.models.fix.base import FIXMessageBase
 
 
-class PtysSubGrp(FIXMessageBase):
-    """
-    FIX 4.4 PtysSubGrp Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    partySubID: Optional[str] = Field(None, description='', alias='523')
-    partySubIDType: Optional[int] = Field(None, description='', alias='803')
-
-
 class NoPartySubIDs(FIXMessageBase):
     """
     NoPartySubIDs group fields
@@ -40,7 +23,24 @@ class NoPartySubIDs(FIXMessageBase):
             time: lambda v: v.isoformat()
         }
     )
-    partySubID: Optional[int] = Field(None, description='', alias='802')
-    partySubIDType: Optional[int] = Field(None, description='', alias='802')
+    
+    partySubID: Optional[str] = Field(None, description='', alias='523')
+    partySubIDType: Optional[int] = Field(None, description='', alias='803')
 
-    noPartySubIDss: List[NoPartySubIDs] = Field(default_factory=list)
+
+class PtysSubGrp(FIXMessageBase):
+    """
+    FIX 4.4 PtysSubGrp Component
+    """
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_by_name=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat(),
+            date: lambda v: v.isoformat(),
+            time: lambda v: v.isoformat()
+        }
+    )
+    
+    noPartySubIDs: Optional[int] = Field(None, description='Number of NoPartySubIDs entries', alias='802')
+    noPartySubIDs_items: List[NoPartySubIDs] = Field(default_factory=list)

@@ -23,6 +23,7 @@ class DiscretionInstructions(FIXMessageBase):
             time: lambda v: v.isoformat()
         }
     )
+    
     discretionInst: Optional[str] = Field(None, description='', alias='388')
     discretionOffsetValue: Optional[float] = Field(None, description='', alias='389')
     discretionMoveType: Optional[int] = Field(None, description='', alias='841')

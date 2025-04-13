@@ -43,5 +43,5 @@ class AffectedOrdGrp(FIXMessageBase):
         }
     )
     
-    noAffectedOrders: Optional[int] = Field(None, description='Number of affected orders', alias='534')
+    noAffectedOrders: Optional[int] = Field(None, description='Number of NoAffectedOrders entries', alias='534')
     noAffectedOrders_items: List[NoAffectedOrders] = Field(default_factory=list)

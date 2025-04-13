@@ -10,22 +10,6 @@ from src.models.fix.generated.fields.common import *
 from src.models.fix.base import FIXMessageBase
 
 
-class CollInqQualGrp(FIXMessageBase):
-    """
-    FIX 4.4 CollInqQualGrp Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    collInquiryQualifier: Optional[int] = Field(None, description='', alias='896')
-
-
 class NoCollInquiryQualifier(FIXMessageBase):
     """
     NoCollInquiryQualifier group fields
@@ -39,6 +23,23 @@ class NoCollInquiryQualifier(FIXMessageBase):
             time: lambda v: v.isoformat()
         }
     )
-    collInquiryQualifier: Optional[int] = Field(None, description='', alias='938')
+    
+    collInquiryQualifier: Optional[int] = Field(None, description='', alias='896')
 
-    noCollInquiryQualifiers: List[NoCollInquiryQualifier] = Field(default_factory=list)
+
+class CollInqQualGrp(FIXMessageBase):
+    """
+    FIX 4.4 CollInqQualGrp Component
+    """
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_by_name=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat(),
+            date: lambda v: v.isoformat(),
+            time: lambda v: v.isoformat()
+        }
+    )
+    
+    noCollInquiryQualifier: Optional[int] = Field(None, description='Number of NoCollInquiryQualifier entries', alias='938')
+    noCollInquiryQualifier_items: List[NoCollInquiryQualifier] = Field(default_factory=list)

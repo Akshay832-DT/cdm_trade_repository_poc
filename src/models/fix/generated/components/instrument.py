@@ -8,6 +8,8 @@ from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
 from src.models.fix.generated.fields.common import *
 from src.models.fix.base import FIXMessageBase
+from src.models.fix.generated.components.secaltidgrp import SecAltIDGrp
+from src.models.fix.generated.components.evntgrp import EvntGrp
 
 
 class Instrument(FIXMessageBase):
@@ -23,6 +25,7 @@ class Instrument(FIXMessageBase):
             time: lambda v: v.isoformat()
         }
     )
+    
     symbol: Optional[str] = Field(None, description='', alias='55')
     symbolSfx: Optional[str] = Field(None, description='', alias='65')
     securityID: Optional[str] = Field(None, description='', alias='48')
@@ -64,5 +67,5 @@ class Instrument(FIXMessageBase):
     cPRegType: Optional[str] = Field(None, description='', alias='876')
     datedDate: Optional[date] = Field(None, description='', alias='873')
     interestAccrualDate: Optional[date] = Field(None, description='', alias='874')
-    secAltIDGrp: Optional[str] = Field(None)
-    evntGrp: Optional[str] = Field(None)
+    secAltIDGrp: Optional[SecAltIDGrp] = Field(None, description='SecAltIDGrp component')
+    evntGrp: Optional[EvntGrp] = Field(None, description='EvntGrp component')

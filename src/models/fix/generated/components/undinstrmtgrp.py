@@ -8,22 +8,7 @@ from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
 from src.models.fix.generated.fields.common import *
 from src.models.fix.base import FIXMessageBase
-
-
-class UndInstrmtGrp(FIXMessageBase):
-    """
-    FIX 4.4 UndInstrmtGrp Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    underlyingInstrument: Optional[str] = Field(None)
+from src.models.fix.generated.components.underlyinginstrument import UnderlyingInstrument
 
 
 class NoUnderlyings(FIXMessageBase):
@@ -39,5 +24,23 @@ class NoUnderlyings(FIXMessageBase):
             time: lambda v: v.isoformat()
         }
     )
+    
 
-    noUnderlyingss: List[NoUnderlyings] = Field(default_factory=list)
+
+class UndInstrmtGrp(FIXMessageBase):
+    """
+    FIX 4.4 UndInstrmtGrp Component
+    """
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_by_name=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat(),
+            date: lambda v: v.isoformat(),
+            time: lambda v: v.isoformat()
+        }
+    )
+    
+    underlyingInstrument: Optional[UnderlyingInstrument] = Field(None, description='UnderlyingInstrument component')
+    noUnderlyings: Optional[int] = Field(None, description='Number of NoUnderlyings entries', alias='711')
+    noUnderlyings_items: List[NoUnderlyings] = Field(default_factory=list)

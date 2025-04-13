@@ -1,58 +1,29 @@
-"""
-FIX 4.4 ListStatus Message
-
-This module contains the Pydantic model for the ListStatus message.
-"""
+from typing import Optional, List
 from datetime import datetime, date, time
-from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field
 from src.models.fix.base import FIXMessageBase
-from src.models.fix.generated.fields.common import *
 from src.models.fix.generated.components.ordliststatgrp import OrdListStatGrp
 
-
 class ListStatus(FIXMessageBase):
-    """
-    FIX 4.4 ListStatus Message
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    # Set the message type for this message
-    msgType: Literal["N"] = Field("N", alias='35')
-    
-    # Message-specific fields
-    listID: Optional[str] = Field(None, description='', alias='66')
-    listStatusType: Optional[int] = Field(None, description='', alias='429')
-    noRpts: Optional[int] = Field(None, description='', alias='82')
-    listOrderStatus: Optional[int] = Field(None, description='', alias='431')
-    rptSeq: Optional[int] = Field(None, description='', alias='83')
-    listStatusText: Optional[str] = Field(None, description='', alias='444')
-    encodedListStatusTextLen: Optional[int] = Field(None, description='', alias='445')
-    encodedListStatusText: Optional[str] = Field(None, description='', alias='446')
-    transactTime: Optional[datetime] = Field(None, description='', alias='60')
-    totNoOrders: Optional[int] = Field(None, description='', alias='68')
-    lastFragment: Optional[bool] = Field(None, description='', alias='893')
-    ordListStatGrp: Optional[OrdListStatGrp] = Field(None, description='OrdListStatGrp component')
+    """FIX message model."""
 
-    def model_dump(self, **kwargs) -> Dict[str, Any]:
-        """Override model_dump to handle nested components"""
-        kwargs.setdefault('by_alias', True)
-        data = super().model_dump(**kwargs)
-        
-        # Handle repeating components
-        for field_name, value in data.items():
-            if isinstance(value, list):
-                # Set the No* field based on list length
-                no_field = f"no{field_name}"  # Convert to camelCase
-                if hasattr(self, no_field):
-                    setattr(self, no_field, len(value))
-        
-        return data
+    beginstring: str = Field(..., description='', alias='8')
+    bodylength: int = Field(..., description='', alias='9')
+    msgtype: str = Field(..., description='', alias='35')
+    sendercompid: str = Field(..., description='', alias='49')
+    targetcompid: str = Field(..., description='', alias='56')
+    msgseqnum: int = Field(..., description='', alias='34')
+    sendingtime: datetime = Field(..., description='', alias='52')
+    listid: str = Field(..., description='', alias='66')
+    liststatustype: int = Field(..., description='', alias='429')
+    norpts: int = Field(..., description='', alias='82')
+    listorderstatus: int = Field(..., description='', alias='431')
+    rptseq: int = Field(..., description='', alias='83')
+    liststatustext: Optional[str] = Field(None, description='', alias='444')
+    encodedliststatustextlen: Optional[int] = Field(None, description='', alias='445')
+    encodedliststatustext: Optional[str] = Field(None, description='', alias='446')
+    transacttime: Optional[datetime] = Field(None, description='', alias='60')
+    totnoorders: int = Field(..., description='', alias='68')
+    lastfragment: Optional[bool] = Field(None, description='', alias='893')
+    ordliststatgrp: OrdListStatGrp = Field(..., description='OrdListStatGrp component')
+

@@ -10,24 +10,6 @@ from src.models.fix.generated.fields.common import *
 from src.models.fix.base import FIXMessageBase
 
 
-class CpctyConfGrp(FIXMessageBase):
-    """
-    FIX 4.4 CpctyConfGrp Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    orderCapacity: str = Field(None, description='', alias='528')
-    orderRestrictions: Optional[List[str]] = Field(None, description='', alias='529')
-    orderCapacityQty: float = Field(None, description='', alias='863')
-
-
 class NoCapacities(FIXMessageBase):
     """
     NoCapacities group fields
@@ -41,8 +23,25 @@ class NoCapacities(FIXMessageBase):
             time: lambda v: v.isoformat()
         }
     )
-    orderCapacity: int = Field(None, description='', alias='862')
-    orderRestrictions: Optional[int] = Field(None, description='', alias='862')
-    orderCapacityQty: int = Field(None, description='', alias='862')
+    
+    orderCapacity: str = Field(..., description='', alias='528')
+    orderRestrictions: Optional[List[str]] = Field(None, description='', alias='529')
+    orderCapacityQty: float = Field(..., description='', alias='863')
 
-    noCapacitiess: List[NoCapacities] = Field(default_factory=list)
+
+class CpctyConfGrp(FIXMessageBase):
+    """
+    FIX 4.4 CpctyConfGrp Component
+    """
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_by_name=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat(),
+            date: lambda v: v.isoformat(),
+            time: lambda v: v.isoformat()
+        }
+    )
+    
+    noCapacities: Optional[int] = Field(None, description='Number of NoCapacities entries', alias='862')
+    noCapacities_items: List[NoCapacities] = Field(default_factory=list)

@@ -8,24 +8,7 @@ from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
 from src.models.fix.generated.fields.common import *
 from src.models.fix.base import FIXMessageBase
-
-
-class DlvyInstGrp(FIXMessageBase):
-    """
-    FIX 4.4 DlvyInstGrp Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    settlInstSource: Optional[str] = Field(None, description='', alias='165')
-    dlvyInstType: Optional[str] = Field(None, description='', alias='787')
-    settlParties: Optional[str] = Field(None)
+from src.models.fix.generated.components.settlparties import SettlParties
 
 
 class NoDlvyInst(FIXMessageBase):
@@ -41,7 +24,25 @@ class NoDlvyInst(FIXMessageBase):
             time: lambda v: v.isoformat()
         }
     )
-    settlInstSource: Optional[int] = Field(None, description='', alias='85')
-    dlvyInstType: Optional[int] = Field(None, description='', alias='85')
+    
+    settlInstSource: Optional[str] = Field(None, description='', alias='165')
+    dlvyInstType: Optional[str] = Field(None, description='', alias='787')
 
-    noDlvyInsts: List[NoDlvyInst] = Field(default_factory=list)
+
+class DlvyInstGrp(FIXMessageBase):
+    """
+    FIX 4.4 DlvyInstGrp Component
+    """
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_by_name=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat(),
+            date: lambda v: v.isoformat(),
+            time: lambda v: v.isoformat()
+        }
+    )
+    
+    settlParties: Optional[SettlParties] = Field(None, description='SettlParties component')
+    noDlvyInst: Optional[int] = Field(None, description='Number of NoDlvyInst entries', alias='85')
+    noDlvyInst_items: List[NoDlvyInst] = Field(default_factory=list)

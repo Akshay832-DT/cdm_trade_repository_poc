@@ -10,9 +10,9 @@ from src.models.fix.generated.fields.common import *
 from src.models.fix.base import FIXMessageBase
 
 
-class MDFullGrp(FIXMessageBase):
+class NoMDEntries(FIXMessageBase):
     """
-    FIX 4.4 MDFullGrp Component
+    NoMDEntries group fields
     """
     model_config = ConfigDict(
         populate_by_name=True,
@@ -23,7 +23,8 @@ class MDFullGrp(FIXMessageBase):
             time: lambda v: v.isoformat()
         }
     )
-    mDEntryType: str = Field(None, description='', alias='269')
+    
+    mDEntryType: str = Field(..., description='', alias='269')
     mDEntryPx: Optional[float] = Field(None, description='', alias='270')
     currency: Optional[str] = Field(None, description='', alias='15')
     mDEntrySize: Optional[float] = Field(None, description='', alias='271')
@@ -58,9 +59,9 @@ class MDFullGrp(FIXMessageBase):
     encodedText: Optional[str] = Field(None, description='', alias='355')
 
 
-class NoMDEntries(FIXMessageBase):
+class MDFullGrp(FIXMessageBase):
     """
-    NoMDEntries group fields
+    FIX 4.4 MDFullGrp Component
     """
     model_config = ConfigDict(
         populate_by_name=True,
@@ -71,38 +72,6 @@ class NoMDEntries(FIXMessageBase):
             time: lambda v: v.isoformat()
         }
     )
-    mDEntryType: int = Field(None, description='', alias='268')
-    mDEntryPx: Optional[int] = Field(None, description='', alias='268')
-    currency: Optional[int] = Field(None, description='', alias='268')
-    mDEntrySize: Optional[int] = Field(None, description='', alias='268')
-    mDEntryDate: Optional[int] = Field(None, description='', alias='268')
-    mDEntryTime: Optional[int] = Field(None, description='', alias='268')
-    tickDirection: Optional[int] = Field(None, description='', alias='268')
-    mDMkt: Optional[int] = Field(None, description='', alias='268')
-    tradingSessionID: Optional[int] = Field(None, description='', alias='268')
-    tradingSessionSubID: Optional[int] = Field(None, description='', alias='268')
-    quoteCondition: Optional[int] = Field(None, description='', alias='268')
-    tradeCondition: Optional[int] = Field(None, description='', alias='268')
-    mDEntryOriginator: Optional[int] = Field(None, description='', alias='268')
-    locationID: Optional[int] = Field(None, description='', alias='268')
-    deskID: Optional[int] = Field(None, description='', alias='268')
-    openCloseSettlFlag: Optional[int] = Field(None, description='', alias='268')
-    timeInForce: Optional[int] = Field(None, description='', alias='268')
-    expireDate: Optional[int] = Field(None, description='', alias='268')
-    expireTime: Optional[int] = Field(None, description='', alias='268')
-    minQty: Optional[int] = Field(None, description='', alias='268')
-    execInst: Optional[int] = Field(None, description='', alias='268')
-    sellerDays: Optional[int] = Field(None, description='', alias='268')
-    orderID: Optional[int] = Field(None, description='', alias='268')
-    quoteEntryID: Optional[int] = Field(None, description='', alias='268')
-    mDEntryBuyer: Optional[int] = Field(None, description='', alias='268')
-    mDEntrySeller: Optional[int] = Field(None, description='', alias='268')
-    numberOfOrders: Optional[int] = Field(None, description='', alias='268')
-    mDEntryPositionNo: Optional[int] = Field(None, description='', alias='268')
-    scope: Optional[int] = Field(None, description='', alias='268')
-    priceDelta: Optional[int] = Field(None, description='', alias='268')
-    text: Optional[int] = Field(None, description='', alias='268')
-    encodedTextLen: Optional[int] = Field(None, description='', alias='268')
-    encodedText: Optional[int] = Field(None, description='', alias='268')
-
-    noMDEntriess: List[NoMDEntries] = Field(default_factory=list)
+    
+    noMDEntries: Optional[int] = Field(None, description='Number of NoMDEntries entries', alias='268')
+    noMDEntries_items: List[NoMDEntries] = Field(default_factory=list)

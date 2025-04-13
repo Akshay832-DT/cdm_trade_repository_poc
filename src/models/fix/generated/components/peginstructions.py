@@ -23,6 +23,7 @@ class PegInstructions(FIXMessageBase):
             time: lambda v: v.isoformat()
         }
     )
+    
     pegOffsetValue: Optional[float] = Field(None, description='', alias='211')
     pegMoveType: Optional[int] = Field(None, description='', alias='835')
     pegOffsetType: Optional[int] = Field(None, description='', alias='836')

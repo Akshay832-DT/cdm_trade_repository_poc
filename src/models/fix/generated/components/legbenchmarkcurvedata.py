@@ -23,6 +23,7 @@ class LegBenchmarkCurveData(FIXMessageBase):
             time: lambda v: v.isoformat()
         }
     )
+    
     legBenchmarkCurveCurrency: Optional[str] = Field(None, description='', alias='676')
     legBenchmarkCurveName: Optional[str] = Field(None, description='', alias='677')
     legBenchmarkCurvePoint: Optional[str] = Field(None, description='', alias='678')

@@ -10,23 +10,6 @@ from src.models.fix.generated.fields.common import *
 from src.models.fix.base import FIXMessageBase
 
 
-class TrdCapDtGrp(FIXMessageBase):
-    """
-    FIX 4.4 TrdCapDtGrp Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    tradeDate: Optional[date] = Field(None, description='', alias='75')
-    transactTime: Optional[datetime] = Field(None, description='', alias='60')
-
-
 class NoDates(FIXMessageBase):
     """
     NoDates group fields
@@ -40,7 +23,24 @@ class NoDates(FIXMessageBase):
             time: lambda v: v.isoformat()
         }
     )
-    tradeDate: Optional[int] = Field(None, description='', alias='580')
-    transactTime: Optional[int] = Field(None, description='', alias='580')
+    
+    tradeDate: Optional[date] = Field(None, description='', alias='75')
+    transactTime: Optional[datetime] = Field(None, description='', alias='60')
 
-    noDatess: List[NoDates] = Field(default_factory=list)
+
+class TrdCapDtGrp(FIXMessageBase):
+    """
+    FIX 4.4 TrdCapDtGrp Component
+    """
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_by_name=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat(),
+            date: lambda v: v.isoformat(),
+            time: lambda v: v.isoformat()
+        }
+    )
+    
+    noDates: Optional[int] = Field(None, description='Number of NoDates entries', alias='580')
+    noDates_items: List[NoDates] = Field(default_factory=list)

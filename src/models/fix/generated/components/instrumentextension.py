@@ -8,6 +8,7 @@ from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
 from src.models.fix.generated.fields.common import *
 from src.models.fix.base import FIXMessageBase
+from src.models.fix.generated.components.attrbgrp import AttrbGrp
 
 
 class InstrumentExtension(FIXMessageBase):
@@ -23,6 +24,7 @@ class InstrumentExtension(FIXMessageBase):
             time: lambda v: v.isoformat()
         }
     )
+    
     deliveryForm: Optional[int] = Field(None, description='', alias='668')
     pctAtRisk: Optional[float] = Field(None, description='', alias='869')
-    attrbGrp: Optional[str] = Field(None)
+    attrbGrp: Optional[AttrbGrp] = Field(None, description='AttrbGrp component')

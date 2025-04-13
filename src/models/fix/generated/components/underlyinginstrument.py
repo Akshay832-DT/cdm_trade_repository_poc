@@ -8,6 +8,8 @@ from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
 from src.models.fix.generated.fields.common import *
 from src.models.fix.base import FIXMessageBase
+from src.models.fix.generated.components.undsecaltidgrp import UndSecAltIDGrp
+from src.models.fix.generated.components.underlyingstipulations import UnderlyingStipulations
 
 
 class UnderlyingInstrument(FIXMessageBase):
@@ -23,6 +25,7 @@ class UnderlyingInstrument(FIXMessageBase):
             time: lambda v: v.isoformat()
         }
     )
+    
     underlyingSymbol: Optional[str] = Field(None, description='', alias='311')
     underlyingSymbolSfx: Optional[str] = Field(None, description='', alias='312')
     underlyingSecurityID: Optional[str] = Field(None, description='', alias='309')
@@ -68,5 +71,5 @@ class UnderlyingInstrument(FIXMessageBase):
     underlyingStartValue: Optional[float] = Field(None, description='', alias='884')
     underlyingCurrentValue: Optional[float] = Field(None, description='', alias='885')
     underlyingEndValue: Optional[float] = Field(None, description='', alias='886')
-    undSecAltIDGrp: Optional[str] = Field(None)
-    underlyingStipulations: Optional[str] = Field(None)
+    undSecAltIDGrp: Optional[UndSecAltIDGrp] = Field(None, description='UndSecAltIDGrp component')
+    underlyingStipulations: Optional[UnderlyingStipulations] = Field(None, description='UnderlyingStipulations component')

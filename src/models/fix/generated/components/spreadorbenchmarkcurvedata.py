@@ -23,6 +23,7 @@ class SpreadOrBenchmarkCurveData(FIXMessageBase):
             time: lambda v: v.isoformat()
         }
     )
+    
     spread: Optional[float] = Field(None, description='', alias='218')
     benchmarkCurveCurrency: Optional[str] = Field(None, description='', alias='220')
     benchmarkCurveName: Optional[str] = Field(None, description='', alias='221')

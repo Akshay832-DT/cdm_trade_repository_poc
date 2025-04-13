@@ -10,23 +10,6 @@ from src.models.fix.generated.fields.common import *
 from src.models.fix.base import FIXMessageBase
 
 
-class UnderlyingStipulations(FIXMessageBase):
-    """
-    FIX 4.4 UnderlyingStipulations Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    underlyingStipType: Optional[str] = Field(None, description='', alias='888')
-    underlyingStipValue: Optional[str] = Field(None, description='', alias='889')
-
-
 class NoUnderlyingStips(FIXMessageBase):
     """
     NoUnderlyingStips group fields
@@ -40,7 +23,24 @@ class NoUnderlyingStips(FIXMessageBase):
             time: lambda v: v.isoformat()
         }
     )
-    underlyingStipType: Optional[int] = Field(None, description='', alias='887')
-    underlyingStipValue: Optional[int] = Field(None, description='', alias='887')
+    
+    underlyingStipType: Optional[str] = Field(None, description='', alias='888')
+    underlyingStipValue: Optional[str] = Field(None, description='', alias='889')
 
-    noUnderlyingStipss: List[NoUnderlyingStips] = Field(default_factory=list)
+
+class UnderlyingStipulations(FIXMessageBase):
+    """
+    FIX 4.4 UnderlyingStipulations Component
+    """
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_by_name=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat(),
+            date: lambda v: v.isoformat(),
+            time: lambda v: v.isoformat()
+        }
+    )
+    
+    noUnderlyingStips: Optional[int] = Field(None, description='Number of NoUnderlyingStips entries', alias='887')
+    noUnderlyingStips_items: List[NoUnderlyingStips] = Field(default_factory=list)

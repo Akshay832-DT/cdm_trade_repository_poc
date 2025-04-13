@@ -8,6 +8,7 @@ from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
 from src.models.fix.generated.fields.common import *
 from src.models.fix.base import FIXMessageBase
+from src.models.fix.generated.components.ptyssubgrp import PtysSubGrp
 
 
 class NoPartyIDs(FIXMessageBase):
@@ -27,7 +28,7 @@ class NoPartyIDs(FIXMessageBase):
     partyID: Optional[str] = Field(None, description='', alias='448')
     partyIDSource: Optional[str] = Field(None, description='', alias='447')
     partyRole: Optional[int] = Field(None, description='', alias='452')
-    # PtysSubGrp component would be added here if needed
+    ptysSubGrp: Optional[PtysSubGrp] = Field(None, description='PtysSubGrp component')
 
 
 class Parties(FIXMessageBase):
@@ -44,5 +45,5 @@ class Parties(FIXMessageBase):
         }
     )
     
-    noPartyIDs: Optional[int] = Field(None, description='Number of party entries', alias='453')
+    noPartyIDs: Optional[int] = Field(None, description='Number of NoPartyIDs entries', alias='453')
     noPartyIDs_items: List[NoPartyIDs] = Field(default_factory=list)

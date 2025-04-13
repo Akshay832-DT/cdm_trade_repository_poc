@@ -8,6 +8,7 @@ from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
 from src.models.fix.generated.fields.common import *
 from src.models.fix.base import FIXMessageBase
+from src.models.fix.generated.components.legsecaltidgrp import LegSecAltIDGrp
 
 
 class InstrumentLeg(FIXMessageBase):
@@ -23,6 +24,7 @@ class InstrumentLeg(FIXMessageBase):
             time: lambda v: v.isoformat()
         }
     )
+    
     legSymbol: Optional[str] = Field(None, description='', alias='600')
     legSymbolSfx: Optional[str] = Field(None, description='', alias='601')
     legSecurityID: Optional[str] = Field(None, description='', alias='602')
@@ -64,4 +66,4 @@ class InstrumentLeg(FIXMessageBase):
     legDatedDate: Optional[date] = Field(None, description='', alias='739')
     legContractSettlMonth: Optional[str] = Field(None, description='', alias='955')
     legInterestAccrualDate: Optional[date] = Field(None, description='', alias='956')
-    legSecAltIDGrp: Optional[str] = Field(None)
+    legSecAltIDGrp: Optional[LegSecAltIDGrp] = Field(None, description='LegSecAltIDGrp component')

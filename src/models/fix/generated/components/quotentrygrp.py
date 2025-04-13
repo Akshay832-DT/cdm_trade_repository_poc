@@ -8,11 +8,13 @@ from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
 from src.models.fix.generated.fields.common import *
 from src.models.fix.base import FIXMessageBase
+from src.models.fix.generated.components.instrument import Instrument
+from src.models.fix.generated.components.instrmtleggrp import InstrmtLegGrp
 
 
-class QuotEntryGrp(FIXMessageBase):
+class NoQuoteEntries(FIXMessageBase):
     """
-    FIX 4.4 QuotEntryGrp Component
+    NoQuoteEntries group fields
     """
     model_config = ConfigDict(
         populate_by_name=True,
@@ -23,7 +25,8 @@ class QuotEntryGrp(FIXMessageBase):
             time: lambda v: v.isoformat()
         }
     )
-    quoteEntryID: str = Field(None, description='', alias='299')
+    
+    quoteEntryID: str = Field(..., description='', alias='299')
     bidPx: Optional[float] = Field(None, description='', alias='132')
     offerPx: Optional[float] = Field(None, description='', alias='133')
     bidSize: Optional[float] = Field(None, description='', alias='134')
@@ -47,13 +50,11 @@ class QuotEntryGrp(FIXMessageBase):
     bidForwardPoints2: Optional[float] = Field(None, description='', alias='642')
     offerForwardPoints2: Optional[float] = Field(None, description='', alias='643')
     currency: Optional[str] = Field(None, description='', alias='15')
-    instrument: Optional[str] = Field(None)
-    instrmtLegGrp: Optional[str] = Field(None)
 
 
-class NoQuoteEntries(FIXMessageBase):
+class QuotEntryGrp(FIXMessageBase):
     """
-    NoQuoteEntries group fields
+    FIX 4.4 QuotEntryGrp Component
     """
     model_config = ConfigDict(
         populate_by_name=True,
@@ -64,29 +65,8 @@ class NoQuoteEntries(FIXMessageBase):
             time: lambda v: v.isoformat()
         }
     )
-    quoteEntryID: int = Field(None, description='', alias='295')
-    bidPx: Optional[int] = Field(None, description='', alias='295')
-    offerPx: Optional[int] = Field(None, description='', alias='295')
-    bidSize: Optional[int] = Field(None, description='', alias='295')
-    offerSize: Optional[int] = Field(None, description='', alias='295')
-    validUntilTime: Optional[int] = Field(None, description='', alias='295')
-    bidSpotRate: Optional[int] = Field(None, description='', alias='295')
-    offerSpotRate: Optional[int] = Field(None, description='', alias='295')
-    bidForwardPoints: Optional[int] = Field(None, description='', alias='295')
-    offerForwardPoints: Optional[int] = Field(None, description='', alias='295')
-    midPx: Optional[int] = Field(None, description='', alias='295')
-    bidYield: Optional[int] = Field(None, description='', alias='295')
-    midYield: Optional[int] = Field(None, description='', alias='295')
-    offerYield: Optional[int] = Field(None, description='', alias='295')
-    transactTime: Optional[int] = Field(None, description='', alias='295')
-    tradingSessionID: Optional[int] = Field(None, description='', alias='295')
-    tradingSessionSubID: Optional[int] = Field(None, description='', alias='295')
-    settlDate: Optional[int] = Field(None, description='', alias='295')
-    ordType: Optional[int] = Field(None, description='', alias='295')
-    settlDate2: Optional[int] = Field(None, description='', alias='295')
-    orderQty2: Optional[int] = Field(None, description='', alias='295')
-    bidForwardPoints2: Optional[int] = Field(None, description='', alias='295')
-    offerForwardPoints2: Optional[int] = Field(None, description='', alias='295')
-    currency: Optional[int] = Field(None, description='', alias='295')
-
-    noQuoteEntriess: List[NoQuoteEntries] = Field(default_factory=list)
+    
+    instrument: Optional[Instrument] = Field(None, description='Instrument component')
+    instrmtLegGrp: Optional[InstrmtLegGrp] = Field(None, description='InstrmtLegGrp component')
+    noQuoteEntries: Optional[int] = Field(None, description='Number of NoQuoteEntries entries', alias='295')
+    noQuoteEntries_items: List[NoQuoteEntries] = Field(default_factory=list)

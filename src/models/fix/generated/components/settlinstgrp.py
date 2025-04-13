@@ -8,11 +8,13 @@ from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
 from src.models.fix.generated.fields.common import *
 from src.models.fix.base import FIXMessageBase
+from src.models.fix.generated.components.parties import Parties
+from src.models.fix.generated.components.settlinstructionsdata import SettlInstructionsData
 
 
-class SettlInstGrp(FIXMessageBase):
+class NoSettlInst(FIXMessageBase):
     """
-    FIX 4.4 SettlInstGrp Component
+    NoSettlInst group fields
     """
     model_config = ConfigDict(
         populate_by_name=True,
@@ -23,6 +25,7 @@ class SettlInstGrp(FIXMessageBase):
             time: lambda v: v.isoformat()
         }
     )
+    
     settlInstID: Optional[str] = Field(None, description='', alias='162')
     settlInstTransType: Optional[str] = Field(None, description='', alias='163')
     settlInstRefID: Optional[str] = Field(None, description='', alias='214')
@@ -42,13 +45,11 @@ class SettlInstGrp(FIXMessageBase):
     cardIssNum: Optional[str] = Field(None, description='', alias='491')
     paymentDate: Optional[date] = Field(None, description='', alias='504')
     paymentRemitterID: Optional[str] = Field(None, description='', alias='505')
-    parties: Optional[str] = Field(None)
-    settlInstructionsData: Optional[str] = Field(None)
 
 
-class NoSettlInst(FIXMessageBase):
+class SettlInstGrp(FIXMessageBase):
     """
-    NoSettlInst group fields
+    FIX 4.4 SettlInstGrp Component
     """
     model_config = ConfigDict(
         populate_by_name=True,
@@ -59,24 +60,8 @@ class NoSettlInst(FIXMessageBase):
             time: lambda v: v.isoformat()
         }
     )
-    settlInstID: Optional[int] = Field(None, description='', alias='778')
-    settlInstTransType: Optional[int] = Field(None, description='', alias='778')
-    settlInstRefID: Optional[int] = Field(None, description='', alias='778')
-    side: Optional[int] = Field(None, description='', alias='778')
-    product: Optional[int] = Field(None, description='', alias='778')
-    securityType: Optional[int] = Field(None, description='', alias='778')
-    cFICode: Optional[int] = Field(None, description='', alias='778')
-    effectiveTime: Optional[int] = Field(None, description='', alias='778')
-    expireTime: Optional[int] = Field(None, description='', alias='778')
-    lastUpdateTime: Optional[int] = Field(None, description='', alias='778')
-    paymentMethod: Optional[int] = Field(None, description='', alias='778')
-    paymentRef: Optional[int] = Field(None, description='', alias='778')
-    cardHolderName: Optional[int] = Field(None, description='', alias='778')
-    cardNumber: Optional[int] = Field(None, description='', alias='778')
-    cardStartDate: Optional[int] = Field(None, description='', alias='778')
-    cardExpDate: Optional[int] = Field(None, description='', alias='778')
-    cardIssNum: Optional[int] = Field(None, description='', alias='778')
-    paymentDate: Optional[int] = Field(None, description='', alias='778')
-    paymentRemitterID: Optional[int] = Field(None, description='', alias='778')
-
-    noSettlInsts: List[NoSettlInst] = Field(default_factory=list)
+    
+    parties: Optional[Parties] = Field(None, description='Parties component')
+    settlInstructionsData: Optional[SettlInstructionsData] = Field(None, description='SettlInstructionsData component')
+    noSettlInst: Optional[int] = Field(None, description='Number of NoSettlInst entries', alias='778')
+    noSettlInst_items: List[NoSettlInst] = Field(default_factory=list)

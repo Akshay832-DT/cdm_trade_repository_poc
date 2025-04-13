@@ -10,23 +10,6 @@ from src.models.fix.generated.fields.common import *
 from src.models.fix.base import FIXMessageBase
 
 
-class UndSecAltIDGrp(FIXMessageBase):
-    """
-    FIX 4.4 UndSecAltIDGrp Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    underlyingSecurityAltID: Optional[str] = Field(None, description='', alias='458')
-    underlyingSecurityAltIDSource: Optional[str] = Field(None, description='', alias='459')
-
-
 class NoUnderlyingSecurityAltID(FIXMessageBase):
     """
     NoUnderlyingSecurityAltID group fields
@@ -40,7 +23,24 @@ class NoUnderlyingSecurityAltID(FIXMessageBase):
             time: lambda v: v.isoformat()
         }
     )
-    underlyingSecurityAltID: Optional[int] = Field(None, description='', alias='457')
-    underlyingSecurityAltIDSource: Optional[int] = Field(None, description='', alias='457')
+    
+    underlyingSecurityAltID: Optional[str] = Field(None, description='', alias='458')
+    underlyingSecurityAltIDSource: Optional[str] = Field(None, description='', alias='459')
 
-    noUnderlyingSecurityAltIDs: List[NoUnderlyingSecurityAltID] = Field(default_factory=list)
+
+class UndSecAltIDGrp(FIXMessageBase):
+    """
+    FIX 4.4 UndSecAltIDGrp Component
+    """
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_by_name=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat(),
+            date: lambda v: v.isoformat(),
+            time: lambda v: v.isoformat()
+        }
+    )
+    
+    noUnderlyingSecurityAltID: Optional[int] = Field(None, description='Number of NoUnderlyingSecurityAltID entries', alias='457')
+    noUnderlyingSecurityAltID_items: List[NoUnderlyingSecurityAltID] = Field(default_factory=list)

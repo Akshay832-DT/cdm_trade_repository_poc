@@ -8,11 +8,15 @@ from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
 from src.models.fix.generated.fields.common import *
 from src.models.fix.base import FIXMessageBase
+from src.models.fix.generated.components.parties import Parties
+from src.models.fix.generated.components.preallocgrp import PreAllocGrp
+from src.models.fix.generated.components.orderqtydata import OrderQtyData
+from src.models.fix.generated.components.commissiondata import CommissionData
 
 
-class SideCrossOrdModGrp(FIXMessageBase):
+class NoSides(FIXMessageBase):
     """
-    FIX 4.4 SideCrossOrdModGrp Component
+    NoSides group fields
     """
     model_config = ConfigDict(
         populate_by_name=True,
@@ -23,8 +27,9 @@ class SideCrossOrdModGrp(FIXMessageBase):
             time: lambda v: v.isoformat()
         }
     )
-    side: str = Field(None, description='', alias='54')
-    clOrdID: str = Field(None, description='', alias='11')
+    
+    side: str = Field(..., description='', alias='54')
+    clOrdID: str = Field(..., description='', alias='11')
     secondaryClOrdID: Optional[str] = Field(None, description='', alias='526')
     clOrdLinkID: Optional[str] = Field(None, description='', alias='583')
     tradeOriginationDate: Optional[date] = Field(None, description='', alias='229')
@@ -52,15 +57,11 @@ class SideCrossOrdModGrp(FIXMessageBase):
     clearingFeeIndicator: Optional[str] = Field(None, description='', alias='635')
     solicitedFlag: Optional[bool] = Field(None, description='', alias='377')
     sideComplianceID: Optional[str] = Field(None, description='', alias='659')
-    parties: Optional[str] = Field(None)
-    preAllocGrp: Optional[str] = Field(None)
-    orderQtyData: str = Field(None)
-    commissionData: Optional[str] = Field(None)
 
 
-class NoSides(FIXMessageBase):
+class SideCrossOrdModGrp(FIXMessageBase):
     """
-    NoSides group fields
+    FIX 4.4 SideCrossOrdModGrp Component
     """
     model_config = ConfigDict(
         populate_by_name=True,
@@ -71,34 +72,10 @@ class NoSides(FIXMessageBase):
             time: lambda v: v.isoformat()
         }
     )
-    side: int = Field(None, description='', alias='552')
-    clOrdID: int = Field(None, description='', alias='552')
-    secondaryClOrdID: Optional[int] = Field(None, description='', alias='552')
-    clOrdLinkID: Optional[int] = Field(None, description='', alias='552')
-    tradeOriginationDate: Optional[int] = Field(None, description='', alias='552')
-    tradeDate: Optional[int] = Field(None, description='', alias='552')
-    account: Optional[int] = Field(None, description='', alias='552')
-    acctIDSource: Optional[int] = Field(None, description='', alias='552')
-    accountType: Optional[int] = Field(None, description='', alias='552')
-    dayBookingInst: Optional[int] = Field(None, description='', alias='552')
-    bookingUnit: Optional[int] = Field(None, description='', alias='552')
-    preallocMethod: Optional[int] = Field(None, description='', alias='552')
-    allocID: Optional[int] = Field(None, description='', alias='552')
-    qtyType: Optional[int] = Field(None, description='', alias='552')
-    orderCapacity: Optional[int] = Field(None, description='', alias='552')
-    orderRestrictions: Optional[int] = Field(None, description='', alias='552')
-    custOrderCapacity: Optional[int] = Field(None, description='', alias='552')
-    forexReq: Optional[int] = Field(None, description='', alias='552')
-    settlCurrency: Optional[int] = Field(None, description='', alias='552')
-    bookingType: Optional[int] = Field(None, description='', alias='552')
-    text: Optional[int] = Field(None, description='', alias='552')
-    encodedTextLen: Optional[int] = Field(None, description='', alias='552')
-    encodedText: Optional[int] = Field(None, description='', alias='552')
-    positionEffect: Optional[int] = Field(None, description='', alias='552')
-    coveredOrUncovered: Optional[int] = Field(None, description='', alias='552')
-    cashMargin: Optional[int] = Field(None, description='', alias='552')
-    clearingFeeIndicator: Optional[int] = Field(None, description='', alias='552')
-    solicitedFlag: Optional[int] = Field(None, description='', alias='552')
-    sideComplianceID: Optional[int] = Field(None, description='', alias='552')
-
-    noSidess: List[NoSides] = Field(default_factory=list)
+    
+    parties: Optional[Parties] = Field(None, description='Parties component')
+    preAllocGrp: Optional[PreAllocGrp] = Field(None, description='PreAllocGrp component')
+    orderQtyData: OrderQtyData = Field(..., description='OrderQtyData component')
+    commissionData: Optional[CommissionData] = Field(None, description='CommissionData component')
+    noSides: Optional[int] = Field(None, description='Number of NoSides entries', alias='552')
+    noSides_items: List[NoSides] = Field(default_factory=list)

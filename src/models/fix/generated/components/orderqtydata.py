@@ -23,6 +23,7 @@ class OrderQtyData(FIXMessageBase):
             time: lambda v: v.isoformat()
         }
     )
+    
     orderQty: Optional[float] = Field(None, description='', alias='38')
     cashOrderQty: Optional[float] = Field(None, description='', alias='152')
     orderPercent: Optional[float] = Field(None, description='', alias='516')

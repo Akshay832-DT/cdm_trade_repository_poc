@@ -1,0 +1,597 @@
+2025-04-12 19:01:17,808 - __main__ - INFO - Generating base models...
+2025-04-12 19:01:17,809 - __main__ - INFO - Generating field models...
+2025-04-12 19:01:17,851 - __main__ - INFO - Generating component models...
+2025-04-12 19:01:17,851 - __main__ - INFO - Component to group mapping for CommissionData: {}
+2025-04-12 19:01:17,851 - __main__ - INFO - Fields in groups for CommissionData: set()
+2025-04-12 19:01:17,851 - __main__ - INFO - Writing component file for CommissionData
+2025-04-12 19:01:17,851 - __main__ - INFO - Component to group mapping for DiscretionInstructions: {}
+2025-04-12 19:01:17,851 - __main__ - INFO - Fields in groups for DiscretionInstructions: set()
+2025-04-12 19:01:17,851 - __main__ - INFO - Writing component file for DiscretionInstructions
+2025-04-12 19:01:17,851 - __main__ - INFO - Component to group mapping for FinancingDetails: {}
+2025-04-12 19:01:17,851 - __main__ - INFO - Fields in groups for FinancingDetails: set()
+2025-04-12 19:01:17,851 - __main__ - INFO - Writing component file for FinancingDetails
+2025-04-12 19:01:17,852 - __main__ - INFO - Component to group mapping for Instrument: {}
+2025-04-12 19:01:17,852 - __main__ - INFO - Fields in groups for Instrument: set()
+2025-04-12 19:01:17,852 - __main__ - INFO - Writing component file for Instrument
+2025-04-12 19:01:17,852 - __main__ - INFO - Component to group mapping for InstrumentExtension: {}
+2025-04-12 19:01:17,852 - __main__ - INFO - Fields in groups for InstrumentExtension: set()
+2025-04-12 19:01:17,852 - __main__ - INFO - Writing component file for InstrumentExtension
+2025-04-12 19:01:17,852 - __main__ - INFO - Component to group mapping for InstrumentLeg: {}
+2025-04-12 19:01:17,852 - __main__ - INFO - Fields in groups for InstrumentLeg: set()
+2025-04-12 19:01:17,852 - __main__ - INFO - Writing component file for InstrumentLeg
+2025-04-12 19:01:17,852 - __main__ - INFO - Component to group mapping for LegBenchmarkCurveData: {}
+2025-04-12 19:01:17,852 - __main__ - INFO - Fields in groups for LegBenchmarkCurveData: set()
+2025-04-12 19:01:17,852 - __main__ - INFO - Writing component file for LegBenchmarkCurveData
+2025-04-12 19:01:17,852 - __main__ - INFO - Component to group mapping for LegStipulations: {}
+2025-04-12 19:01:17,852 - __main__ - INFO - Fields in groups for LegStipulations: {'legstipulationtype', 'legstipulationvalue'}
+2025-04-12 19:01:17,852 - __main__ - INFO - Looking for tag for group: NoLegStipulations, initial tag value: ''
+2025-04-12 19:01:17,852 - __main__ - INFO -   Looked up tag in fields[NoLegStipulations]: '683'
+2025-04-12 19:01:17,852 - __main__ - INFO - Final tag for NoLegStipulations: '683'
+2025-04-12 19:01:17,852 - __main__ - INFO - Writing component file for LegStipulations
+2025-04-12 19:01:17,852 - __main__ - INFO - Special case handling for NestedParties: Moving NstdPtysSubGrp to NoNestedPartyIDs group
+2025-04-12 19:01:17,852 - __main__ - INFO - Component to group mapping for NestedParties: {'NstdPtysSubGrp': 'NoNestedPartyIDs'}
+2025-04-12 19:01:17,852 - __main__ - INFO - Fields in groups for NestedParties: {'nestedpartyidsource', 'nstdptyssubgrp', 'nestedpartyrole', 'nestedpartyid'}
+2025-04-12 19:01:17,852 - __main__ - INFO - Looking for tag for group: NoNestedPartyIDs, initial tag value: ''
+2025-04-12 19:01:17,852 - __main__ - INFO -   Looked up tag in fields[NoNestedPartyIDs]: '539'
+2025-04-12 19:01:17,852 - __main__ - INFO - Final tag for NoNestedPartyIDs: '539'
+2025-04-12 19:01:17,852 - __main__ - INFO - Writing component file for NestedParties
+2025-04-12 19:01:17,852 - __main__ - INFO - Component to group mapping for OrderQtyData: {}
+2025-04-12 19:01:17,852 - __main__ - INFO - Fields in groups for OrderQtyData: set()
+2025-04-12 19:01:17,852 - __main__ - INFO - Writing component file for OrderQtyData
+2025-04-12 19:01:17,852 - __main__ - INFO - Special case handling for Parties: Moving PtysSubGrp to NoPartyIDs group
+2025-04-12 19:01:17,852 - __main__ - INFO - Component to group mapping for Parties: {'PtysSubGrp': 'NoPartyIDs'}
+2025-04-12 19:01:17,852 - __main__ - INFO - Fields in groups for Parties: {'ptyssubgrp', 'partyid', 'partyidsource', 'partyrole'}
+2025-04-12 19:01:17,852 - __main__ - INFO - Looking for tag for group: NoPartyIDs, initial tag value: ''
+2025-04-12 19:01:17,852 - __main__ - INFO -   Looked up tag in fields[NoPartyIDs]: '453'
+2025-04-12 19:01:17,852 - __main__ - INFO - Final tag for NoPartyIDs: '453'
+2025-04-12 19:01:17,852 - __main__ - INFO - Writing component file for Parties
+2025-04-12 19:01:17,852 - __main__ - INFO - Component to group mapping for PegInstructions: {}
+2025-04-12 19:01:17,852 - __main__ - INFO - Fields in groups for PegInstructions: set()
+2025-04-12 19:01:17,853 - __main__ - INFO - Writing component file for PegInstructions
+2025-04-12 19:01:17,853 - __main__ - INFO - Component to group mapping for PositionAmountData: {}
+2025-04-12 19:01:17,853 - __main__ - INFO - Fields in groups for PositionAmountData: {'posamt', 'posamttype'}
+2025-04-12 19:01:17,853 - __main__ - INFO - Looking for tag for group: NoPosAmt, initial tag value: ''
+2025-04-12 19:01:17,853 - __main__ - INFO -   Looked up tag in fields[NoPosAmt]: '753'
+2025-04-12 19:01:17,853 - __main__ - INFO - Final tag for NoPosAmt: '753'
+2025-04-12 19:01:17,853 - __main__ - INFO - Writing component file for PositionAmountData
+2025-04-12 19:01:17,853 - __main__ - INFO - Component to group mapping for PositionQty: {}
+2025-04-12 19:01:17,853 - __main__ - INFO - Fields in groups for PositionQty: {'longqty', 'shortqty', 'posqtystatus', 'postype'}
+2025-04-12 19:01:17,853 - __main__ - INFO - Looking for tag for group: NoPositions, initial tag value: ''
+2025-04-12 19:01:17,853 - __main__ - INFO -   Looked up tag in fields[NoPositions]: '702'
+2025-04-12 19:01:17,853 - __main__ - INFO - Final tag for NoPositions: '702'
+2025-04-12 19:01:17,853 - __main__ - INFO - Writing component file for PositionQty
+2025-04-12 19:01:17,853 - __main__ - INFO - Component to group mapping for SettlInstructionsData: {}
+2025-04-12 19:01:17,853 - __main__ - INFO - Fields in groups for SettlInstructionsData: set()
+2025-04-12 19:01:17,853 - __main__ - INFO - Writing component file for SettlInstructionsData
+2025-04-12 19:01:17,853 - __main__ - INFO - Special case handling for SettlParties: Moving SettlPtysSubGrp to NoSettlPartyIDs group
+2025-04-12 19:01:17,853 - __main__ - INFO - Component to group mapping for SettlParties: {'SettlPtysSubGrp': 'NoSettlPartyIDs'}
+2025-04-12 19:01:17,853 - __main__ - INFO - Fields in groups for SettlParties: {'settlpartyid', 'settlpartyidsource', 'settlpartyrole', 'settlptyssubgrp'}
+2025-04-12 19:01:17,853 - __main__ - INFO - Looking for tag for group: NoSettlPartyIDs, initial tag value: ''
+2025-04-12 19:01:17,853 - __main__ - INFO -   Looked up tag in fields[NoSettlPartyIDs]: '781'
+2025-04-12 19:01:17,853 - __main__ - INFO - Final tag for NoSettlPartyIDs: '781'
+2025-04-12 19:01:17,853 - __main__ - INFO - Writing component file for SettlParties
+2025-04-12 19:01:17,853 - __main__ - INFO - Component to group mapping for SpreadOrBenchmarkCurveData: {}
+2025-04-12 19:01:17,853 - __main__ - INFO - Fields in groups for SpreadOrBenchmarkCurveData: set()
+2025-04-12 19:01:17,853 - __main__ - INFO - Writing component file for SpreadOrBenchmarkCurveData
+2025-04-12 19:01:17,853 - __main__ - INFO - Component to group mapping for Stipulations: {}
+2025-04-12 19:01:17,853 - __main__ - INFO - Fields in groups for Stipulations: {'stipulationtype', 'stipulationvalue'}
+2025-04-12 19:01:17,853 - __main__ - INFO - Looking for tag for group: NoStipulations, initial tag value: ''
+2025-04-12 19:01:17,853 - __main__ - INFO -   Looked up tag in fields[NoStipulations]: '232'
+2025-04-12 19:01:17,853 - __main__ - INFO - Final tag for NoStipulations: '232'
+2025-04-12 19:01:17,853 - __main__ - INFO - Writing component file for Stipulations
+2025-04-12 19:01:17,853 - __main__ - INFO - Component to group mapping for TrdRegTimestamps: {}
+2025-04-12 19:01:17,853 - __main__ - INFO - Fields in groups for TrdRegTimestamps: {'trdregtimestamporigin', 'trdregtimestamptype', 'trdregtimestamp'}
+2025-04-12 19:01:17,853 - __main__ - INFO - Looking for tag for group: NoTrdRegTimestamps, initial tag value: ''
+2025-04-12 19:01:17,853 - __main__ - INFO -   Looked up tag in fields[NoTrdRegTimestamps]: '768'
+2025-04-12 19:01:17,853 - __main__ - INFO - Final tag for NoTrdRegTimestamps: '768'
+2025-04-12 19:01:17,853 - __main__ - INFO - Writing component file for TrdRegTimestamps
+2025-04-12 19:01:17,853 - __main__ - INFO - Component to group mapping for UnderlyingInstrument: {}
+2025-04-12 19:01:17,853 - __main__ - INFO - Fields in groups for UnderlyingInstrument: set()
+2025-04-12 19:01:17,853 - __main__ - INFO - Writing component file for UnderlyingInstrument
+2025-04-12 19:01:17,853 - __main__ - INFO - Component to group mapping for YieldData: {}
+2025-04-12 19:01:17,853 - __main__ - INFO - Fields in groups for YieldData: set()
+2025-04-12 19:01:17,853 - __main__ - INFO - Writing component file for YieldData
+2025-04-12 19:01:17,853 - __main__ - INFO - Component to group mapping for UnderlyingStipulations: {}
+2025-04-12 19:01:17,853 - __main__ - INFO - Fields in groups for UnderlyingStipulations: {'underlyingstipvalue', 'underlyingstiptype'}
+2025-04-12 19:01:17,854 - __main__ - INFO - Looking for tag for group: NoUnderlyingStips, initial tag value: ''
+2025-04-12 19:01:17,854 - __main__ - INFO -   Looked up tag in fields[NoUnderlyingStips]: '887'
+2025-04-12 19:01:17,854 - __main__ - INFO - Final tag for NoUnderlyingStips: '887'
+2025-04-12 19:01:17,854 - __main__ - INFO - Writing component file for UnderlyingStipulations
+2025-04-12 19:01:17,854 - __main__ - INFO - Special case handling for NestedParties2: Moving NstdPtys2SubGrp to NoNested2PartyIDs group
+2025-04-12 19:01:17,854 - __main__ - INFO - Component to group mapping for NestedParties2: {'NstdPtys2SubGrp': 'NoNested2PartyIDs'}
+2025-04-12 19:01:17,854 - __main__ - INFO - Fields in groups for NestedParties2: {'nstdptys2subgrp', 'nested2partyrole', 'nested2partyid', 'nested2partyidsource'}
+2025-04-12 19:01:17,854 - __main__ - INFO - Looking for tag for group: NoNested2PartyIDs, initial tag value: ''
+2025-04-12 19:01:17,854 - __main__ - INFO -   Looked up tag in fields[NoNested2PartyIDs]: '756'
+2025-04-12 19:01:17,854 - __main__ - INFO - Final tag for NoNested2PartyIDs: '756'
+2025-04-12 19:01:17,854 - __main__ - INFO - Writing component file for NestedParties2
+2025-04-12 19:01:17,854 - __main__ - INFO - Special case handling for NestedParties3: Moving NstdPtys3SubGrp to NoNested3PartyIDs group
+2025-04-12 19:01:17,854 - __main__ - INFO - Component to group mapping for NestedParties3: {'NstdPtys3SubGrp': 'NoNested3PartyIDs'}
+2025-04-12 19:01:17,854 - __main__ - INFO - Fields in groups for NestedParties3: {'nested3partyid', 'nested3partyrole', 'nested3partyidsource', 'nstdptys3subgrp'}
+2025-04-12 19:01:17,854 - __main__ - INFO - Looking for tag for group: NoNested3PartyIDs, initial tag value: ''
+2025-04-12 19:01:17,854 - __main__ - INFO -   Looked up tag in fields[NoNested3PartyIDs]: '948'
+2025-04-12 19:01:17,854 - __main__ - INFO - Final tag for NoNested3PartyIDs: '948'
+2025-04-12 19:01:17,854 - __main__ - INFO - Writing component file for NestedParties3
+2025-04-12 19:01:17,854 - __main__ - INFO - Component to group mapping for AffectedOrdGrp: {}
+2025-04-12 19:01:17,854 - __main__ - INFO - Fields in groups for AffectedOrdGrp: {'affectedorderid', 'affectedsecondaryorderid', 'origclordid'}
+2025-04-12 19:01:17,854 - __main__ - INFO - Looking for tag for group: NoAffectedOrders, initial tag value: ''
+2025-04-12 19:01:17,854 - __main__ - INFO -   Looked up tag in fields[NoAffectedOrders]: '534'
+2025-04-12 19:01:17,854 - __main__ - INFO - Final tag for NoAffectedOrders: '534'
+2025-04-12 19:01:17,854 - __main__ - INFO - Writing component file for AffectedOrdGrp
+2025-04-12 19:01:17,854 - __main__ - INFO - Component to group mapping for AllocAckGrp: {}
+2025-04-12 19:01:17,854 - __main__ - INFO - Fields in groups for AllocAckGrp: {'encodedalloctextlen', 'alloctext', 'encodedalloctext', 'allocaccount', 'allocprice', 'individualallocrejcode', 'individualallocid', 'allocacctidsource'}
+2025-04-12 19:01:17,854 - __main__ - INFO - Looking for tag for group: NoAllocs, initial tag value: ''
+2025-04-12 19:01:17,854 - __main__ - INFO -   Looked up tag in fields[NoAllocs]: '78'
+2025-04-12 19:01:17,854 - __main__ - INFO - Final tag for NoAllocs: '78'
+2025-04-12 19:01:17,854 - __main__ - INFO - Writing component file for AllocAckGrp
+2025-04-12 19:01:17,854 - __main__ - INFO - Component to group mapping for AllocGrp: {}
+2025-04-12 19:01:17,854 - __main__ - INFO - Fields in groups for AllocGrp: {'encodedalloctextlen', 'encodedalloctext', 'allocprice', 'processcode', 'allocsettlcurrency', 'settlcurrfxratecalc', 'alloctext', 'allocnetmoney', 'settlcurrfxrate', 'allochandlinst', 'allocaccount', 'settlcurrency', 'allocsettlinsttype', 'settlcurramt', 'allocsettlcurramt', 'allocacctidsource', 'matchstatus', 'allocqty', 'allocaccruedinterestamt', 'individualallocid', 'notifybrokerofcredit', 'allocavgpx', 'allocinterestatmaturity'}
+2025-04-12 19:01:17,854 - __main__ - INFO - Looking for tag for group: NoAllocs, initial tag value: ''
+2025-04-12 19:01:17,854 - __main__ - INFO -   Looked up tag in fields[NoAllocs]: '78'
+2025-04-12 19:01:17,854 - __main__ - INFO - Final tag for NoAllocs: '78'
+2025-04-12 19:01:17,854 - __main__ - INFO - Writing component file for AllocGrp
+2025-04-12 19:01:17,854 - __main__ - INFO - Component to group mapping for BidCompReqGrp: {}
+2025-04-12 19:01:17,854 - __main__ - INFO - Fields in groups for BidCompReqGrp: {'settldate', 'settltype', 'listid', 'side', 'account', 'tradingsessionsubid', 'netgrossind', 'acctidsource', 'tradingsessionid'}
+2025-04-12 19:01:17,854 - __main__ - INFO - Looking for tag for group: NoBidComponents, initial tag value: ''
+2025-04-12 19:01:17,854 - __main__ - INFO -   Looked up tag in fields[NoBidComponents]: '420'
+2025-04-12 19:01:17,854 - __main__ - INFO - Final tag for NoBidComponents: '420'
+2025-04-12 19:01:17,854 - __main__ - INFO - Writing component file for BidCompReqGrp
+2025-04-12 19:01:17,854 - __main__ - INFO - Special case handling for BidCompRspGrp: Moving CommissionData to NoBidComponents group
+2025-04-12 19:01:17,854 - __main__ - INFO - Component to group mapping for BidCompRspGrp: {'CommissionData': 'NoBidComponents'}
+2025-04-12 19:01:17,854 - __main__ - INFO - Fields in groups for BidCompRspGrp: {'settldate', 'settltype', 'commissiondata', 'text', 'encodedtextlen', 'netgrossind', 'country', 'fairvalue', 'side', 'encodedtext', 'tradingsessionsubid', 'price', 'listid', 'tradingsessionid', 'pricetype'}
+2025-04-12 19:01:17,854 - __main__ - INFO - Looking for tag for group: NoBidComponents, initial tag value: ''
+2025-04-12 19:01:17,854 - __main__ - INFO -   Looked up tag in fields[NoBidComponents]: '420'
+2025-04-12 19:01:17,854 - __main__ - INFO - Final tag for NoBidComponents: '420'
+2025-04-12 19:01:17,854 - __main__ - INFO - Writing component file for BidCompRspGrp
+2025-04-12 19:01:17,855 - __main__ - INFO - Component to group mapping for BidDescReqGrp: {}
+2025-04-12 19:01:17,855 - __main__ - INFO - Fields in groups for BidDescReqGrp: {'liquiditypcthigh', 'efptrackingerror', 'outsideindexpct', 'valueoffutures', 'fairvalue', 'liquiditypctlow', 'biddescriptor', 'liquidityvalue', 'liquiditynumsecurities', 'biddescriptortype', 'sidevalueind'}
+2025-04-12 19:01:17,855 - __main__ - INFO - Looking for tag for group: NoBidDescriptors, initial tag value: ''
+2025-04-12 19:01:17,855 - __main__ - INFO -   Looked up tag in fields[NoBidDescriptors]: '398'
+2025-04-12 19:01:17,855 - __main__ - INFO - Final tag for NoBidDescriptors: '398'
+2025-04-12 19:01:17,855 - __main__ - INFO - Writing component file for BidDescReqGrp
+2025-04-12 19:01:17,855 - __main__ - INFO - Component to group mapping for ClrInstGrp: {}
+2025-04-12 19:01:17,855 - __main__ - INFO - Fields in groups for ClrInstGrp: {'clearinginstruction'}
+2025-04-12 19:01:17,855 - __main__ - INFO - Looking for tag for group: NoClearingInstructions, initial tag value: ''
+2025-04-12 19:01:17,855 - __main__ - INFO -   Looked up tag in fields[NoClearingInstructions]: '576'
+2025-04-12 19:01:17,855 - __main__ - INFO - Final tag for NoClearingInstructions: '576'
+2025-04-12 19:01:17,855 - __main__ - INFO - Writing component file for ClrInstGrp
+2025-04-12 19:01:17,855 - __main__ - INFO - Component to group mapping for CollInqQualGrp: {}
+2025-04-12 19:01:17,855 - __main__ - INFO - Fields in groups for CollInqQualGrp: {'collinquiryqualifier'}
+2025-04-12 19:01:17,855 - __main__ - INFO - Looking for tag for group: NoCollInquiryQualifier, initial tag value: ''
+2025-04-12 19:01:17,855 - __main__ - INFO -   Looked up tag in fields[NoCollInquiryQualifier]: '938'
+2025-04-12 19:01:17,855 - __main__ - INFO - Final tag for NoCollInquiryQualifier: '938'
+2025-04-12 19:01:17,855 - __main__ - INFO - Writing component file for CollInqQualGrp
+2025-04-12 19:01:17,855 - __main__ - INFO - Component to group mapping for CompIDReqGrp: {}
+2025-04-12 19:01:17,855 - __main__ - INFO - Fields in groups for CompIDReqGrp: {'refsubid', 'refcompid', 'deskid', 'locationid'}
+2025-04-12 19:01:17,855 - __main__ - INFO - Looking for tag for group: NoCompIDs, initial tag value: ''
+2025-04-12 19:01:17,855 - __main__ - INFO -   Looked up tag in fields[NoCompIDs]: '936'
+2025-04-12 19:01:17,855 - __main__ - INFO - Final tag for NoCompIDs: '936'
+2025-04-12 19:01:17,855 - __main__ - INFO - Writing component file for CompIDReqGrp
+2025-04-12 19:01:17,855 - __main__ - INFO - Component to group mapping for CompIDStatGrp: {}
+2025-04-12 19:01:17,855 - __main__ - INFO - Fields in groups for CompIDStatGrp: {'refcompid', 'statusvalue', 'deskid', 'refsubid', 'statustext', 'locationid'}
+2025-04-12 19:01:17,855 - __main__ - INFO - Looking for tag for group: NoCompIDs, initial tag value: ''
+2025-04-12 19:01:17,855 - __main__ - INFO -   Looked up tag in fields[NoCompIDs]: '936'
+2025-04-12 19:01:17,855 - __main__ - INFO - Final tag for NoCompIDs: '936'
+2025-04-12 19:01:17,855 - __main__ - INFO - Writing component file for CompIDStatGrp
+2025-04-12 19:01:17,855 - __main__ - INFO - Component to group mapping for ContAmtGrp: {}
+2025-04-12 19:01:17,855 - __main__ - INFO - Fields in groups for ContAmtGrp: {'contamtvalue', 'contamttype', 'contamtcurr'}
+2025-04-12 19:01:17,855 - __main__ - INFO - Looking for tag for group: NoContAmts, initial tag value: ''
+2025-04-12 19:01:17,855 - __main__ - INFO -   Looked up tag in fields[NoContAmts]: '518'
+2025-04-12 19:01:17,855 - __main__ - INFO - Final tag for NoContAmts: '518'
+2025-04-12 19:01:17,855 - __main__ - INFO - Writing component file for ContAmtGrp
+2025-04-12 19:01:17,855 - __main__ - INFO - Component to group mapping for ContraGrp: {}
+2025-04-12 19:01:17,855 - __main__ - INFO - Fields in groups for ContraGrp: {'contratrader', 'contratradetime', 'contrabroker', 'contratradeqty', 'contralegrefid'}
+2025-04-12 19:01:17,855 - __main__ - INFO - Looking for tag for group: NoContraBrokers, initial tag value: ''
+2025-04-12 19:01:17,855 - __main__ - INFO -   Looked up tag in fields[NoContraBrokers]: '382'
+2025-04-12 19:01:17,855 - __main__ - INFO - Final tag for NoContraBrokers: '382'
+2025-04-12 19:01:17,855 - __main__ - INFO - Writing component file for ContraGrp
+2025-04-12 19:01:17,855 - __main__ - INFO - Component to group mapping for CpctyConfGrp: {}
+2025-04-12 19:01:17,855 - __main__ - INFO - Fields in groups for CpctyConfGrp: {'orderrestrictions', 'ordercapacityqty', 'ordercapacity'}
+2025-04-12 19:01:17,855 - __main__ - INFO - Looking for tag for group: NoCapacities, initial tag value: ''
+2025-04-12 19:01:17,855 - __main__ - INFO -   Looked up tag in fields[NoCapacities]: '862'
+2025-04-12 19:01:17,855 - __main__ - INFO - Final tag for NoCapacities: '862'
+2025-04-12 19:01:17,855 - __main__ - INFO - Writing component file for CpctyConfGrp
+2025-04-12 19:01:17,855 - __main__ - INFO - Component to group mapping for ExecAllocGrp: {}
+2025-04-12 19:01:17,855 - __main__ - INFO - Fields in groups for ExecAllocGrp: {'lastparpx', 'execid', 'lastqty', 'secondaryexecid', 'lastcapacity', 'lastpx'}
+2025-04-12 19:01:17,855 - __main__ - INFO - Looking for tag for group: NoExecs, initial tag value: ''
+2025-04-12 19:01:17,855 - __main__ - INFO -   Looked up tag in fields[NoExecs]: '124'
+2025-04-12 19:01:17,855 - __main__ - INFO - Final tag for NoExecs: '124'
+2025-04-12 19:01:17,855 - __main__ - INFO - Writing component file for ExecAllocGrp
+2025-04-12 19:01:17,855 - __main__ - INFO - Component to group mapping for ExecCollGrp: {}
+2025-04-12 19:01:17,855 - __main__ - INFO - Fields in groups for ExecCollGrp: {'execid'}
+2025-04-12 19:01:17,855 - __main__ - INFO - Looking for tag for group: NoExecs, initial tag value: ''
+2025-04-12 19:01:17,856 - __main__ - INFO -   Looked up tag in fields[NoExecs]: '124'
+2025-04-12 19:01:17,856 - __main__ - INFO - Final tag for NoExecs: '124'
+2025-04-12 19:01:17,856 - __main__ - INFO - Writing component file for ExecCollGrp
+2025-04-12 19:01:17,856 - __main__ - INFO - Component to group mapping for ExecsGrp: {}
+2025-04-12 19:01:17,856 - __main__ - INFO - Fields in groups for ExecsGrp: {'execid'}
+2025-04-12 19:01:17,856 - __main__ - INFO - Looking for tag for group: NoExecs, initial tag value: ''
+2025-04-12 19:01:17,856 - __main__ - INFO -   Looked up tag in fields[NoExecs]: '124'
+2025-04-12 19:01:17,856 - __main__ - INFO - Final tag for NoExecs: '124'
+2025-04-12 19:01:17,856 - __main__ - INFO - Writing component file for ExecsGrp
+2025-04-12 19:01:17,856 - __main__ - INFO - Component to group mapping for InstrmtGrp: {}
+2025-04-12 19:01:17,856 - __main__ - INFO - Fields in groups for InstrmtGrp: set()
+2025-04-12 19:01:17,856 - __main__ - INFO - Looking for tag for group: NoRelatedSym, initial tag value: ''
+2025-04-12 19:01:17,856 - __main__ - INFO -   Looked up tag in fields[NoRelatedSym]: '146'
+2025-04-12 19:01:17,856 - __main__ - INFO - Final tag for NoRelatedSym: '146'
+2025-04-12 19:01:17,856 - __main__ - INFO - Writing component file for InstrmtGrp
+2025-04-12 19:01:17,856 - __main__ - INFO - Component to group mapping for InstrmtLegExecGrp: {}
+2025-04-12 19:01:17,856 - __main__ - INFO - Fields in groups for InstrmtLegExecGrp: {'legsettltype', 'legprice', 'legpositioneffect', 'legcoveredoruncovered', 'legsettldate', 'legqty', 'leglastpx', 'legswaptype', 'legrefid'}
+2025-04-12 19:01:17,856 - __main__ - INFO - Looking for tag for group: NoLegs, initial tag value: ''
+2025-04-12 19:01:17,856 - __main__ - INFO -   Looked up tag in fields[NoLegs]: '555'
+2025-04-12 19:01:17,856 - __main__ - INFO - Final tag for NoLegs: '555'
+2025-04-12 19:01:17,856 - __main__ - INFO - Writing component file for InstrmtLegExecGrp
+2025-04-12 19:01:17,856 - __main__ - INFO - Component to group mapping for InstrmtLegGrp: {}
+2025-04-12 19:01:17,856 - __main__ - INFO - Fields in groups for InstrmtLegGrp: set()
+2025-04-12 19:01:17,856 - __main__ - INFO - Looking for tag for group: NoLegs, initial tag value: ''
+2025-04-12 19:01:17,856 - __main__ - INFO -   Looked up tag in fields[NoLegs]: '555'
+2025-04-12 19:01:17,856 - __main__ - INFO - Final tag for NoLegs: '555'
+2025-04-12 19:01:17,856 - __main__ - INFO - Writing component file for InstrmtLegGrp
+2025-04-12 19:01:17,856 - __main__ - INFO - Component to group mapping for InstrmtLegIOIGrp: {}
+2025-04-12 19:01:17,856 - __main__ - INFO - Fields in groups for InstrmtLegIOIGrp: {'legioiqty'}
+2025-04-12 19:01:17,856 - __main__ - INFO - Looking for tag for group: NoLegs, initial tag value: ''
+2025-04-12 19:01:17,856 - __main__ - INFO -   Looked up tag in fields[NoLegs]: '555'
+2025-04-12 19:01:17,856 - __main__ - INFO - Final tag for NoLegs: '555'
+2025-04-12 19:01:17,856 - __main__ - INFO - Writing component file for InstrmtLegIOIGrp
+2025-04-12 19:01:17,856 - __main__ - INFO - Component to group mapping for InstrmtLegSecListGrp: {}
+2025-04-12 19:01:17,856 - __main__ - INFO - Fields in groups for InstrmtLegSecListGrp: {'legsettltype', 'legswaptype'}
+2025-04-12 19:01:17,856 - __main__ - INFO - Looking for tag for group: NoLegs, initial tag value: ''
+2025-04-12 19:01:17,856 - __main__ - INFO -   Looked up tag in fields[NoLegs]: '555'
+2025-04-12 19:01:17,856 - __main__ - INFO - Final tag for NoLegs: '555'
+2025-04-12 19:01:17,856 - __main__ - INFO - Writing component file for InstrmtLegSecListGrp
+2025-04-12 19:01:17,856 - __main__ - INFO - Component to group mapping for InstrmtMDReqGrp: {}
+2025-04-12 19:01:17,856 - __main__ - INFO - Fields in groups for InstrmtMDReqGrp: set()
+2025-04-12 19:01:17,856 - __main__ - INFO - Looking for tag for group: NoRelatedSym, initial tag value: ''
+2025-04-12 19:01:17,856 - __main__ - INFO -   Looked up tag in fields[NoRelatedSym]: '146'
+2025-04-12 19:01:17,856 - __main__ - INFO - Final tag for NoRelatedSym: '146'
+2025-04-12 19:01:17,856 - __main__ - INFO - Writing component file for InstrmtMDReqGrp
+2025-04-12 19:01:17,856 - __main__ - INFO - Component to group mapping for InstrmtStrkPxGrp: {}
+2025-04-12 19:01:17,856 - __main__ - INFO - Fields in groups for InstrmtStrkPxGrp: set()
+2025-04-12 19:01:17,856 - __main__ - INFO - Looking for tag for group: NoStrikes, initial tag value: ''
+2025-04-12 19:01:17,856 - __main__ - INFO -   Looked up tag in fields[NoStrikes]: '428'
+2025-04-12 19:01:17,856 - __main__ - INFO - Final tag for NoStrikes: '428'
+2025-04-12 19:01:17,856 - __main__ - INFO - Writing component file for InstrmtStrkPxGrp
+2025-04-12 19:01:17,856 - __main__ - INFO - Component to group mapping for IOIQualGrp: {}
+2025-04-12 19:01:17,856 - __main__ - INFO - Fields in groups for IOIQualGrp: {'ioiqualifier'}
+2025-04-12 19:01:17,856 - __main__ - INFO - Looking for tag for group: NoIOIQualifiers, initial tag value: ''
+2025-04-12 19:01:17,856 - __main__ - INFO -   Looked up tag in fields[NoIOIQualifiers]: '199'
+2025-04-12 19:01:17,856 - __main__ - INFO - Final tag for NoIOIQualifiers: '199'
+2025-04-12 19:01:17,856 - __main__ - INFO - Writing component file for IOIQualGrp
+2025-04-12 19:01:17,857 - __main__ - INFO - Component to group mapping for LegOrdGrp: {}
+2025-04-12 19:01:17,857 - __main__ - INFO - Fields in groups for LegOrdGrp: {'legsettltype', 'legprice', 'legpositioneffect', 'legcoveredoruncovered', 'legsettldate', 'legqty', 'legswaptype', 'legrefid'}
+2025-04-12 19:01:17,857 - __main__ - INFO - Looking for tag for group: NoLegs, initial tag value: ''
+2025-04-12 19:01:17,857 - __main__ - INFO -   Looked up tag in fields[NoLegs]: '555'
+2025-04-12 19:01:17,857 - __main__ - INFO - Final tag for NoLegs: '555'
+2025-04-12 19:01:17,857 - __main__ - INFO - Writing component file for LegOrdGrp
+2025-04-12 19:01:17,857 - __main__ - INFO - Component to group mapping for LegPreAllocGrp: {}
+2025-04-12 19:01:17,857 - __main__ - INFO - Fields in groups for LegPreAllocGrp: {'legallocqty', 'legsettlcurrency', 'legindividualallocid', 'legallocaccount', 'legallocacctidsource'}
+2025-04-12 19:01:17,857 - __main__ - INFO - Looking for tag for group: NoLegAllocs, initial tag value: ''
+2025-04-12 19:01:17,857 - __main__ - INFO -   Looked up tag in fields[NoLegAllocs]: '670'
+2025-04-12 19:01:17,857 - __main__ - INFO - Final tag for NoLegAllocs: '670'
+2025-04-12 19:01:17,857 - __main__ - INFO - Writing component file for LegPreAllocGrp
+2025-04-12 19:01:17,857 - __main__ - INFO - Component to group mapping for LegQuotGrp: {}
+2025-04-12 19:01:17,857 - __main__ - INFO - Fields in groups for LegQuotGrp: {'legsettltype', 'legsettldate', 'legqty', 'legbidpx', 'legpricetype', 'legswaptype', 'legofferpx'}
+2025-04-12 19:01:17,857 - __main__ - INFO - Looking for tag for group: NoLegs, initial tag value: ''
+2025-04-12 19:01:17,857 - __main__ - INFO -   Looked up tag in fields[NoLegs]: '555'
+2025-04-12 19:01:17,857 - __main__ - INFO - Final tag for NoLegs: '555'
+2025-04-12 19:01:17,857 - __main__ - INFO - Writing component file for LegQuotGrp
+2025-04-12 19:01:17,857 - __main__ - INFO - Component to group mapping for LegQuotStatGrp: {}
+2025-04-12 19:01:17,857 - __main__ - INFO - Fields in groups for LegQuotStatGrp: {'legsettldate', 'legsettltype', 'legqty', 'legswaptype'}
+2025-04-12 19:01:17,857 - __main__ - INFO - Looking for tag for group: NoLegs, initial tag value: ''
+2025-04-12 19:01:17,857 - __main__ - INFO -   Looked up tag in fields[NoLegs]: '555'
+2025-04-12 19:01:17,857 - __main__ - INFO - Final tag for NoLegs: '555'
+2025-04-12 19:01:17,857 - __main__ - INFO - Writing component file for LegQuotStatGrp
+2025-04-12 19:01:17,857 - __main__ - INFO - Component to group mapping for LinesOfTextGrp: {}
+2025-04-12 19:01:17,857 - __main__ - INFO - Fields in groups for LinesOfTextGrp: {'encodedtext', 'text', 'encodedtextlen'}
+2025-04-12 19:01:17,857 - __main__ - INFO - Looking for tag for group: NoLinesOfText, initial tag value: ''
+2025-04-12 19:01:17,857 - __main__ - INFO -   Looked up tag in fields[NoLinesOfText]: '33'
+2025-04-12 19:01:17,857 - __main__ - INFO - Final tag for NoLinesOfText: '33'
+2025-04-12 19:01:17,857 - __main__ - INFO - Writing component file for LinesOfTextGrp
+2025-04-12 19:01:17,857 - __main__ - INFO - Component to group mapping for ListOrdGrp: {}
+2025-04-12 19:01:17,857 - __main__ - INFO - Fields in groups for ListOrdGrp: {'timeinforce', 'text', 'cashmargin', 'encodedtextlen', 'expiretime', 'stoppx', 'bookingunit', 'custordercapacity', 'clearingfeeindicator', 'quoteid', 'currency', 'account', 'allocid', 'processcode', 'clordid', 'daybookinginst', 'exdestination', 'clordlinkid', 'handlinst', 'prevclosepx', 'sidevalueind', 'settldate', 'complianceid', 'price2', 'positioneffect', 'designation', 'tradedate', 'tradeoriginationdate', 'gtbookinginst', 'ordtype', 'execinst', 'settlinstmode', 'coveredoruncovered', 'accounttype', 'effectivetime', 'price', 'settltype', 'expiredate', 'locatereqd', 'maxshow', 'settldate2', 'ioiid', 'settlcurrency', 'maxfloor', 'preallocmethod', 'minqty', 'transacttime', 'listseqno', 'acctidsource', 'pricetype', 'forexreq', 'secondaryclordid', 'solicitedflag', 'bookingtype', 'orderrestrictions', 'participationrate', 'targetstrategy', 'qtytype', 'orderqty2', 'side', 'ordercapacity', 'encodedtext', 'targetstrategyparameters'}
+2025-04-12 19:01:17,857 - __main__ - INFO - Looking for tag for group: NoOrders, initial tag value: ''
+2025-04-12 19:01:17,857 - __main__ - INFO -   Looked up tag in fields[NoOrders]: '73'
+2025-04-12 19:01:17,857 - __main__ - INFO - Final tag for NoOrders: '73'
+2025-04-12 19:01:17,857 - __main__ - INFO - Writing component file for ListOrdGrp
+2025-04-12 19:01:17,857 - __main__ - INFO - Component to group mapping for MDFullGrp: {}
+2025-04-12 19:01:17,857 - __main__ - INFO - Fields in groups for MDFullGrp: {'timeinforce', 'text', 'mdentryoriginator', 'encodedtextlen', 'expiretime', 'orderid', 'currency', 'tickdirection', 'mdentrypositionno', 'mdmkt', 'numberoforders', 'mdentryseller', 'execinst', 'tradingsessionsubid', 'openclosesettlflag', 'expiredate', 'mdentrytype', 'sellerdays', 'quotecondition', 'scope', 'mdentrypx', 'deskid', 'quoteentryid', 'mdentrydate', 'minqty', 'tradecondition', 'tradingsessionid', 'locationid', 'mdentrysize', 'mdentrytime', 'encodedtext', 'pricedelta', 'mdentrybuyer'}
+2025-04-12 19:01:17,857 - __main__ - INFO - Looking for tag for group: NoMDEntries, initial tag value: ''
+2025-04-12 19:01:17,857 - __main__ - INFO -   Looked up tag in fields[NoMDEntries]: '268'
+2025-04-12 19:01:17,857 - __main__ - INFO - Final tag for NoMDEntries: '268'
+2025-04-12 19:01:17,857 - __main__ - INFO - Writing component file for MDFullGrp
+2025-04-12 19:01:17,857 - __main__ - INFO - Component to group mapping for MDIncGrp: {}
+2025-04-12 19:01:17,857 - __main__ - INFO - Fields in groups for MDIncGrp: {'timeinforce', 'text', 'mdentryoriginator', 'encodedtextlen', 'expiretime', 'financialstatus', 'orderid', 'currency', 'tickdirection', 'mdentrypositionno', 'netchgprevday', 'mdmkt', 'numberoforders', 'mdentryseller', 'execinst', 'tradingsessionsubid', 'openclosesettlflag', 'expiredate', 'mdentrytype', 'deletereason', 'sellerdays', 'quotecondition', 'scope', 'mdentrypx', 'corporateaction', 'deskid', 'quoteentryid', 'mdentrydate', 'minqty', 'tradecondition', 'tradingsessionid', 'mdentryrefid', 'locationid', 'mdentrysize', 'mdentrytime', 'mdupdateaction', 'mdentryid', 'encodedtext', 'pricedelta', 'mdentrybuyer'}
+2025-04-12 19:01:17,858 - __main__ - INFO - Looking for tag for group: NoMDEntries, initial tag value: ''
+2025-04-12 19:01:17,858 - __main__ - INFO -   Looked up tag in fields[NoMDEntries]: '268'
+2025-04-12 19:01:17,858 - __main__ - INFO - Final tag for NoMDEntries: '268'
+2025-04-12 19:01:17,858 - __main__ - INFO - Writing component file for MDIncGrp
+2025-04-12 19:01:17,858 - __main__ - INFO - Component to group mapping for MDReqGrp: {}
+2025-04-12 19:01:17,858 - __main__ - INFO - Fields in groups for MDReqGrp: {'mdentrytype'}
+2025-04-12 19:01:17,858 - __main__ - INFO - Looking for tag for group: NoMDEntryTypes, initial tag value: ''
+2025-04-12 19:01:17,858 - __main__ - INFO -   Looked up tag in fields[NoMDEntryTypes]: '267'
+2025-04-12 19:01:17,858 - __main__ - INFO - Final tag for NoMDEntryTypes: '267'
+2025-04-12 19:01:17,858 - __main__ - INFO - Writing component file for MDReqGrp
+2025-04-12 19:01:17,858 - __main__ - INFO - Component to group mapping for MDRjctGrp: {}
+2025-04-12 19:01:17,858 - __main__ - INFO - Fields in groups for MDRjctGrp: {'altmdsourceid'}
+2025-04-12 19:01:17,858 - __main__ - INFO - Looking for tag for group: NoAltMDSource, initial tag value: ''
+2025-04-12 19:01:17,858 - __main__ - INFO -   Looked up tag in fields[NoAltMDSource]: '816'
+2025-04-12 19:01:17,858 - __main__ - INFO - Final tag for NoAltMDSource: '816'
+2025-04-12 19:01:17,858 - __main__ - INFO - Writing component file for MDRjctGrp
+2025-04-12 19:01:17,858 - __main__ - INFO - Component to group mapping for MiscFeesGrp: {}
+2025-04-12 19:01:17,858 - __main__ - INFO - Fields in groups for MiscFeesGrp: {'miscfeeamt', 'miscfeebasis', 'miscfeetype', 'miscfeecurr'}
+2025-04-12 19:01:17,858 - __main__ - INFO - Looking for tag for group: NoMiscFees, initial tag value: ''
+2025-04-12 19:01:17,858 - __main__ - INFO -   Looked up tag in fields[NoMiscFees]: '136'
+2025-04-12 19:01:17,858 - __main__ - INFO - Final tag for NoMiscFees: '136'
+2025-04-12 19:01:17,858 - __main__ - INFO - Writing component file for MiscFeesGrp
+2025-04-12 19:01:17,858 - __main__ - INFO - Component to group mapping for OrdAllocGrp: {}
+2025-04-12 19:01:17,858 - __main__ - INFO - Fields in groups for OrdAllocGrp: {'secondaryclordid', 'orderavgpx', 'secondaryorderid', 'orderid', 'orderqty', 'clordid', 'listid', 'orderbookingqty'}
+2025-04-12 19:01:17,858 - __main__ - INFO - Looking for tag for group: NoOrders, initial tag value: ''
+2025-04-12 19:01:17,858 - __main__ - INFO -   Looked up tag in fields[NoOrders]: '73'
+2025-04-12 19:01:17,858 - __main__ - INFO - Final tag for NoOrders: '73'
+2025-04-12 19:01:17,858 - __main__ - INFO - Writing component file for OrdAllocGrp
+2025-04-12 19:01:17,858 - __main__ - INFO - Component to group mapping for OrdListStatGrp: {}
+2025-04-12 19:01:17,858 - __main__ - INFO - Fields in groups for OrdListStatGrp: {'secondaryclordid', 'avgpx', 'text', 'cxlqty', 'ordstatus', 'encodedtextlen', 'cumqty', 'ordrejreason', 'encodedtext', 'workingindicator', 'clordid', 'leavesqty'}
+2025-04-12 19:01:17,858 - __main__ - INFO - Looking for tag for group: NoOrders, initial tag value: ''
+2025-04-12 19:01:17,858 - __main__ - INFO -   Looked up tag in fields[NoOrders]: '73'
+2025-04-12 19:01:17,858 - __main__ - INFO - Final tag for NoOrders: '73'
+2025-04-12 19:01:17,858 - __main__ - INFO - Writing component file for OrdListStatGrp
+2025-04-12 19:01:17,858 - __main__ - INFO - Component to group mapping for PosUndInstrmtGrp: {}
+2025-04-12 19:01:17,858 - __main__ - INFO - Fields in groups for PosUndInstrmtGrp: {'underlyingsettlpricetype', 'underlyingsettlprice'}
+2025-04-12 19:01:17,858 - __main__ - INFO - Looking for tag for group: NoUnderlyings, initial tag value: ''
+2025-04-12 19:01:17,858 - __main__ - INFO -   Looked up tag in fields[NoUnderlyings]: '711'
+2025-04-12 19:01:17,858 - __main__ - INFO - Final tag for NoUnderlyings: '711'
+2025-04-12 19:01:17,858 - __main__ - INFO - Writing component file for PosUndInstrmtGrp
+2025-04-12 19:01:17,858 - __main__ - INFO - Component to group mapping for PreAllocGrp: {}
+2025-04-12 19:01:17,858 - __main__ - INFO - Fields in groups for PreAllocGrp: {'allocsettlcurrency', 'allocqty', 'allocaccount', 'individualallocid', 'allocacctidsource'}
+2025-04-12 19:01:17,858 - __main__ - INFO - Looking for tag for group: NoAllocs, initial tag value: ''
+2025-04-12 19:01:17,858 - __main__ - INFO -   Looked up tag in fields[NoAllocs]: '78'
+2025-04-12 19:01:17,858 - __main__ - INFO - Final tag for NoAllocs: '78'
+2025-04-12 19:01:17,858 - __main__ - INFO - Writing component file for PreAllocGrp
+2025-04-12 19:01:17,858 - __main__ - INFO - Component to group mapping for PreAllocMlegGrp: {}
+2025-04-12 19:01:17,858 - __main__ - INFO - Fields in groups for PreAllocMlegGrp: {'allocsettlcurrency', 'allocqty', 'allocaccount', 'individualallocid', 'allocacctidsource'}
+2025-04-12 19:01:17,858 - __main__ - INFO - Looking for tag for group: NoAllocs, initial tag value: ''
+2025-04-12 19:01:17,858 - __main__ - INFO -   Looked up tag in fields[NoAllocs]: '78'
+2025-04-12 19:01:17,858 - __main__ - INFO - Final tag for NoAllocs: '78'
+2025-04-12 19:01:17,858 - __main__ - INFO - Writing component file for PreAllocMlegGrp
+2025-04-12 19:01:17,858 - __main__ - INFO - Component to group mapping for QuotCxlEntriesGrp: {}
+2025-04-12 19:01:17,858 - __main__ - INFO - Fields in groups for QuotCxlEntriesGrp: set()
+2025-04-12 19:01:17,858 - __main__ - INFO - Looking for tag for group: NoQuoteEntries, initial tag value: ''
+2025-04-12 19:01:17,858 - __main__ - INFO -   Looked up tag in fields[NoQuoteEntries]: '295'
+2025-04-12 19:01:17,858 - __main__ - INFO - Final tag for NoQuoteEntries: '295'
+2025-04-12 19:01:17,858 - __main__ - INFO - Writing component file for QuotCxlEntriesGrp
+2025-04-12 19:01:17,859 - __main__ - INFO - Component to group mapping for QuotEntryAckGrp: {}
+2025-04-12 19:01:17,859 - __main__ - INFO - Fields in groups for QuotEntryAckGrp: {'offersize', 'offerforwardpoints', 'bidpx', 'bidforwardpoints2', 'currency', 'bidforwardpoints', 'settldate', 'bidyield', 'midpx', 'offerforwardpoints2', 'offerpx', 'ordtype', 'midyield', 'tradingsessionsubid', 'validuntiltime', 'settldate2', 'quoteentryid', 'transacttime', 'quoteentryrejectreason', 'offerspotrate', 'tradingsessionid', 'bidsize', 'offeryield', 'orderqty2', 'bidspotrate'}
+2025-04-12 19:01:17,859 - __main__ - INFO - Looking for tag for group: NoQuoteEntries, initial tag value: ''
+2025-04-12 19:01:17,859 - __main__ - INFO -   Looked up tag in fields[NoQuoteEntries]: '295'
+2025-04-12 19:01:17,859 - __main__ - INFO - Final tag for NoQuoteEntries: '295'
+2025-04-12 19:01:17,859 - __main__ - INFO - Writing component file for QuotEntryAckGrp
+2025-04-12 19:01:17,859 - __main__ - INFO - Component to group mapping for QuotEntryGrp: {}
+2025-04-12 19:01:17,859 - __main__ - INFO - Fields in groups for QuotEntryGrp: {'offersize', 'offerforwardpoints', 'bidpx', 'bidforwardpoints2', 'currency', 'bidforwardpoints', 'settldate', 'bidyield', 'midpx', 'offerforwardpoints2', 'offerpx', 'ordtype', 'midyield', 'tradingsessionsubid', 'validuntiltime', 'settldate2', 'quoteentryid', 'transacttime', 'offerspotrate', 'tradingsessionid', 'bidsize', 'offeryield', 'orderqty2', 'bidspotrate'}
+2025-04-12 19:01:17,859 - __main__ - INFO - Looking for tag for group: NoQuoteEntries, initial tag value: ''
+2025-04-12 19:01:17,859 - __main__ - INFO -   Looked up tag in fields[NoQuoteEntries]: '295'
+2025-04-12 19:01:17,859 - __main__ - INFO - Final tag for NoQuoteEntries: '295'
+2025-04-12 19:01:17,859 - __main__ - INFO - Writing component file for QuotEntryGrp
+2025-04-12 19:01:17,859 - __main__ - INFO - Component to group mapping for QuotQualGrp: {}
+2025-04-12 19:01:17,859 - __main__ - INFO - Fields in groups for QuotQualGrp: {'quotequalifier'}
+2025-04-12 19:01:17,859 - __main__ - INFO - Looking for tag for group: NoQuoteQualifiers, initial tag value: ''
+2025-04-12 19:01:17,859 - __main__ - INFO -   Looked up tag in fields[NoQuoteQualifiers]: '735'
+2025-04-12 19:01:17,859 - __main__ - INFO - Final tag for NoQuoteQualifiers: '735'
+2025-04-12 19:01:17,859 - __main__ - INFO - Writing component file for QuotQualGrp
+2025-04-12 19:01:17,859 - __main__ - INFO - Component to group mapping for QuotReqGrp: {}
+2025-04-12 19:01:17,859 - __main__ - INFO - Fields in groups for QuotReqGrp: {'expiretime', 'currency', 'account', 'prevclosepx', 'settldate', 'price2', 'quoterequesttype', 'tradeoriginationdate', 'ordtype', 'accounttype', 'tradingsessionsubid', 'price', 'settltype', 'validuntiltime', 'settldate2', 'transacttime', 'tradingsessionid', 'acctidsource', 'pricetype', 'qtytype', 'orderqty2', 'quotepricetype', 'side', 'quotetype'}
+2025-04-12 19:01:17,859 - __main__ - INFO - Looking for tag for group: NoRelatedSym, initial tag value: ''
+2025-04-12 19:01:17,859 - __main__ - INFO -   Looked up tag in fields[NoRelatedSym]: '146'
+2025-04-12 19:01:17,859 - __main__ - INFO - Final tag for NoRelatedSym: '146'
+2025-04-12 19:01:17,859 - __main__ - INFO - Writing component file for QuotReqGrp
+2025-04-12 19:01:17,859 - __main__ - INFO - Component to group mapping for QuotReqLegsGrp: {}
+2025-04-12 19:01:17,859 - __main__ - INFO - Fields in groups for QuotReqLegsGrp: {'legsettldate', 'legsettltype', 'legqty', 'legswaptype'}
+2025-04-12 19:01:17,859 - __main__ - INFO - Looking for tag for group: NoLegs, initial tag value: ''
+2025-04-12 19:01:17,859 - __main__ - INFO -   Looked up tag in fields[NoLegs]: '555'
+2025-04-12 19:01:17,859 - __main__ - INFO - Final tag for NoLegs: '555'
+2025-04-12 19:01:17,859 - __main__ - INFO - Writing component file for QuotReqLegsGrp
+2025-04-12 19:01:17,859 - __main__ - INFO - Component to group mapping for QuotReqRjctGrp: {}
+2025-04-12 19:01:17,859 - __main__ - INFO - Fields in groups for QuotReqRjctGrp: {'expiretime', 'currency', 'account', 'prevclosepx', 'settldate', 'price2', 'quoterequesttype', 'tradeoriginationdate', 'ordtype', 'accounttype', 'tradingsessionsubid', 'price', 'settltype', 'settldate2', 'transacttime', 'tradingsessionid', 'acctidsource', 'pricetype', 'qtytype', 'orderqty2', 'quotepricetype', 'side', 'quotetype'}
+2025-04-12 19:01:17,859 - __main__ - INFO - Looking for tag for group: NoRelatedSym, initial tag value: ''
+2025-04-12 19:01:17,859 - __main__ - INFO -   Looked up tag in fields[NoRelatedSym]: '146'
+2025-04-12 19:01:17,859 - __main__ - INFO - Final tag for NoRelatedSym: '146'
+2025-04-12 19:01:17,859 - __main__ - INFO - Writing component file for QuotReqRjctGrp
+2025-04-12 19:01:17,859 - __main__ - INFO - Component to group mapping for QuotSetAckGrp: {}
+2025-04-12 19:01:17,859 - __main__ - INFO - Fields in groups for QuotSetAckGrp: {'lastfragment', 'totnoquoteentries', 'quotesetid'}
+2025-04-12 19:01:17,859 - __main__ - INFO - Looking for tag for group: NoQuoteSets, initial tag value: ''
+2025-04-12 19:01:17,859 - __main__ - INFO -   Looked up tag in fields[NoQuoteSets]: '296'
+2025-04-12 19:01:17,859 - __main__ - INFO - Final tag for NoQuoteSets: '296'
+2025-04-12 19:01:17,859 - __main__ - INFO - Writing component file for QuotSetAckGrp
+2025-04-12 19:01:17,859 - __main__ - INFO - Component to group mapping for QuotSetGrp: {}
+2025-04-12 19:01:17,859 - __main__ - INFO - Fields in groups for QuotSetGrp: {'quotesetvaliduntiltime', 'totnoquoteentries', 'lastfragment', 'quotesetid'}
+2025-04-12 19:01:17,859 - __main__ - INFO - Looking for tag for group: NoQuoteSets, initial tag value: ''
+2025-04-12 19:01:17,859 - __main__ - INFO -   Looked up tag in fields[NoQuoteSets]: '296'
+2025-04-12 19:01:17,859 - __main__ - INFO - Final tag for NoQuoteSets: '296'
+2025-04-12 19:01:17,859 - __main__ - INFO - Writing component file for QuotSetGrp
+2025-04-12 19:01:17,859 - __main__ - INFO - Component to group mapping for RelSymDerivSecGrp: {}
+2025-04-12 19:01:17,859 - __main__ - INFO - Fields in groups for RelSymDerivSecGrp: {'text', 'encodedtextlen', 'expirationcycle', 'encodedtext', 'currency', 'tradingsessionsubid', 'tradingsessionid'}
+2025-04-12 19:01:17,859 - __main__ - INFO - Looking for tag for group: NoRelatedSym, initial tag value: ''
+2025-04-12 19:01:17,859 - __main__ - INFO -   Looked up tag in fields[NoRelatedSym]: '146'
+2025-04-12 19:01:17,859 - __main__ - INFO - Final tag for NoRelatedSym: '146'
+2025-04-12 19:01:17,859 - __main__ - INFO - Writing component file for RelSymDerivSecGrp
+2025-04-12 19:01:17,860 - __main__ - INFO - Component to group mapping for RFQReqGrp: {}
+2025-04-12 19:01:17,860 - __main__ - INFO - Fields in groups for RFQReqGrp: {'quoterequesttype', 'quotetype', 'tradingsessionsubid', 'tradingsessionid', 'prevclosepx'}
+2025-04-12 19:01:17,860 - __main__ - INFO - Looking for tag for group: NoRelatedSym, initial tag value: ''
+2025-04-12 19:01:17,860 - __main__ - INFO -   Looked up tag in fields[NoRelatedSym]: '146'
+2025-04-12 19:01:17,860 - __main__ - INFO - Final tag for NoRelatedSym: '146'
+2025-04-12 19:01:17,860 - __main__ - INFO - Writing component file for RFQReqGrp
+2025-04-12 19:01:17,860 - __main__ - INFO - Component to group mapping for RgstDistInstGrp: {}
+2025-04-12 19:01:17,860 - __main__ - INFO - Fields in groups for RgstDistInstGrp: {'distribpaymentmethod', 'cashdistribcurr', 'cashdistribagentcode', 'cashdistribagentname', 'cashdistribagentacctnumber', 'cashdistribagentacctname', 'distribpercentage', 'cashdistribpayref'}
+2025-04-12 19:01:17,860 - __main__ - INFO - Looking for tag for group: NoDistribInsts, initial tag value: ''
+2025-04-12 19:01:17,860 - __main__ - INFO -   Looked up tag in fields[NoDistribInsts]: '510'
+2025-04-12 19:01:17,860 - __main__ - INFO - Final tag for NoDistribInsts: '510'
+2025-04-12 19:01:17,860 - __main__ - INFO - Writing component file for RgstDistInstGrp
+2025-04-12 19:01:17,860 - __main__ - INFO - Component to group mapping for RgstDtlsGrp: {}
+2025-04-12 19:01:17,860 - __main__ - INFO - Fields in groups for RgstDtlsGrp: {'investorcountryofresidence', 'mailingdtls', 'mailinginst', 'ownertype', 'registdtls', 'dateofbirth', 'registemail'}
+2025-04-12 19:01:17,860 - __main__ - INFO - Looking for tag for group: NoRegistDtls, initial tag value: ''
+2025-04-12 19:01:17,860 - __main__ - INFO -   Looked up tag in fields[NoRegistDtls]: '473'
+2025-04-12 19:01:17,860 - __main__ - INFO - Final tag for NoRegistDtls: '473'
+2025-04-12 19:01:17,860 - __main__ - INFO - Writing component file for RgstDtlsGrp
+2025-04-12 19:01:17,860 - __main__ - INFO - Component to group mapping for RoutingGrp: {}
+2025-04-12 19:01:17,860 - __main__ - INFO - Fields in groups for RoutingGrp: {'routingid', 'routingtype'}
+2025-04-12 19:01:17,860 - __main__ - INFO - Looking for tag for group: NoRoutingIDs, initial tag value: ''
+2025-04-12 19:01:17,860 - __main__ - INFO -   Looked up tag in fields[NoRoutingIDs]: '215'
+2025-04-12 19:01:17,860 - __main__ - INFO - Final tag for NoRoutingIDs: '215'
+2025-04-12 19:01:17,860 - __main__ - INFO - Writing component file for RoutingGrp
+2025-04-12 19:01:17,860 - __main__ - INFO - Component to group mapping for SecListGrp: {}
+2025-04-12 19:01:17,860 - __main__ - INFO - Fields in groups for SecListGrp: {'mintradevol', 'text', 'encodedtextlen', 'expirationcycle', 'encodedtext', 'currency', 'tradingsessionsubid', 'tradingsessionid', 'roundlot'}
+2025-04-12 19:01:17,860 - __main__ - INFO - Looking for tag for group: NoRelatedSym, initial tag value: ''
+2025-04-12 19:01:17,860 - __main__ - INFO -   Looked up tag in fields[NoRelatedSym]: '146'
+2025-04-12 19:01:17,860 - __main__ - INFO - Final tag for NoRelatedSym: '146'
+2025-04-12 19:01:17,860 - __main__ - INFO - Writing component file for SecListGrp
+2025-04-12 19:01:17,860 - __main__ - INFO - Component to group mapping for SecTypesGrp: {}
+2025-04-12 19:01:17,860 - __main__ - INFO - Fields in groups for SecTypesGrp: {'securitytype', 'product', 'securitysubtype', 'cficode'}
+2025-04-12 19:01:17,860 - __main__ - INFO - Looking for tag for group: NoSecurityTypes, initial tag value: ''
+2025-04-12 19:01:17,860 - __main__ - INFO -   Looked up tag in fields[NoSecurityTypes]: '558'
+2025-04-12 19:01:17,860 - __main__ - INFO - Final tag for NoSecurityTypes: '558'
+2025-04-12 19:01:17,860 - __main__ - INFO - Writing component file for SecTypesGrp
+2025-04-12 19:01:17,860 - __main__ - INFO - Component to group mapping for SettlInstGrp: {}
+2025-04-12 19:01:17,860 - __main__ - INFO - Fields in groups for SettlInstGrp: {'settlinstid', 'expiretime', 'paymentref', 'securitytype', 'product', 'paymentmethod', 'cardexpdate', 'lastupdatetime', 'paymentdate', 'settlinstrefid', 'cardissnum', 'effectivetime', 'cficode', 'cardnumber', 'settlinsttranstype', 'paymentremitterid', 'cardholdername', 'cardstartdate', 'side'}
+2025-04-12 19:01:17,860 - __main__ - INFO - Looking for tag for group: NoSettlInst, initial tag value: ''
+2025-04-12 19:01:17,860 - __main__ - INFO -   Looked up tag in fields[NoSettlInst]: '778'
+2025-04-12 19:01:17,860 - __main__ - INFO - Final tag for NoSettlInst: '778'
+2025-04-12 19:01:17,860 - __main__ - INFO - Writing component file for SettlInstGrp
+2025-04-12 19:01:17,860 - __main__ - INFO - Component to group mapping for SideCrossOrdCxlGrp: {}
+2025-04-12 19:01:17,860 - __main__ - INFO - Fields in groups for SideCrossOrdCxlGrp: {'secondaryclordid', 'origclordid', 'text', 'tradedate', 'encodedtextlen', 'tradeoriginationdate', 'side', 'encodedtext', 'clordid', 'clordlinkid', 'origordmodtime', 'complianceid'}
+2025-04-12 19:01:17,860 - __main__ - INFO - Looking for tag for group: NoSides, initial tag value: ''
+2025-04-12 19:01:17,860 - __main__ - INFO -   Looked up tag in fields[NoSides]: '552'
+2025-04-12 19:01:17,860 - __main__ - INFO - Final tag for NoSides: '552'
+2025-04-12 19:01:17,860 - __main__ - INFO - Writing component file for SideCrossOrdCxlGrp
+2025-04-12 19:01:17,860 - __main__ - INFO - Component to group mapping for SideCrossOrdModGrp: {}
+2025-04-12 19:01:17,860 - __main__ - INFO - Fields in groups for SideCrossOrdModGrp: {'text', 'cashmargin', 'encodedtextlen', 'bookingunit', 'custordercapacity', 'clearingfeeindicator', 'account', 'allocid', 'clordid', 'daybookinginst', 'clordlinkid', 'sidecomplianceid', 'positioneffect', 'tradedate', 'tradeoriginationdate', 'coveredoruncovered', 'accounttype', 'settlcurrency', 'preallocmethod', 'acctidsource', 'forexreq', 'secondaryclordid', 'solicitedflag', 'bookingtype', 'orderrestrictions', 'qtytype', 'side', 'ordercapacity', 'encodedtext'}
+2025-04-12 19:01:17,860 - __main__ - INFO - Looking for tag for group: NoSides, initial tag value: ''
+2025-04-12 19:01:17,860 - __main__ - INFO -   Looked up tag in fields[NoSides]: '552'
+2025-04-12 19:01:17,861 - __main__ - INFO - Final tag for NoSides: '552'
+2025-04-12 19:01:17,861 - __main__ - INFO - Writing component file for SideCrossOrdModGrp
+2025-04-12 19:01:17,861 - __main__ - INFO - Component to group mapping for TrdAllocGrp: {}
+2025-04-12 19:01:17,861 - __main__ - INFO - Fields in groups for TrdAllocGrp: {'allocsettlcurrency', 'allocqty', 'allocaccount', 'individualallocid', 'allocacctidsource'}
+2025-04-12 19:01:17,861 - __main__ - INFO - Looking for tag for group: NoAllocs, initial tag value: ''
+2025-04-12 19:01:17,861 - __main__ - INFO -   Looked up tag in fields[NoAllocs]: '78'
+2025-04-12 19:01:17,861 - __main__ - INFO - Final tag for NoAllocs: '78'
+2025-04-12 19:01:17,861 - __main__ - INFO - Writing component file for TrdAllocGrp
+2025-04-12 19:01:17,861 - __main__ - INFO - Component to group mapping for TrdCapRptSideGrp: {}
+2025-04-12 19:01:17,861 - __main__ - INFO - Fields in groups for TrdCapRptSideGrp: {'text', 'timebracket', 'encodedtextlen', 'oddlot', 'totaltakedown', 'orderid', 'custordercapacity', 'currency', 'account', 'endaccruedinterestamt', 'processcode', 'clordid', 'allocid', 'complianceid', 'tradeinputsource', 'transbkdtime', 'settlcurrfxratecalc', 'positioneffect', 'tradeallocindicator', 'exdate', 'ordtype', 'tradeinputdevice', 'accruedinterestamt', 'execinst', 'accounttype', 'tradingsessionsubid', 'endcash', 'netmoney', 'settlcurrfxrate', 'sidemultilegreportingtype', 'startcash', 'secondaryorderid', 'orderinputdevice', 'settlcurrency', 'accruedinterestrate', 'settlcurramt', 'interestatmaturity', 'preallocmethod', 'listid', 'tradingsessionid', 'acctidsource', 'secondaryclordid', 'solicitedflag', 'exchangerule', 'orderrestrictions', 'numdaysinterest', 'side', 'ordercapacity', 'concession', 'encodedtext', 'grosstradeamt'}
+2025-04-12 19:01:17,861 - __main__ - INFO - Looking for tag for group: NoSides, initial tag value: ''
+2025-04-12 19:01:17,861 - __main__ - INFO -   Looked up tag in fields[NoSides]: '552'
+2025-04-12 19:01:17,861 - __main__ - INFO - Final tag for NoSides: '552'
+2025-04-12 19:01:17,861 - __main__ - INFO - Writing component file for TrdCapRptSideGrp
+2025-04-12 19:01:17,861 - __main__ - INFO - Component to group mapping for TrdCollGrp: {}
+2025-04-12 19:01:17,861 - __main__ - INFO - Fields in groups for TrdCollGrp: {'secondarytradereportid', 'tradereportid'}
+2025-04-12 19:01:17,861 - __main__ - INFO - Looking for tag for group: NoTrades, initial tag value: ''
+2025-04-12 19:01:17,861 - __main__ - INFO -   Looked up tag in fields[NoTrades]: '897'
+2025-04-12 19:01:17,861 - __main__ - INFO - Final tag for NoTrades: '897'
+2025-04-12 19:01:17,861 - __main__ - INFO - Writing component file for TrdCollGrp
+2025-04-12 19:01:17,861 - __main__ - INFO - Component to group mapping for TrdInstrmtLegGrp: {}
+2025-04-12 19:01:17,861 - __main__ - INFO - Fields in groups for TrdInstrmtLegGrp: {'legsettltype', 'legprice', 'legpositioneffect', 'legcoveredoruncovered', 'legsettldate', 'legqty', 'leglastpx', 'legswaptype', 'legrefid'}
+2025-04-12 19:01:17,861 - __main__ - INFO - Looking for tag for group: NoLegs, initial tag value: ''
+2025-04-12 19:01:17,861 - __main__ - INFO -   Looked up tag in fields[NoLegs]: '555'
+2025-04-12 19:01:17,861 - __main__ - INFO - Final tag for NoLegs: '555'
+2025-04-12 19:01:17,861 - __main__ - INFO - Writing component file for TrdInstrmtLegGrp
+2025-04-12 19:01:17,861 - __main__ - INFO - Component to group mapping for TrdgSesGrp: {}
+2025-04-12 19:01:17,861 - __main__ - INFO - Fields in groups for TrdgSesGrp: {'tradingsessionsubid', 'tradingsessionid'}
+2025-04-12 19:01:17,861 - __main__ - INFO - Looking for tag for group: NoTradingSessions, initial tag value: ''
+2025-04-12 19:01:17,861 - __main__ - INFO -   Looked up tag in fields[NoTradingSessions]: '386'
+2025-04-12 19:01:17,861 - __main__ - INFO - Final tag for NoTradingSessions: '386'
+2025-04-12 19:01:17,861 - __main__ - INFO - Writing component file for TrdgSesGrp
+2025-04-12 19:01:17,861 - __main__ - INFO - Component to group mapping for UndInstrmtCollGrp: {}
+2025-04-12 19:01:17,861 - __main__ - INFO - Fields in groups for UndInstrmtCollGrp: {'collaction'}
+2025-04-12 19:01:17,861 - __main__ - INFO - Looking for tag for group: NoUnderlyings, initial tag value: ''
+2025-04-12 19:01:17,861 - __main__ - INFO -   Looked up tag in fields[NoUnderlyings]: '711'
+2025-04-12 19:01:17,861 - __main__ - INFO - Final tag for NoUnderlyings: '711'
+2025-04-12 19:01:17,861 - __main__ - INFO - Writing component file for UndInstrmtCollGrp
+2025-04-12 19:01:17,861 - __main__ - INFO - Component to group mapping for UndInstrmtGrp: {}
+2025-04-12 19:01:17,861 - __main__ - INFO - Fields in groups for UndInstrmtGrp: set()
+2025-04-12 19:01:17,861 - __main__ - INFO - Looking for tag for group: NoUnderlyings, initial tag value: ''
+2025-04-12 19:01:17,861 - __main__ - INFO -   Looked up tag in fields[NoUnderlyings]: '711'
+2025-04-12 19:01:17,861 - __main__ - INFO - Final tag for NoUnderlyings: '711'
+2025-04-12 19:01:17,861 - __main__ - INFO - Writing component file for UndInstrmtGrp
+2025-04-12 19:01:17,861 - __main__ - INFO - Component to group mapping for UndInstrmtStrkPxGrp: {}
+2025-04-12 19:01:17,861 - __main__ - INFO - Fields in groups for UndInstrmtStrkPxGrp: {'secondaryclordid', 'text', 'encodedtextlen', 'side', 'encodedtext', 'currency', 'clordid', 'price', 'prevclosepx'}
+2025-04-12 19:01:17,861 - __main__ - INFO - Looking for tag for group: NoUnderlyings, initial tag value: ''
+2025-04-12 19:01:17,861 - __main__ - INFO -   Looked up tag in fields[NoUnderlyings]: '711'
+2025-04-12 19:01:17,861 - __main__ - INFO - Final tag for NoUnderlyings: '711'
+2025-04-12 19:01:17,861 - __main__ - INFO - Writing component file for UndInstrmtStrkPxGrp
+2025-04-12 19:01:17,861 - __main__ - INFO - Component to group mapping for TrdCapDtGrp: {}
+2025-04-12 19:01:17,861 - __main__ - INFO - Fields in groups for TrdCapDtGrp: {'transacttime', 'tradedate'}
+2025-04-12 19:01:17,861 - __main__ - INFO - Looking for tag for group: NoDates, initial tag value: ''
+2025-04-12 19:01:17,861 - __main__ - INFO -   Looked up tag in fields[NoDates]: '580'
+2025-04-12 19:01:17,861 - __main__ - INFO - Final tag for NoDates: '580'
+2025-04-12 19:01:17,861 - __main__ - INFO - Writing component file for TrdCapDtGrp
+2025-04-12 19:01:17,862 - __main__ - INFO - Component to group mapping for EvntGrp: {}
+2025-04-12 19:01:17,862 - __main__ - INFO - Fields in groups for EvntGrp: {'eventdate', 'eventtext', 'eventtype', 'eventpx'}
+2025-04-12 19:01:17,862 - __main__ - INFO - Looking for tag for group: NoEvents, initial tag value: ''
+2025-04-12 19:01:17,862 - __main__ - INFO -   Looked up tag in fields[NoEvents]: '864'
+2025-04-12 19:01:17,862 - __main__ - INFO - Final tag for NoEvents: '864'
+2025-04-12 19:01:17,862 - __main__ - INFO - Writing component file for EvntGrp
+2025-04-12 19:01:17,862 - __main__ - INFO - Component to group mapping for SecAltIDGrp: {}
+2025-04-12 19:01:17,862 - __main__ - INFO - Fields in groups for SecAltIDGrp: {'securityaltidsource', 'securityaltid'}
+2025-04-12 19:01:17,862 - __main__ - INFO - Looking for tag for group: NoSecurityAltID, initial tag value: ''
+2025-04-12 19:01:17,862 - __main__ - INFO -   Looked up tag in fields[NoSecurityAltID]: '454'
+2025-04-12 19:01:17,862 - __main__ - INFO - Final tag for NoSecurityAltID: '454'
+2025-04-12 19:01:17,862 - __main__ - INFO - Writing component file for SecAltIDGrp
+2025-04-12 19:01:17,862 - __main__ - INFO - Component to group mapping for LegSecAltIDGrp: {}
+2025-04-12 19:01:17,862 - __main__ - INFO - Fields in groups for LegSecAltIDGrp: {'legsecurityaltid', 'legsecurityaltidsource'}
+2025-04-12 19:01:17,862 - __main__ - INFO - Looking for tag for group: NoLegSecurityAltID, initial tag value: ''
+2025-04-12 19:01:17,862 - __main__ - INFO -   Looked up tag in fields[NoLegSecurityAltID]: '604'
+2025-04-12 19:01:17,862 - __main__ - INFO - Final tag for NoLegSecurityAltID: '604'
+2025-04-12 19:01:17,862 - __main__ - INFO - Writing component file for LegSecAltIDGrp
+2025-04-12 19:01:17,862 - __main__ - INFO - Component to group mapping for UndSecAltIDGrp: {}
+2025-04-12 19:01:17,862 - __main__ - INFO - Fields in groups for UndSecAltIDGrp: {'underlyingsecurityaltid', 'underlyingsecurityaltidsource'}
+2025-04-12 19:01:17,862 - __main__ - INFO - Looking for tag for group: NoUnderlyingSecurityAltID, initial tag value: ''
+2025-04-12 19:01:17,862 - __main__ - INFO -   Looked up tag in fields[NoUnderlyingSecurityAltID]: '457'
+2025-04-12 19:01:17,862 - __main__ - INFO - Final tag for NoUnderlyingSecurityAltID: '457'
+2025-04-12 19:01:17,862 - __main__ - INFO - Writing component file for UndSecAltIDGrp
+2025-04-12 19:01:17,862 - __main__ - INFO - Component to group mapping for AttrbGrp: {}
+2025-04-12 19:01:17,862 - __main__ - INFO - Fields in groups for AttrbGrp: {'instrattribtype', 'instrattribvalue'}
+2025-04-12 19:01:17,862 - __main__ - INFO - Looking for tag for group: NoInstrAttrib, initial tag value: ''
+2025-04-12 19:01:17,862 - __main__ - INFO -   Looked up tag in fields[NoInstrAttrib]: '870'
+2025-04-12 19:01:17,862 - __main__ - INFO - Final tag for NoInstrAttrib: '870'
+2025-04-12 19:01:17,862 - __main__ - INFO - Writing component file for AttrbGrp
+2025-04-12 19:01:17,862 - __main__ - INFO - Component to group mapping for DlvyInstGrp: {}
+2025-04-12 19:01:17,862 - __main__ - INFO - Fields in groups for DlvyInstGrp: {'dlvyinsttype', 'settlinstsource'}
+2025-04-12 19:01:17,862 - __main__ - INFO - Looking for tag for group: NoDlvyInst, initial tag value: ''
+2025-04-12 19:01:17,862 - __main__ - INFO -   Looked up tag in fields[NoDlvyInst]: '85'
+2025-04-12 19:01:17,862 - __main__ - INFO - Final tag for NoDlvyInst: '85'
+2025-04-12 19:01:17,862 - __main__ - INFO - Writing component file for DlvyInstGrp
+2025-04-12 19:01:17,862 - __main__ - INFO - Component to group mapping for SettlPtysSubGrp: {}
+2025-04-12 19:01:17,862 - __main__ - INFO - Fields in groups for SettlPtysSubGrp: {'settlpartysubid', 'settlpartysubidtype'}
+2025-04-12 19:01:17,862 - __main__ - INFO - Looking for tag for group: NoSettlPartySubIDs, initial tag value: ''
+2025-04-12 19:01:17,862 - __main__ - INFO -   Looked up tag in fields[NoSettlPartySubIDs]: '801'
+2025-04-12 19:01:17,862 - __main__ - INFO - Final tag for NoSettlPartySubIDs: '801'
+2025-04-12 19:01:17,862 - __main__ - INFO - Writing component file for SettlPtysSubGrp
+2025-04-12 19:01:17,862 - __main__ - INFO - Component to group mapping for PtysSubGrp: {}
+2025-04-12 19:01:17,862 - __main__ - INFO - Fields in groups for PtysSubGrp: {'partysubid', 'partysubidtype'}
+2025-04-12 19:01:17,862 - __main__ - INFO - Looking for tag for group: NoPartySubIDs, initial tag value: ''
+2025-04-12 19:01:17,862 - __main__ - INFO -   Looked up tag in fields[NoPartySubIDs]: '802'
+2025-04-12 19:01:17,862 - __main__ - INFO - Final tag for NoPartySubIDs: '802'
+2025-04-12 19:01:17,862 - __main__ - INFO - Writing component file for PtysSubGrp
+2025-04-12 19:01:17,862 - __main__ - INFO - Component to group mapping for NstdPtysSubGrp: {}
+2025-04-12 19:01:17,862 - __main__ - INFO - Fields in groups for NstdPtysSubGrp: {'nestedpartysubid', 'nestedpartysubidtype'}
+2025-04-12 19:01:17,862 - __main__ - INFO - Looking for tag for group: NoNestedPartySubIDs, initial tag value: ''
+2025-04-12 19:01:17,862 - __main__ - INFO -   Looked up tag in fields[NoNestedPartySubIDs]: '804'
+2025-04-12 19:01:17,862 - __main__ - INFO - Final tag for NoNestedPartySubIDs: '804'
+2025-04-12 19:01:17,862 - __main__ - INFO - Writing component file for NstdPtysSubGrp
+2025-04-12 19:01:17,862 - __main__ - INFO - Component to group mapping for Hop: {}
+2025-04-12 19:01:17,862 - __main__ - INFO - Fields in groups for Hop: {'hopcompid', 'hopsendingtime', 'hoprefid'}
+2025-04-12 19:01:17,862 - __main__ - INFO - Looking for tag for group: NoHops, initial tag value: ''
+2025-04-12 19:01:17,862 - __main__ - INFO -   Looked up tag in fields[NoHops]: '627'
+2025-04-12 19:01:17,863 - __main__ - INFO - Final tag for NoHops: '627'
+2025-04-12 19:01:17,863 - __main__ - INFO - Writing component file for Hop
+2025-04-12 19:01:17,863 - __main__ - INFO - Component to group mapping for NstdPtys2SubGrp: {}
+2025-04-12 19:01:17,863 - __main__ - INFO - Fields in groups for NstdPtys2SubGrp: {'nested2partysubid', 'nested2partysubidtype'}
+2025-04-12 19:01:17,863 - __main__ - INFO - Looking for tag for group: NoNested2PartySubIDs, initial tag value: ''
+2025-04-12 19:01:17,863 - __main__ - INFO -   Looked up tag in fields[NoNested2PartySubIDs]: '806'
+2025-04-12 19:01:17,863 - __main__ - INFO - Final tag for NoNested2PartySubIDs: '806'
+2025-04-12 19:01:17,863 - __main__ - INFO - Writing component file for NstdPtys2SubGrp
+2025-04-12 19:01:17,863 - __main__ - INFO - Component to group mapping for NstdPtys3SubGrp: {}
+2025-04-12 19:01:17,863 - __main__ - INFO - Fields in groups for NstdPtys3SubGrp: {'nested3partysubid', 'nested3partysubidtype'}
+2025-04-12 19:01:17,863 - __main__ - INFO - Looking for tag for group: NoNested3PartySubIDs, initial tag value: ''
+2025-04-12 19:01:17,863 - __main__ - INFO -   Looked up tag in fields[NoNested3PartySubIDs]: '952'
+2025-04-12 19:01:17,863 - __main__ - INFO - Final tag for NoNested3PartySubIDs: '952'
+2025-04-12 19:01:17,863 - __main__ - INFO - Writing component file for NstdPtys3SubGrp
+2025-04-12 19:01:17,863 - __main__ - INFO - Generating message models...
+2025-04-12 19:01:17,868 - __main__ - INFO - Generating __init__.py file...
+2025-04-12 19:01:17,868 - __main__ - INFO - Successfully generated FIX 4.4 Pydantic models in src/models/fix/generated

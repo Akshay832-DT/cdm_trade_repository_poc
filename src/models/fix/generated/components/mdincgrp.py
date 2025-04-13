@@ -8,11 +8,14 @@ from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
 from src.models.fix.generated.fields.common import *
 from src.models.fix.base import FIXMessageBase
+from src.models.fix.generated.components.instrument import Instrument
+from src.models.fix.generated.components.undinstrmtgrp import UndInstrmtGrp
+from src.models.fix.generated.components.instrmtleggrp import InstrmtLegGrp
 
 
-class MDIncGrp(FIXMessageBase):
+class NoMDEntries(FIXMessageBase):
     """
-    FIX 4.4 MDIncGrp Component
+    NoMDEntries group fields
     """
     model_config = ConfigDict(
         populate_by_name=True,
@@ -23,7 +26,8 @@ class MDIncGrp(FIXMessageBase):
             time: lambda v: v.isoformat()
         }
     )
-    mDUpdateAction: str = Field(None, description='', alias='279')
+    
+    mDUpdateAction: str = Field(..., description='', alias='279')
     deleteReason: Optional[str] = Field(None, description='', alias='285')
     mDEntryType: Optional[str] = Field(None, description='', alias='269')
     mDEntryID: Optional[str] = Field(None, description='', alias='278')
@@ -63,14 +67,11 @@ class MDIncGrp(FIXMessageBase):
     text: Optional[str] = Field(None, description='', alias='58')
     encodedTextLen: Optional[int] = Field(None, description='', alias='354')
     encodedText: Optional[str] = Field(None, description='', alias='355')
-    instrument: Optional[str] = Field(None)
-    undInstrmtGrp: Optional[str] = Field(None)
-    instrmtLegGrp: Optional[str] = Field(None)
 
 
-class NoMDEntries(FIXMessageBase):
+class MDIncGrp(FIXMessageBase):
     """
-    NoMDEntries group fields
+    FIX 4.4 MDIncGrp Component
     """
     model_config = ConfigDict(
         populate_by_name=True,
@@ -81,45 +82,9 @@ class NoMDEntries(FIXMessageBase):
             time: lambda v: v.isoformat()
         }
     )
-    mDUpdateAction: int = Field(None, description='', alias='268')
-    deleteReason: Optional[int] = Field(None, description='', alias='268')
-    mDEntryType: Optional[int] = Field(None, description='', alias='268')
-    mDEntryID: Optional[int] = Field(None, description='', alias='268')
-    mDEntryRefID: Optional[int] = Field(None, description='', alias='268')
-    financialStatus: Optional[int] = Field(None, description='', alias='268')
-    corporateAction: Optional[int] = Field(None, description='', alias='268')
-    mDEntryPx: Optional[int] = Field(None, description='', alias='268')
-    currency: Optional[int] = Field(None, description='', alias='268')
-    mDEntrySize: Optional[int] = Field(None, description='', alias='268')
-    mDEntryDate: Optional[int] = Field(None, description='', alias='268')
-    mDEntryTime: Optional[int] = Field(None, description='', alias='268')
-    tickDirection: Optional[int] = Field(None, description='', alias='268')
-    mDMkt: Optional[int] = Field(None, description='', alias='268')
-    tradingSessionID: Optional[int] = Field(None, description='', alias='268')
-    tradingSessionSubID: Optional[int] = Field(None, description='', alias='268')
-    quoteCondition: Optional[int] = Field(None, description='', alias='268')
-    tradeCondition: Optional[int] = Field(None, description='', alias='268')
-    mDEntryOriginator: Optional[int] = Field(None, description='', alias='268')
-    locationID: Optional[int] = Field(None, description='', alias='268')
-    deskID: Optional[int] = Field(None, description='', alias='268')
-    openCloseSettlFlag: Optional[int] = Field(None, description='', alias='268')
-    timeInForce: Optional[int] = Field(None, description='', alias='268')
-    expireDate: Optional[int] = Field(None, description='', alias='268')
-    expireTime: Optional[int] = Field(None, description='', alias='268')
-    minQty: Optional[int] = Field(None, description='', alias='268')
-    execInst: Optional[int] = Field(None, description='', alias='268')
-    sellerDays: Optional[int] = Field(None, description='', alias='268')
-    orderID: Optional[int] = Field(None, description='', alias='268')
-    quoteEntryID: Optional[int] = Field(None, description='', alias='268')
-    mDEntryBuyer: Optional[int] = Field(None, description='', alias='268')
-    mDEntrySeller: Optional[int] = Field(None, description='', alias='268')
-    numberOfOrders: Optional[int] = Field(None, description='', alias='268')
-    mDEntryPositionNo: Optional[int] = Field(None, description='', alias='268')
-    scope: Optional[int] = Field(None, description='', alias='268')
-    priceDelta: Optional[int] = Field(None, description='', alias='268')
-    netChgPrevDay: Optional[int] = Field(None, description='', alias='268')
-    text: Optional[int] = Field(None, description='', alias='268')
-    encodedTextLen: Optional[int] = Field(None, description='', alias='268')
-    encodedText: Optional[int] = Field(None, description='', alias='268')
-
-    noMDEntriess: List[NoMDEntries] = Field(default_factory=list)
+    
+    instrument: Optional[Instrument] = Field(None, description='Instrument component')
+    undInstrmtGrp: Optional[UndInstrmtGrp] = Field(None, description='UndInstrmtGrp component')
+    instrmtLegGrp: Optional[InstrmtLegGrp] = Field(None, description='InstrmtLegGrp component')
+    noMDEntries: Optional[int] = Field(None, description='Number of NoMDEntries entries', alias='268')
+    noMDEntries_items: List[NoMDEntries] = Field(default_factory=list)

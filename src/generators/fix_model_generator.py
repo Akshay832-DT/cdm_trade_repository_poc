@@ -73,6 +73,9 @@ def generate_field_models(fields):
     fields_dir = os.path.join(OUTPUT_DIR, 'fields')
     os.makedirs(fields_dir, exist_ok=True)
     
+    # Generate common.py with type definitions
+    generate_common_field_types(fields_dir)
+    
     # Generate __init__.py
     with open(os.path.join(fields_dir, '__init__.py'), 'w') as f:
         f.write("from .base import FIXFieldBase\n")
@@ -188,6 +191,41 @@ class {field_name}(FIXFieldBase):
                 f.write("\n    # Enum values\n")
                 for enum_value, description in field_values.items():
                     f.write(f"    # {enum_value}: {description}\n")
+
+def generate_common_field_types(fields_dir):
+    """Generate the common.py file with type definitions used by all components."""
+    logger.info("Generating common field types...")
+    
+    common_py_path = os.path.join(fields_dir, "common.py")
+    with open(common_py_path, "w") as f:
+        f.write('''"""
+Common field types for FIX 4.4 messages.
+
+This module provides common field type definitions used by FIX 4.4 components and messages.
+"""
+from typing import Optional, Union, List, Dict, Any
+from datetime import datetime, date, time
+from pydantic import BaseModel, Field
+
+# Define common type aliases
+TagNum = str  # FIX tag numbers
+NumInGroup = int  # Number of repeated groups
+SeqNum = int  # Message sequence number
+Length = int  # Length field
+Boolean = str  # Y/N boolean
+Price = float  # Price field
+Qty = float  # Quantity field
+Currency = str  # Currency code
+Country = str  # Country code
+Exchange = str  # Exchange identifier
+UTCTimestamp = datetime  # UTC timestamp
+UTCDate = date  # UTC date
+UTCTimeOnly = time  # UTC time
+LocalMktDate = date  # Local market date
+Percentage = float  # Percentage
+Amt = float  # Monetary amount
+MultipleValueString = str  # Multiple value string
+''')
 
 def to_camel_case(name):
     """Convert a PascalCase name to camelCase and handle Python keywords."""
@@ -581,6 +619,7 @@ def generate_message_models(messages: Dict[str, Any], fields: Dict[str, Any], co
         with open(file_path, "w") as f:
             # Write imports
             f.write("from typing import Optional, List\n")
+            f.write("from datetime import datetime, date, time\n")
             f.write("from pydantic import Field\n")
             f.write("from src.models.fix.base import FIXMessageBase\n")
             

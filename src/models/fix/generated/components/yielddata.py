@@ -23,8 +23,9 @@ class YieldData(FIXMessageBase):
             time: lambda v: v.isoformat()
         }
     )
+    
     yieldType: Optional[str] = Field(None, description='', alias='235')
-    yield: Optional[float] = Field(None, description='', alias='236')
+    yieldValue: Optional[float] = Field(None, description='', alias='236')
     yieldCalcDate: Optional[date] = Field(None, description='', alias='701')
     yieldRedemptionDate: Optional[date] = Field(None, description='', alias='696')
     yieldRedemptionPrice: Optional[float] = Field(None, description='', alias='697')

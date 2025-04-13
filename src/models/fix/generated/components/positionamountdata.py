@@ -10,23 +10,6 @@ from src.models.fix.generated.fields.common import *
 from src.models.fix.base import FIXMessageBase
 
 
-class PositionAmountData(FIXMessageBase):
-    """
-    FIX 4.4 PositionAmountData Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    posAmtType: Optional[str] = Field(None, description='', alias='707')
-    posAmt: Optional[float] = Field(None, description='', alias='708')
-
-
 class NoPosAmt(FIXMessageBase):
     """
     NoPosAmt group fields
@@ -40,7 +23,24 @@ class NoPosAmt(FIXMessageBase):
             time: lambda v: v.isoformat()
         }
     )
-    posAmtType: Optional[int] = Field(None, description='', alias='753')
-    posAmt: Optional[int] = Field(None, description='', alias='753')
+    
+    posAmtType: Optional[str] = Field(None, description='', alias='707')
+    posAmt: Optional[float] = Field(None, description='', alias='708')
 
-    noPosAmts: List[NoPosAmt] = Field(default_factory=list)
+
+class PositionAmountData(FIXMessageBase):
+    """
+    FIX 4.4 PositionAmountData Component
+    """
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_by_name=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat(),
+            date: lambda v: v.isoformat(),
+            time: lambda v: v.isoformat()
+        }
+    )
+    
+    noPosAmt: Optional[int] = Field(None, description='Number of NoPosAmt entries', alias='753')
+    noPosAmt_items: List[NoPosAmt] = Field(default_factory=list)

@@ -10,24 +10,6 @@ from src.models.fix.generated.fields.common import *
 from src.models.fix.base import FIXMessageBase
 
 
-class ContAmtGrp(FIXMessageBase):
-    """
-    FIX 4.4 ContAmtGrp Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    contAmtType: Optional[int] = Field(None, description='', alias='519')
-    contAmtValue: Optional[float] = Field(None, description='', alias='520')
-    contAmtCurr: Optional[str] = Field(None, description='', alias='521')
-
-
 class NoContAmts(FIXMessageBase):
     """
     NoContAmts group fields
@@ -41,8 +23,25 @@ class NoContAmts(FIXMessageBase):
             time: lambda v: v.isoformat()
         }
     )
-    contAmtType: Optional[int] = Field(None, description='', alias='518')
-    contAmtValue: Optional[int] = Field(None, description='', alias='518')
-    contAmtCurr: Optional[int] = Field(None, description='', alias='518')
+    
+    contAmtType: Optional[int] = Field(None, description='', alias='519')
+    contAmtValue: Optional[float] = Field(None, description='', alias='520')
+    contAmtCurr: Optional[str] = Field(None, description='', alias='521')
 
-    noContAmtss: List[NoContAmts] = Field(default_factory=list)
+
+class ContAmtGrp(FIXMessageBase):
+    """
+    FIX 4.4 ContAmtGrp Component
+    """
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_by_name=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat(),
+            date: lambda v: v.isoformat(),
+            time: lambda v: v.isoformat()
+        }
+    )
+    
+    noContAmts: Optional[int] = Field(None, description='Number of NoContAmts entries', alias='518')
+    noContAmts_items: List[NoContAmts] = Field(default_factory=list)

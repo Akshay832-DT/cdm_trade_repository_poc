@@ -10,22 +10,6 @@ from src.models.fix.generated.fields.common import *
 from src.models.fix.base import FIXMessageBase
 
 
-class IOIQualGrp(FIXMessageBase):
-    """
-    FIX 4.4 IOIQualGrp Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    iOIQualifier: Optional[str] = Field(None, description='', alias='104')
-
-
 class NoIOIQualifiers(FIXMessageBase):
     """
     NoIOIQualifiers group fields
@@ -39,6 +23,23 @@ class NoIOIQualifiers(FIXMessageBase):
             time: lambda v: v.isoformat()
         }
     )
-    iOIQualifier: Optional[int] = Field(None, description='', alias='199')
+    
+    iOIQualifier: Optional[str] = Field(None, description='', alias='104')
 
-    noIOIQualifierss: List[NoIOIQualifiers] = Field(default_factory=list)
+
+class IOIQualGrp(FIXMessageBase):
+    """
+    FIX 4.4 IOIQualGrp Component
+    """
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_by_name=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat(),
+            date: lambda v: v.isoformat(),
+            time: lambda v: v.isoformat()
+        }
+    )
+    
+    noIOIQualifiers: Optional[int] = Field(None, description='Number of NoIOIQualifiers entries', alias='199')
+    noIOIQualifiers_items: List[NoIOIQualifiers] = Field(default_factory=list)

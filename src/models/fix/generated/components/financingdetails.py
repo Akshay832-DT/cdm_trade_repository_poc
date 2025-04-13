@@ -23,6 +23,7 @@ class FinancingDetails(FIXMessageBase):
             time: lambda v: v.isoformat()
         }
     )
+    
     agreementDesc: Optional[str] = Field(None, description='', alias='913')
     agreementID: Optional[str] = Field(None, description='', alias='914')
     agreementDate: Optional[date] = Field(None, description='', alias='915')

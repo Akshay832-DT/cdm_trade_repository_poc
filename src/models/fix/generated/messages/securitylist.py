@@ -1,52 +1,23 @@
-"""
-FIX 4.4 SecurityList Message
-
-This module contains the Pydantic model for the SecurityList message.
-"""
+from typing import Optional, List
 from datetime import datetime, date, time
-from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field
 from src.models.fix.base import FIXMessageBase
-from src.models.fix.generated.fields.common import *
 from src.models.fix.generated.components.seclistgrp import SecListGrp
 
-
 class SecurityList(FIXMessageBase):
-    """
-    FIX 4.4 SecurityList Message
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    # Set the message type for this message
-    msgType: Literal["y"] = Field("y", alias='35')
-    
-    # Message-specific fields
-    securityReqID: Optional[str] = Field(None, description='', alias='320')
-    securityResponseID: Optional[str] = Field(None, description='', alias='322')
-    securityRequestResult: Optional[int] = Field(None, description='', alias='560')
-    totNoRelatedSym: Optional[int] = Field(None, description='', alias='393')
-    lastFragment: Optional[bool] = Field(None, description='', alias='893')
-    secListGrp: Optional[SecListGrp] = Field(None, description='SecListGrp component')
+    """FIX message model."""
 
-    def model_dump(self, **kwargs) -> Dict[str, Any]:
-        """Override model_dump to handle nested components"""
-        kwargs.setdefault('by_alias', True)
-        data = super().model_dump(**kwargs)
-        
-        # Handle repeating components
-        for field_name, value in data.items():
-            if isinstance(value, list):
-                # Set the No* field based on list length
-                no_field = f"no{field_name}"  # Convert to camelCase
-                if hasattr(self, no_field):
-                    setattr(self, no_field, len(value))
-        
-        return data
+    beginstring: str = Field(..., description='', alias='8')
+    bodylength: int = Field(..., description='', alias='9')
+    msgtype: str = Field(..., description='', alias='35')
+    sendercompid: str = Field(..., description='', alias='49')
+    targetcompid: str = Field(..., description='', alias='56')
+    msgseqnum: int = Field(..., description='', alias='34')
+    sendingtime: datetime = Field(..., description='', alias='52')
+    securityreqid: str = Field(..., description='', alias='320')
+    securityresponseid: str = Field(..., description='', alias='322')
+    securityrequestresult: int = Field(..., description='', alias='560')
+    totnorelatedsym: Optional[int] = Field(None, description='', alias='393')
+    lastfragment: Optional[bool] = Field(None, description='', alias='893')
+    seclistgrp: Optional[SecListGrp] = Field(None, description='SecListGrp component')
+

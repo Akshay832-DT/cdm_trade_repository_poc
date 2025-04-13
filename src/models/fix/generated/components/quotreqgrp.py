@@ -8,11 +8,21 @@ from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
 from src.models.fix.generated.fields.common import *
 from src.models.fix.base import FIXMessageBase
+from src.models.fix.generated.components.instrument import Instrument
+from src.models.fix.generated.components.financingdetails import FinancingDetails
+from src.models.fix.generated.components.undinstrmtgrp import UndInstrmtGrp
+from src.models.fix.generated.components.orderqtydata import OrderQtyData
+from src.models.fix.generated.components.stipulations import Stipulations
+from src.models.fix.generated.components.quotreqlegsgrp import QuotReqLegsGrp
+from src.models.fix.generated.components.quotqualgrp import QuotQualGrp
+from src.models.fix.generated.components.spreadorbenchmarkcurvedata import SpreadOrBenchmarkCurveData
+from src.models.fix.generated.components.yielddata import YieldData
+from src.models.fix.generated.components.parties import Parties
 
 
-class QuotReqGrp(FIXMessageBase):
+class NoRelatedSym(FIXMessageBase):
     """
-    FIX 4.4 QuotReqGrp Component
+    NoRelatedSym group fields
     """
     model_config = ConfigDict(
         populate_by_name=True,
@@ -23,6 +33,7 @@ class QuotReqGrp(FIXMessageBase):
             time: lambda v: v.isoformat()
         }
     )
+    
     prevClosePx: Optional[float] = Field(None, description='', alias='140')
     quoteRequestType: Optional[int] = Field(None, description='', alias='303')
     quoteType: Optional[int] = Field(None, description='', alias='537')
@@ -47,21 +58,11 @@ class QuotReqGrp(FIXMessageBase):
     priceType: Optional[int] = Field(None, description='', alias='423')
     price: Optional[float] = Field(None, description='', alias='44')
     price2: Optional[float] = Field(None, description='', alias='640')
-    instrument: str = Field(None)
-    financingDetails: Optional[str] = Field(None)
-    undInstrmtGrp: Optional[str] = Field(None)
-    orderQtyData: Optional[str] = Field(None)
-    stipulations: Optional[str] = Field(None)
-    quotReqLegsGrp: Optional[str] = Field(None)
-    quotQualGrp: Optional[str] = Field(None)
-    spreadOrBenchmarkCurveData: Optional[str] = Field(None)
-    yieldData: Optional[str] = Field(None)
-    parties: Optional[str] = Field(None)
 
 
-class NoRelatedSym(FIXMessageBase):
+class QuotReqGrp(FIXMessageBase):
     """
-    NoRelatedSym group fields
+    FIX 4.4 QuotReqGrp Component
     """
     model_config = ConfigDict(
         populate_by_name=True,
@@ -72,29 +73,16 @@ class NoRelatedSym(FIXMessageBase):
             time: lambda v: v.isoformat()
         }
     )
-    prevClosePx: Optional[int] = Field(None, description='', alias='146')
-    quoteRequestType: Optional[int] = Field(None, description='', alias='146')
-    quoteType: Optional[int] = Field(None, description='', alias='146')
-    tradingSessionID: Optional[int] = Field(None, description='', alias='146')
-    tradingSessionSubID: Optional[int] = Field(None, description='', alias='146')
-    tradeOriginationDate: Optional[int] = Field(None, description='', alias='146')
-    side: Optional[int] = Field(None, description='', alias='146')
-    qtyType: Optional[int] = Field(None, description='', alias='146')
-    settlType: Optional[int] = Field(None, description='', alias='146')
-    settlDate: Optional[int] = Field(None, description='', alias='146')
-    settlDate2: Optional[int] = Field(None, description='', alias='146')
-    orderQty2: Optional[int] = Field(None, description='', alias='146')
-    currency: Optional[int] = Field(None, description='', alias='146')
-    account: Optional[int] = Field(None, description='', alias='146')
-    acctIDSource: Optional[int] = Field(None, description='', alias='146')
-    accountType: Optional[int] = Field(None, description='', alias='146')
-    quotePriceType: Optional[int] = Field(None, description='', alias='146')
-    ordType: Optional[int] = Field(None, description='', alias='146')
-    validUntilTime: Optional[int] = Field(None, description='', alias='146')
-    expireTime: Optional[int] = Field(None, description='', alias='146')
-    transactTime: Optional[int] = Field(None, description='', alias='146')
-    priceType: Optional[int] = Field(None, description='', alias='146')
-    price: Optional[int] = Field(None, description='', alias='146')
-    price2: Optional[int] = Field(None, description='', alias='146')
-
-    noRelatedSyms: List[NoRelatedSym] = Field(default_factory=list)
+    
+    instrument: Instrument = Field(..., description='Instrument component')
+    financingDetails: Optional[FinancingDetails] = Field(None, description='FinancingDetails component')
+    undInstrmtGrp: Optional[UndInstrmtGrp] = Field(None, description='UndInstrmtGrp component')
+    orderQtyData: Optional[OrderQtyData] = Field(None, description='OrderQtyData component')
+    stipulations: Optional[Stipulations] = Field(None, description='Stipulations component')
+    quotReqLegsGrp: Optional[QuotReqLegsGrp] = Field(None, description='QuotReqLegsGrp component')
+    quotQualGrp: Optional[QuotQualGrp] = Field(None, description='QuotQualGrp component')
+    spreadOrBenchmarkCurveData: Optional[SpreadOrBenchmarkCurveData] = Field(None, description='SpreadOrBenchmarkCurveData component')
+    yieldData: Optional[YieldData] = Field(None, description='YieldData component')
+    parties: Optional[Parties] = Field(None, description='Parties component')
+    noRelatedSym: Optional[int] = Field(None, description='Number of NoRelatedSym entries', alias='146')
+    noRelatedSym_items: List[NoRelatedSym] = Field(default_factory=list)

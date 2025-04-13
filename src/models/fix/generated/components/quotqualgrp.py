@@ -10,22 +10,6 @@ from src.models.fix.generated.fields.common import *
 from src.models.fix.base import FIXMessageBase
 
 
-class QuotQualGrp(FIXMessageBase):
-    """
-    FIX 4.4 QuotQualGrp Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    quoteQualifier: Optional[str] = Field(None, description='', alias='695')
-
-
 class NoQuoteQualifiers(FIXMessageBase):
     """
     NoQuoteQualifiers group fields
@@ -39,6 +23,23 @@ class NoQuoteQualifiers(FIXMessageBase):
             time: lambda v: v.isoformat()
         }
     )
-    quoteQualifier: Optional[int] = Field(None, description='', alias='735')
+    
+    quoteQualifier: Optional[str] = Field(None, description='', alias='695')
 
-    noQuoteQualifierss: List[NoQuoteQualifiers] = Field(default_factory=list)
+
+class QuotQualGrp(FIXMessageBase):
+    """
+    FIX 4.4 QuotQualGrp Component
+    """
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_by_name=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat(),
+            date: lambda v: v.isoformat(),
+            time: lambda v: v.isoformat()
+        }
+    )
+    
+    noQuoteQualifiers: Optional[int] = Field(None, description='Number of NoQuoteQualifiers entries', alias='735')
+    noQuoteQualifiers_items: List[NoQuoteQualifiers] = Field(default_factory=list)

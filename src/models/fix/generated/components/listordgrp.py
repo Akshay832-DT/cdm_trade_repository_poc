@@ -8,11 +8,23 @@ from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
 from src.models.fix.generated.fields.common import *
 from src.models.fix.base import FIXMessageBase
+from src.models.fix.generated.components.parties import Parties
+from src.models.fix.generated.components.preallocgrp import PreAllocGrp
+from src.models.fix.generated.components.trdgsesgrp import TrdgSesGrp
+from src.models.fix.generated.components.instrument import Instrument
+from src.models.fix.generated.components.undinstrmtgrp import UndInstrmtGrp
+from src.models.fix.generated.components.stipulations import Stipulations
+from src.models.fix.generated.components.orderqtydata import OrderQtyData
+from src.models.fix.generated.components.spreadorbenchmarkcurvedata import SpreadOrBenchmarkCurveData
+from src.models.fix.generated.components.yielddata import YieldData
+from src.models.fix.generated.components.commissiondata import CommissionData
+from src.models.fix.generated.components.peginstructions import PegInstructions
+from src.models.fix.generated.components.discretioninstructions import DiscretionInstructions
 
 
-class ListOrdGrp(FIXMessageBase):
+class NoOrders(FIXMessageBase):
     """
-    FIX 4.4 ListOrdGrp Component
+    NoOrders group fields
     """
     model_config = ConfigDict(
         populate_by_name=True,
@@ -23,9 +35,10 @@ class ListOrdGrp(FIXMessageBase):
             time: lambda v: v.isoformat()
         }
     )
-    clOrdID: str = Field(None, description='', alias='11')
+    
+    clOrdID: str = Field(..., description='', alias='11')
     secondaryClOrdID: Optional[str] = Field(None, description='', alias='526')
-    listSeqNo: int = Field(None, description='', alias='67')
+    listSeqNo: int = Field(..., description='', alias='67')
     clOrdLinkID: Optional[str] = Field(None, description='', alias='583')
     settlInstMode: Optional[str] = Field(None, description='', alias='160')
     tradeOriginationDate: Optional[date] = Field(None, description='', alias='229')
@@ -48,7 +61,7 @@ class ListOrdGrp(FIXMessageBase):
     exDestination: Optional[str] = Field(None, description='', alias='100')
     processCode: Optional[str] = Field(None, description='', alias='81')
     prevClosePx: Optional[float] = Field(None, description='', alias='140')
-    side: str = Field(None, description='', alias='54')
+    side: str = Field(..., description='', alias='54')
     sideValueInd: Optional[int] = Field(None, description='', alias='401')
     locateReqd: Optional[bool] = Field(None, description='', alias='114')
     transactTime: Optional[datetime] = Field(None, description='', alias='60')
@@ -86,23 +99,11 @@ class ListOrdGrp(FIXMessageBase):
     targetStrategyParameters: Optional[str] = Field(None, description='', alias='848')
     participationRate: Optional[float] = Field(None, description='', alias='849')
     designation: Optional[str] = Field(None, description='', alias='494')
-    parties: Optional[str] = Field(None)
-    preAllocGrp: Optional[str] = Field(None)
-    trdgSesGrp: Optional[str] = Field(None)
-    instrument: str = Field(None)
-    undInstrmtGrp: Optional[str] = Field(None)
-    stipulations: Optional[str] = Field(None)
-    orderQtyData: str = Field(None)
-    spreadOrBenchmarkCurveData: Optional[str] = Field(None)
-    yieldData: Optional[str] = Field(None)
-    commissionData: Optional[str] = Field(None)
-    pegInstructions: Optional[str] = Field(None)
-    discretionInstructions: Optional[str] = Field(None)
 
 
-class NoOrders(FIXMessageBase):
+class ListOrdGrp(FIXMessageBase):
     """
-    NoOrders group fields
+    FIX 4.4 ListOrdGrp Component
     """
     model_config = ConfigDict(
         populate_by_name=True,
@@ -113,68 +114,18 @@ class NoOrders(FIXMessageBase):
             time: lambda v: v.isoformat()
         }
     )
-    clOrdID: int = Field(None, description='', alias='73')
-    secondaryClOrdID: Optional[int] = Field(None, description='', alias='73')
-    listSeqNo: int = Field(None, description='', alias='73')
-    clOrdLinkID: Optional[int] = Field(None, description='', alias='73')
-    settlInstMode: Optional[int] = Field(None, description='', alias='73')
-    tradeOriginationDate: Optional[int] = Field(None, description='', alias='73')
-    tradeDate: Optional[int] = Field(None, description='', alias='73')
-    account: Optional[int] = Field(None, description='', alias='73')
-    acctIDSource: Optional[int] = Field(None, description='', alias='73')
-    accountType: Optional[int] = Field(None, description='', alias='73')
-    dayBookingInst: Optional[int] = Field(None, description='', alias='73')
-    bookingUnit: Optional[int] = Field(None, description='', alias='73')
-    allocID: Optional[int] = Field(None, description='', alias='73')
-    preallocMethod: Optional[int] = Field(None, description='', alias='73')
-    settlType: Optional[int] = Field(None, description='', alias='73')
-    settlDate: Optional[int] = Field(None, description='', alias='73')
-    cashMargin: Optional[int] = Field(None, description='', alias='73')
-    clearingFeeIndicator: Optional[int] = Field(None, description='', alias='73')
-    handlInst: Optional[int] = Field(None, description='', alias='73')
-    execInst: Optional[int] = Field(None, description='', alias='73')
-    minQty: Optional[int] = Field(None, description='', alias='73')
-    maxFloor: Optional[int] = Field(None, description='', alias='73')
-    exDestination: Optional[int] = Field(None, description='', alias='73')
-    processCode: Optional[int] = Field(None, description='', alias='73')
-    prevClosePx: Optional[int] = Field(None, description='', alias='73')
-    side: int = Field(None, description='', alias='73')
-    sideValueInd: Optional[int] = Field(None, description='', alias='73')
-    locateReqd: Optional[int] = Field(None, description='', alias='73')
-    transactTime: Optional[int] = Field(None, description='', alias='73')
-    qtyType: Optional[int] = Field(None, description='', alias='73')
-    ordType: Optional[int] = Field(None, description='', alias='73')
-    priceType: Optional[int] = Field(None, description='', alias='73')
-    price: Optional[int] = Field(None, description='', alias='73')
-    stopPx: Optional[int] = Field(None, description='', alias='73')
-    currency: Optional[int] = Field(None, description='', alias='73')
-    complianceID: Optional[int] = Field(None, description='', alias='73')
-    solicitedFlag: Optional[int] = Field(None, description='', alias='73')
-    iOIID: Optional[int] = Field(None, description='', alias='73')
-    quoteID: Optional[int] = Field(None, description='', alias='73')
-    timeInForce: Optional[int] = Field(None, description='', alias='73')
-    effectiveTime: Optional[int] = Field(None, description='', alias='73')
-    expireDate: Optional[int] = Field(None, description='', alias='73')
-    expireTime: Optional[int] = Field(None, description='', alias='73')
-    gTBookingInst: Optional[int] = Field(None, description='', alias='73')
-    orderCapacity: Optional[int] = Field(None, description='', alias='73')
-    orderRestrictions: Optional[int] = Field(None, description='', alias='73')
-    custOrderCapacity: Optional[int] = Field(None, description='', alias='73')
-    forexReq: Optional[int] = Field(None, description='', alias='73')
-    settlCurrency: Optional[int] = Field(None, description='', alias='73')
-    bookingType: Optional[int] = Field(None, description='', alias='73')
-    text: Optional[int] = Field(None, description='', alias='73')
-    encodedTextLen: Optional[int] = Field(None, description='', alias='73')
-    encodedText: Optional[int] = Field(None, description='', alias='73')
-    settlDate2: Optional[int] = Field(None, description='', alias='73')
-    orderQty2: Optional[int] = Field(None, description='', alias='73')
-    price2: Optional[int] = Field(None, description='', alias='73')
-    positionEffect: Optional[int] = Field(None, description='', alias='73')
-    coveredOrUncovered: Optional[int] = Field(None, description='', alias='73')
-    maxShow: Optional[int] = Field(None, description='', alias='73')
-    targetStrategy: Optional[int] = Field(None, description='', alias='73')
-    targetStrategyParameters: Optional[int] = Field(None, description='', alias='73')
-    participationRate: Optional[int] = Field(None, description='', alias='73')
-    designation: Optional[int] = Field(None, description='', alias='73')
-
-    noOrderss: List[NoOrders] = Field(default_factory=list)
+    
+    parties: Optional[Parties] = Field(None, description='Parties component')
+    preAllocGrp: Optional[PreAllocGrp] = Field(None, description='PreAllocGrp component')
+    trdgSesGrp: Optional[TrdgSesGrp] = Field(None, description='TrdgSesGrp component')
+    instrument: Instrument = Field(..., description='Instrument component')
+    undInstrmtGrp: Optional[UndInstrmtGrp] = Field(None, description='UndInstrmtGrp component')
+    stipulations: Optional[Stipulations] = Field(None, description='Stipulations component')
+    orderQtyData: OrderQtyData = Field(..., description='OrderQtyData component')
+    spreadOrBenchmarkCurveData: Optional[SpreadOrBenchmarkCurveData] = Field(None, description='SpreadOrBenchmarkCurveData component')
+    yieldData: Optional[YieldData] = Field(None, description='YieldData component')
+    commissionData: Optional[CommissionData] = Field(None, description='CommissionData component')
+    pegInstructions: Optional[PegInstructions] = Field(None, description='PegInstructions component')
+    discretionInstructions: Optional[DiscretionInstructions] = Field(None, description='DiscretionInstructions component')
+    noOrders: Optional[int] = Field(None, description='Number of NoOrders entries', alias='73')
+    noOrders_items: List[NoOrders] = Field(default_factory=list)
