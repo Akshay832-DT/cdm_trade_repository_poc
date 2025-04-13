@@ -7,10 +7,8 @@ from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
 
-
-class OrderQtyData(FIXMessageBase):
+class OrderQtyData(BaseModel):
     """
     FIX 4.4 OrderQtyData Component
     """

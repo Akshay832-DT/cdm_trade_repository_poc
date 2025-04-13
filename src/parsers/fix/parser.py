@@ -12,6 +12,9 @@ from src.models.fix.base import FIXMessageBase
 from src.models.fix.generated.components.commissiondata import CommissionData
 from src.models.fix.generated.components.bidcomprspgrp import BidCompRspGrp, NoBidComponents
 from src.models.fix.generated.messages.bidresponse import BidResponse
+from src.models.fix.generated.components.instrument import Instrument
+from src.models.fix.generated.components.orderqtydata import OrderQtyData
+from src.models.fix.generated.messages.newordersingle import NewOrderSingle
 
 class FIXParser(BaseParser):
     def __init__(self):
@@ -117,32 +120,66 @@ class FIXParser(BaseParser):
     def _parse_fields(self, fix_msg: simplefix.FixMessage) -> Dict[str, Any]:
         """Parse FIX message fields into a dictionary."""
         parsed_data = {}
+        
+        # Map of common FIX tags to field names
+        tag_to_field = {
+            b'8': '8',
+            b'9': '9',
+            b'35': '35',
+            b'49': '49',
+            b'56': '56',
+            b'34': '34',
+            b'52': '52',
+            b'10': '10',
+            b'55': '55',
+            b'48': '48',
+            b'22': '22',
+            b'207': '207',
+            b'107': '107',
+            b'38': '38',
+            b'44': '44',
+            b'54': '54',
+            b'40': '40',
+            b'11': '11',
+            b'60': '60',
+            b'21': '21',
+            b'100': '100',
+            b'15': '15',
+            b'59': '59'
+        }
 
         # First pass: convert field types
         for tag, value in fix_msg.pairs:
             if value is None:
                 continue
 
-            # Convert tag to string and value to string
-            tag_str = tag.decode()
+            # Map tag to field name if known
+            field_name = tag_to_field.get(tag, tag.decode())
             value_str = value.decode()
-
+            
             # Handle field type conversions
-            if tag_str == '52':  # SendingTime
+            if tag in [b'52', b'60']:  # SendingTime and TransactTime
                 try:
-                    parsed_data[tag_str] = datetime.strptime(value_str, '%Y%m%d-%H:%M:%S')
+                    parsed_data[field_name] = datetime.strptime(value_str, '%Y%m%d-%H:%M:%S')
                 except ValueError:
-                    parsed_data[tag_str] = value_str
-            elif tag_str in ['9', '34']:  # Numeric fields
+                    parsed_data[field_name] = value_str
+            elif tag in [b'9', b'34', b'38', b'152', b'423', b'854']:  # Numeric fields
                 try:
-                    parsed_data[tag_str] = int(value_str)
+                    parsed_data[field_name] = int(value_str)
                 except ValueError:
-                    parsed_data[tag_str] = value_str
+                    parsed_data[field_name] = value_str
+            elif tag in [b'44', b'998']:  # Float fields
+                try:
+                    parsed_data[field_name] = float(value_str)
+                except ValueError:
+                    parsed_data[field_name] = value_str
             else:
-                parsed_data[tag_str] = value_str
+                parsed_data[field_name] = value_str
 
-        # Second pass: handle BidResponse specific fields
-        if parsed_data.get('35') == 'l':
+        # Second pass: handle message-specific components
+        msg_type = parsed_data.get('35')  # Using numeric tag for msgtype
+        
+        if msg_type == 'l':  # BidResponse
             try:
                 # Create CommissionData instance
                 commission_data = CommissionData(
@@ -182,5 +219,35 @@ class FIXParser(BaseParser):
             except Exception as e:
                 self.logger.error(f"Error creating BidResponse components: {str(e)}")
                 raise
+                
+        elif msg_type == 'D':  # NewOrderSingle
+            try:
+                # Create Instrument instance
+                instrument = Instrument(
+                    symbol=parsed_data.get('55', ''),
+                    securityID=parsed_data.get('48', ''),
+                    securityIDSource=parsed_data.get('22', ''),
+                    securityExchange=parsed_data.get('207', ''),
+                    securityDesc=parsed_data.get('107', ''),
+                    securityType=parsed_data.get('167', ''),
+                    maturityMonthYear=parsed_data.get('200', ''),
+                    maturityDate=datetime.strptime(parsed_data.get('541', '19700101'), '%Y%m%d').date() if parsed_data.get('541') else None,
+                    strikeCurrency=parsed_data.get('947', ''),
+                    product=int(parsed_data.get('460', 0))
+                )
+                
+                # Create OrderQtyData instance
+                order_qty_data = OrderQtyData(
+                    orderQty=float(parsed_data.get('38', 0.0)),
+                    cashOrderQty=float(parsed_data.get('152', 0.0))
+                )
+                
+                # Add components to parsed data
+                parsed_data['instrument'] = instrument
+                parsed_data['orderqtydata'] = order_qty_data
+                
+            except Exception as e:
+                self.logger.error(f"Error creating NewOrderSingle components: {str(e)}")
+                raise
 
-        return parsed_data 
+        return parsed_data

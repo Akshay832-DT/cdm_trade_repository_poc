@@ -7,12 +7,11 @@ from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
 from src.models.fix.generated.components.secaltidgrp import SecAltIDGrp
 from src.models.fix.generated.components.evntgrp import EvntGrp
 
 
-class Instrument(FIXMessageBase):
+class Instrument(BaseModel):
     """
     FIX 4.4 Instrument Component
     """
