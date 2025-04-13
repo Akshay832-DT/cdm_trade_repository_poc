@@ -5,13 +5,10 @@ This module contains the Pydantic model for the SettlInstructionsData component.
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-from src.models.fix.generated.components.dlvyinstgrp import DlvyInstGrp
-
-
-class SettlInstructionsData(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class SettlInstructionsDataComponent(FIXComponentBase):
     """
     FIX 4.4 SettlInstructionsData Component
     """
@@ -25,8 +22,8 @@ class SettlInstructionsData(FIXMessageBase):
         }
     )
     
-    settlDeliveryType: Optional[int] = Field(None, description='', alias='172')
-    standInstDbType: Optional[int] = Field(None, description='', alias='169')
-    standInstDbName: Optional[str] = Field(None, description='', alias='170')
-    standInstDbID: Optional[str] = Field(None, description='', alias='171')
-    dlvyInstGrp: Optional[DlvyInstGrp] = Field(None, description='DlvyInstGrp component')
+    SettlDeliveryType: Optional[int] = Field(None, description='', alias='172')
+    StandInstDbType: Optional[int] = Field(None, description='', alias='169')
+    StandInstDbName: Optional[str] = Field(None, description='', alias='170')
+    StandInstDbID: Optional[str] = Field(None, description='', alias='171')
+    DlvyInstGrp: Optional[DlvyInstGrpComponent] = Field(None, description='DlvyInstGrp component')

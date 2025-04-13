@@ -5,12 +5,10 @@ This module contains the Pydantic model for the SecAltIDGrp component.
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-
-
-class NoSecurityAltID(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class NoSecurityAltIDGroup(FIXComponentBase):
     """
     NoSecurityAltID group fields
     """
@@ -24,11 +22,11 @@ class NoSecurityAltID(FIXMessageBase):
         }
     )
     
-    securityAltID: Optional[str] = Field(None, description='', alias='455')
-    securityAltIDSource: Optional[str] = Field(None, description='', alias='456')
+    SecurityAltID: Optional[str] = Field(None, description='', alias='455')
+    SecurityAltIDSource: Optional[str] = Field(None, description='', alias='456')
 
 
-class SecAltIDGrp(FIXMessageBase):
+class SecAltIDGrpComponent(FIXComponentBase):
     """
     FIX 4.4 SecAltIDGrp Component
     """
@@ -42,5 +40,5 @@ class SecAltIDGrp(FIXMessageBase):
         }
     )
     
-    noSecurityAltID: Optional[int] = Field(None, description='Number of NoSecurityAltID entries', alias='454')
-    noSecurityAltID_items: List[NoSecurityAltID] = Field(default_factory=list)
+    NoSecurityAltID: Optional[int] = Field(None, description='Number of NoSecurityAltID entries', alias='')
+    NoSecurityAltID_items: List[NoSecurityAltIDGroup] = Field(default_factory=list)

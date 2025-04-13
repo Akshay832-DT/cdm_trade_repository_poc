@@ -5,13 +5,10 @@ This module contains the Pydantic model for the NestedParties2 component.
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-from src.models.fix.generated.components.nstdptys2subgrp import NstdPtys2SubGrp
-
-
-class NoNested2PartyIDs(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class NoNested2PartyIDsGroup(FIXComponentBase):
     """
     NoNested2PartyIDs group fields
     """
@@ -25,13 +22,12 @@ class NoNested2PartyIDs(FIXMessageBase):
         }
     )
     
-    nested2PartyID: Optional[str] = Field(None, description='', alias='757')
-    nested2PartyIDSource: Optional[str] = Field(None, description='', alias='758')
-    nested2PartyRole: Optional[int] = Field(None, description='', alias='759')
-    nstdPtys2SubGrp: Optional[NstdPtys2SubGrp] = Field(None, description='NstdPtys2SubGrp component')
+    Nested2PartyID: Optional[str] = Field(None, description='', alias='757')
+    Nested2PartyIDSource: Optional[str] = Field(None, description='', alias='758')
+    Nested2PartyRole: Optional[int] = Field(None, description='', alias='759')
 
 
-class NestedParties2(FIXMessageBase):
+class NestedParties2Component(FIXComponentBase):
     """
     FIX 4.4 NestedParties2 Component
     """
@@ -45,5 +41,6 @@ class NestedParties2(FIXMessageBase):
         }
     )
     
-    noNested2PartyIDs: Optional[int] = Field(None, description='Number of NoNested2PartyIDs entries', alias='756')
-    noNested2PartyIDs_items: List[NoNested2PartyIDs] = Field(default_factory=list)
+    NstdPtys2SubGrp: Optional[NstdPtys2SubGrpComponent] = Field(None, description='NstdPtys2SubGrp component')
+    NoNested2PartyIDs: Optional[int] = Field(None, description='Number of NoNested2PartyIDs entries', alias='')
+    NoNested2PartyIDs_items: List[NoNested2PartyIDsGroup] = Field(default_factory=list)

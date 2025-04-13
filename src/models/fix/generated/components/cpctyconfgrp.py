@@ -5,12 +5,10 @@ This module contains the Pydantic model for the CpctyConfGrp component.
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-
-
-class NoCapacities(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class NoCapacitiesGroup(FIXComponentBase):
     """
     NoCapacities group fields
     """
@@ -24,12 +22,12 @@ class NoCapacities(FIXMessageBase):
         }
     )
     
-    orderCapacity: str = Field(..., description='', alias='528')
-    orderRestrictions: Optional[List[str]] = Field(None, description='', alias='529')
-    orderCapacityQty: float = Field(..., description='', alias='863')
+    OrderCapacity: str = Field(..., description='', alias='528')
+    OrderRestrictions: Optional[List[str]] = Field(None, description='', alias='529')
+    OrderCapacityQty: float = Field(..., description='', alias='863')
 
 
-class CpctyConfGrp(FIXMessageBase):
+class CpctyConfGrpComponent(FIXComponentBase):
     """
     FIX 4.4 CpctyConfGrp Component
     """
@@ -43,5 +41,5 @@ class CpctyConfGrp(FIXMessageBase):
         }
     )
     
-    noCapacities: Optional[int] = Field(None, description='Number of NoCapacities entries', alias='862')
-    noCapacities_items: List[NoCapacities] = Field(default_factory=list)
+    NoCapacities: Optional[int] = Field(None, description='Number of NoCapacities entries', alias='')
+    NoCapacities_items: List[NoCapacitiesGroup] = Field(default_factory=list)

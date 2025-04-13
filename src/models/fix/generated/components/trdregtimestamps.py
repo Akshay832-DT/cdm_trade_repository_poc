@@ -5,12 +5,10 @@ This module contains the Pydantic model for the TrdRegTimestamps component.
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-
-
-class NoTrdRegTimestamps(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class NoTrdRegTimestampsGroup(FIXComponentBase):
     """
     NoTrdRegTimestamps group fields
     """
@@ -24,12 +22,12 @@ class NoTrdRegTimestamps(FIXMessageBase):
         }
     )
     
-    trdRegTimestamp: Optional[datetime] = Field(None, description='', alias='769')
-    trdRegTimestampType: Optional[int] = Field(None, description='', alias='770')
-    trdRegTimestampOrigin: Optional[str] = Field(None, description='', alias='771')
+    TrdRegTimestamp: Optional[datetime] = Field(None, description='', alias='769')
+    TrdRegTimestampType: Optional[int] = Field(None, description='', alias='770')
+    TrdRegTimestampOrigin: Optional[str] = Field(None, description='', alias='771')
 
 
-class TrdRegTimestamps(FIXMessageBase):
+class TrdRegTimestampsComponent(FIXComponentBase):
     """
     FIX 4.4 TrdRegTimestamps Component
     """
@@ -43,5 +41,5 @@ class TrdRegTimestamps(FIXMessageBase):
         }
     )
     
-    noTrdRegTimestamps: Optional[int] = Field(None, description='Number of NoTrdRegTimestamps entries', alias='768')
-    noTrdRegTimestamps_items: List[NoTrdRegTimestamps] = Field(default_factory=list)
+    NoTrdRegTimestamps: Optional[int] = Field(None, description='Number of NoTrdRegTimestamps entries', alias='')
+    NoTrdRegTimestamps_items: List[NoTrdRegTimestampsGroup] = Field(default_factory=list)

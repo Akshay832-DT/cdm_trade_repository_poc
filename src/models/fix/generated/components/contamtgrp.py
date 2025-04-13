@@ -5,12 +5,10 @@ This module contains the Pydantic model for the ContAmtGrp component.
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-
-
-class NoContAmts(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class NoContAmtsGroup(FIXComponentBase):
     """
     NoContAmts group fields
     """
@@ -24,12 +22,12 @@ class NoContAmts(FIXMessageBase):
         }
     )
     
-    contAmtType: Optional[int] = Field(None, description='', alias='519')
-    contAmtValue: Optional[float] = Field(None, description='', alias='520')
-    contAmtCurr: Optional[str] = Field(None, description='', alias='521')
+    ContAmtType: Optional[int] = Field(None, description='', alias='519')
+    ContAmtValue: Optional[float] = Field(None, description='', alias='520')
+    ContAmtCurr: Optional[str] = Field(None, description='', alias='521')
 
 
-class ContAmtGrp(FIXMessageBase):
+class ContAmtGrpComponent(FIXComponentBase):
     """
     FIX 4.4 ContAmtGrp Component
     """
@@ -43,5 +41,5 @@ class ContAmtGrp(FIXMessageBase):
         }
     )
     
-    noContAmts: Optional[int] = Field(None, description='Number of NoContAmts entries', alias='518')
-    noContAmts_items: List[NoContAmts] = Field(default_factory=list)
+    NoContAmts: Optional[int] = Field(None, description='Number of NoContAmts entries', alias='')
+    NoContAmts_items: List[NoContAmtsGroup] = Field(default_factory=list)

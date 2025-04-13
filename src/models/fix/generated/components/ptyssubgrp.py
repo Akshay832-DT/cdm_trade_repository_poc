@@ -5,12 +5,10 @@ This module contains the Pydantic model for the PtysSubGrp component.
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-
-
-class NoPartySubIDs(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class NoPartySubIDsGroup(FIXComponentBase):
     """
     NoPartySubIDs group fields
     """
@@ -24,11 +22,11 @@ class NoPartySubIDs(FIXMessageBase):
         }
     )
     
-    partySubID: Optional[str] = Field(None, description='', alias='523')
-    partySubIDType: Optional[int] = Field(None, description='', alias='803')
+    PartySubID: Optional[str] = Field(None, description='', alias='523')
+    PartySubIDType: Optional[int] = Field(None, description='', alias='803')
 
 
-class PtysSubGrp(FIXMessageBase):
+class PtysSubGrpComponent(FIXComponentBase):
     """
     FIX 4.4 PtysSubGrp Component
     """
@@ -42,5 +40,5 @@ class PtysSubGrp(FIXMessageBase):
         }
     )
     
-    noPartySubIDs: Optional[int] = Field(None, description='Number of NoPartySubIDs entries', alias='802')
-    noPartySubIDs_items: List[NoPartySubIDs] = Field(default_factory=list)
+    NoPartySubIDs: Optional[int] = Field(None, description='Number of NoPartySubIDs entries', alias='')
+    NoPartySubIDs_items: List[NoPartySubIDsGroup] = Field(default_factory=list)

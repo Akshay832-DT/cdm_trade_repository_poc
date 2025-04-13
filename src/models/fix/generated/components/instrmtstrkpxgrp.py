@@ -5,13 +5,10 @@ This module contains the Pydantic model for the InstrmtStrkPxGrp component.
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-from src.models.fix.generated.components.instrument import Instrument
-
-
-class NoStrikes(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class NoStrikesGroup(FIXComponentBase):
     """
     NoStrikes group fields
     """
@@ -27,7 +24,7 @@ class NoStrikes(FIXMessageBase):
     
 
 
-class InstrmtStrkPxGrp(FIXMessageBase):
+class InstrmtStrkPxGrpComponent(FIXComponentBase):
     """
     FIX 4.4 InstrmtStrkPxGrp Component
     """
@@ -41,6 +38,6 @@ class InstrmtStrkPxGrp(FIXMessageBase):
         }
     )
     
-    instrument: Instrument = Field(..., description='Instrument component')
-    noStrikes: Optional[int] = Field(None, description='Number of NoStrikes entries', alias='428')
-    noStrikes_items: List[NoStrikes] = Field(default_factory=list)
+    Instrument: InstrumentComponent = Field(..., description='Instrument component')
+    NoStrikes: Optional[int] = Field(None, description='Number of NoStrikes entries', alias='')
+    NoStrikes_items: List[NoStrikesGroup] = Field(default_factory=list)

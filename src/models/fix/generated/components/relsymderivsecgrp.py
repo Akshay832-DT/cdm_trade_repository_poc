@@ -5,15 +5,10 @@ This module contains the Pydantic model for the RelSymDerivSecGrp component.
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-from src.models.fix.generated.components.instrument import Instrument
-from src.models.fix.generated.components.instrumentextension import InstrumentExtension
-from src.models.fix.generated.components.instrmtleggrp import InstrmtLegGrp
-
-
-class NoRelatedSym(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class NoRelatedSymGroup(FIXComponentBase):
     """
     NoRelatedSym group fields
     """
@@ -27,16 +22,16 @@ class NoRelatedSym(FIXMessageBase):
         }
     )
     
-    currency: Optional[str] = Field(None, description='', alias='15')
-    expirationCycle: Optional[int] = Field(None, description='', alias='827')
-    tradingSessionID: Optional[str] = Field(None, description='', alias='336')
-    tradingSessionSubID: Optional[str] = Field(None, description='', alias='625')
-    text: Optional[str] = Field(None, description='', alias='58')
-    encodedTextLen: Optional[int] = Field(None, description='', alias='354')
-    encodedText: Optional[str] = Field(None, description='', alias='355')
+    Currency: Optional[str] = Field(None, description='', alias='15')
+    ExpirationCycle: Optional[int] = Field(None, description='', alias='827')
+    TradingSessionID: Optional[str] = Field(None, description='', alias='336')
+    TradingSessionSubID: Optional[str] = Field(None, description='', alias='625')
+    Text: Optional[str] = Field(None, description='', alias='58')
+    EncodedTextLen: Optional[int] = Field(None, description='', alias='354')
+    EncodedText: Optional[str] = Field(None, description='', alias='355')
 
 
-class RelSymDerivSecGrp(FIXMessageBase):
+class RelSymDerivSecGrpComponent(FIXComponentBase):
     """
     FIX 4.4 RelSymDerivSecGrp Component
     """
@@ -50,8 +45,8 @@ class RelSymDerivSecGrp(FIXMessageBase):
         }
     )
     
-    instrument: Optional[Instrument] = Field(None, description='Instrument component')
-    instrumentExtension: Optional[InstrumentExtension] = Field(None, description='InstrumentExtension component')
-    instrmtLegGrp: Optional[InstrmtLegGrp] = Field(None, description='InstrmtLegGrp component')
-    noRelatedSym: Optional[int] = Field(None, description='Number of NoRelatedSym entries', alias='146')
-    noRelatedSym_items: List[NoRelatedSym] = Field(default_factory=list)
+    Instrument: Optional[InstrumentComponent] = Field(None, description='Instrument component')
+    InstrumentExtension: Optional[InstrumentExtensionComponent] = Field(None, description='InstrumentExtension component')
+    InstrmtLegGrp: Optional[InstrmtLegGrpComponent] = Field(None, description='InstrmtLegGrp component')
+    NoRelatedSym: Optional[int] = Field(None, description='Number of NoRelatedSym entries', alias='')
+    NoRelatedSym_items: List[NoRelatedSymGroup] = Field(default_factory=list)

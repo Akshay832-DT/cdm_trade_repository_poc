@@ -5,12 +5,10 @@ This module contains the Pydantic model for the RoutingGrp component.
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-
-
-class NoRoutingIDs(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class NoRoutingIDsGroup(FIXComponentBase):
     """
     NoRoutingIDs group fields
     """
@@ -24,11 +22,11 @@ class NoRoutingIDs(FIXMessageBase):
         }
     )
     
-    routingType: Optional[int] = Field(None, description='', alias='216')
-    routingID: Optional[str] = Field(None, description='', alias='217')
+    RoutingType: Optional[int] = Field(None, description='', alias='216')
+    RoutingID: Optional[str] = Field(None, description='', alias='217')
 
 
-class RoutingGrp(FIXMessageBase):
+class RoutingGrpComponent(FIXComponentBase):
     """
     FIX 4.4 RoutingGrp Component
     """
@@ -42,5 +40,5 @@ class RoutingGrp(FIXMessageBase):
         }
     )
     
-    noRoutingIDs: Optional[int] = Field(None, description='Number of NoRoutingIDs entries', alias='215')
-    noRoutingIDs_items: List[NoRoutingIDs] = Field(default_factory=list)
+    NoRoutingIDs: Optional[int] = Field(None, description='Number of NoRoutingIDs entries', alias='')
+    NoRoutingIDs_items: List[NoRoutingIDsGroup] = Field(default_factory=list)

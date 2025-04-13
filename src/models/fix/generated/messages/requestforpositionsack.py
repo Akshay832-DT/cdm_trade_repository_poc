@@ -2,38 +2,38 @@ from typing import Optional, List
 from datetime import datetime, date, time
 from pydantic import Field
 from src.models.fix.base import FIXMessageBase
-from src.models.fix.generated.components.parties import Parties
-from src.models.fix.generated.components.instrument import Instrument
-from src.models.fix.generated.components.instrmtleggrp import InstrmtLegGrp
-from src.models.fix.generated.components.undinstrmtgrp import UndInstrmtGrp
+from src.models.fix.generated.components.parties import PartiesComponent
+from src.models.fix.generated.components.instrument import InstrumentComponent
+from src.models.fix.generated.components.instrmtleggrp import InstrmtLegGrpComponent
+from src.models.fix.generated.components.undinstrmtgrp import UndInstrmtGrpComponent
 
 class RequestForPositionsAck(FIXMessageBase):
     """FIX message model."""
 
-    beginstring: str = Field(..., description='', alias='8')
-    bodylength: int = Field(..., description='', alias='9')
-    msgtype: str = Field(..., description='', alias='35')
-    sendercompid: str = Field(..., description='', alias='49')
-    targetcompid: str = Field(..., description='', alias='56')
-    msgseqnum: int = Field(..., description='', alias='34')
-    sendingtime: datetime = Field(..., description='', alias='52')
-    posmaintrptid: str = Field(..., description='', alias='721')
-    posreqid: Optional[str] = Field(None, description='', alias='710')
-    totalnumposreports: Optional[int] = Field(None, description='', alias='727')
-    unsolicitedindicator: Optional[bool] = Field(None, description='', alias='325')
-    posreqresult: int = Field(..., description='', alias='728')
-    posreqstatus: int = Field(..., description='', alias='729')
-    account: str = Field(..., description='', alias='1')
-    acctidsource: Optional[int] = Field(None, description='', alias='660')
-    accounttype: int = Field(..., description='', alias='581')
-    currency: Optional[str] = Field(None, description='', alias='15')
-    responsetransporttype: Optional[int] = Field(None, description='', alias='725')
-    responsedestination: Optional[str] = Field(None, description='', alias='726')
-    text: Optional[str] = Field(None, description='', alias='58')
-    encodedtextlen: Optional[int] = Field(None, description='', alias='354')
-    encodedtext: Optional[str] = Field(None, description='', alias='355')
-    parties: Parties = Field(..., description='Parties component')
-    instrument: Optional[Instrument] = Field(None, description='Instrument component')
-    instrmtleggrp: Optional[InstrmtLegGrp] = Field(None, description='InstrmtLegGrp component')
-    undinstrmtgrp: Optional[UndInstrmtGrp] = Field(None, description='UndInstrmtGrp component')
+    BeginString: str = Field(..., description='', alias='8')
+    BodyLength: int = Field(..., description='', alias='9')
+    MsgType: str = Field(..., description='', alias='35')
+    SenderCompID: str = Field(..., description='', alias='49')
+    TargetCompID: str = Field(..., description='', alias='56')
+    MsgSeqNum: int = Field(..., description='', alias='34')
+    SendingTime: datetime = Field(..., description='', alias='52')
+    PosMaintRptID: str = Field(..., description='', alias='721')
+    PosReqID: Optional[str] = Field(None, description='', alias='710')
+    TotalNumPosReports: Optional[int] = Field(None, description='', alias='727')
+    UnsolicitedIndicator: Optional[bool] = Field(None, description='', alias='325')
+    PosReqResult: int = Field(..., description='', alias='728')
+    PosReqStatus: int = Field(..., description='', alias='729')
+    Account: str = Field(..., description='', alias='1')
+    AcctIDSource: Optional[int] = Field(None, description='', alias='660')
+    AccountType: int = Field(..., description='', alias='581')
+    Currency: Optional[str] = Field(None, description='', alias='15')
+    ResponseTransportType: Optional[int] = Field(None, description='', alias='725')
+    ResponseDestination: Optional[str] = Field(None, description='', alias='726')
+    Text: Optional[str] = Field(None, description='', alias='58')
+    EncodedTextLen: Optional[int] = Field(None, description='', alias='354')
+    EncodedText: Optional[str] = Field(None, description='', alias='355')
+    Parties: PartiesComponent = Field(..., description='Parties component')
+    Instrument: Optional[InstrumentComponent] = Field(None, description='Instrument component')
+    InstrmtLegGrp: Optional[InstrmtLegGrpComponent] = Field(None, description='InstrmtLegGrp component')
+    UndInstrmtGrp: Optional[UndInstrmtGrpComponent] = Field(None, description='UndInstrmtGrp component')
 

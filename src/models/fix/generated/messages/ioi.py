@@ -2,52 +2,52 @@ from typing import Optional, List
 from datetime import datetime, date, time
 from pydantic import Field
 from src.models.fix.base import FIXMessageBase
-from src.models.fix.generated.components.instrument import Instrument
-from src.models.fix.generated.components.financingdetails import FinancingDetails
-from src.models.fix.generated.components.undinstrmtgrp import UndInstrmtGrp
-from src.models.fix.generated.components.orderqtydata import OrderQtyData
-from src.models.fix.generated.components.stipulations import Stipulations
-from src.models.fix.generated.components.instrmtlegioigrp import InstrmtLegIOIGrp
-from src.models.fix.generated.components.ioiqualgrp import IOIQualGrp
-from src.models.fix.generated.components.routinggrp import RoutingGrp
-from src.models.fix.generated.components.spreadorbenchmarkcurvedata import SpreadOrBenchmarkCurveData
-from src.models.fix.generated.components.yielddata import YieldData
+from src.models.fix.generated.components.instrument import InstrumentComponent
+from src.models.fix.generated.components.financingdetails import FinancingDetailsComponent
+from src.models.fix.generated.components.undinstrmtgrp import UndInstrmtGrpComponent
+from src.models.fix.generated.components.orderqtydata import OrderQtyDataComponent
+from src.models.fix.generated.components.stipulations import StipulationsComponent
+from src.models.fix.generated.components.instrmtlegioigrp import InstrmtLegIOIGrpComponent
+from src.models.fix.generated.components.ioiqualgrp import IOIQualGrpComponent
+from src.models.fix.generated.components.routinggrp import RoutingGrpComponent
+from src.models.fix.generated.components.spreadorbenchmarkcurvedata import SpreadOrBenchmarkCurveDataComponent
+from src.models.fix.generated.components.yielddata import YieldDataComponent
 
 class IOI(FIXMessageBase):
     """FIX message model."""
 
-    beginstring: str = Field(..., description='', alias='8')
-    bodylength: int = Field(..., description='', alias='9')
-    msgtype: str = Field(..., description='', alias='35')
-    sendercompid: str = Field(..., description='', alias='49')
-    targetcompid: str = Field(..., description='', alias='56')
-    msgseqnum: int = Field(..., description='', alias='34')
-    sendingtime: datetime = Field(..., description='', alias='52')
-    ioiid: str = Field(..., description='', alias='23')
-    ioitranstype: str = Field(..., description='', alias='28')
-    ioirefid: Optional[str] = Field(None, description='', alias='26')
-    side: str = Field(..., description='', alias='54')
-    qtytype: Optional[int] = Field(None, description='', alias='854')
-    ioiqty: str = Field(..., description='', alias='27')
-    currency: Optional[str] = Field(None, description='', alias='15')
-    pricetype: Optional[int] = Field(None, description='', alias='423')
-    price: Optional[float] = Field(None, description='', alias='44')
-    validuntiltime: Optional[datetime] = Field(None, description='', alias='62')
-    ioiqltyind: Optional[str] = Field(None, description='', alias='25')
-    ioinaturalflag: Optional[bool] = Field(None, description='', alias='130')
-    text: Optional[str] = Field(None, description='', alias='58')
-    encodedtextlen: Optional[int] = Field(None, description='', alias='354')
-    encodedtext: Optional[str] = Field(None, description='', alias='355')
-    transacttime: Optional[datetime] = Field(None, description='', alias='60')
-    urllink: Optional[str] = Field(None, description='', alias='149')
-    instrument: Instrument = Field(..., description='Instrument component')
-    financingdetails: Optional[FinancingDetails] = Field(None, description='FinancingDetails component')
-    undinstrmtgrp: Optional[UndInstrmtGrp] = Field(None, description='UndInstrmtGrp component')
-    orderqtydata: Optional[OrderQtyData] = Field(None, description='OrderQtyData component')
-    stipulations: Optional[Stipulations] = Field(None, description='Stipulations component')
-    instrmtlegioigrp: Optional[InstrmtLegIOIGrp] = Field(None, description='InstrmtLegIOIGrp component')
-    ioiqualgrp: Optional[IOIQualGrp] = Field(None, description='IOIQualGrp component')
-    routinggrp: Optional[RoutingGrp] = Field(None, description='RoutingGrp component')
-    spreadorbenchmarkcurvedata: Optional[SpreadOrBenchmarkCurveData] = Field(None, description='SpreadOrBenchmarkCurveData component')
-    yielddata: Optional[YieldData] = Field(None, description='YieldData component')
+    BeginString: str = Field(..., description='', alias='8')
+    BodyLength: int = Field(..., description='', alias='9')
+    MsgType: str = Field(..., description='', alias='35')
+    SenderCompID: str = Field(..., description='', alias='49')
+    TargetCompID: str = Field(..., description='', alias='56')
+    MsgSeqNum: int = Field(..., description='', alias='34')
+    SendingTime: datetime = Field(..., description='', alias='52')
+    IOIID: str = Field(..., description='', alias='23')
+    IOITransType: str = Field(..., description='', alias='28')
+    IOIRefID: Optional[str] = Field(None, description='', alias='26')
+    Side: str = Field(..., description='', alias='54')
+    QtyType: Optional[int] = Field(None, description='', alias='854')
+    IOIQty: str = Field(..., description='', alias='27')
+    Currency: Optional[str] = Field(None, description='', alias='15')
+    PriceType: Optional[int] = Field(None, description='', alias='423')
+    Price: Optional[float] = Field(None, description='', alias='44')
+    ValidUntilTime: Optional[datetime] = Field(None, description='', alias='62')
+    IOIQltyInd: Optional[str] = Field(None, description='', alias='25')
+    IOINaturalFlag: Optional[bool] = Field(None, description='', alias='130')
+    Text: Optional[str] = Field(None, description='', alias='58')
+    EncodedTextLen: Optional[int] = Field(None, description='', alias='354')
+    EncodedText: Optional[str] = Field(None, description='', alias='355')
+    TransactTime: Optional[datetime] = Field(None, description='', alias='60')
+    URLLink: Optional[str] = Field(None, description='', alias='149')
+    Instrument: InstrumentComponent = Field(..., description='Instrument component')
+    FinancingDetails: Optional[FinancingDetailsComponent] = Field(None, description='FinancingDetails component')
+    UndInstrmtGrp: Optional[UndInstrmtGrpComponent] = Field(None, description='UndInstrmtGrp component')
+    OrderQtyData: Optional[OrderQtyDataComponent] = Field(None, description='OrderQtyData component')
+    Stipulations: Optional[StipulationsComponent] = Field(None, description='Stipulations component')
+    InstrmtLegIOIGrp: Optional[InstrmtLegIOIGrpComponent] = Field(None, description='InstrmtLegIOIGrp component')
+    IOIQualGrp: Optional[IOIQualGrpComponent] = Field(None, description='IOIQualGrp component')
+    RoutingGrp: Optional[RoutingGrpComponent] = Field(None, description='RoutingGrp component')
+    SpreadOrBenchmarkCurveData: Optional[SpreadOrBenchmarkCurveDataComponent] = Field(None, description='SpreadOrBenchmarkCurveData component')
+    YieldData: Optional[YieldDataComponent] = Field(None, description='YieldData component')
 

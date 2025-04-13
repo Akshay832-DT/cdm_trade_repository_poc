@@ -5,12 +5,10 @@ This module contains the Pydantic model for the AffectedOrdGrp component.
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-
-
-class NoAffectedOrders(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class NoAffectedOrdersGroup(FIXComponentBase):
     """
     NoAffectedOrders group fields
     """
@@ -24,12 +22,12 @@ class NoAffectedOrders(FIXMessageBase):
         }
     )
     
-    origClOrdID: Optional[str] = Field(None, description='', alias='41')
-    affectedOrderID: Optional[str] = Field(None, description='', alias='535')
-    affectedSecondaryOrderID: Optional[str] = Field(None, description='', alias='536')
+    OrigClOrdID: Optional[str] = Field(None, description='', alias='41')
+    AffectedOrderID: Optional[str] = Field(None, description='', alias='535')
+    AffectedSecondaryOrderID: Optional[str] = Field(None, description='', alias='536')
 
 
-class AffectedOrdGrp(FIXMessageBase):
+class AffectedOrdGrpComponent(FIXComponentBase):
     """
     FIX 4.4 AffectedOrdGrp Component
     """
@@ -43,5 +41,5 @@ class AffectedOrdGrp(FIXMessageBase):
         }
     )
     
-    noAffectedOrders: Optional[int] = Field(None, description='Number of NoAffectedOrders entries', alias='534')
-    noAffectedOrders_items: List[NoAffectedOrders] = Field(default_factory=list)
+    NoAffectedOrders: Optional[int] = Field(None, description='Number of NoAffectedOrders entries', alias='')
+    NoAffectedOrders_items: List[NoAffectedOrdersGroup] = Field(default_factory=list)

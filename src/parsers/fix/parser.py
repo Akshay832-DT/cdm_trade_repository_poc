@@ -1,253 +1,132 @@
-from typing import Dict, Any, Optional, Type, List, Union
-import simplefix
-import yaml
-import importlib
-from pathlib import Path
-from datetime import datetime
-from ...models.base import BaseParser, TradeModel
-from ...models.fix.base import FIXMessageBase
-from ...models.fix.messages.message_types import MessageType
+"""
+FIX Message Parser
+
+This module contains the main parser for FIX messages.
+"""
 import logging
+from typing import Dict, Any, Type, Union
+import simplefix
+from pathlib import Path
+
 from src.models.fix.base import FIXMessageBase
-from src.models.fix.generated.components.commissiondata import CommissionData
-from src.models.fix.generated.components.bidcomprspgrp import BidCompRspGrp, NoBidComponents
-from src.models.fix.generated.messages.bidresponse import BidResponse
-from src.models.fix.generated.components.instrument import Instrument
-from src.models.fix.generated.components.orderqtydata import OrderQtyData
-from src.models.fix.generated.messages.newordersingle import NewOrderSingle
+from src.parsers.fix.base_parser import FIXMessageParser
+from src.parsers.fix.message_parsers.bid_response_parser import BidResponseParser
+from src.parsers.fix.message_parsers.new_order_single_parser import NewOrderSingleParser
+from src.parsers.base import BaseParser
 
 class FIXParser(BaseParser):
+    """Main parser for FIX messages."""
+    
     def __init__(self):
+        """Initialize the parser."""
         self.logger = logging.getLogger(__name__)
-        self.mappings = self._load_mappings()
-        self.message_type_models = self._load_message_type_models()
-
-    def _load_mappings(self) -> Dict:
-        config_path = Path(__file__).parent / 'config' / 'fix44_mappings.yaml'
-        with open(config_path, 'r') as f:
-            return yaml.safe_load(f)
-
-    def _load_message_type_models(self) -> Dict[str, Type[FIXMessageBase]]:
+        self.message_parsers = self._load_message_parsers()
+        
+    def _load_message_parsers(self) -> Dict[str, FIXMessageParser]:
         """
-        Dynamically load and map all generated message models.
+        Load message-specific parsers.
         
         Returns:
-            Dict[str, Type[FIXMessageBase]]: Dictionary mapping message types to model classes
+            Dict[str, FIXMessageParser]: Dictionary mapping message types to their parsers
         """
-        result = {}
-        try:
-            # Load mappings
-            mappings = self._load_mappings()
-            
-            # Map each message type to its model class
-            for msg_type, model_name in mappings['message_types'].items():
-                try:
-                    # Convert model name to lowercase for module import
-                    module_name = model_name.lower()
-                    # Import the module
-                    module = importlib.import_module(f'src.models.fix.generated.messages.{module_name}')
-                    # Get the class (should be the same as the mapping name)
-                    model_class = getattr(module, model_name)
-                    result[msg_type] = model_class
-                    self.logger.info(f"Loaded model {model_name} for message type {msg_type}")
-                except (ImportError, AttributeError) as e:
-                    self.logger.warning(f"No model found for message type {msg_type} ({model_name}): {str(e)}")
-        except Exception as e:
-            self.logger.error(f"Error importing message models: {str(e)}")
-            import traceback
-            self.logger.error(traceback.format_exc())
-        
-        return result
-
-    async def validate(self, message: str) -> bool:
-        """Validate FIX message has required fields."""
-        parser = simplefix.FixParser()
-        parser.append_buffer(message.encode())
-        fix_msg = parser.get_message()
-        
-        if not fix_msg:
-            return False
-        
-        required_fields = [
-            (b'8', 'BeginString'),  # BeginString
-            (b'9', 'BodyLength'),   # BodyLength
-            (b'35', 'MsgType')      # MsgType
-        ]
-
-        for tag, field_name in required_fields:
-            if not fix_msg.get(tag):
-                self.logger.error(f"Missing required field: {field_name}")
-                return False
-
-        return True
-
-    def _validate_message_type(self, msg: simplefix.FixMessage) -> bool:
-        msg_type = msg.get(35)
-        if not msg_type:
-            return False
-        return msg_type.decode() in self.mappings['message_types'] or msg_type.decode() in self.message_type_models
-
-    async def parse(self, message: str) -> TradeModel:
-        """Parse a FIX message into a model."""
-        parser = simplefix.FixParser()
-        parser.append_buffer(message.encode())
-        fix_msg = parser.get_message()
-        
-        if not fix_msg:
-            raise ValueError("Invalid FIX message format")
-        
-        msg_type = fix_msg.get(35).decode()
-        
-        # Try to find a specific model for this message type
-        model_class = self.message_type_models.get(msg_type)
-        
-        # Parse the fields
-        parsed_data = self._parse_fields(fix_msg)
-        
-        if model_class:
-            # Use the specific model for this message type
-            try:
-                # Create the model instance
-                model_instance = model_class(**parsed_data)
-                return model_instance
-            except Exception as e:
-                self.logger.warning(f"Error creating specific model for {msg_type}: {str(e)}")
-                # Fall back to generic model
-        
-        # Fall back to generic FIXMessage
-        return FIXMessageBase(**parsed_data)
-
-    def _parse_fields(self, fix_msg: simplefix.FixMessage) -> Dict[str, Any]:
-        """Parse FIX message fields into a dictionary."""
-        parsed_data = {}
-        
-        # Map of common FIX tags to field names
-        tag_to_field = {
-            b'8': '8',
-            b'9': '9',
-            b'35': '35',
-            b'49': '49',
-            b'56': '56',
-            b'34': '34',
-            b'52': '52',
-            b'10': '10',
-            b'55': '55',
-            b'48': '48',
-            b'22': '22',
-            b'207': '207',
-            b'107': '107',
-            b'38': '38',
-            b'44': '44',
-            b'54': '54',
-            b'40': '40',
-            b'11': '11',
-            b'60': '60',
-            b'21': '21',
-            b'100': '100',
-            b'15': '15',
-            b'59': '59'
+        return {
+            'l': BidResponseParser(),  # BidResponse
+            'D': NewOrderSingleParser()  # NewOrderSingle
         }
-
-        # First pass: convert field types
-        for tag, value in fix_msg.pairs:
-            if value is None:
-                continue
-
-            # Map tag to field name if known
-            field_name = tag_to_field.get(tag, tag.decode())
-            value_str = value.decode()
-            
-            # Handle field type conversions
-            if tag in [b'52', b'60']:  # SendingTime and TransactTime
-                try:
-                    parsed_data[field_name] = datetime.strptime(value_str, '%Y%m%d-%H:%M:%S')
-                except ValueError:
-                    parsed_data[field_name] = value_str
-            elif tag in [b'9', b'34', b'38', b'152', b'423', b'854']:  # Numeric fields
-                try:
-                    parsed_data[field_name] = int(value_str)
-                except ValueError:
-                    parsed_data[field_name] = value_str
-            elif tag in [b'44', b'998']:  # Float fields
-                try:
-                    parsed_data[field_name] = float(value_str)
-                except ValueError:
-                    parsed_data[field_name] = value_str
-            else:
-                parsed_data[field_name] = value_str
-
-        # Second pass: handle message-specific components
-        msg_type = parsed_data.get('35')  # Using numeric tag for msgtype
         
-        if msg_type == 'l':  # BidResponse
-            try:
-                # Create CommissionData instance
-                commission_data = CommissionData(
-                    commission=float(parsed_data.get('12', 0.0)),
-                    commType=str(parsed_data.get('13', '')),
-                    commCurrency=parsed_data.get('479', '')
-                )
-
-                # Create NoBidComponents instance
-                no_bid_components = NoBidComponents(
-                    listID=parsed_data.get('66', ''),
-                    country=parsed_data.get('421', ''),
-                    side=parsed_data.get('54', ''),
-                    price=float(parsed_data.get('44', 0.0)),
-                    priceType=int(parsed_data.get('423', 0)),
-                    fairValue=float(parsed_data.get('406', 0.0)),
-                    netGrossInd=int(parsed_data.get('430', 0)),
-                    settlType=parsed_data.get('63', ''),
-                    settlDate=datetime.strptime(parsed_data.get('64', '19700101'), '%Y%m%d').date() if parsed_data.get('64') else None,
-                    tradingSessionID=parsed_data.get('336', ''),
-                    tradingSessionSubID=parsed_data.get('625', ''),
-                    text=parsed_data.get('58', ''),
-                    encodedTextLen=int(parsed_data.get('354', 0)),
-                    encodedText=parsed_data.get('355', ''),
-                    commissionData=commission_data
-                )
-
-                # Create BidCompRspGrp instance
-                bid_comp_rsp_grp = BidCompRspGrp(
-                    noBidComponents=1,
-                    noBidComponents_items=[no_bid_components]
-                )
-
-                # Add to parsed data
-                parsed_data['bidcomprspgrp'] = bid_comp_rsp_grp
-
-            except Exception as e:
-                self.logger.error(f"Error creating BidResponse components: {str(e)}")
-                raise
+    def _parse_fields(self, message: simplefix.FixMessage) -> Dict[str, Any]:
+        """
+        Parse fields from a FIX message into a dictionary.
+        
+        Args:
+            message (simplefix.FixMessage): The FIX message to parse
+            
+        Returns:
+            Dict[str, Any]: Dictionary mapping tag numbers to their values
+        """
+        fields = {}
+        for tag, value in message.pairs:
+            if value is not None:
+                # Convert tag to integer for consistent lookup
+                tag_int = int(tag)
+                # Decode bytes to string if necessary
+                if isinstance(value, bytes):
+                    value = value.decode()
+                fields[tag_int] = value
+        return fields
+        
+    async def validate(self, message: Union[str, bytes, simplefix.FixMessage]) -> bool:
+        """
+        Validate a FIX message.
+        
+        Args:
+            message (Union[str, bytes, simplefix.FixMessage]): The FIX message to validate
+            
+        Returns:
+            bool: True if the message is valid, False otherwise
+        """
+        try:
+            if isinstance(message, (str, bytes)):
+                parser = simplefix.FixParser()
+                if isinstance(message, str):
+                    message = message.encode()
+                parser.append_buffer(message)
+                message = parser.get_message()
                 
-        elif msg_type == 'D':  # NewOrderSingle
-            try:
-                # Create Instrument instance
-                instrument = Instrument(
-                    symbol=parsed_data.get('55', ''),
-                    securityID=parsed_data.get('48', ''),
-                    securityIDSource=parsed_data.get('22', ''),
-                    securityExchange=parsed_data.get('207', ''),
-                    securityDesc=parsed_data.get('107', ''),
-                    securityType=parsed_data.get('167', ''),
-                    maturityMonthYear=parsed_data.get('200', ''),
-                    maturityDate=datetime.strptime(parsed_data.get('541', '19700101'), '%Y%m%d').date() if parsed_data.get('541') else None,
-                    strikeCurrency=parsed_data.get('947', ''),
-                    product=int(parsed_data.get('460', 0))
-                )
+            if not message:
+                self.logger.error("Invalid message format")
+                return False
                 
-                # Create OrderQtyData instance
-                order_qty_data = OrderQtyData(
-                    orderQty=float(parsed_data.get('38', 0.0)),
-                    cashOrderQty=float(parsed_data.get('152', 0.0))
-                )
+            msg_type = message.get(35)
+            if not msg_type:
+                self.logger.error("Missing message type (tag 35)")
+                return False
                 
-                # Add components to parsed data
-                parsed_data['instrument'] = instrument
-                parsed_data['orderqtydata'] = order_qty_data
+            msg_type = msg_type.decode() if isinstance(msg_type, bytes) else msg_type
+            if msg_type not in self.message_parsers:
+                self.logger.warning(f"Unsupported message type: {msg_type}")
+                return False
                 
-            except Exception as e:
-                self.logger.error(f"Error creating NewOrderSingle components: {str(e)}")
-                raise
-
-        return parsed_data
+            return True
+        except Exception as e:
+            self.logger.error(f"Error validating message: {e}")
+            return False
+            
+    async def parse(self, message: Union[str, bytes, simplefix.FixMessage]) -> FIXMessageBase:
+        """
+        Parse a FIX message.
+        
+        Args:
+            message (Union[str, bytes, simplefix.FixMessage]): The FIX message to parse
+            
+        Returns:
+            FIXMessageBase: The parsed message model instance
+            
+        Raises:
+            ValueError: If the message type is not supported
+        """
+        try:
+            if isinstance(message, (str, bytes)):
+                parser = simplefix.FixParser()
+                if isinstance(message, str):
+                    message = message.encode()
+                parser.append_buffer(message)
+                message = parser.get_message()
+                
+            if not message:
+                raise ValueError("Invalid message format")
+                
+            msg_type = message.get(35)
+            if not msg_type:
+                raise ValueError("Missing message type (tag 35)")
+                
+            msg_type = msg_type.decode() if isinstance(msg_type, bytes) else msg_type
+            if msg_type not in self.message_parsers:
+                raise ValueError(f"Unsupported message type: {msg_type}")
+                
+            parser = self.message_parsers[msg_type]
+            return await parser.parse(message)
+            
+        except Exception as e:
+            self.logger.error(f"Error parsing message: {e}")
+            raise

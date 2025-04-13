@@ -5,12 +5,10 @@ This module contains the Pydantic model for the LegStipulations component.
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-
-
-class NoLegStipulations(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class NoLegStipulationsGroup(FIXComponentBase):
     """
     NoLegStipulations group fields
     """
@@ -24,11 +22,11 @@ class NoLegStipulations(FIXMessageBase):
         }
     )
     
-    legStipulationType: Optional[str] = Field(None, description='', alias='688')
-    legStipulationValue: Optional[str] = Field(None, description='', alias='689')
+    LegStipulationType: Optional[str] = Field(None, description='', alias='688')
+    LegStipulationValue: Optional[str] = Field(None, description='', alias='689')
 
 
-class LegStipulations(FIXMessageBase):
+class LegStipulationsComponent(FIXComponentBase):
     """
     FIX 4.4 LegStipulations Component
     """
@@ -42,5 +40,5 @@ class LegStipulations(FIXMessageBase):
         }
     )
     
-    noLegStipulations: Optional[int] = Field(None, description='Number of NoLegStipulations entries', alias='683')
-    noLegStipulations_items: List[NoLegStipulations] = Field(default_factory=list)
+    NoLegStipulations: Optional[int] = Field(None, description='Number of NoLegStipulations entries', alias='')
+    NoLegStipulations_items: List[NoLegStipulationsGroup] = Field(default_factory=list)

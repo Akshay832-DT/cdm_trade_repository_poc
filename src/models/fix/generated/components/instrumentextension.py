@@ -5,13 +5,10 @@ This module contains the Pydantic model for the InstrumentExtension component.
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-from src.models.fix.generated.components.attrbgrp import AttrbGrp
-
-
-class InstrumentExtension(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class InstrumentExtensionComponent(FIXComponentBase):
     """
     FIX 4.4 InstrumentExtension Component
     """
@@ -25,6 +22,6 @@ class InstrumentExtension(FIXMessageBase):
         }
     )
     
-    deliveryForm: Optional[int] = Field(None, description='', alias='668')
-    pctAtRisk: Optional[float] = Field(None, description='', alias='869')
-    attrbGrp: Optional[AttrbGrp] = Field(None, description='AttrbGrp component')
+    DeliveryForm: Optional[int] = Field(None, description='', alias='668')
+    PctAtRisk: Optional[float] = Field(None, description='', alias='869')
+    AttrbGrp: Optional[AttrbGrpComponent] = Field(None, description='AttrbGrp component')

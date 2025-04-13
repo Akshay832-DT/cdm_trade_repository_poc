@@ -5,13 +5,10 @@ This module contains the Pydantic model for the UndInstrmtCollGrp component.
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-from src.models.fix.generated.components.underlyinginstrument import UnderlyingInstrument
-
-
-class NoUnderlyings(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class NoUnderlyingsGroup(FIXComponentBase):
     """
     NoUnderlyings group fields
     """
@@ -25,10 +22,10 @@ class NoUnderlyings(FIXMessageBase):
         }
     )
     
-    collAction: Optional[int] = Field(None, description='', alias='944')
+    CollAction: Optional[int] = Field(None, description='', alias='944')
 
 
-class UndInstrmtCollGrp(FIXMessageBase):
+class UndInstrmtCollGrpComponent(FIXComponentBase):
     """
     FIX 4.4 UndInstrmtCollGrp Component
     """
@@ -42,6 +39,6 @@ class UndInstrmtCollGrp(FIXMessageBase):
         }
     )
     
-    underlyingInstrument: Optional[UnderlyingInstrument] = Field(None, description='UnderlyingInstrument component')
-    noUnderlyings: Optional[int] = Field(None, description='Number of NoUnderlyings entries', alias='711')
-    noUnderlyings_items: List[NoUnderlyings] = Field(default_factory=list)
+    UnderlyingInstrument: Optional[UnderlyingInstrumentComponent] = Field(None, description='UnderlyingInstrument component')
+    NoUnderlyings: Optional[int] = Field(None, description='Number of NoUnderlyings entries', alias='')
+    NoUnderlyings_items: List[NoUnderlyingsGroup] = Field(default_factory=list)

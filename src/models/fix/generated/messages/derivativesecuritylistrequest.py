@@ -2,27 +2,27 @@ from typing import Optional, List
 from datetime import datetime, date, time
 from pydantic import Field
 from src.models.fix.base import FIXMessageBase
-from src.models.fix.generated.components.underlyinginstrument import UnderlyingInstrument
+from src.models.fix.generated.components.underlyinginstrument import UnderlyingInstrumentComponent
 
 class DerivativeSecurityListRequest(FIXMessageBase):
     """FIX message model."""
 
-    beginstring: str = Field(..., description='', alias='8')
-    bodylength: int = Field(..., description='', alias='9')
-    msgtype: str = Field(..., description='', alias='35')
-    sendercompid: str = Field(..., description='', alias='49')
-    targetcompid: str = Field(..., description='', alias='56')
-    msgseqnum: int = Field(..., description='', alias='34')
-    sendingtime: datetime = Field(..., description='', alias='52')
-    securityreqid: str = Field(..., description='', alias='320')
-    securitylistrequesttype: int = Field(..., description='', alias='559')
-    securitysubtype: Optional[str] = Field(None, description='', alias='762')
-    currency: Optional[str] = Field(None, description='', alias='15')
-    text: Optional[str] = Field(None, description='', alias='58')
-    encodedtextlen: Optional[int] = Field(None, description='', alias='354')
-    encodedtext: Optional[str] = Field(None, description='', alias='355')
-    tradingsessionid: Optional[str] = Field(None, description='', alias='336')
-    tradingsessionsubid: Optional[str] = Field(None, description='', alias='625')
-    subscriptionrequesttype: Optional[str] = Field(None, description='', alias='263')
-    underlyinginstrument: Optional[UnderlyingInstrument] = Field(None, description='UnderlyingInstrument component')
+    BeginString: str = Field(..., description='', alias='8')
+    BodyLength: int = Field(..., description='', alias='9')
+    MsgType: str = Field(..., description='', alias='35')
+    SenderCompID: str = Field(..., description='', alias='49')
+    TargetCompID: str = Field(..., description='', alias='56')
+    MsgSeqNum: int = Field(..., description='', alias='34')
+    SendingTime: datetime = Field(..., description='', alias='52')
+    SecurityReqID: str = Field(..., description='', alias='320')
+    SecurityListRequestType: int = Field(..., description='', alias='559')
+    SecuritySubType: Optional[str] = Field(None, description='', alias='762')
+    Currency: Optional[str] = Field(None, description='', alias='15')
+    Text: Optional[str] = Field(None, description='', alias='58')
+    EncodedTextLen: Optional[int] = Field(None, description='', alias='354')
+    EncodedText: Optional[str] = Field(None, description='', alias='355')
+    TradingSessionID: Optional[str] = Field(None, description='', alias='336')
+    TradingSessionSubID: Optional[str] = Field(None, description='', alias='625')
+    SubscriptionRequestType: Optional[str] = Field(None, description='', alias='263')
+    UnderlyingInstrument: Optional[UnderlyingInstrumentComponent] = Field(None, description='UnderlyingInstrument component')
 

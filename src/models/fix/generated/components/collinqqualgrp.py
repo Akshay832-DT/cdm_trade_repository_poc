@@ -5,12 +5,10 @@ This module contains the Pydantic model for the CollInqQualGrp component.
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-
-
-class NoCollInquiryQualifier(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class NoCollInquiryQualifierGroup(FIXComponentBase):
     """
     NoCollInquiryQualifier group fields
     """
@@ -24,10 +22,10 @@ class NoCollInquiryQualifier(FIXMessageBase):
         }
     )
     
-    collInquiryQualifier: Optional[int] = Field(None, description='', alias='896')
+    CollInquiryQualifier: Optional[int] = Field(None, description='', alias='896')
 
 
-class CollInqQualGrp(FIXMessageBase):
+class CollInqQualGrpComponent(FIXComponentBase):
     """
     FIX 4.4 CollInqQualGrp Component
     """
@@ -41,5 +39,5 @@ class CollInqQualGrp(FIXMessageBase):
         }
     )
     
-    noCollInquiryQualifier: Optional[int] = Field(None, description='Number of NoCollInquiryQualifier entries', alias='938')
-    noCollInquiryQualifier_items: List[NoCollInquiryQualifier] = Field(default_factory=list)
+    NoCollInquiryQualifier: Optional[int] = Field(None, description='Number of NoCollInquiryQualifier entries', alias='')
+    NoCollInquiryQualifier_items: List[NoCollInquiryQualifierGroup] = Field(default_factory=list)

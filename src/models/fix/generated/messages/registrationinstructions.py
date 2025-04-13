@@ -2,30 +2,30 @@ from typing import Optional, List
 from datetime import datetime, date, time
 from pydantic import Field
 from src.models.fix.base import FIXMessageBase
-from src.models.fix.generated.components.parties import Parties
-from src.models.fix.generated.components.rgstdtlsgrp import RgstDtlsGrp
-from src.models.fix.generated.components.rgstdistinstgrp import RgstDistInstGrp
+from src.models.fix.generated.components.parties import PartiesComponent
+from src.models.fix.generated.components.rgstdtlsgrp import RgstDtlsGrpComponent
+from src.models.fix.generated.components.rgstdistinstgrp import RgstDistInstGrpComponent
 
 class RegistrationInstructions(FIXMessageBase):
     """FIX message model."""
 
-    beginstring: str = Field(..., description='', alias='8')
-    bodylength: int = Field(..., description='', alias='9')
-    msgtype: str = Field(..., description='', alias='35')
-    sendercompid: str = Field(..., description='', alias='49')
-    targetcompid: str = Field(..., description='', alias='56')
-    msgseqnum: int = Field(..., description='', alias='34')
-    sendingtime: datetime = Field(..., description='', alias='52')
-    registid: str = Field(..., description='', alias='513')
-    registtranstype: str = Field(..., description='', alias='514')
-    registrefid: str = Field(..., description='', alias='508')
-    clordid: Optional[str] = Field(None, description='', alias='11')
-    account: Optional[str] = Field(None, description='', alias='1')
-    acctidsource: Optional[int] = Field(None, description='', alias='660')
-    registaccttype: Optional[str] = Field(None, description='', alias='493')
-    taxadvantagetype: Optional[int] = Field(None, description='', alias='495')
-    ownershiptype: Optional[str] = Field(None, description='', alias='517')
-    parties: Optional[Parties] = Field(None, description='Parties component')
-    rgstdtlsgrp: Optional[RgstDtlsGrp] = Field(None, description='RgstDtlsGrp component')
-    rgstdistinstgrp: Optional[RgstDistInstGrp] = Field(None, description='RgstDistInstGrp component')
+    BeginString: str = Field(..., description='', alias='8')
+    BodyLength: int = Field(..., description='', alias='9')
+    MsgType: str = Field(..., description='', alias='35')
+    SenderCompID: str = Field(..., description='', alias='49')
+    TargetCompID: str = Field(..., description='', alias='56')
+    MsgSeqNum: int = Field(..., description='', alias='34')
+    SendingTime: datetime = Field(..., description='', alias='52')
+    RegistID: str = Field(..., description='', alias='513')
+    RegistTransType: str = Field(..., description='', alias='514')
+    RegistRefID: str = Field(..., description='', alias='508')
+    ClOrdID: Optional[str] = Field(None, description='', alias='11')
+    Account: Optional[str] = Field(None, description='', alias='1')
+    AcctIDSource: Optional[int] = Field(None, description='', alias='660')
+    RegistAcctType: Optional[str] = Field(None, description='', alias='493')
+    TaxAdvantageType: Optional[int] = Field(None, description='', alias='495')
+    OwnershipType: Optional[str] = Field(None, description='', alias='517')
+    Parties: Optional[PartiesComponent] = Field(None, description='Parties component')
+    RgstDtlsGrp: Optional[RgstDtlsGrpComponent] = Field(None, description='RgstDtlsGrp component')
+    RgstDistInstGrp: Optional[RgstDistInstGrpComponent] = Field(None, description='RgstDistInstGrp component')
 

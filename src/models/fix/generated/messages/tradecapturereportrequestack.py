@@ -2,33 +2,33 @@ from typing import Optional, List
 from datetime import datetime, date, time
 from pydantic import Field
 from src.models.fix.base import FIXMessageBase
-from src.models.fix.generated.components.instrument import Instrument
-from src.models.fix.generated.components.undinstrmtgrp import UndInstrmtGrp
-from src.models.fix.generated.components.instrmtleggrp import InstrmtLegGrp
+from src.models.fix.generated.components.instrument import InstrumentComponent
+from src.models.fix.generated.components.undinstrmtgrp import UndInstrmtGrpComponent
+from src.models.fix.generated.components.instrmtleggrp import InstrmtLegGrpComponent
 
 class TradeCaptureReportRequestAck(FIXMessageBase):
     """FIX message model."""
 
-    beginstring: str = Field(..., description='', alias='8')
-    bodylength: int = Field(..., description='', alias='9')
-    msgtype: str = Field(..., description='', alias='35')
-    sendercompid: str = Field(..., description='', alias='49')
-    targetcompid: str = Field(..., description='', alias='56')
-    msgseqnum: int = Field(..., description='', alias='34')
-    sendingtime: datetime = Field(..., description='', alias='52')
-    traderequestid: str = Field(..., description='', alias='568')
-    traderequesttype: int = Field(..., description='', alias='569')
-    subscriptionrequesttype: Optional[str] = Field(None, description='', alias='263')
-    totnumtradereports: Optional[int] = Field(None, description='', alias='748')
-    traderequestresult: int = Field(..., description='', alias='749')
-    traderequeststatus: int = Field(..., description='', alias='750')
-    multilegreportingtype: Optional[str] = Field(None, description='', alias='442')
-    responsetransporttype: Optional[int] = Field(None, description='', alias='725')
-    responsedestination: Optional[str] = Field(None, description='', alias='726')
-    text: Optional[str] = Field(None, description='', alias='58')
-    encodedtextlen: Optional[int] = Field(None, description='', alias='354')
-    encodedtext: Optional[str] = Field(None, description='', alias='355')
-    instrument: Instrument = Field(..., description='Instrument component')
-    undinstrmtgrp: Optional[UndInstrmtGrp] = Field(None, description='UndInstrmtGrp component')
-    instrmtleggrp: Optional[InstrmtLegGrp] = Field(None, description='InstrmtLegGrp component')
+    BeginString: str = Field(..., description='', alias='8')
+    BodyLength: int = Field(..., description='', alias='9')
+    MsgType: str = Field(..., description='', alias='35')
+    SenderCompID: str = Field(..., description='', alias='49')
+    TargetCompID: str = Field(..., description='', alias='56')
+    MsgSeqNum: int = Field(..., description='', alias='34')
+    SendingTime: datetime = Field(..., description='', alias='52')
+    TradeRequestID: str = Field(..., description='', alias='568')
+    TradeRequestType: int = Field(..., description='', alias='569')
+    SubscriptionRequestType: Optional[str] = Field(None, description='', alias='263')
+    TotNumTradeReports: Optional[int] = Field(None, description='', alias='748')
+    TradeRequestResult: int = Field(..., description='', alias='749')
+    TradeRequestStatus: int = Field(..., description='', alias='750')
+    MultiLegReportingType: Optional[str] = Field(None, description='', alias='442')
+    ResponseTransportType: Optional[int] = Field(None, description='', alias='725')
+    ResponseDestination: Optional[str] = Field(None, description='', alias='726')
+    Text: Optional[str] = Field(None, description='', alias='58')
+    EncodedTextLen: Optional[int] = Field(None, description='', alias='354')
+    EncodedText: Optional[str] = Field(None, description='', alias='355')
+    Instrument: InstrumentComponent = Field(..., description='Instrument component')
+    UndInstrmtGrp: Optional[UndInstrmtGrpComponent] = Field(None, description='UndInstrmtGrp component')
+    InstrmtLegGrp: Optional[InstrmtLegGrpComponent] = Field(None, description='InstrmtLegGrp component')
 

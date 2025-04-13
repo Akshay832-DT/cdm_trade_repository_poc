@@ -5,12 +5,10 @@ This module contains the Pydantic model for the UndSecAltIDGrp component.
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-
-
-class NoUnderlyingSecurityAltID(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class NoUnderlyingSecurityAltIDGroup(FIXComponentBase):
     """
     NoUnderlyingSecurityAltID group fields
     """
@@ -24,11 +22,11 @@ class NoUnderlyingSecurityAltID(FIXMessageBase):
         }
     )
     
-    underlyingSecurityAltID: Optional[str] = Field(None, description='', alias='458')
-    underlyingSecurityAltIDSource: Optional[str] = Field(None, description='', alias='459')
+    UnderlyingSecurityAltID: Optional[str] = Field(None, description='', alias='458')
+    UnderlyingSecurityAltIDSource: Optional[str] = Field(None, description='', alias='459')
 
 
-class UndSecAltIDGrp(FIXMessageBase):
+class UndSecAltIDGrpComponent(FIXComponentBase):
     """
     FIX 4.4 UndSecAltIDGrp Component
     """
@@ -42,5 +40,5 @@ class UndSecAltIDGrp(FIXMessageBase):
         }
     )
     
-    noUnderlyingSecurityAltID: Optional[int] = Field(None, description='Number of NoUnderlyingSecurityAltID entries', alias='457')
-    noUnderlyingSecurityAltID_items: List[NoUnderlyingSecurityAltID] = Field(default_factory=list)
+    NoUnderlyingSecurityAltID: Optional[int] = Field(None, description='Number of NoUnderlyingSecurityAltID entries', alias='')
+    NoUnderlyingSecurityAltID_items: List[NoUnderlyingSecurityAltIDGroup] = Field(default_factory=list)

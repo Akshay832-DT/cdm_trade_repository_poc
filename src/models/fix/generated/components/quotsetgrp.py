@@ -5,14 +5,10 @@ This module contains the Pydantic model for the QuotSetGrp component.
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-from src.models.fix.generated.components.underlyinginstrument import UnderlyingInstrument
-from src.models.fix.generated.components.quotentrygrp import QuotEntryGrp
-
-
-class NoQuoteSets(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class NoQuoteSetsGroup(FIXComponentBase):
     """
     NoQuoteSets group fields
     """
@@ -26,13 +22,13 @@ class NoQuoteSets(FIXMessageBase):
         }
     )
     
-    quoteSetID: str = Field(..., description='', alias='302')
-    quoteSetValidUntilTime: Optional[datetime] = Field(None, description='', alias='367')
-    totNoQuoteEntries: int = Field(..., description='', alias='304')
-    lastFragment: Optional[bool] = Field(None, description='', alias='893')
+    QuoteSetID: str = Field(..., description='', alias='302')
+    QuoteSetValidUntilTime: Optional[datetime] = Field(None, description='', alias='367')
+    TotNoQuoteEntries: int = Field(..., description='', alias='304')
+    LastFragment: Optional[bool] = Field(None, description='', alias='893')
 
 
-class QuotSetGrp(FIXMessageBase):
+class QuotSetGrpComponent(FIXComponentBase):
     """
     FIX 4.4 QuotSetGrp Component
     """
@@ -46,7 +42,7 @@ class QuotSetGrp(FIXMessageBase):
         }
     )
     
-    underlyingInstrument: Optional[UnderlyingInstrument] = Field(None, description='UnderlyingInstrument component')
-    quotEntryGrp: QuotEntryGrp = Field(..., description='QuotEntryGrp component')
-    noQuoteSets: Optional[int] = Field(None, description='Number of NoQuoteSets entries', alias='296')
-    noQuoteSets_items: List[NoQuoteSets] = Field(default_factory=list)
+    UnderlyingInstrument: Optional[UnderlyingInstrumentComponent] = Field(None, description='UnderlyingInstrument component')
+    QuotEntryGrp: QuotEntryGrpComponent = Field(..., description='QuotEntryGrp component')
+    NoQuoteSets: Optional[int] = Field(None, description='Number of NoQuoteSets entries', alias='')
+    NoQuoteSets_items: List[NoQuoteSetsGroup] = Field(default_factory=list)

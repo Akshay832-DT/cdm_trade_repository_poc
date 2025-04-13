@@ -5,15 +5,10 @@ This module contains the Pydantic model for the RFQReqGrp component.
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-from src.models.fix.generated.components.instrument import Instrument
-from src.models.fix.generated.components.undinstrmtgrp import UndInstrmtGrp
-from src.models.fix.generated.components.instrmtleggrp import InstrmtLegGrp
-
-
-class NoRelatedSym(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class NoRelatedSymGroup(FIXComponentBase):
     """
     NoRelatedSym group fields
     """
@@ -27,14 +22,14 @@ class NoRelatedSym(FIXMessageBase):
         }
     )
     
-    prevClosePx: Optional[float] = Field(None, description='', alias='140')
-    quoteRequestType: Optional[int] = Field(None, description='', alias='303')
-    quoteType: Optional[int] = Field(None, description='', alias='537')
-    tradingSessionID: Optional[str] = Field(None, description='', alias='336')
-    tradingSessionSubID: Optional[str] = Field(None, description='', alias='625')
+    PrevClosePx: Optional[float] = Field(None, description='', alias='140')
+    QuoteRequestType: Optional[int] = Field(None, description='', alias='303')
+    QuoteType: Optional[int] = Field(None, description='', alias='537')
+    TradingSessionID: Optional[str] = Field(None, description='', alias='336')
+    TradingSessionSubID: Optional[str] = Field(None, description='', alias='625')
 
 
-class RFQReqGrp(FIXMessageBase):
+class RFQReqGrpComponent(FIXComponentBase):
     """
     FIX 4.4 RFQReqGrp Component
     """
@@ -48,8 +43,8 @@ class RFQReqGrp(FIXMessageBase):
         }
     )
     
-    instrument: Instrument = Field(..., description='Instrument component')
-    undInstrmtGrp: Optional[UndInstrmtGrp] = Field(None, description='UndInstrmtGrp component')
-    instrmtLegGrp: Optional[InstrmtLegGrp] = Field(None, description='InstrmtLegGrp component')
-    noRelatedSym: Optional[int] = Field(None, description='Number of NoRelatedSym entries', alias='146')
-    noRelatedSym_items: List[NoRelatedSym] = Field(default_factory=list)
+    Instrument: InstrumentComponent = Field(..., description='Instrument component')
+    UndInstrmtGrp: Optional[UndInstrmtGrpComponent] = Field(None, description='UndInstrmtGrp component')
+    InstrmtLegGrp: Optional[InstrmtLegGrpComponent] = Field(None, description='InstrmtLegGrp component')
+    NoRelatedSym: Optional[int] = Field(None, description='Number of NoRelatedSym entries', alias='')
+    NoRelatedSym_items: List[NoRelatedSymGroup] = Field(default_factory=list)

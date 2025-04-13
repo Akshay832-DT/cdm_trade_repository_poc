@@ -5,12 +5,10 @@ This module contains the Pydantic model for the CompIDReqGrp component.
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-
-
-class NoCompIDs(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class NoCompIDsGroup(FIXComponentBase):
     """
     NoCompIDs group fields
     """
@@ -24,13 +22,13 @@ class NoCompIDs(FIXMessageBase):
         }
     )
     
-    refCompID: Optional[str] = Field(None, description='', alias='930')
-    refSubID: Optional[str] = Field(None, description='', alias='931')
-    locationID: Optional[str] = Field(None, description='', alias='283')
-    deskID: Optional[str] = Field(None, description='', alias='284')
+    RefCompID: Optional[str] = Field(None, description='', alias='930')
+    RefSubID: Optional[str] = Field(None, description='', alias='931')
+    LocationID: Optional[str] = Field(None, description='', alias='283')
+    DeskID: Optional[str] = Field(None, description='', alias='284')
 
 
-class CompIDReqGrp(FIXMessageBase):
+class CompIDReqGrpComponent(FIXComponentBase):
     """
     FIX 4.4 CompIDReqGrp Component
     """
@@ -44,5 +42,5 @@ class CompIDReqGrp(FIXMessageBase):
         }
     )
     
-    noCompIDs: Optional[int] = Field(None, description='Number of NoCompIDs entries', alias='936')
-    noCompIDs_items: List[NoCompIDs] = Field(default_factory=list)
+    NoCompIDs: Optional[int] = Field(None, description='Number of NoCompIDs entries', alias='')
+    NoCompIDs_items: List[NoCompIDsGroup] = Field(default_factory=list)

@@ -5,12 +5,10 @@ This module contains the Pydantic model for the DiscretionInstructions component
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-
-
-class DiscretionInstructions(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class DiscretionInstructionsComponent(FIXComponentBase):
     """
     FIX 4.4 DiscretionInstructions Component
     """
@@ -24,10 +22,10 @@ class DiscretionInstructions(FIXMessageBase):
         }
     )
     
-    discretionInst: Optional[str] = Field(None, description='', alias='388')
-    discretionOffsetValue: Optional[float] = Field(None, description='', alias='389')
-    discretionMoveType: Optional[int] = Field(None, description='', alias='841')
-    discretionOffsetType: Optional[int] = Field(None, description='', alias='842')
-    discretionLimitType: Optional[int] = Field(None, description='', alias='843')
-    discretionRoundDirection: Optional[int] = Field(None, description='', alias='844')
-    discretionScope: Optional[int] = Field(None, description='', alias='846')
+    DiscretionInst: Optional[str] = Field(None, description='', alias='388')
+    DiscretionOffsetValue: Optional[float] = Field(None, description='', alias='389')
+    DiscretionMoveType: Optional[int] = Field(None, description='', alias='841')
+    DiscretionOffsetType: Optional[int] = Field(None, description='', alias='842')
+    DiscretionLimitType: Optional[int] = Field(None, description='', alias='843')
+    DiscretionRoundDirection: Optional[int] = Field(None, description='', alias='844')
+    DiscretionScope: Optional[int] = Field(None, description='', alias='846')

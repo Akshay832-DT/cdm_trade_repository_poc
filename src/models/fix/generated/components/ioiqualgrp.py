@@ -5,12 +5,10 @@ This module contains the Pydantic model for the IOIQualGrp component.
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-
-
-class NoIOIQualifiers(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class NoIOIQualifiersGroup(FIXComponentBase):
     """
     NoIOIQualifiers group fields
     """
@@ -24,10 +22,10 @@ class NoIOIQualifiers(FIXMessageBase):
         }
     )
     
-    iOIQualifier: Optional[str] = Field(None, description='', alias='104')
+    IOIQualifier: Optional[str] = Field(None, description='', alias='104')
 
 
-class IOIQualGrp(FIXMessageBase):
+class IOIQualGrpComponent(FIXComponentBase):
     """
     FIX 4.4 IOIQualGrp Component
     """
@@ -41,5 +39,5 @@ class IOIQualGrp(FIXMessageBase):
         }
     )
     
-    noIOIQualifiers: Optional[int] = Field(None, description='Number of NoIOIQualifiers entries', alias='199')
-    noIOIQualifiers_items: List[NoIOIQualifiers] = Field(default_factory=list)
+    NoIOIQualifiers: Optional[int] = Field(None, description='Number of NoIOIQualifiers entries', alias='')
+    NoIOIQualifiers_items: List[NoIOIQualifiersGroup] = Field(default_factory=list)

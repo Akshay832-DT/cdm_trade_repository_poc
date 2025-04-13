@@ -5,12 +5,10 @@ This module contains the Pydantic model for the Stipulations component.
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-
-
-class NoStipulations(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class NoStipulationsGroup(FIXComponentBase):
     """
     NoStipulations group fields
     """
@@ -24,11 +22,11 @@ class NoStipulations(FIXMessageBase):
         }
     )
     
-    stipulationType: Optional[str] = Field(None, description='', alias='233')
-    stipulationValue: Optional[str] = Field(None, description='', alias='234')
+    StipulationType: Optional[str] = Field(None, description='', alias='233')
+    StipulationValue: Optional[str] = Field(None, description='', alias='234')
 
 
-class Stipulations(FIXMessageBase):
+class StipulationsComponent(FIXComponentBase):
     """
     FIX 4.4 Stipulations Component
     """
@@ -42,5 +40,5 @@ class Stipulations(FIXMessageBase):
         }
     )
     
-    noStipulations: Optional[int] = Field(None, description='Number of NoStipulations entries', alias='232')
-    noStipulations_items: List[NoStipulations] = Field(default_factory=list)
+    NoStipulations: Optional[int] = Field(None, description='Number of NoStipulations entries', alias='')
+    NoStipulations_items: List[NoStipulationsGroup] = Field(default_factory=list)

@@ -5,12 +5,10 @@ This module contains the Pydantic model for the SpreadOrBenchmarkCurveData compo
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-
-
-class SpreadOrBenchmarkCurveData(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class SpreadOrBenchmarkCurveDataComponent(FIXComponentBase):
     """
     FIX 4.4 SpreadOrBenchmarkCurveData Component
     """
@@ -24,11 +22,11 @@ class SpreadOrBenchmarkCurveData(FIXMessageBase):
         }
     )
     
-    spread: Optional[float] = Field(None, description='', alias='218')
-    benchmarkCurveCurrency: Optional[str] = Field(None, description='', alias='220')
-    benchmarkCurveName: Optional[str] = Field(None, description='', alias='221')
-    benchmarkCurvePoint: Optional[str] = Field(None, description='', alias='222')
-    benchmarkPrice: Optional[float] = Field(None, description='', alias='662')
-    benchmarkPriceType: Optional[int] = Field(None, description='', alias='663')
-    benchmarkSecurityID: Optional[str] = Field(None, description='', alias='699')
-    benchmarkSecurityIDSource: Optional[str] = Field(None, description='', alias='761')
+    Spread: Optional[float] = Field(None, description='', alias='218')
+    BenchmarkCurveCurrency: Optional[str] = Field(None, description='', alias='220')
+    BenchmarkCurveName: Optional[str] = Field(None, description='', alias='221')
+    BenchmarkCurvePoint: Optional[str] = Field(None, description='', alias='222')
+    BenchmarkPrice: Optional[float] = Field(None, description='', alias='662')
+    BenchmarkPriceType: Optional[int] = Field(None, description='', alias='663')
+    BenchmarkSecurityID: Optional[str] = Field(None, description='', alias='699')
+    BenchmarkSecurityIDSource: Optional[str] = Field(None, description='', alias='761')

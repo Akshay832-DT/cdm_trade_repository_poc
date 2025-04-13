@@ -2,55 +2,55 @@ from typing import Optional, List
 from datetime import datetime, date, time
 from pydantic import Field
 from src.models.fix.base import FIXMessageBase
-from src.models.fix.generated.components.collinqqualgrp import CollInqQualGrp
-from src.models.fix.generated.components.parties import Parties
-from src.models.fix.generated.components.execcollgrp import ExecCollGrp
-from src.models.fix.generated.components.trdcollgrp import TrdCollGrp
-from src.models.fix.generated.components.instrument import Instrument
-from src.models.fix.generated.components.financingdetails import FinancingDetails
-from src.models.fix.generated.components.instrmtleggrp import InstrmtLegGrp
-from src.models.fix.generated.components.undinstrmtgrp import UndInstrmtGrp
+from src.models.fix.generated.components.collinqqualgrp import CollInqQualGrpComponent
+from src.models.fix.generated.components.parties import PartiesComponent
+from src.models.fix.generated.components.execcollgrp import ExecCollGrpComponent
+from src.models.fix.generated.components.trdcollgrp import TrdCollGrpComponent
+from src.models.fix.generated.components.instrument import InstrumentComponent
+from src.models.fix.generated.components.financingdetails import FinancingDetailsComponent
+from src.models.fix.generated.components.instrmtleggrp import InstrmtLegGrpComponent
+from src.models.fix.generated.components.undinstrmtgrp import UndInstrmtGrpComponent
 
 class CollateralInquiryAck(FIXMessageBase):
     """FIX message model."""
 
-    beginstring: str = Field(..., description='', alias='8')
-    bodylength: int = Field(..., description='', alias='9')
-    msgtype: str = Field(..., description='', alias='35')
-    sendercompid: str = Field(..., description='', alias='49')
-    targetcompid: str = Field(..., description='', alias='56')
-    msgseqnum: int = Field(..., description='', alias='34')
-    sendingtime: datetime = Field(..., description='', alias='52')
-    collinquiryid: str = Field(..., description='', alias='909')
-    collinquirystatus: int = Field(..., description='', alias='945')
-    collinquiryresult: Optional[int] = Field(None, description='', alias='946')
-    totnumreports: Optional[int] = Field(None, description='', alias='911')
-    account: Optional[str] = Field(None, description='', alias='1')
-    accounttype: Optional[int] = Field(None, description='', alias='581')
-    clordid: Optional[str] = Field(None, description='', alias='11')
-    orderid: Optional[str] = Field(None, description='', alias='37')
-    secondaryorderid: Optional[str] = Field(None, description='', alias='198')
-    secondaryclordid: Optional[str] = Field(None, description='', alias='526')
-    settldate: Optional[date] = Field(None, description='', alias='64')
-    quantity: Optional[float] = Field(None, description='', alias='53')
-    qtytype: Optional[int] = Field(None, description='', alias='854')
-    currency: Optional[str] = Field(None, description='', alias='15')
-    tradingsessionid: Optional[str] = Field(None, description='', alias='336')
-    tradingsessionsubid: Optional[str] = Field(None, description='', alias='625')
-    settlsessid: Optional[str] = Field(None, description='', alias='716')
-    settlsesssubid: Optional[str] = Field(None, description='', alias='717')
-    clearingbusinessdate: Optional[date] = Field(None, description='', alias='715')
-    responsetransporttype: Optional[int] = Field(None, description='', alias='725')
-    responsedestination: Optional[str] = Field(None, description='', alias='726')
-    text: Optional[str] = Field(None, description='', alias='58')
-    encodedtextlen: Optional[int] = Field(None, description='', alias='354')
-    encodedtext: Optional[str] = Field(None, description='', alias='355')
-    collinqqualgrp: Optional[CollInqQualGrp] = Field(None, description='CollInqQualGrp component')
-    parties: Optional[Parties] = Field(None, description='Parties component')
-    execcollgrp: Optional[ExecCollGrp] = Field(None, description='ExecCollGrp component')
-    trdcollgrp: Optional[TrdCollGrp] = Field(None, description='TrdCollGrp component')
-    instrument: Optional[Instrument] = Field(None, description='Instrument component')
-    financingdetails: Optional[FinancingDetails] = Field(None, description='FinancingDetails component')
-    instrmtleggrp: Optional[InstrmtLegGrp] = Field(None, description='InstrmtLegGrp component')
-    undinstrmtgrp: Optional[UndInstrmtGrp] = Field(None, description='UndInstrmtGrp component')
+    BeginString: str = Field(..., description='', alias='8')
+    BodyLength: int = Field(..., description='', alias='9')
+    MsgType: str = Field(..., description='', alias='35')
+    SenderCompID: str = Field(..., description='', alias='49')
+    TargetCompID: str = Field(..., description='', alias='56')
+    MsgSeqNum: int = Field(..., description='', alias='34')
+    SendingTime: datetime = Field(..., description='', alias='52')
+    CollInquiryID: str = Field(..., description='', alias='909')
+    CollInquiryStatus: int = Field(..., description='', alias='945')
+    CollInquiryResult: Optional[int] = Field(None, description='', alias='946')
+    TotNumReports: Optional[int] = Field(None, description='', alias='911')
+    Account: Optional[str] = Field(None, description='', alias='1')
+    AccountType: Optional[int] = Field(None, description='', alias='581')
+    ClOrdID: Optional[str] = Field(None, description='', alias='11')
+    OrderID: Optional[str] = Field(None, description='', alias='37')
+    SecondaryOrderID: Optional[str] = Field(None, description='', alias='198')
+    SecondaryClOrdID: Optional[str] = Field(None, description='', alias='526')
+    SettlDate: Optional[date] = Field(None, description='', alias='64')
+    Quantity: Optional[float] = Field(None, description='', alias='53')
+    QtyType: Optional[int] = Field(None, description='', alias='854')
+    Currency: Optional[str] = Field(None, description='', alias='15')
+    TradingSessionID: Optional[str] = Field(None, description='', alias='336')
+    TradingSessionSubID: Optional[str] = Field(None, description='', alias='625')
+    SettlSessID: Optional[str] = Field(None, description='', alias='716')
+    SettlSessSubID: Optional[str] = Field(None, description='', alias='717')
+    ClearingBusinessDate: Optional[date] = Field(None, description='', alias='715')
+    ResponseTransportType: Optional[int] = Field(None, description='', alias='725')
+    ResponseDestination: Optional[str] = Field(None, description='', alias='726')
+    Text: Optional[str] = Field(None, description='', alias='58')
+    EncodedTextLen: Optional[int] = Field(None, description='', alias='354')
+    EncodedText: Optional[str] = Field(None, description='', alias='355')
+    CollInqQualGrp: Optional[CollInqQualGrpComponent] = Field(None, description='CollInqQualGrp component')
+    Parties: Optional[PartiesComponent] = Field(None, description='Parties component')
+    ExecCollGrp: Optional[ExecCollGrpComponent] = Field(None, description='ExecCollGrp component')
+    TrdCollGrp: Optional[TrdCollGrpComponent] = Field(None, description='TrdCollGrp component')
+    Instrument: Optional[InstrumentComponent] = Field(None, description='Instrument component')
+    FinancingDetails: Optional[FinancingDetailsComponent] = Field(None, description='FinancingDetails component')
+    InstrmtLegGrp: Optional[InstrmtLegGrpComponent] = Field(None, description='InstrmtLegGrp component')
+    UndInstrmtGrp: Optional[UndInstrmtGrpComponent] = Field(None, description='UndInstrmtGrp component')
 

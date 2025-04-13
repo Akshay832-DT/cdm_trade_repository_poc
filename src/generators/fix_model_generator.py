@@ -279,179 +279,37 @@ def generate_component_models(components, fields, output_dir):
             '"""\n',
             "from datetime import datetime, date, time\n",
             "from typing import List, Optional, Union, Dict, Any, Literal\n",
-            "from pydantic import BaseModel, Field, ConfigDict\n",
+            "from pydantic import Field, ConfigDict\n",
             "from src.models.fix.generated.fields.common import *\n",
-            "from src.models.fix.base import FIXMessageBase\n"
+            "from src.models.fix.base import FIXComponentBase\n"
         ]
 
         # Track the mapping of components to their respective groups
         component_to_group_map = {}
         group_fields = {}
         field_names_in_groups = set()
-        
-        # First pass - identify groups and their components
+
+        # Process fields to identify groups and their components
         for field in comp_fields:
-            field_name = field.get('name', '')
-            
-            # Collect group fields and their components
             if field.get('is_group', False):
-                group_name = field_name
-                group_fields[group_name] = field.get('fields', [])
-                
-                # Track which components belong to this group
+                group_name = field['name']
+                group_fields[group_name] = []
                 for group_field in field.get('fields', []):
-                    group_field_name = group_field.get('name', '')
-                    field_names_in_groups.add(group_field_name.lower())
-                    
-                    # If this is a component, map it to this group
                     if group_field.get('is_component', False):
-                        component_to_group_map[group_field_name] = group_name
-        
-        # Special case for BidCompRspGrp - CommissionData should be in NoBidComponents
-        if comp_name == "BidCompRspGrp":
-            logger.info(f"Special case handling for BidCompRspGrp: Moving CommissionData to NoBidComponents group")
-            # Find CommissionData field
-            commission_data_field = next((f for f in comp_fields if f.get('is_component', False) and f.get('name') == 'CommissionData'), None)
-            if commission_data_field:
-                # Remove CommissionData from main component fields
-                comp_fields = [f for f in comp_fields if not (f.get('is_component', False) and f.get('name') == 'CommissionData')]
-                
-                # Add CommissionData to NoBidComponents group if it exists
-                if 'NoBidComponents' in group_fields:
-                    # Add CommissionData to group fields
-                    group_fields['NoBidComponents'].append(commission_data_field)
-                    # Mark CommissionData as belonging to NoBidComponents group
-                    component_to_group_map['CommissionData'] = 'NoBidComponents'
-                    # Add to field_names_in_groups
-                    field_names_in_groups.add('commissiondata')
-        
-        # Special case for Parties - PtysSubGrp should be in NoPartyIDs
-        if comp_name == "Parties":
-            logger.info(f"Special case handling for Parties: Moving PtysSubGrp to NoPartyIDs group")
-            # Find PtysSubGrp field
-            ptys_sub_grp_field = next((f for f in comp_fields if f.get('is_component', False) and f.get('name') == 'PtysSubGrp'), None)
-            if ptys_sub_grp_field:
-                # Remove PtysSubGrp from main component fields
-                comp_fields = [f for f in comp_fields if not (f.get('is_component', False) and f.get('name') == 'PtysSubGrp')]
-                
-                # Add PtysSubGrp to NoPartyIDs group if it exists
-                if 'NoPartyIDs' in group_fields:
-                    # Add PtysSubGrp to group fields
-                    group_fields['NoPartyIDs'].append(ptys_sub_grp_field)
-                    # Mark PtysSubGrp as belonging to NoPartyIDs group
-                    component_to_group_map['PtysSubGrp'] = 'NoPartyIDs'
-                    # Add to field_names_in_groups
-                    field_names_in_groups.add('ptyssubgrp')
-        
-        # Special case for NestedParties - NstdPtysSubGrp should be in NoNestedPartyIDs
-        if comp_name == "NestedParties":
-            logger.info(f"Special case handling for NestedParties: Moving NstdPtysSubGrp to NoNestedPartyIDs group")
-            # Find NstdPtysSubGrp field
-            nstd_ptys_sub_grp_field = next((f for f in comp_fields if f.get('is_component', False) and f.get('name') == 'NstdPtysSubGrp'), None)
-            if nstd_ptys_sub_grp_field:
-                # Remove NstdPtysSubGrp from main component fields
-                comp_fields = [f for f in comp_fields if not (f.get('is_component', False) and f.get('name') == 'NstdPtysSubGrp')]
-                
-                # Add NstdPtysSubGrp to NoNestedPartyIDs group if it exists
-                if 'NoNestedPartyIDs' in group_fields:
-                    # Add NstdPtysSubGrp to group fields
-                    group_fields['NoNestedPartyIDs'].append(nstd_ptys_sub_grp_field)
-                    # Mark NstdPtysSubGrp as belonging to NoNestedPartyIDs group
-                    component_to_group_map['NstdPtysSubGrp'] = 'NoNestedPartyIDs'
-                    # Add to field_names_in_groups
-                    field_names_in_groups.add('nstdptyssubgrp')
-        
-        # Special case for NestedParties2 - NstdPtys2SubGrp should be in NoNested2PartyIDs
-        if comp_name == "NestedParties2":
-            logger.info(f"Special case handling for NestedParties2: Moving NstdPtys2SubGrp to NoNested2PartyIDs group")
-            # Find NstdPtys2SubGrp field
-            nstd_ptys2_sub_grp_field = next((f for f in comp_fields if f.get('is_component', False) and f.get('name') == 'NstdPtys2SubGrp'), None)
-            if nstd_ptys2_sub_grp_field:
-                # Remove NstdPtys2SubGrp from main component fields
-                comp_fields = [f for f in comp_fields if not (f.get('is_component', False) and f.get('name') == 'NstdPtys2SubGrp')]
-                
-                # Add NstdPtys2SubGrp to NoNested2PartyIDs group if it exists
-                if 'NoNested2PartyIDs' in group_fields:
-                    # Add NstdPtys2SubGrp to group fields
-                    group_fields['NoNested2PartyIDs'].append(nstd_ptys2_sub_grp_field)
-                    # Mark NstdPtys2SubGrp as belonging to NoNested2PartyIDs group
-                    component_to_group_map['NstdPtys2SubGrp'] = 'NoNested2PartyIDs'
-                    # Add to field_names_in_groups
-                    field_names_in_groups.add('nstdptys2subgrp')
-        
-        # Special case for NestedParties3 - NstdPtys3SubGrp should be in NoNested3PartyIDs
-        if comp_name == "NestedParties3":
-            logger.info(f"Special case handling for NestedParties3: Moving NstdPtys3SubGrp to NoNested3PartyIDs group")
-            # Find NstdPtys3SubGrp field
-            nstd_ptys3_sub_grp_field = next((f for f in comp_fields if f.get('is_component', False) and f.get('name') == 'NstdPtys3SubGrp'), None)
-            if nstd_ptys3_sub_grp_field:
-                # Remove NstdPtys3SubGrp from main component fields
-                comp_fields = [f for f in comp_fields if not (f.get('is_component', False) and f.get('name') == 'NstdPtys3SubGrp')]
-                
-                # Add NstdPtys3SubGrp to NoNested3PartyIDs group if it exists
-                if 'NoNested3PartyIDs' in group_fields:
-                    # Add NstdPtys3SubGrp to group fields
-                    group_fields['NoNested3PartyIDs'].append(nstd_ptys3_sub_grp_field)
-                    # Mark NstdPtys3SubGrp as belonging to NoNested3PartyIDs group
-                    component_to_group_map['NstdPtys3SubGrp'] = 'NoNested3PartyIDs'
-                    # Add to field_names_in_groups
-                    field_names_in_groups.add('nstdptys3subgrp')
-        
-        # Special case for SettlParties - SettlPtysSubGrp should be in NoSettlPartyIDs
-        if comp_name == "SettlParties":
-            logger.info(f"Special case handling for SettlParties: Moving SettlPtysSubGrp to NoSettlPartyIDs group")
-            # Find SettlPtysSubGrp field
-            settl_ptys_sub_grp_field = next((f for f in comp_fields if f.get('is_component', False) and f.get('name') == 'SettlPtysSubGrp'), None)
-            if settl_ptys_sub_grp_field:
-                # Remove SettlPtysSubGrp from main component fields
-                comp_fields = [f for f in comp_fields if not (f.get('is_component', False) and f.get('name') == 'SettlPtysSubGrp')]
-                
-                # Add SettlPtysSubGrp to NoSettlPartyIDs group if it exists
-                if 'NoSettlPartyIDs' in group_fields:
-                    # Add SettlPtysSubGrp to group fields
-                    group_fields['NoSettlPartyIDs'].append(settl_ptys_sub_grp_field)
-                    # Mark SettlPtysSubGrp as belonging to NoSettlPartyIDs group
-                    component_to_group_map['SettlPtysSubGrp'] = 'NoSettlPartyIDs'
-                    # Add to field_names_in_groups
-                    field_names_in_groups.add('settlptyssubgrp')
-        
-        # Debug log the group mapping
-        logger.info(f"Component to group mapping for {comp_name}: {component_to_group_map}")
-        logger.info(f"Fields in groups for {comp_name}: {field_names_in_groups}")
-        
-        # Second pass - collect imports
-        for field in comp_fields:
-            if field.get('is_component', False):
-                comp_name_to_import = field.get('name', '')
-                if comp_name_to_import and comp_name_to_import not in imported_components:
-                    # Don't import the component itself to avoid circular imports
-                    if comp_name_to_import.lower() != comp_name.lower():
-                        imports.append(f"from src.models.fix.generated.components.{comp_name_to_import.lower()} import {comp_name_to_import}\n")
-                        imported_components.add(comp_name_to_import)
-        
-        # Also add imports for components in groups
-        for group_name, group_fields_list in group_fields.items():
-            for field in group_fields_list:
-                if field.get('is_component', False):
-                    comp_name_to_import = field.get('name', '')
-                    if comp_name_to_import and comp_name_to_import not in imported_components:
-                        # Don't import the component itself to avoid circular imports
-                        if comp_name_to_import.lower() != comp_name.lower():
-                            imports.append(f"from src.models.fix.generated.components.{comp_name_to_import.lower()} import {comp_name_to_import}\n")
-                            imported_components.add(comp_name_to_import)
-        
-        # Add blank line after imports
-        imports.append("\n\n")
-        
-        # Generate group classes
+                        component_name = group_field['name']
+                        component_to_group_map[component_name] = group_name
+                    group_fields[group_name].append(group_field)
+                    field_names_in_groups.add(group_field['name'].lower())
+
+        # Generate group classes first
         group_classes = []
         for group_name, group_field_list in group_fields.items():
-            # Keep the original name including "No" prefix
-            class_name = group_name
+            # Add "Group" suffix to group class names
+            class_name = f"{group_name}Group"
             group_class = [
-                f"class {class_name}(FIXMessageBase):\n",
+                f"class {class_name}(FIXComponentBase):\n",
                 f'    """\n',
-                f"    {class_name} group fields\n",
+                f"    {group_name} group fields\n",
                 f'    """\n',
                 f"    model_config = ConfigDict(\n",
                 f"        populate_by_name=True,\n",
@@ -476,23 +334,23 @@ def generate_component_models(components, fields, output_dir):
                 if field.get('is_component', False):
                     # Handle component fields
                     if required:
-                        group_class.append(f"    {to_camel_case(field_name)}: {field_name} = Field(..., description='{field_name} component')\n")
+                        group_class.append(f"    {field_name}: {field_name}Component = Field(..., description='{field_name} component')\n")
                     else:
-                        group_class.append(f"    {to_camel_case(field_name)}: Optional[{field_name}] = Field(None, description='{field_name} component')\n")
+                        group_class.append(f"    {field_name}: Optional[{field_name}Component] = Field(None, description='{field_name} component')\n")
                 else:
                     # Handle regular fields
                     python_type = FIX_TYPE_MAP.get(field_type, 'str')
                     if required:
-                        group_class.append(f"    {to_camel_case(field_name)}: {python_type} = Field(..., description='{description}', alias='{tag}')\n")
+                        group_class.append(f"    {field_name}: {python_type} = Field(..., description='{description}', alias='{tag}')\n")
                     else:
-                        group_class.append(f"    {to_camel_case(field_name)}: Optional[{python_type}] = Field(None, description='{description}', alias='{tag}')\n")
+                        group_class.append(f"    {field_name}: Optional[{python_type}] = Field(None, description='{description}', alias='{tag}')\n")
             
             group_class.append("\n\n")
             group_classes.extend(group_class)
         
         # Generate the main component class
         component_class = [
-            f"class {comp_name}(FIXMessageBase):\n",
+            f"class {comp_name}Component(FIXComponentBase):\n",
             f'    """\n',
             f"    FIX 4.4 {comp_name} Component\n",
             f'    """\n',
@@ -514,6 +372,9 @@ def generate_component_models(components, fields, output_dir):
             
             # Skip fields that are groups (they'll be added as count and items fields)
             if field.get('is_group', False):
+                group_name = field_name
+                component_class.append(f"    {group_name}: Optional[int] = Field(None, description='Number of {group_name} entries', alias='{field.get('tag', '')}')\n")
+                component_class.append(f"    {group_name}_items: List[{group_name}Group] = Field(default_factory=list)\n")
                 continue
                 
             # Skip fields that are already in groups to avoid duplication
@@ -533,72 +394,20 @@ def generate_component_models(components, fields, output_dir):
             if field.get('is_component', False):
                 # Handle component fields (only if they don't belong to a group)
                 if required:
-                    component_class.append(f"    {to_camel_case(field_name)}: {field_name} = Field(..., description='{field_name} component')\n")
+                    component_class.append(f"    {field_name}: {field_name}Component = Field(..., description='{field_name} component')\n")
                 else:
-                    component_class.append(f"    {to_camel_case(field_name)}: Optional[{field_name}] = Field(None, description='{field_name} component')\n")
+                    component_class.append(f"    {field_name}: Optional[{field_name}Component] = Field(None, description='{field_name} component')\n")
             else:
                 # Handle regular fields
                 python_type = FIX_TYPE_MAP.get(field_type, 'str')
                 if required:
-                    component_class.append(f"    {to_camel_case(field_name)}: {python_type} = Field(..., description='{description}', alias='{tag}')\n")
+                    component_class.append(f"    {field_name}: {python_type} = Field(..., description='{description}', alias='{tag}')\n")
                 else:
-                    component_class.append(f"    {to_camel_case(field_name)}: Optional[{python_type}] = Field(None, description='{description}', alias='{tag}')\n")
+                    component_class.append(f"    {field_name}: Optional[{python_type}] = Field(None, description='{description}', alias='{tag}')\n")
         
-        # Add the group count and items fields
-        for group_name in group_fields:
-            # Find the group field to get its tag
-            group_field = next((f for f in comp_fields if f.get('name') == group_name), None)
-            if group_field:
-                tag = group_field.get('tag', '')
-                # Use the original group name for the class
-                class_name = group_name
-                # Use camelCase for the field name
-                count_field_name = to_camel_case(group_name)
-                items_field_name = f"{count_field_name}_items"
-                
-                # Add debug logging
-                logger.info(f"Looking for tag for group: {group_name}, initial tag value: '{tag}'")
-                
-                # Look up the tag in the fields dictionary if it's empty
-                if not tag:
-                    # Try to find the tag from the fields dictionary
-                    field_info = fields.get(group_name, {})
-                    tag = field_info.get('tag', '')
-                    logger.info(f"  Looked up tag in fields[{group_name}]: '{tag}'")
-                    
-                    # If still empty, try to normalize the name - handle "No" prefix
-                    if not tag and group_name.startswith('No'):
-                        # Sometimes the field name in the fields dictionary doesn't have the "No" prefix
-                        base_name = group_name[2:]  # Remove "No" prefix
-                        # Try with "No" prefix first
-                        field_info = fields.get(f"No{base_name}", {})
-                        tag = field_info.get('tag', '')
-                        logger.info(f"  Looked up tag in fields[No{base_name}]: '{tag}'")
-                        
-                        if not tag:
-                            # Try without "No" prefix
-                            field_info = fields.get(base_name, {})
-                            tag = field_info.get('tag', '')
-                            logger.info(f"  Looked up tag in fields[{base_name}]: '{tag}'")
-                            
-                    # If we still don't have a tag, let's try lowercase names
-                    if not tag:
-                        lower_name = group_name.lower()
-                        for field_name, field_data in fields.items():
-                            if field_name.lower() == lower_name:
-                                tag = field_data.get('tag', '')
-                                logger.info(f"  Found matching field using lowercase comparison: {field_name} with tag: '{tag}'")
-                                break
-                
-                logger.info(f"Final tag for {group_name}: '{tag}'")
-                
-                component_class.append(f"    {count_field_name}: Optional[int] = Field(None, description='Number of {class_name} entries', alias='{tag}')\n")
-                component_class.append(f"    {items_field_name}: List[{class_name}] = Field(default_factory=list)\n")
-        
-        # Write file
-        file_path = os.path.join(components_dir, f"{comp_name.lower()}.py")
-        logger.info(f"Writing component file for {comp_name}")
-        with open(file_path, "w") as f:
+        # Write the component file
+        component_file = os.path.join(components_dir, f"{comp_name.lower()}.py")
+        with open(component_file, "w") as f:
             f.writelines(imports)
             f.writelines(group_classes)
             f.writelines(component_class)
@@ -629,7 +438,7 @@ def generate_message_models(messages: Dict[str, Any], fields: Dict[str, Any], co
                 if field.get('is_component', False):
                     component_name = field['name'].replace(" ", "")
                     if component_name not in imported_components:
-                        f.write(f"from src.models.fix.generated.components.{component_name.lower()} import {component_name}\n")
+                        f.write(f"from src.models.fix.generated.components.{component_name.lower()} import {component_name}Component\n")
                         imported_components.add(component_name)
             f.write("\n")
 
@@ -645,13 +454,13 @@ def generate_message_models(messages: Dict[str, Any], fields: Dict[str, Any], co
                 if field.get('is_component', False):
                     # Handle component fields
                     component_name = field_name
-                    python_type = component_name
+                    python_type = f"{component_name}Component"
                     if not required:
                         python_type = f"Optional[{python_type}]"
                         default_value = "None"
                     else:
                         default_value = "..."  # Pydantic's required marker
-                    f.write(f"    {field_name.lower()}: {python_type} = Field({default_value}, description='{component_name} component')\n")
+                    f.write(f"    {field_name}: {python_type} = Field({default_value}, description='{component_name} component')\n")
                 else:
                     # Handle regular fields
                     field_info = fields.get(field_name, {})  # Use original name for lookup
@@ -667,9 +476,9 @@ def generate_message_models(messages: Dict[str, Any], fields: Dict[str, Any], co
                     
                     # Add field to the model with proper Field alias
                     if 'tag' in field_info:
-                        f.write(f"    {field_name.lower()}: {python_type} = Field({default_value}, description='{field_info.get('description', '')}', alias='{field_info['tag']}')\n")
+                        f.write(f"    {field_name}: {python_type} = Field({default_value}, description='{field_info.get('description', '')}', alias='{field_info['tag']}')\n")
                     else:
-                        f.write(f"    {field_name.lower()}: {python_type} = Field({default_value})\n")
+                        f.write(f"    {field_name}: {python_type} = Field({default_value})\n")
 
             f.write("\n")
 

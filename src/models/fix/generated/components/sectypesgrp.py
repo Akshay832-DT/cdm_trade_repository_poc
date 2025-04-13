@@ -5,12 +5,10 @@ This module contains the Pydantic model for the SecTypesGrp component.
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-
-
-class NoSecurityTypes(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class NoSecurityTypesGroup(FIXComponentBase):
     """
     NoSecurityTypes group fields
     """
@@ -24,13 +22,13 @@ class NoSecurityTypes(FIXMessageBase):
         }
     )
     
-    securityType: Optional[str] = Field(None, description='', alias='167')
-    securitySubType: Optional[str] = Field(None, description='', alias='762')
-    product: Optional[int] = Field(None, description='', alias='460')
-    cFICode: Optional[str] = Field(None, description='', alias='461')
+    SecurityType: Optional[str] = Field(None, description='', alias='167')
+    SecuritySubType: Optional[str] = Field(None, description='', alias='762')
+    Product: Optional[int] = Field(None, description='', alias='460')
+    CFICode: Optional[str] = Field(None, description='', alias='461')
 
 
-class SecTypesGrp(FIXMessageBase):
+class SecTypesGrpComponent(FIXComponentBase):
     """
     FIX 4.4 SecTypesGrp Component
     """
@@ -44,5 +42,5 @@ class SecTypesGrp(FIXMessageBase):
         }
     )
     
-    noSecurityTypes: Optional[int] = Field(None, description='Number of NoSecurityTypes entries', alias='558')
-    noSecurityTypes_items: List[NoSecurityTypes] = Field(default_factory=list)
+    NoSecurityTypes: Optional[int] = Field(None, description='Number of NoSecurityTypes entries', alias='')
+    NoSecurityTypes_items: List[NoSecurityTypesGroup] = Field(default_factory=list)

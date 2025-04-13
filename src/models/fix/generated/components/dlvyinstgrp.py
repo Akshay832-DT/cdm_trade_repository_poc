@@ -5,13 +5,10 @@ This module contains the Pydantic model for the DlvyInstGrp component.
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-from src.models.fix.generated.components.settlparties import SettlParties
-
-
-class NoDlvyInst(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class NoDlvyInstGroup(FIXComponentBase):
     """
     NoDlvyInst group fields
     """
@@ -25,11 +22,11 @@ class NoDlvyInst(FIXMessageBase):
         }
     )
     
-    settlInstSource: Optional[str] = Field(None, description='', alias='165')
-    dlvyInstType: Optional[str] = Field(None, description='', alias='787')
+    SettlInstSource: Optional[str] = Field(None, description='', alias='165')
+    DlvyInstType: Optional[str] = Field(None, description='', alias='787')
 
 
-class DlvyInstGrp(FIXMessageBase):
+class DlvyInstGrpComponent(FIXComponentBase):
     """
     FIX 4.4 DlvyInstGrp Component
     """
@@ -43,6 +40,6 @@ class DlvyInstGrp(FIXMessageBase):
         }
     )
     
-    settlParties: Optional[SettlParties] = Field(None, description='SettlParties component')
-    noDlvyInst: Optional[int] = Field(None, description='Number of NoDlvyInst entries', alias='85')
-    noDlvyInst_items: List[NoDlvyInst] = Field(default_factory=list)
+    SettlParties: Optional[SettlPartiesComponent] = Field(None, description='SettlParties component')
+    NoDlvyInst: Optional[int] = Field(None, description='Number of NoDlvyInst entries', alias='')
+    NoDlvyInst_items: List[NoDlvyInstGroup] = Field(default_factory=list)

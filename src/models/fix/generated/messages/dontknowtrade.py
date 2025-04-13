@@ -2,33 +2,33 @@ from typing import Optional, List
 from datetime import datetime, date, time
 from pydantic import Field
 from src.models.fix.base import FIXMessageBase
-from src.models.fix.generated.components.instrument import Instrument
-from src.models.fix.generated.components.undinstrmtgrp import UndInstrmtGrp
-from src.models.fix.generated.components.instrmtleggrp import InstrmtLegGrp
-from src.models.fix.generated.components.orderqtydata import OrderQtyData
+from src.models.fix.generated.components.instrument import InstrumentComponent
+from src.models.fix.generated.components.undinstrmtgrp import UndInstrmtGrpComponent
+from src.models.fix.generated.components.instrmtleggrp import InstrmtLegGrpComponent
+from src.models.fix.generated.components.orderqtydata import OrderQtyDataComponent
 
 class DontKnowTrade(FIXMessageBase):
     """FIX message model."""
 
-    beginstring: str = Field(..., description='', alias='8')
-    bodylength: int = Field(..., description='', alias='9')
-    msgtype: str = Field(..., description='', alias='35')
-    sendercompid: str = Field(..., description='', alias='49')
-    targetcompid: str = Field(..., description='', alias='56')
-    msgseqnum: int = Field(..., description='', alias='34')
-    sendingtime: datetime = Field(..., description='', alias='52')
-    orderid: str = Field(..., description='', alias='37')
-    secondaryorderid: Optional[str] = Field(None, description='', alias='198')
-    execid: str = Field(..., description='', alias='17')
-    dkreason: str = Field(..., description='', alias='127')
-    side: str = Field(..., description='', alias='54')
-    lastqty: Optional[float] = Field(None, description='', alias='32')
-    lastpx: Optional[float] = Field(None, description='', alias='31')
-    text: Optional[str] = Field(None, description='', alias='58')
-    encodedtextlen: Optional[int] = Field(None, description='', alias='354')
-    encodedtext: Optional[str] = Field(None, description='', alias='355')
-    instrument: Instrument = Field(..., description='Instrument component')
-    undinstrmtgrp: Optional[UndInstrmtGrp] = Field(None, description='UndInstrmtGrp component')
-    instrmtleggrp: Optional[InstrmtLegGrp] = Field(None, description='InstrmtLegGrp component')
-    orderqtydata: OrderQtyData = Field(..., description='OrderQtyData component')
+    BeginString: str = Field(..., description='', alias='8')
+    BodyLength: int = Field(..., description='', alias='9')
+    MsgType: str = Field(..., description='', alias='35')
+    SenderCompID: str = Field(..., description='', alias='49')
+    TargetCompID: str = Field(..., description='', alias='56')
+    MsgSeqNum: int = Field(..., description='', alias='34')
+    SendingTime: datetime = Field(..., description='', alias='52')
+    OrderID: str = Field(..., description='', alias='37')
+    SecondaryOrderID: Optional[str] = Field(None, description='', alias='198')
+    ExecID: str = Field(..., description='', alias='17')
+    DKReason: str = Field(..., description='', alias='127')
+    Side: str = Field(..., description='', alias='54')
+    LastQty: Optional[float] = Field(None, description='', alias='32')
+    LastPx: Optional[float] = Field(None, description='', alias='31')
+    Text: Optional[str] = Field(None, description='', alias='58')
+    EncodedTextLen: Optional[int] = Field(None, description='', alias='354')
+    EncodedText: Optional[str] = Field(None, description='', alias='355')
+    Instrument: InstrumentComponent = Field(..., description='Instrument component')
+    UndInstrmtGrp: Optional[UndInstrmtGrpComponent] = Field(None, description='UndInstrmtGrp component')
+    InstrmtLegGrp: Optional[InstrmtLegGrpComponent] = Field(None, description='InstrmtLegGrp component')
+    OrderQtyData: OrderQtyDataComponent = Field(..., description='OrderQtyData component')
 

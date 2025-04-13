@@ -5,13 +5,10 @@ This module contains the Pydantic model for the OrdAllocGrp component.
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-from src.models.fix.generated.components.nestedparties2 import NestedParties2
-
-
-class NoOrders(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class NoOrdersGroup(FIXComponentBase):
     """
     NoOrders group fields
     """
@@ -25,17 +22,17 @@ class NoOrders(FIXMessageBase):
         }
     )
     
-    clOrdID: Optional[str] = Field(None, description='', alias='11')
-    orderID: Optional[str] = Field(None, description='', alias='37')
-    secondaryOrderID: Optional[str] = Field(None, description='', alias='198')
-    secondaryClOrdID: Optional[str] = Field(None, description='', alias='526')
-    listID: Optional[str] = Field(None, description='', alias='66')
-    orderQty: Optional[float] = Field(None, description='', alias='38')
-    orderAvgPx: Optional[float] = Field(None, description='', alias='799')
-    orderBookingQty: Optional[float] = Field(None, description='', alias='800')
+    ClOrdID: Optional[str] = Field(None, description='', alias='11')
+    OrderID: Optional[str] = Field(None, description='', alias='37')
+    SecondaryOrderID: Optional[str] = Field(None, description='', alias='198')
+    SecondaryClOrdID: Optional[str] = Field(None, description='', alias='526')
+    ListID: Optional[str] = Field(None, description='', alias='66')
+    OrderQty: Optional[float] = Field(None, description='', alias='38')
+    OrderAvgPx: Optional[float] = Field(None, description='', alias='799')
+    OrderBookingQty: Optional[float] = Field(None, description='', alias='800')
 
 
-class OrdAllocGrp(FIXMessageBase):
+class OrdAllocGrpComponent(FIXComponentBase):
     """
     FIX 4.4 OrdAllocGrp Component
     """
@@ -49,6 +46,6 @@ class OrdAllocGrp(FIXMessageBase):
         }
     )
     
-    nestedParties2: Optional[NestedParties2] = Field(None, description='NestedParties2 component')
-    noOrders: Optional[int] = Field(None, description='Number of NoOrders entries', alias='73')
-    noOrders_items: List[NoOrders] = Field(default_factory=list)
+    NestedParties2: Optional[NestedParties2Component] = Field(None, description='NestedParties2 component')
+    NoOrders: Optional[int] = Field(None, description='Number of NoOrders entries', alias='')
+    NoOrders_items: List[NoOrdersGroup] = Field(default_factory=list)

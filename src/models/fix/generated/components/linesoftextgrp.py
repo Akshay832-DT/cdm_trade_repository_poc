@@ -5,12 +5,10 @@ This module contains the Pydantic model for the LinesOfTextGrp component.
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-
-
-class NoLinesOfText(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class NoLinesOfTextGroup(FIXComponentBase):
     """
     NoLinesOfText group fields
     """
@@ -24,12 +22,12 @@ class NoLinesOfText(FIXMessageBase):
         }
     )
     
-    text: str = Field(..., description='', alias='58')
-    encodedTextLen: Optional[int] = Field(None, description='', alias='354')
-    encodedText: Optional[str] = Field(None, description='', alias='355')
+    Text: str = Field(..., description='', alias='58')
+    EncodedTextLen: Optional[int] = Field(None, description='', alias='354')
+    EncodedText: Optional[str] = Field(None, description='', alias='355')
 
 
-class LinesOfTextGrp(FIXMessageBase):
+class LinesOfTextGrpComponent(FIXComponentBase):
     """
     FIX 4.4 LinesOfTextGrp Component
     """
@@ -43,5 +41,5 @@ class LinesOfTextGrp(FIXMessageBase):
         }
     )
     
-    noLinesOfText: Optional[int] = Field(None, description='Number of NoLinesOfText entries', alias='33')
-    noLinesOfText_items: List[NoLinesOfText] = Field(default_factory=list)
+    NoLinesOfText: Optional[int] = Field(None, description='Number of NoLinesOfText entries', alias='')
+    NoLinesOfText_items: List[NoLinesOfTextGroup] = Field(default_factory=list)

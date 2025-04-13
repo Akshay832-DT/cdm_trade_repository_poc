@@ -5,12 +5,10 @@ This module contains the Pydantic model for the AttrbGrp component.
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-
-
-class NoInstrAttrib(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class NoInstrAttribGroup(FIXComponentBase):
     """
     NoInstrAttrib group fields
     """
@@ -24,11 +22,11 @@ class NoInstrAttrib(FIXMessageBase):
         }
     )
     
-    instrAttribType: Optional[int] = Field(None, description='', alias='871')
-    instrAttribValue: Optional[str] = Field(None, description='', alias='872')
+    InstrAttribType: Optional[int] = Field(None, description='', alias='871')
+    InstrAttribValue: Optional[str] = Field(None, description='', alias='872')
 
 
-class AttrbGrp(FIXMessageBase):
+class AttrbGrpComponent(FIXComponentBase):
     """
     FIX 4.4 AttrbGrp Component
     """
@@ -42,5 +40,5 @@ class AttrbGrp(FIXMessageBase):
         }
     )
     
-    noInstrAttrib: Optional[int] = Field(None, description='Number of NoInstrAttrib entries', alias='870')
-    noInstrAttrib_items: List[NoInstrAttrib] = Field(default_factory=list)
+    NoInstrAttrib: Optional[int] = Field(None, description='Number of NoInstrAttrib entries', alias='')
+    NoInstrAttrib_items: List[NoInstrAttribGroup] = Field(default_factory=list)

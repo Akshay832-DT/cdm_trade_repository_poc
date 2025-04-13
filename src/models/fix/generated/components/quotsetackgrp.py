@@ -5,14 +5,10 @@ This module contains the Pydantic model for the QuotSetAckGrp component.
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-from src.models.fix.generated.components.underlyinginstrument import UnderlyingInstrument
-from src.models.fix.generated.components.quotentryackgrp import QuotEntryAckGrp
-
-
-class NoQuoteSets(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class NoQuoteSetsGroup(FIXComponentBase):
     """
     NoQuoteSets group fields
     """
@@ -26,12 +22,12 @@ class NoQuoteSets(FIXMessageBase):
         }
     )
     
-    quoteSetID: Optional[str] = Field(None, description='', alias='302')
-    totNoQuoteEntries: Optional[int] = Field(None, description='', alias='304')
-    lastFragment: Optional[bool] = Field(None, description='', alias='893')
+    QuoteSetID: Optional[str] = Field(None, description='', alias='302')
+    TotNoQuoteEntries: Optional[int] = Field(None, description='', alias='304')
+    LastFragment: Optional[bool] = Field(None, description='', alias='893')
 
 
-class QuotSetAckGrp(FIXMessageBase):
+class QuotSetAckGrpComponent(FIXComponentBase):
     """
     FIX 4.4 QuotSetAckGrp Component
     """
@@ -45,7 +41,7 @@ class QuotSetAckGrp(FIXMessageBase):
         }
     )
     
-    underlyingInstrument: Optional[UnderlyingInstrument] = Field(None, description='UnderlyingInstrument component')
-    quotEntryAckGrp: Optional[QuotEntryAckGrp] = Field(None, description='QuotEntryAckGrp component')
-    noQuoteSets: Optional[int] = Field(None, description='Number of NoQuoteSets entries', alias='296')
-    noQuoteSets_items: List[NoQuoteSets] = Field(default_factory=list)
+    UnderlyingInstrument: Optional[UnderlyingInstrumentComponent] = Field(None, description='UnderlyingInstrument component')
+    QuotEntryAckGrp: Optional[QuotEntryAckGrpComponent] = Field(None, description='QuotEntryAckGrp component')
+    NoQuoteSets: Optional[int] = Field(None, description='Number of NoQuoteSets entries', alias='')
+    NoQuoteSets_items: List[NoQuoteSetsGroup] = Field(default_factory=list)

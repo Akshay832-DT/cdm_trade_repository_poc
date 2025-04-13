@@ -5,12 +5,10 @@ This module contains the Pydantic model for the BidCompReqGrp component.
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-
-
-class NoBidComponents(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class NoBidComponentsGroup(FIXComponentBase):
     """
     NoBidComponents group fields
     """
@@ -24,18 +22,18 @@ class NoBidComponents(FIXMessageBase):
         }
     )
     
-    listID: Optional[str] = Field(None, description='', alias='66')
-    side: Optional[str] = Field(None, description='', alias='54')
-    tradingSessionID: Optional[str] = Field(None, description='', alias='336')
-    tradingSessionSubID: Optional[str] = Field(None, description='', alias='625')
-    netGrossInd: Optional[int] = Field(None, description='', alias='430')
-    settlType: Optional[str] = Field(None, description='', alias='63')
-    settlDate: Optional[date] = Field(None, description='', alias='64')
-    account: Optional[str] = Field(None, description='', alias='1')
-    acctIDSource: Optional[int] = Field(None, description='', alias='660')
+    ListID: Optional[str] = Field(None, description='', alias='66')
+    Side: Optional[str] = Field(None, description='', alias='54')
+    TradingSessionID: Optional[str] = Field(None, description='', alias='336')
+    TradingSessionSubID: Optional[str] = Field(None, description='', alias='625')
+    NetGrossInd: Optional[int] = Field(None, description='', alias='430')
+    SettlType: Optional[str] = Field(None, description='', alias='63')
+    SettlDate: Optional[date] = Field(None, description='', alias='64')
+    Account: Optional[str] = Field(None, description='', alias='1')
+    AcctIDSource: Optional[int] = Field(None, description='', alias='660')
 
 
-class BidCompReqGrp(FIXMessageBase):
+class BidCompReqGrpComponent(FIXComponentBase):
     """
     FIX 4.4 BidCompReqGrp Component
     """
@@ -49,5 +47,5 @@ class BidCompReqGrp(FIXMessageBase):
         }
     )
     
-    noBidComponents: Optional[int] = Field(None, description='Number of NoBidComponents entries', alias='420')
-    noBidComponents_items: List[NoBidComponents] = Field(default_factory=list)
+    NoBidComponents: Optional[int] = Field(None, description='Number of NoBidComponents entries', alias='')
+    NoBidComponents_items: List[NoBidComponentsGroup] = Field(default_factory=list)

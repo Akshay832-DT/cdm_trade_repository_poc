@@ -5,20 +5,10 @@ This module contains the Pydantic model for the SecListGrp component.
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-from src.models.fix.generated.components.instrument import Instrument
-from src.models.fix.generated.components.instrumentextension import InstrumentExtension
-from src.models.fix.generated.components.financingdetails import FinancingDetails
-from src.models.fix.generated.components.undinstrmtgrp import UndInstrmtGrp
-from src.models.fix.generated.components.stipulations import Stipulations
-from src.models.fix.generated.components.instrmtlegseclistgrp import InstrmtLegSecListGrp
-from src.models.fix.generated.components.spreadorbenchmarkcurvedata import SpreadOrBenchmarkCurveData
-from src.models.fix.generated.components.yielddata import YieldData
-
-
-class NoRelatedSym(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class NoRelatedSymGroup(FIXComponentBase):
     """
     NoRelatedSym group fields
     """
@@ -32,18 +22,18 @@ class NoRelatedSym(FIXMessageBase):
         }
     )
     
-    currency: Optional[str] = Field(None, description='', alias='15')
-    roundLot: Optional[float] = Field(None, description='', alias='561')
-    minTradeVol: Optional[float] = Field(None, description='', alias='562')
-    tradingSessionID: Optional[str] = Field(None, description='', alias='336')
-    tradingSessionSubID: Optional[str] = Field(None, description='', alias='625')
-    expirationCycle: Optional[int] = Field(None, description='', alias='827')
-    text: Optional[str] = Field(None, description='', alias='58')
-    encodedTextLen: Optional[int] = Field(None, description='', alias='354')
-    encodedText: Optional[str] = Field(None, description='', alias='355')
+    Currency: Optional[str] = Field(None, description='', alias='15')
+    RoundLot: Optional[float] = Field(None, description='', alias='561')
+    MinTradeVol: Optional[float] = Field(None, description='', alias='562')
+    TradingSessionID: Optional[str] = Field(None, description='', alias='336')
+    TradingSessionSubID: Optional[str] = Field(None, description='', alias='625')
+    ExpirationCycle: Optional[int] = Field(None, description='', alias='827')
+    Text: Optional[str] = Field(None, description='', alias='58')
+    EncodedTextLen: Optional[int] = Field(None, description='', alias='354')
+    EncodedText: Optional[str] = Field(None, description='', alias='355')
 
 
-class SecListGrp(FIXMessageBase):
+class SecListGrpComponent(FIXComponentBase):
     """
     FIX 4.4 SecListGrp Component
     """
@@ -57,13 +47,13 @@ class SecListGrp(FIXMessageBase):
         }
     )
     
-    instrument: Optional[Instrument] = Field(None, description='Instrument component')
-    instrumentExtension: Optional[InstrumentExtension] = Field(None, description='InstrumentExtension component')
-    financingDetails: Optional[FinancingDetails] = Field(None, description='FinancingDetails component')
-    undInstrmtGrp: Optional[UndInstrmtGrp] = Field(None, description='UndInstrmtGrp component')
-    stipulations: Optional[Stipulations] = Field(None, description='Stipulations component')
-    instrmtLegSecListGrp: Optional[InstrmtLegSecListGrp] = Field(None, description='InstrmtLegSecListGrp component')
-    spreadOrBenchmarkCurveData: Optional[SpreadOrBenchmarkCurveData] = Field(None, description='SpreadOrBenchmarkCurveData component')
-    yieldData: Optional[YieldData] = Field(None, description='YieldData component')
-    noRelatedSym: Optional[int] = Field(None, description='Number of NoRelatedSym entries', alias='146')
-    noRelatedSym_items: List[NoRelatedSym] = Field(default_factory=list)
+    Instrument: Optional[InstrumentComponent] = Field(None, description='Instrument component')
+    InstrumentExtension: Optional[InstrumentExtensionComponent] = Field(None, description='InstrumentExtension component')
+    FinancingDetails: Optional[FinancingDetailsComponent] = Field(None, description='FinancingDetails component')
+    UndInstrmtGrp: Optional[UndInstrmtGrpComponent] = Field(None, description='UndInstrmtGrp component')
+    Stipulations: Optional[StipulationsComponent] = Field(None, description='Stipulations component')
+    InstrmtLegSecListGrp: Optional[InstrmtLegSecListGrpComponent] = Field(None, description='InstrmtLegSecListGrp component')
+    SpreadOrBenchmarkCurveData: Optional[SpreadOrBenchmarkCurveDataComponent] = Field(None, description='SpreadOrBenchmarkCurveData component')
+    YieldData: Optional[YieldDataComponent] = Field(None, description='YieldData component')
+    NoRelatedSym: Optional[int] = Field(None, description='Number of NoRelatedSym entries', alias='')
+    NoRelatedSym_items: List[NoRelatedSymGroup] = Field(default_factory=list)

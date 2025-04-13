@@ -5,13 +5,10 @@ This module contains the Pydantic model for the NestedParties component.
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-from src.models.fix.generated.components.nstdptyssubgrp import NstdPtysSubGrp
-
-
-class NoNestedPartyIDs(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class NoNestedPartyIDsGroup(FIXComponentBase):
     """
     NoNestedPartyIDs group fields
     """
@@ -25,13 +22,12 @@ class NoNestedPartyIDs(FIXMessageBase):
         }
     )
     
-    nestedPartyID: Optional[str] = Field(None, description='', alias='524')
-    nestedPartyIDSource: Optional[str] = Field(None, description='', alias='525')
-    nestedPartyRole: Optional[int] = Field(None, description='', alias='538')
-    nstdPtysSubGrp: Optional[NstdPtysSubGrp] = Field(None, description='NstdPtysSubGrp component')
+    NestedPartyID: Optional[str] = Field(None, description='', alias='524')
+    NestedPartyIDSource: Optional[str] = Field(None, description='', alias='525')
+    NestedPartyRole: Optional[int] = Field(None, description='', alias='538')
 
 
-class NestedParties(FIXMessageBase):
+class NestedPartiesComponent(FIXComponentBase):
     """
     FIX 4.4 NestedParties Component
     """
@@ -45,5 +41,6 @@ class NestedParties(FIXMessageBase):
         }
     )
     
-    noNestedPartyIDs: Optional[int] = Field(None, description='Number of NoNestedPartyIDs entries', alias='539')
-    noNestedPartyIDs_items: List[NoNestedPartyIDs] = Field(default_factory=list)
+    NstdPtysSubGrp: Optional[NstdPtysSubGrpComponent] = Field(None, description='NstdPtysSubGrp component')
+    NoNestedPartyIDs: Optional[int] = Field(None, description='Number of NoNestedPartyIDs entries', alias='')
+    NoNestedPartyIDs_items: List[NoNestedPartyIDsGroup] = Field(default_factory=list)

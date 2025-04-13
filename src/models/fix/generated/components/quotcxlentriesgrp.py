@@ -5,16 +5,10 @@ This module contains the Pydantic model for the QuotCxlEntriesGrp component.
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-from src.models.fix.generated.components.instrument import Instrument
-from src.models.fix.generated.components.financingdetails import FinancingDetails
-from src.models.fix.generated.components.undinstrmtgrp import UndInstrmtGrp
-from src.models.fix.generated.components.instrmtleggrp import InstrmtLegGrp
-
-
-class NoQuoteEntries(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class NoQuoteEntriesGroup(FIXComponentBase):
     """
     NoQuoteEntries group fields
     """
@@ -30,7 +24,7 @@ class NoQuoteEntries(FIXMessageBase):
     
 
 
-class QuotCxlEntriesGrp(FIXMessageBase):
+class QuotCxlEntriesGrpComponent(FIXComponentBase):
     """
     FIX 4.4 QuotCxlEntriesGrp Component
     """
@@ -44,9 +38,9 @@ class QuotCxlEntriesGrp(FIXMessageBase):
         }
     )
     
-    instrument: Optional[Instrument] = Field(None, description='Instrument component')
-    financingDetails: Optional[FinancingDetails] = Field(None, description='FinancingDetails component')
-    undInstrmtGrp: Optional[UndInstrmtGrp] = Field(None, description='UndInstrmtGrp component')
-    instrmtLegGrp: Optional[InstrmtLegGrp] = Field(None, description='InstrmtLegGrp component')
-    noQuoteEntries: Optional[int] = Field(None, description='Number of NoQuoteEntries entries', alias='295')
-    noQuoteEntries_items: List[NoQuoteEntries] = Field(default_factory=list)
+    Instrument: Optional[InstrumentComponent] = Field(None, description='Instrument component')
+    FinancingDetails: Optional[FinancingDetailsComponent] = Field(None, description='FinancingDetails component')
+    UndInstrmtGrp: Optional[UndInstrmtGrpComponent] = Field(None, description='UndInstrmtGrp component')
+    InstrmtLegGrp: Optional[InstrmtLegGrpComponent] = Field(None, description='InstrmtLegGrp component')
+    NoQuoteEntries: Optional[int] = Field(None, description='Number of NoQuoteEntries entries', alias='')
+    NoQuoteEntries_items: List[NoQuoteEntriesGroup] = Field(default_factory=list)

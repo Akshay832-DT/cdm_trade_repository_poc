@@ -5,12 +5,10 @@ This module contains the Pydantic model for the MDRjctGrp component.
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-
-
-class NoAltMDSource(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class NoAltMDSourceGroup(FIXComponentBase):
     """
     NoAltMDSource group fields
     """
@@ -24,10 +22,10 @@ class NoAltMDSource(FIXMessageBase):
         }
     )
     
-    altMDSourceID: Optional[str] = Field(None, description='', alias='817')
+    AltMDSourceID: Optional[str] = Field(None, description='', alias='817')
 
 
-class MDRjctGrp(FIXMessageBase):
+class MDRjctGrpComponent(FIXComponentBase):
     """
     FIX 4.4 MDRjctGrp Component
     """
@@ -41,5 +39,5 @@ class MDRjctGrp(FIXMessageBase):
         }
     )
     
-    noAltMDSource: Optional[int] = Field(None, description='Number of NoAltMDSource entries', alias='816')
-    noAltMDSource_items: List[NoAltMDSource] = Field(default_factory=list)
+    NoAltMDSource: Optional[int] = Field(None, description='Number of NoAltMDSource entries', alias='')
+    NoAltMDSource_items: List[NoAltMDSourceGroup] = Field(default_factory=list)

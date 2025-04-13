@@ -5,12 +5,10 @@ This module contains the Pydantic model for the LegSecAltIDGrp component.
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-
-
-class NoLegSecurityAltID(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class NoLegSecurityAltIDGroup(FIXComponentBase):
     """
     NoLegSecurityAltID group fields
     """
@@ -24,11 +22,11 @@ class NoLegSecurityAltID(FIXMessageBase):
         }
     )
     
-    legSecurityAltID: Optional[str] = Field(None, description='', alias='605')
-    legSecurityAltIDSource: Optional[str] = Field(None, description='', alias='606')
+    LegSecurityAltID: Optional[str] = Field(None, description='', alias='605')
+    LegSecurityAltIDSource: Optional[str] = Field(None, description='', alias='606')
 
 
-class LegSecAltIDGrp(FIXMessageBase):
+class LegSecAltIDGrpComponent(FIXComponentBase):
     """
     FIX 4.4 LegSecAltIDGrp Component
     """
@@ -42,5 +40,5 @@ class LegSecAltIDGrp(FIXMessageBase):
         }
     )
     
-    noLegSecurityAltID: Optional[int] = Field(None, description='Number of NoLegSecurityAltID entries', alias='604')
-    noLegSecurityAltID_items: List[NoLegSecurityAltID] = Field(default_factory=list)
+    NoLegSecurityAltID: Optional[int] = Field(None, description='Number of NoLegSecurityAltID entries', alias='')
+    NoLegSecurityAltID_items: List[NoLegSecurityAltIDGroup] = Field(default_factory=list)

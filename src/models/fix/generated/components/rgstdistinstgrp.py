@@ -5,12 +5,10 @@ This module contains the Pydantic model for the RgstDistInstGrp component.
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-
-
-class NoDistribInsts(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class NoDistribInstsGroup(FIXComponentBase):
     """
     NoDistribInsts group fields
     """
@@ -24,17 +22,17 @@ class NoDistribInsts(FIXMessageBase):
         }
     )
     
-    distribPaymentMethod: Optional[int] = Field(None, description='', alias='477')
-    distribPercentage: Optional[float] = Field(None, description='', alias='512')
-    cashDistribCurr: Optional[str] = Field(None, description='', alias='478')
-    cashDistribAgentName: Optional[str] = Field(None, description='', alias='498')
-    cashDistribAgentCode: Optional[str] = Field(None, description='', alias='499')
-    cashDistribAgentAcctNumber: Optional[str] = Field(None, description='', alias='500')
-    cashDistribPayRef: Optional[str] = Field(None, description='', alias='501')
-    cashDistribAgentAcctName: Optional[str] = Field(None, description='', alias='502')
+    DistribPaymentMethod: Optional[int] = Field(None, description='', alias='477')
+    DistribPercentage: Optional[float] = Field(None, description='', alias='512')
+    CashDistribCurr: Optional[str] = Field(None, description='', alias='478')
+    CashDistribAgentName: Optional[str] = Field(None, description='', alias='498')
+    CashDistribAgentCode: Optional[str] = Field(None, description='', alias='499')
+    CashDistribAgentAcctNumber: Optional[str] = Field(None, description='', alias='500')
+    CashDistribPayRef: Optional[str] = Field(None, description='', alias='501')
+    CashDistribAgentAcctName: Optional[str] = Field(None, description='', alias='502')
 
 
-class RgstDistInstGrp(FIXMessageBase):
+class RgstDistInstGrpComponent(FIXComponentBase):
     """
     FIX 4.4 RgstDistInstGrp Component
     """
@@ -48,5 +46,5 @@ class RgstDistInstGrp(FIXMessageBase):
         }
     )
     
-    noDistribInsts: Optional[int] = Field(None, description='Number of NoDistribInsts entries', alias='510')
-    noDistribInsts_items: List[NoDistribInsts] = Field(default_factory=list)
+    NoDistribInsts: Optional[int] = Field(None, description='Number of NoDistribInsts entries', alias='')
+    NoDistribInsts_items: List[NoDistribInstsGroup] = Field(default_factory=list)

@@ -5,12 +5,10 @@ This module contains the Pydantic model for the SettlPtysSubGrp component.
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-
-
-class NoSettlPartySubIDs(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class NoSettlPartySubIDsGroup(FIXComponentBase):
     """
     NoSettlPartySubIDs group fields
     """
@@ -24,11 +22,11 @@ class NoSettlPartySubIDs(FIXMessageBase):
         }
     )
     
-    settlPartySubID: Optional[str] = Field(None, description='', alias='785')
-    settlPartySubIDType: Optional[int] = Field(None, description='', alias='786')
+    SettlPartySubID: Optional[str] = Field(None, description='', alias='785')
+    SettlPartySubIDType: Optional[int] = Field(None, description='', alias='786')
 
 
-class SettlPtysSubGrp(FIXMessageBase):
+class SettlPtysSubGrpComponent(FIXComponentBase):
     """
     FIX 4.4 SettlPtysSubGrp Component
     """
@@ -42,5 +40,5 @@ class SettlPtysSubGrp(FIXMessageBase):
         }
     )
     
-    noSettlPartySubIDs: Optional[int] = Field(None, description='Number of NoSettlPartySubIDs entries', alias='801')
-    noSettlPartySubIDs_items: List[NoSettlPartySubIDs] = Field(default_factory=list)
+    NoSettlPartySubIDs: Optional[int] = Field(None, description='Number of NoSettlPartySubIDs entries', alias='')
+    NoSettlPartySubIDs_items: List[NoSettlPartySubIDsGroup] = Field(default_factory=list)

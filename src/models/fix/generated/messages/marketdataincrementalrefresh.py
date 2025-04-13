@@ -2,20 +2,20 @@ from typing import Optional, List
 from datetime import datetime, date, time
 from pydantic import Field
 from src.models.fix.base import FIXMessageBase
-from src.models.fix.generated.components.mdincgrp import MDIncGrp
+from src.models.fix.generated.components.mdincgrp import MDIncGrpComponent
 
 class MarketDataIncrementalRefresh(FIXMessageBase):
     """FIX message model."""
 
-    beginstring: str = Field(..., description='', alias='8')
-    bodylength: int = Field(..., description='', alias='9')
-    msgtype: str = Field(..., description='', alias='35')
-    sendercompid: str = Field(..., description='', alias='49')
-    targetcompid: str = Field(..., description='', alias='56')
-    msgseqnum: int = Field(..., description='', alias='34')
-    sendingtime: datetime = Field(..., description='', alias='52')
-    mdreqid: Optional[str] = Field(None, description='', alias='262')
-    applqueuedepth: Optional[int] = Field(None, description='', alias='813')
-    applqueueresolution: Optional[int] = Field(None, description='', alias='814')
-    mdincgrp: MDIncGrp = Field(..., description='MDIncGrp component')
+    BeginString: str = Field(..., description='', alias='8')
+    BodyLength: int = Field(..., description='', alias='9')
+    MsgType: str = Field(..., description='', alias='35')
+    SenderCompID: str = Field(..., description='', alias='49')
+    TargetCompID: str = Field(..., description='', alias='56')
+    MsgSeqNum: int = Field(..., description='', alias='34')
+    SendingTime: datetime = Field(..., description='', alias='52')
+    MDReqID: Optional[str] = Field(None, description='', alias='262')
+    ApplQueueDepth: Optional[int] = Field(None, description='', alias='813')
+    ApplQueueResolution: Optional[int] = Field(None, description='', alias='814')
+    MDIncGrp: MDIncGrpComponent = Field(..., description='MDIncGrp component')
 

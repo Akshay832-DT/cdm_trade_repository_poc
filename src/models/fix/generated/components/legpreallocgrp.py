@@ -5,13 +5,10 @@ This module contains the Pydantic model for the LegPreAllocGrp component.
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-from src.models.fix.generated.components.nestedparties2 import NestedParties2
-
-
-class NoLegAllocs(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class NoLegAllocsGroup(FIXComponentBase):
     """
     NoLegAllocs group fields
     """
@@ -25,14 +22,14 @@ class NoLegAllocs(FIXMessageBase):
         }
     )
     
-    legAllocAccount: Optional[str] = Field(None, description='', alias='671')
-    legIndividualAllocID: Optional[str] = Field(None, description='', alias='672')
-    legAllocQty: Optional[float] = Field(None, description='', alias='673')
-    legAllocAcctIDSource: Optional[str] = Field(None, description='', alias='674')
-    legSettlCurrency: Optional[str] = Field(None, description='', alias='675')
+    LegAllocAccount: Optional[str] = Field(None, description='', alias='671')
+    LegIndividualAllocID: Optional[str] = Field(None, description='', alias='672')
+    LegAllocQty: Optional[float] = Field(None, description='', alias='673')
+    LegAllocAcctIDSource: Optional[str] = Field(None, description='', alias='674')
+    LegSettlCurrency: Optional[str] = Field(None, description='', alias='675')
 
 
-class LegPreAllocGrp(FIXMessageBase):
+class LegPreAllocGrpComponent(FIXComponentBase):
     """
     FIX 4.4 LegPreAllocGrp Component
     """
@@ -46,6 +43,6 @@ class LegPreAllocGrp(FIXMessageBase):
         }
     )
     
-    nestedParties2: Optional[NestedParties2] = Field(None, description='NestedParties2 component')
-    noLegAllocs: Optional[int] = Field(None, description='Number of NoLegAllocs entries', alias='670')
-    noLegAllocs_items: List[NoLegAllocs] = Field(default_factory=list)
+    NestedParties2: Optional[NestedParties2Component] = Field(None, description='NestedParties2 component')
+    NoLegAllocs: Optional[int] = Field(None, description='Number of NoLegAllocs entries', alias='')
+    NoLegAllocs_items: List[NoLegAllocsGroup] = Field(default_factory=list)

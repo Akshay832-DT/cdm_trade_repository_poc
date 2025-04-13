@@ -5,12 +5,10 @@ This module contains the Pydantic model for the AllocAckGrp component.
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-
-
-class NoAllocs(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class NoAllocsGroup(FIXComponentBase):
     """
     NoAllocs group fields
     """
@@ -24,17 +22,17 @@ class NoAllocs(FIXMessageBase):
         }
     )
     
-    allocAccount: Optional[str] = Field(None, description='', alias='79')
-    allocAcctIDSource: Optional[int] = Field(None, description='', alias='661')
-    allocPrice: Optional[float] = Field(None, description='', alias='366')
-    individualAllocID: Optional[str] = Field(None, description='', alias='467')
-    individualAllocRejCode: Optional[int] = Field(None, description='', alias='776')
-    allocText: Optional[str] = Field(None, description='', alias='161')
-    encodedAllocTextLen: Optional[int] = Field(None, description='', alias='360')
-    encodedAllocText: Optional[str] = Field(None, description='', alias='361')
+    AllocAccount: Optional[str] = Field(None, description='', alias='79')
+    AllocAcctIDSource: Optional[int] = Field(None, description='', alias='661')
+    AllocPrice: Optional[float] = Field(None, description='', alias='366')
+    IndividualAllocID: Optional[str] = Field(None, description='', alias='467')
+    IndividualAllocRejCode: Optional[int] = Field(None, description='', alias='776')
+    AllocText: Optional[str] = Field(None, description='', alias='161')
+    EncodedAllocTextLen: Optional[int] = Field(None, description='', alias='360')
+    EncodedAllocText: Optional[str] = Field(None, description='', alias='361')
 
 
-class AllocAckGrp(FIXMessageBase):
+class AllocAckGrpComponent(FIXComponentBase):
     """
     FIX 4.4 AllocAckGrp Component
     """
@@ -48,5 +46,5 @@ class AllocAckGrp(FIXMessageBase):
         }
     )
     
-    noAllocs: Optional[int] = Field(None, description='Number of NoAllocs entries', alias='78')
-    noAllocs_items: List[NoAllocs] = Field(default_factory=list)
+    NoAllocs: Optional[int] = Field(None, description='Number of NoAllocs entries', alias='')
+    NoAllocs_items: List[NoAllocsGroup] = Field(default_factory=list)

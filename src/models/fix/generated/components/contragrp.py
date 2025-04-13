@@ -5,12 +5,10 @@ This module contains the Pydantic model for the ContraGrp component.
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-
-
-class NoContraBrokers(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class NoContraBrokersGroup(FIXComponentBase):
     """
     NoContraBrokers group fields
     """
@@ -24,14 +22,14 @@ class NoContraBrokers(FIXMessageBase):
         }
     )
     
-    contraBroker: Optional[str] = Field(None, description='', alias='375')
-    contraTrader: Optional[str] = Field(None, description='', alias='337')
-    contraTradeQty: Optional[float] = Field(None, description='', alias='437')
-    contraTradeTime: Optional[datetime] = Field(None, description='', alias='438')
-    contraLegRefID: Optional[str] = Field(None, description='', alias='655')
+    ContraBroker: Optional[str] = Field(None, description='', alias='375')
+    ContraTrader: Optional[str] = Field(None, description='', alias='337')
+    ContraTradeQty: Optional[float] = Field(None, description='', alias='437')
+    ContraTradeTime: Optional[datetime] = Field(None, description='', alias='438')
+    ContraLegRefID: Optional[str] = Field(None, description='', alias='655')
 
 
-class ContraGrp(FIXMessageBase):
+class ContraGrpComponent(FIXComponentBase):
     """
     FIX 4.4 ContraGrp Component
     """
@@ -45,5 +43,5 @@ class ContraGrp(FIXMessageBase):
         }
     )
     
-    noContraBrokers: Optional[int] = Field(None, description='Number of NoContraBrokers entries', alias='382')
-    noContraBrokers_items: List[NoContraBrokers] = Field(default_factory=list)
+    NoContraBrokers: Optional[int] = Field(None, description='Number of NoContraBrokers entries', alias='')
+    NoContraBrokers_items: List[NoContraBrokersGroup] = Field(default_factory=list)

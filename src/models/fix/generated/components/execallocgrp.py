@@ -5,12 +5,10 @@ This module contains the Pydantic model for the ExecAllocGrp component.
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-
-
-class NoExecs(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class NoExecsGroup(FIXComponentBase):
     """
     NoExecs group fields
     """
@@ -24,15 +22,15 @@ class NoExecs(FIXMessageBase):
         }
     )
     
-    lastQty: Optional[float] = Field(None, description='', alias='32')
-    execID: Optional[str] = Field(None, description='', alias='17')
-    secondaryExecID: Optional[str] = Field(None, description='', alias='527')
-    lastPx: Optional[float] = Field(None, description='', alias='31')
-    lastParPx: Optional[float] = Field(None, description='', alias='669')
-    lastCapacity: Optional[str] = Field(None, description='', alias='29')
+    LastQty: Optional[float] = Field(None, description='', alias='32')
+    ExecID: Optional[str] = Field(None, description='', alias='17')
+    SecondaryExecID: Optional[str] = Field(None, description='', alias='527')
+    LastPx: Optional[float] = Field(None, description='', alias='31')
+    LastParPx: Optional[float] = Field(None, description='', alias='669')
+    LastCapacity: Optional[str] = Field(None, description='', alias='29')
 
 
-class ExecAllocGrp(FIXMessageBase):
+class ExecAllocGrpComponent(FIXComponentBase):
     """
     FIX 4.4 ExecAllocGrp Component
     """
@@ -46,5 +44,5 @@ class ExecAllocGrp(FIXMessageBase):
         }
     )
     
-    noExecs: Optional[int] = Field(None, description='Number of NoExecs entries', alias='124')
-    noExecs_items: List[NoExecs] = Field(default_factory=list)
+    NoExecs: Optional[int] = Field(None, description='Number of NoExecs entries', alias='')
+    NoExecs_items: List[NoExecsGroup] = Field(default_factory=list)

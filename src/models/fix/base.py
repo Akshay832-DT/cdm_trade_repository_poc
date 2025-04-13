@@ -1,12 +1,25 @@
 """
 FIX Base Models
 
-This module contains base models for all FIX messages.
+This module contains base models for all FIX messages and components.
 """
 from datetime import datetime
 from typing import Dict, Any, Optional, Literal
 from pydantic import BaseModel, Field, ConfigDict
 from ..base import TradeModel
+
+class FIXComponentBase(BaseModel):
+    """
+    Base class for all FIX components.
+    
+    Components are reusable parts of FIX messages that don't need header/trailer fields.
+    """
+    model_config = ConfigDict(
+        populate_by_name=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat()
+        }
+    )
 
 class FIXMessageBase(TradeModel):
     """

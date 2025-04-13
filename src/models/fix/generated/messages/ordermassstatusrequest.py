@@ -2,28 +2,28 @@ from typing import Optional, List
 from datetime import datetime, date, time
 from pydantic import Field
 from src.models.fix.base import FIXMessageBase
-from src.models.fix.generated.components.parties import Parties
-from src.models.fix.generated.components.instrument import Instrument
-from src.models.fix.generated.components.underlyinginstrument import UnderlyingInstrument
+from src.models.fix.generated.components.parties import PartiesComponent
+from src.models.fix.generated.components.instrument import InstrumentComponent
+from src.models.fix.generated.components.underlyinginstrument import UnderlyingInstrumentComponent
 
 class OrderMassStatusRequest(FIXMessageBase):
     """FIX message model."""
 
-    beginstring: str = Field(..., description='', alias='8')
-    bodylength: int = Field(..., description='', alias='9')
-    msgtype: str = Field(..., description='', alias='35')
-    sendercompid: str = Field(..., description='', alias='49')
-    targetcompid: str = Field(..., description='', alias='56')
-    msgseqnum: int = Field(..., description='', alias='34')
-    sendingtime: datetime = Field(..., description='', alias='52')
-    massstatusreqid: str = Field(..., description='', alias='584')
-    massstatusreqtype: int = Field(..., description='', alias='585')
-    account: Optional[str] = Field(None, description='', alias='1')
-    acctidsource: Optional[int] = Field(None, description='', alias='660')
-    tradingsessionid: Optional[str] = Field(None, description='', alias='336')
-    tradingsessionsubid: Optional[str] = Field(None, description='', alias='625')
-    side: Optional[str] = Field(None, description='', alias='54')
-    parties: Optional[Parties] = Field(None, description='Parties component')
-    instrument: Optional[Instrument] = Field(None, description='Instrument component')
-    underlyinginstrument: Optional[UnderlyingInstrument] = Field(None, description='UnderlyingInstrument component')
+    BeginString: str = Field(..., description='', alias='8')
+    BodyLength: int = Field(..., description='', alias='9')
+    MsgType: str = Field(..., description='', alias='35')
+    SenderCompID: str = Field(..., description='', alias='49')
+    TargetCompID: str = Field(..., description='', alias='56')
+    MsgSeqNum: int = Field(..., description='', alias='34')
+    SendingTime: datetime = Field(..., description='', alias='52')
+    MassStatusReqID: str = Field(..., description='', alias='584')
+    MassStatusReqType: int = Field(..., description='', alias='585')
+    Account: Optional[str] = Field(None, description='', alias='1')
+    AcctIDSource: Optional[int] = Field(None, description='', alias='660')
+    TradingSessionID: Optional[str] = Field(None, description='', alias='336')
+    TradingSessionSubID: Optional[str] = Field(None, description='', alias='625')
+    Side: Optional[str] = Field(None, description='', alias='54')
+    Parties: Optional[PartiesComponent] = Field(None, description='Parties component')
+    Instrument: Optional[InstrumentComponent] = Field(None, description='Instrument component')
+    UnderlyingInstrument: Optional[UnderlyingInstrumentComponent] = Field(None, description='UnderlyingInstrument component')
 

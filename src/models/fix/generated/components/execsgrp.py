@@ -5,12 +5,10 @@ This module contains the Pydantic model for the ExecsGrp component.
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-
-
-class NoExecs(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class NoExecsGroup(FIXComponentBase):
     """
     NoExecs group fields
     """
@@ -24,10 +22,10 @@ class NoExecs(FIXMessageBase):
         }
     )
     
-    execID: Optional[str] = Field(None, description='', alias='17')
+    ExecID: Optional[str] = Field(None, description='', alias='17')
 
 
-class ExecsGrp(FIXMessageBase):
+class ExecsGrpComponent(FIXComponentBase):
     """
     FIX 4.4 ExecsGrp Component
     """
@@ -41,5 +39,5 @@ class ExecsGrp(FIXMessageBase):
         }
     )
     
-    noExecs: Optional[int] = Field(None, description='Number of NoExecs entries', alias='124')
-    noExecs_items: List[NoExecs] = Field(default_factory=list)
+    NoExecs: Optional[int] = Field(None, description='Number of NoExecs entries', alias='')
+    NoExecs_items: List[NoExecsGroup] = Field(default_factory=list)

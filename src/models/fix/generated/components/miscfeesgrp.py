@@ -5,12 +5,10 @@ This module contains the Pydantic model for the MiscFeesGrp component.
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-
-
-class NoMiscFees(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class NoMiscFeesGroup(FIXComponentBase):
     """
     NoMiscFees group fields
     """
@@ -24,13 +22,13 @@ class NoMiscFees(FIXMessageBase):
         }
     )
     
-    miscFeeAmt: Optional[float] = Field(None, description='', alias='137')
-    miscFeeCurr: Optional[str] = Field(None, description='', alias='138')
-    miscFeeType: Optional[str] = Field(None, description='', alias='139')
-    miscFeeBasis: Optional[int] = Field(None, description='', alias='891')
+    MiscFeeAmt: Optional[float] = Field(None, description='', alias='137')
+    MiscFeeCurr: Optional[str] = Field(None, description='', alias='138')
+    MiscFeeType: Optional[str] = Field(None, description='', alias='139')
+    MiscFeeBasis: Optional[int] = Field(None, description='', alias='891')
 
 
-class MiscFeesGrp(FIXMessageBase):
+class MiscFeesGrpComponent(FIXComponentBase):
     """
     FIX 4.4 MiscFeesGrp Component
     """
@@ -44,5 +42,5 @@ class MiscFeesGrp(FIXMessageBase):
         }
     )
     
-    noMiscFees: Optional[int] = Field(None, description='Number of NoMiscFees entries', alias='136')
-    noMiscFees_items: List[NoMiscFees] = Field(default_factory=list)
+    NoMiscFees: Optional[int] = Field(None, description='Number of NoMiscFees entries', alias='')
+    NoMiscFees_items: List[NoMiscFeesGroup] = Field(default_factory=list)

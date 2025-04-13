@@ -5,13 +5,10 @@ This module contains the Pydantic model for the InstrmtLegGrp component.
 """
 from datetime import datetime, date, time
 from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import Field, ConfigDict
 from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXMessageBase
-from src.models.fix.generated.components.instrumentleg import InstrumentLeg
-
-
-class NoLegs(FIXMessageBase):
+from src.models.fix.base import FIXComponentBase
+class NoLegsGroup(FIXComponentBase):
     """
     NoLegs group fields
     """
@@ -27,7 +24,7 @@ class NoLegs(FIXMessageBase):
     
 
 
-class InstrmtLegGrp(FIXMessageBase):
+class InstrmtLegGrpComponent(FIXComponentBase):
     """
     FIX 4.4 InstrmtLegGrp Component
     """
@@ -41,6 +38,6 @@ class InstrmtLegGrp(FIXMessageBase):
         }
     )
     
-    instrumentLeg: Optional[InstrumentLeg] = Field(None, description='InstrumentLeg component')
-    noLegs: Optional[int] = Field(None, description='Number of NoLegs entries', alias='555')
-    noLegs_items: List[NoLegs] = Field(default_factory=list)
+    InstrumentLeg: Optional[InstrumentLegComponent] = Field(None, description='InstrumentLeg component')
+    NoLegs: Optional[int] = Field(None, description='Number of NoLegs entries', alias='')
+    NoLegs_items: List[NoLegsGroup] = Field(default_factory=list)
