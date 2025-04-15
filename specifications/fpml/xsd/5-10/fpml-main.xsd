@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.fpml.org/FpML-5/confirmation" targetNamespace="http://www.fpml.org/FpML-5/confirmation" elementFormDefault="qualified" attributeFormDefault="unqualified">
+  
+  <!-- Root elements -->
+  <xs:element name="FpML" type="FpMLType"/>
+  
+  <!-- Complex Types -->
+  <xs:complexType name="FpMLType">
+    <xs:sequence>
+      <xs:element name="trade" type="TradeType"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="TradeType">
+    <xs:sequence>
+      <xs:element name="tradeHeader" type="TradeHeaderType"/>
+      <xs:element name="product" type="ProductType"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="TradeHeaderType">
+    <xs:sequence>
+      <xs:element name="partyTradeIdentifier" type="PartyTradeIdentifierType" maxOccurs="unbounded"/>
+      <xs:element name="tradeDate" type="xs:date"/>
+      <xs:element name="clearedDate" type="xs:date" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="PartyTradeIdentifierType">
+    <xs:sequence>
+      <xs:element name="partyReference" type="PartyReferenceType"/>
+      <xs:element name="tradeId" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="PartyReferenceType">
+    <xs:attribute name="href" type="xs:string"/>
+  </xs:complexType>
+  
+  <xs:complexType name="ProductType">
+    <xs:choice>
+      <xs:element name="interestRate" type="InterestRateProductType" minOccurs="0"/>
+      <xs:element name="credit" type="CreditProductType" minOccurs="0"/>
+    </xs:choice>
+  </xs:complexType>
+  
+  <xs:complexType name="InterestRateProductType">
+    <xs:sequence>
+      <xs:element name="swapStream" type="SwapStreamType" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="SwapStreamType">
+    <xs:sequence>
+      <xs:element name="payerReceiver" type="PayerReceiverType"/>
+      <xs:element name="paymentFrequency" type="PaymentFrequencyEnum"/>
+      <xs:element name="notionalAmount" type="NotionalAmountType"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="PayerReceiverType">
+    <xs:sequence>
+      <xs:element name="payerPartyReference" type="PartyReferenceType"/>
+      <xs:element name="receiverPartyReference" type="PartyReferenceType"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="NotionalAmountType">
+    <xs:sequence>
+      <xs:element name="amount" type="xs:decimal"/>
+      <xs:element name="currency" type="CurrencyEnum"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="CreditProductType">
+    <xs:sequence>
+      <xs:element name="protectionTerms" type="ProtectionTermsType"/>
+      <xs:element name="referenceInformation" type="ReferenceInformationType"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="ProtectionTermsType">
+    <xs:sequence>
+      <xs:element name="referenceEntity" type="xs:string"/>
+      <xs:element name="creditEvent" type="CreditEventEnum"/>
+      <xs:element name="settlementType" type="SettlementTypeEnum"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="ReferenceInformationType">
+    <xs:sequence>
+      <xs:element name="referenceEntity" type="xs:string"/>
+      <xs:element name="referenceObligation" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <!-- Enums -->
+  <xs:simpleType name="PaymentFrequencyEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Daily"/>
+      <xs:enumeration value="Weekly"/>
+      <xs:enumeration value="Monthly"/>
+      <xs:enumeration value="Quarterly"/>
+      <xs:enumeration value="SemiAnnually"/>
+      <xs:enumeration value="Annually"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="CurrencyEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="USD"/>
+      <xs:enumeration value="EUR"/>
+      <xs:enumeration value="GBP"/>
+      <xs:enumeration value="JPY"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="CreditEventEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Bankruptcy"/>
+      <xs:enumeration value="FailureToPay"/>
+      <xs:enumeration value="Restructuring"/>
+      <xs:enumeration value="ObligationDefault"/>
+      <xs:enumeration value="ObligationAcceleration"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="SettlementTypeEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Physical"/>
+      <xs:enumeration value="Cash"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+</xs:schema> 
