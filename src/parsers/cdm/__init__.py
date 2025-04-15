@@ -1,3 +1,6 @@
 """
-ISDA CDM 6.4 Parser.
-""" 
+ISDA CDM Parser module.
+"""
+from .parser import CdmParser
+
+__all__ = ['CdmParser'] 

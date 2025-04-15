@@ -1,0 +1,15 @@
+from datetime import date, datetime, time
+from pydantic import Field, model_validator
+from src.models.cdm.generated.base.base import CdmModelBase
+from typing import Dict, List, Optional, Any, Union, ForwardRef, TYPE_CHECKING, ClassVar
+
+if TYPE_CHECKING:
+    from src.models.cdm.generated.event.common.record_amount_type_enum import RecordAmountTypeEnum
+
+class BillingSummaryInstruction(CdmModelBase):
+    """Specifies the instructions for creation of a billing summary."""
+    summary_amount_type: ForwardRef("RecordAmountTypeEnum") = Field(description="The account level for the billing summary.")
+
+# Import after class definition to avoid circular imports
+from src.models.cdm.generated.event.common.record_amount_type_enum import RecordAmountTypeEnum
+BillingSummaryInstruction.model_rebuild()

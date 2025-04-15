@@ -2,7 +2,7 @@ from typing import Dict, Optional
 from .base import BaseParser
 from .fix.parser import FIXParser
 from .fpml.parser import FpMLParser
-from .cdm.parser import CDMParser
+from .cdm.parser import CdmParser
 from ..models.base import TradeModel
 import yaml
 import logging
@@ -12,7 +12,7 @@ class ParserController:
         self.parsers: Dict[str, BaseParser] = {
             'FIX': FIXParser(),
             'FPML': FpMLParser(),
-            'CDM': CDMParser()
+            'CDM': CdmParser()
         }
         self.logger = logging.getLogger(__name__)
 

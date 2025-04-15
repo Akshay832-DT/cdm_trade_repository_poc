@@ -1,0 +1,36 @@
+from datetime import date, datetime, time
+from pydantic import Field, model_validator
+from src.models.cdm.generated.base.base import CdmModelBase
+from typing import Dict, List, Optional, Any, Union, ForwardRef, TYPE_CHECKING, ClassVar
+
+if TYPE_CHECKING:
+    from src.models.cdm.generated.base.datetime.period import Period
+    from src.models.cdm.generated.base.staticdata.asset.common.asset_class_enum import AssetClassEnum
+    from src.models.cdm.generated.base.staticdata.asset.common.asset_identifier import AssetIdentifier
+    from src.models.cdm.generated.base.staticdata.asset.common.taxonomy import Taxonomy
+    from src.models.cdm.generated.base.staticdata.party.legal_entity import LegalEntity
+    from src.models.cdm.generated.metafields.field_with_meta_floating_rate_index_enum import FieldWithMetaFloatingRateIndexEnum
+    from src.models.cdm.generated.metafields.field_with_meta_string import FieldWithMetaString
+
+class FloatingRateIndex(CdmModelBase):
+    """Specification of an interest rate index which can change over time, e.g. the SONIA (Sterling Overnight Index Average) in the UK."""
+    identifier: List[ForwardRef("AssetIdentifier")] = Field(None, description="Asset Identifiers are used to uniquely identify an Asset, using a specified Asset Identifier Type.")
+    taxonomy: List[ForwardRef("Taxonomy")] = Field(None, description="Defines the taxonomy of an object by combining a taxonomy source (i.e. the rules to classify the object) and a value (i.e. the output of those rules on the object.")
+    is_exchange_listed: bool = Field(None, description="Defines whether the Asset is listed on a public exchange.")
+    exchange: ForwardRef("LegalEntity") = Field(None, description="If the Asset is listed, defines the public exchange of the listing.")
+    related_exchange: List[ForwardRef("LegalEntity")] = Field(None, description="Provides the related Exchanges, if applicable.")
+    name: ForwardRef("FieldWithMetaString") = Field(None, description="A description of the Index.")
+    provider: ForwardRef("LegalEntity") = Field(None, description="The organisation that creates or maintains the Index.")
+    asset_class: ForwardRef("AssetClassEnum") = Field(None, description="The Asset Class of the Index.")
+    floating_rate_index: ForwardRef("FieldWithMetaFloatingRateIndexEnum") = Field(description="The reference index that is used to specify the floating interest rate.")
+    index_tenor: ForwardRef("Period") = Field(None, description="The ISDA Designated Maturity, i.e. the floating rate tenor.")
+
+# Import after class definition to avoid circular imports
+from src.models.cdm.generated.base.datetime.period import Period
+from src.models.cdm.generated.base.staticdata.asset.common.asset_class_enum import AssetClassEnum
+from src.models.cdm.generated.base.staticdata.asset.common.asset_identifier import AssetIdentifier
+from src.models.cdm.generated.base.staticdata.asset.common.taxonomy import Taxonomy
+from src.models.cdm.generated.base.staticdata.party.legal_entity import LegalEntity
+from src.models.cdm.generated.metafields.field_with_meta_floating_rate_index_enum import FieldWithMetaFloatingRateIndexEnum
+from src.models.cdm.generated.metafields.field_with_meta_string import FieldWithMetaString
+FloatingRateIndex.model_rebuild()

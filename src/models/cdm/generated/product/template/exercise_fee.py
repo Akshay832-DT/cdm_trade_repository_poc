@@ -1,0 +1,24 @@
+from datetime import date, datetime, time
+from pydantic import Field, model_validator
+from src.models.cdm.generated.base.base import CdmModelBase
+from typing import Dict, List, Optional, Any, Union, ForwardRef, TYPE_CHECKING, ClassVar
+
+if TYPE_CHECKING:
+    from src.models.cdm.generated.base.datetime.relative_date_offset import RelativeDateOffset
+    from src.models.cdm.generated.base.staticdata.party.counterparty_role_enum import CounterpartyRoleEnum
+    from src.models.cdm.generated.metafields.reference_with_meta_money import ReferenceWithMetaMoney
+
+class ExerciseFee(CdmModelBase):
+    """A class defining the fee payable on exercise of an option. This fee may be defined as an amount or a percentage of the notional exercised. As a difference with FpML, it extends the BuyerSeller class."""
+    payer: ForwardRef("CounterpartyRoleEnum") = Field(None, description="Specifies the counterparty responsible for making the payments defined by this structure.  The party is one of the two principal parties to the transaction.")
+    receiver: ForwardRef("CounterpartyRoleEnum") = Field(None, description="Specifies the party that receives the payments corresponding to this structure.  The party is one of the two counterparties to the transaction.")
+    notional_reference: ForwardRef("ReferenceWithMetaMoney") = Field(description="A pointer style reference to the associated notional schedule defined elsewhere in the document.")
+    fee_amount: float = Field(None, description="The amount of fee to be paid on exercise. The fee currency is that of the referenced notional.")
+    fee_rate: float = Field(None, description="A fee represented as a percentage of some referenced notional. A percentage of 5% would be represented as 0.05.")
+    fee_payment_date: ForwardRef("RelativeDateOffset") = Field(description="The date on which exercise fee(s) will be paid. It is specified as a relative date.")
+
+# Import after class definition to avoid circular imports
+from src.models.cdm.generated.base.datetime.relative_date_offset import RelativeDateOffset
+from src.models.cdm.generated.base.staticdata.party.counterparty_role_enum import CounterpartyRoleEnum
+from src.models.cdm.generated.metafields.reference_with_meta_money import ReferenceWithMetaMoney
+ExerciseFee.model_rebuild()

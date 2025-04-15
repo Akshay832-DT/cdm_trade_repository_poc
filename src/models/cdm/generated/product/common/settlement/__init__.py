@@ -1,0 +1,42 @@
+"""ISDA CDM models."""
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from src.models.cdm.generated.product.common.settlement.asset_flow_base import AssetFlowBase
+    from src.models.cdm.generated.product.common.settlement.cash_settlement_method_enum import CashSettlementMethodEnum
+    from src.models.cdm.generated.product.common.settlement.cash_settlement_terms import CashSettlementTerms
+    from src.models.cdm.generated.product.common.settlement.cashflow import Cashflow
+    from src.models.cdm.generated.product.common.settlement.cashflow_type import CashflowType
+    from src.models.cdm.generated.product.common.settlement.commodity_price_return_terms import CommodityPriceReturnTerms
+    from src.models.cdm.generated.product.common.settlement.computed_amount import ComputedAmount
+    from src.models.cdm.generated.product.common.settlement.deliverable_obligations import DeliverableObligations
+    from src.models.cdm.generated.product.common.settlement.delivery_method_enum import DeliveryMethodEnum
+    from src.models.cdm.generated.product.common.settlement.fixed_price import FixedPrice
+    from src.models.cdm.generated.product.common.settlement.fx_fixing_date import FxFixingDate
+    from src.models.cdm.generated.product.common.settlement.loan_participation import LoanParticipation
+    from src.models.cdm.generated.product.common.settlement.payment_detail import PaymentDetail
+    from src.models.cdm.generated.product.common.settlement.payment_discounting import PaymentDiscounting
+    from src.models.cdm.generated.product.common.settlement.payment_rule import PaymentRule
+    from src.models.cdm.generated.product.common.settlement.payout_base import PayoutBase
+    from src.models.cdm.generated.product.common.settlement.pc_deliverable_obligation_charac import PCDeliverableObligationCharac
+    from src.models.cdm.generated.product.common.settlement.percentage_rule import PercentageRule
+    from src.models.cdm.generated.product.common.settlement.physical_settlement_period import PhysicalSettlementPeriod
+    from src.models.cdm.generated.product.common.settlement.physical_settlement_terms import PhysicalSettlementTerms
+    from src.models.cdm.generated.product.common.settlement.pricing_dates import PricingDates
+    from src.models.cdm.generated.product.common.settlement.principal_payment import PrincipalPayment
+    from src.models.cdm.generated.product.common.settlement.principal_payment_schedule import PrincipalPaymentSchedule
+    from src.models.cdm.generated.product.common.settlement.principal_payments import PrincipalPayments
+    from src.models.cdm.generated.product.common.settlement.quantity_multiplier import QuantityMultiplier
+    from src.models.cdm.generated.product.common.settlement.resolvable_price_quantity import ResolvablePriceQuantity
+    from src.models.cdm.generated.product.common.settlement.roll_feature import RollFeature
+    from src.models.cdm.generated.product.common.settlement.scheduled_transfer_enum import ScheduledTransferEnum
+    from src.models.cdm.generated.product.common.settlement.settlement_base import SettlementBase
+    from src.models.cdm.generated.product.common.settlement.settlement_centre_enum import SettlementCentreEnum
+    from src.models.cdm.generated.product.common.settlement.settlement_date import SettlementDate
+    from src.models.cdm.generated.product.common.settlement.settlement_provision import SettlementProvision
+    from src.models.cdm.generated.product.common.settlement.settlement_terms import SettlementTerms
+    from src.models.cdm.generated.product.common.settlement.settlement_type_enum import SettlementTypeEnum
+    from src.models.cdm.generated.product.common.settlement.shaping_provision import ShapingProvision
+    from src.models.cdm.generated.product.common.settlement.standard_settlement_style_enum import StandardSettlementStyleEnum
+    from src.models.cdm.generated.product.common.settlement.transfer_settlement_enum import TransferSettlementEnum
+    from src.models.cdm.generated.product.common.settlement.valuation_date import ValuationDate

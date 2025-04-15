@@ -1,0 +1,55 @@
+"""ISDA CDM models."""
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from src.models.cdm.generated.product.collateral.agency_rating_criteria import AgencyRatingCriteria
+    from src.models.cdm.generated.product.collateral.all_criteria import AllCriteria
+    from src.models.cdm.generated.product.collateral.alternative_to_interest_amount_enum import AlternativeToInterestAmountEnum
+    from src.models.cdm.generated.product.collateral.any_criteria import AnyCriteria
+    from src.models.cdm.generated.product.collateral.asset_agency_rating import AssetAgencyRating
+    from src.models.cdm.generated.product.collateral.asset_country_of_origin import AssetCountryOfOrigin
+    from src.models.cdm.generated.product.collateral.asset_maturity import AssetMaturity
+    from src.models.cdm.generated.product.collateral.average_trading_volume import AverageTradingVolume
+    from src.models.cdm.generated.product.collateral.average_trading_volume_methodology_enum import AverageTradingVolumeMethodologyEnum
+    from src.models.cdm.generated.product.collateral.check_eligibility_result import CheckEligibilityResult
+    from src.models.cdm.generated.product.collateral.collateral import Collateral
+    from src.models.cdm.generated.product.collateral.collateral_agreement_floating_rate import CollateralAgreementFloatingRate
+    from src.models.cdm.generated.product.collateral.collateral_criteria import CollateralCriteria
+    from src.models.cdm.generated.product.collateral.collateral_criteria_base import CollateralCriteriaBase
+    from src.models.cdm.generated.product.collateral.collateral_interest_calculation_parameters import CollateralInterestCalculationParameters
+    from src.models.cdm.generated.product.collateral.collateral_interest_handling_enum import CollateralInterestHandlingEnum
+    from src.models.cdm.generated.product.collateral.collateral_interest_handling_parameters import CollateralInterestHandlingParameters
+    from src.models.cdm.generated.product.collateral.collateral_interest_notification import CollateralInterestNotification
+    from src.models.cdm.generated.product.collateral.collateral_interest_parameters import CollateralInterestParameters
+    from src.models.cdm.generated.product.collateral.collateral_margin_type_enum import CollateralMarginTypeEnum
+    from src.models.cdm.generated.product.collateral.collateral_provisions import CollateralProvisions
+    from src.models.cdm.generated.product.collateral.collateral_treatment import CollateralTreatment
+    from src.models.cdm.generated.product.collateral.collateral_type_enum import CollateralTypeEnum
+    from src.models.cdm.generated.product.collateral.collateral_valuation_treatment import CollateralValuationTreatment
+    from src.models.cdm.generated.product.collateral.concentration_limit import ConcentrationLimit
+    from src.models.cdm.generated.product.collateral.concentration_limit_criteria import ConcentrationLimitCriteria
+    from src.models.cdm.generated.product.collateral.concentration_limit_type_enum import ConcentrationLimitTypeEnum
+    from src.models.cdm.generated.product.collateral.contact_election import ContactElection
+    from src.models.cdm.generated.product.collateral.counterparty_own_issue_permitted import CounterpartyOwnIssuePermitted
+    from src.models.cdm.generated.product.collateral.credit_support_agreement_type_enum import CreditSupportAgreementTypeEnum
+    from src.models.cdm.generated.product.collateral.delivery_amount import DeliveryAmount
+    from src.models.cdm.generated.product.collateral.delivery_amount_election_enum import DeliveryAmountElectionEnum
+    from src.models.cdm.generated.product.collateral.distribution_and_interest_payment import DistributionAndInterestPayment
+    from src.models.cdm.generated.product.collateral.domestic_currency_issued import DomesticCurrencyIssued
+    from src.models.cdm.generated.product.collateral.eligibility_query import EligibilityQuery
+    from src.models.cdm.generated.product.collateral.eligible_collateral_criteria import EligibleCollateralCriteria
+    from src.models.cdm.generated.product.collateral.eligible_collateral_specification import EligibleCollateralSpecification
+    from src.models.cdm.generated.product.collateral.eligible_collateral_specification_instruction import EligibleCollateralSpecificationInstruction
+    from src.models.cdm.generated.product.collateral.independent_amount import IndependentAmount
+    from src.models.cdm.generated.product.collateral.interest_amount_application import InterestAmountApplication
+    from src.models.cdm.generated.product.collateral.issuer_agency_rating import IssuerAgencyRating
+    from src.models.cdm.generated.product.collateral.issuer_country_of_origin import IssuerCountryOfOrigin
+    from src.models.cdm.generated.product.collateral.issuer_name import IssuerName
+    from src.models.cdm.generated.product.collateral.listing_exchange import ListingExchange
+    from src.models.cdm.generated.product.collateral.listing_sector import ListingSector
+    from src.models.cdm.generated.product.collateral.negative_criteria import NegativeCriteria
+    from src.models.cdm.generated.product.collateral.rating_priority_resolution_enum import RatingPriorityResolutionEnum
+    from src.models.cdm.generated.product.collateral.return_amount import ReturnAmount
+    from src.models.cdm.generated.product.collateral.sovereign_agency_rating import SovereignAgencyRating
+    from src.models.cdm.generated.product.collateral.specific_asset import SpecificAsset
+    from src.models.cdm.generated.product.collateral.substitution_provisions import SubstitutionProvisions
