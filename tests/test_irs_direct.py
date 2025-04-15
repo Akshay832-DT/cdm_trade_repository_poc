@@ -15,6 +15,7 @@ def test_irs_message_direct():
         # Import directly from the generated module
         from src.models.fix.generated.messages.newordersingle import NewOrderSingleMessage
         from src.models.fix.generated.components.instrument import InstrumentComponent
+        from src.models.fix.generated.components.orderqtydata import OrderQtyDataComponent
         
         # Create Instrument component for IRS
         instrument = InstrumentComponent(
@@ -28,6 +29,12 @@ def test_irs_message_direct():
             Product=4  # Interest Rate
         )
         
+        # Create OrderQtyData component
+        order_qty_data = OrderQtyDataComponent(
+            OrderQty=1000000,
+            CashOrderQty=1000000
+        )
+        
         # Create the NewOrderSingle message for IRS
         order = NewOrderSingleMessage(
             # Standard header fields
@@ -37,7 +44,8 @@ def test_irs_message_direct():
             SenderCompID="SENDER",
             TargetCompID="TARGET",
             MsgSeqNum=1,
-            SendingTime=datetime.now(),
+            SendingTime=datetime.now().strftime("%Y%m%d-%H:%M:%S"),
+            CheckSum="123",
             
             # Order fields
             ClOrdID="ORDER123",
@@ -49,8 +57,9 @@ def test_irs_message_direct():
             Price=100.50,
             TimeInForce="0",  # Day
             
-            # Add the IRS instrument
-            Instrument=instrument
+            # Components
+            Instrument=instrument,
+            OrderQtyData=order_qty_data
         )
         
         # Test the message
@@ -58,6 +67,7 @@ def test_irs_message_direct():
         assert order.Instrument.Symbol == "SWAP"
         assert order.Instrument.SecurityType == "SWAP"
         assert order.Instrument.Product == 4
+        assert order.OrderQtyData.OrderQty == 1000000
         
         # Print success
         print(f"Created IRS order message successfully: {order}")

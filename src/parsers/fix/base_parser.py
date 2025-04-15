@@ -6,16 +6,18 @@ This module contains the base parser class for FIX message types.
 from typing import Dict, Any, Optional, Type
 import simplefix
 import logging
-from datetime import datetime
-from src.models.fix.generated.messages.base import FIXMessageBase
+from datetime import datetime, date
+from abc import ABC, abstractmethod
+from src.models.fix.generated.base.base import FIXMessageBase
 
-class FIXMessageParser:
-    """Base class for FIX message type parsers."""
+class FIXMessageParser(ABC):
+    """Base class for FIX message parsers."""
     
     def __init__(self):
         """Initialize the parser."""
         self.logger = logging.getLogger(__name__)
 
+    @abstractmethod
     async def parse(self, message: simplefix.FixMessage) -> FIXMessageBase:
         """
         Parse a FIX message into a model instance.
@@ -101,3 +103,56 @@ class FIXMessageParser:
                 result[field_name] = value
         
         return result 
+
+    def _parse_fields(self, message: simplefix.FixMessage) -> Dict[str, Any]:
+        """
+        Parse fields from a FIX message into a dictionary.
+        
+        Args:
+            message (simplefix.FixMessage): The FIX message to parse
+            
+        Returns:
+            Dict[str, Any]: Dictionary mapping tag numbers to their values
+        """
+        fields = {}
+        for tag, value in message.pairs:
+            if value is not None:
+                # Convert tag to integer for consistent lookup
+                tag_int = int(tag)
+                # Decode bytes to string if necessary
+                if isinstance(value, bytes):
+                    value = value.decode()
+                fields[tag_int] = value
+        return fields
+    
+    def _parse_date(self, value: str) -> date:
+        """
+        Parse a date string into a date object.
+        
+        Args:
+            value (str): The date string to parse (format: YYYYMMDD)
+            
+        Returns:
+            date: The parsed date
+        """
+        try:
+            return datetime.strptime(value, "%Y%m%d").date()
+        except ValueError as e:
+            self.logger.error(f"Error parsing date {value}: {e}")
+            raise
+    
+    def _parse_datetime(self, value: str) -> datetime:
+        """
+        Parse a datetime string into a datetime object.
+        
+        Args:
+            value (str): The datetime string to parse (format: YYYYMMDD-HH:MM:SS)
+            
+        Returns:
+            datetime: The parsed datetime
+        """
+        try:
+            return datetime.strptime(value, "%Y%m%d-%H:%M:%S")
+        except ValueError as e:
+            self.logger.error(f"Error parsing datetime {value}: {e}")
+            raise 

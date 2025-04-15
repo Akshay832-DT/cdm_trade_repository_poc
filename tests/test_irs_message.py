@@ -2,6 +2,7 @@
 Test parsing an Interest Rate Swap FIX message and validate the created objects.
 """
 import unittest
+import pytest
 import asyncio
 import sys
 from datetime import datetime, date
@@ -62,6 +63,7 @@ class TestIRSMessageParsing(unittest.TestCase):
         self.assertEqual(msg.get(167).decode(), "SWAP", "SecurityType should be SWAP")
         self.assertEqual(msg.get(460).decode(), "4", "Product should be Interest Rate")
     
+    @pytest.mark.asyncio
     async def test_fix_parser_validation(self):
         """Test that the FIX parser correctly validates a raw FIX message."""
         self.assertTrue(await self.parser.validate(self.raw_fix_message), "Message should be valid")
@@ -86,48 +88,40 @@ class TestIRSMessageParsing(unittest.TestCase):
         self.assertEqual(parsed_data.Price, 100.50)
         self.assertEqual(parsed_data.Instrument.StrikeCurrency, 'USD')
     
-    def test_full_message_parse(self):
+    @pytest.mark.asyncio
+    async def test_full_message_parse(self):
         """Test full message parsing through the ParserController."""
-        async def run_test():
-            # Parse the message first to get a FixMessage object
-            parser = simplefix.FixParser()
-            parser.append_buffer(self.raw_fix_message)
-            fix_msg = parser.get_message()
-            
-            # Now parse through the controller
-            message = await self.parser_controller.parse_message(fix_msg, 'FIX')
-            
-            # Verify message is correctly parsed as NewOrderSingleMessage
-            self.assertIsInstance(message, NewOrderSingleMessage)
-            
-            # Verify header fields
-            self.assertEqual(message.BeginString, "FIX.4.4")
-            self.assertEqual(message.MsgType, "D")
-            self.assertEqual(message.SenderCompID, "SENDER")
-            self.assertEqual(message.TargetCompID, "TARGET")
-            self.assertEqual(message.MsgSeqNum, 1)
-            
-            # Verify order fields
-            self.assertEqual(message.ClOrdID, "ORDER123")
-            self.assertEqual(message.Account, "ACCOUNT123")
-            self.assertEqual(message.Side, "1")
-            self.assertEqual(message.OrdType, "2")
-            self.assertEqual(message.Price, 100.50)
-            self.assertEqual(message.TimeInForce, "0")
-            
-            # Verify OrderQtyData fields
-            self.assertEqual(message.OrderQtyData.OrderQty, 1000000)
-            self.assertEqual(message.OrderQtyData.CashOrderQty, 1000000)
-            
-            # Verify instrument fields
-            self.assertEqual(message.Instrument.Symbol, "SWAP")
-            self.assertEqual(message.Instrument.SecurityType, "SWAP")
-            self.assertEqual(message.Instrument.MaturityMonthYear, "202404")
-            self.assertEqual(message.Instrument.MaturityDate, date(2024, 4, 15))
-            self.assertEqual(message.Instrument.StrikeCurrency, "USD")
-            self.assertEqual(message.Instrument.Product, 4)
+        message = await self.parser_controller.parse_message(self.raw_fix_message)
         
-        asyncio.run(run_test())
+        # Verify message is correctly parsed as NewOrderSingleMessage
+        self.assertIsInstance(message, NewOrderSingleMessage)
+        
+        # Verify header fields
+        self.assertEqual(message.BeginString, "FIX.4.4")
+        self.assertEqual(message.MsgType, "D")
+        self.assertEqual(message.SenderCompID, "SENDER")
+        self.assertEqual(message.TargetCompID, "TARGET")
+        self.assertEqual(message.MsgSeqNum, 1)
+        
+        # Verify order fields
+        self.assertEqual(message.ClOrdID, "ORDER123")
+        self.assertEqual(message.Account, "ACCOUNT123")
+        self.assertEqual(message.Side, "1")
+        self.assertEqual(message.OrdType, "2")
+        self.assertEqual(message.Price, 100.50)
+        self.assertEqual(message.TimeInForce, "0")
+        
+        # Verify OrderQtyData fields
+        self.assertEqual(message.OrderQtyData.OrderQty, 1000000)
+        self.assertEqual(message.OrderQtyData.CashOrderQty, 1000000)
+        
+        # Verify instrument fields
+        self.assertEqual(message.Instrument.Symbol, "SWAP")
+        self.assertEqual(message.Instrument.SecurityType, "SWAP")
+        self.assertEqual(message.Instrument.MaturityMonthYear, "202404")
+        self.assertEqual(message.Instrument.MaturityDate, date(2024, 4, 15))
+        self.assertEqual(message.Instrument.StrikeCurrency, "USD")
+        self.assertEqual(message.Instrument.Product, 4)
 
 if __name__ == '__main__':
     unittest.main() 

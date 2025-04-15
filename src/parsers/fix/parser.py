@@ -8,7 +8,7 @@ from typing import Dict, Any, Type, Union
 import simplefix
 from pathlib import Path
 
-from src.models.fix.generated.messages.base import FIXMessageBase
+from src.models.fix.generated.base.base import FIXMessageBase
 from src.parsers.fix.base_parser import FIXMessageParser
 from src.parsers.fix.message_parsers.bid_response_parser import BidResponseParser
 from src.parsers.fix.message_parsers.new_order_single_parser import NewOrderSingleParser
