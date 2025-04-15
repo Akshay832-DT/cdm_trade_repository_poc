@@ -1,100 +1,290 @@
-from typing import Optional, List
+"""
+FIX MultilegOrderCancelReplace Message
+"""
+from ..fields.types import *
+from .base import FIXMessageBase
 from datetime import datetime, date, time
-from pydantic import Field
-from src.models.fix.base import FIXMessageBase
-from src.models.fix.generated.components.parties import PartiesComponent
-from src.models.fix.generated.components.preallocmleggrp import PreAllocMlegGrpComponent
-from src.models.fix.generated.components.trdgsesgrp import TrdgSesGrpComponent
-from src.models.fix.generated.components.instrument import InstrumentComponent
-from src.models.fix.generated.components.undinstrmtgrp import UndInstrmtGrpComponent
-from src.models.fix.generated.components.legordgrp import LegOrdGrpComponent
-from src.models.fix.generated.components.orderqtydata import OrderQtyDataComponent
-from src.models.fix.generated.components.commissiondata import CommissionDataComponent
-from src.models.fix.generated.components.peginstructions import PegInstructionsComponent
-from src.models.fix.generated.components.discretioninstructions import DiscretionInstructionsComponent
+from pydantic import Field, ConfigDict, model_validator
+from typing import List, Optional, Dict, Any, Union, ForwardRef, TYPE_CHECKING, Literal
 
-class MultilegOrderCancelReplace(FIXMessageBase):
-    """FIX message model."""
+if TYPE_CHECKING:
+    from ..components.commissiondata import CommissionDataComponent
+    from ..components.discretioninstructions import DiscretionInstructionsComponent
+    from ..components.instrument import InstrumentComponent
+    from ..components.legordgrp import LegOrdGrpComponent
+    from ..components.orderqtydata import OrderQtyDataComponent
+    from ..components.parties import PartiesComponent
+    from ..components.peginstructions import PegInstructionsComponent
+    from ..components.preallocmleggrp import PreAllocMlegGrpComponent
+    from ..components.trdgsesgrp import TrdgSesGrpComponent
+    from ..components.undinstrmtgrp import UndInstrmtGrpComponent
 
-    BeginString: str = Field(..., description='', alias='8')
-    BodyLength: int = Field(..., description='', alias='9')
-    MsgType: str = Field(..., description='', alias='35')
-    SenderCompID: str = Field(..., description='', alias='49')
-    TargetCompID: str = Field(..., description='', alias='56')
-    MsgSeqNum: int = Field(..., description='', alias='34')
-    SendingTime: datetime = Field(..., description='', alias='52')
-    OrderID: Optional[str] = Field(None, description='', alias='37')
-    OrigClOrdID: str = Field(..., description='', alias='41')
-    ClOrdID: str = Field(..., description='', alias='11')
-    SecondaryClOrdID: Optional[str] = Field(None, description='', alias='526')
-    ClOrdLinkID: Optional[str] = Field(None, description='', alias='583')
-    OrigOrdModTime: Optional[datetime] = Field(None, description='', alias='586')
-    TradeOriginationDate: Optional[date] = Field(None, description='', alias='229')
-    TradeDate: Optional[date] = Field(None, description='', alias='75')
-    Account: Optional[str] = Field(None, description='', alias='1')
-    AcctIDSource: Optional[int] = Field(None, description='', alias='660')
-    AccountType: Optional[int] = Field(None, description='', alias='581')
-    DayBookingInst: Optional[str] = Field(None, description='', alias='589')
-    BookingUnit: Optional[str] = Field(None, description='', alias='590')
-    PreallocMethod: Optional[str] = Field(None, description='', alias='591')
-    AllocID: Optional[str] = Field(None, description='', alias='70')
-    SettlType: Optional[str] = Field(None, description='', alias='63')
-    SettlDate: Optional[date] = Field(None, description='', alias='64')
-    CashMargin: Optional[str] = Field(None, description='', alias='544')
-    ClearingFeeIndicator: Optional[str] = Field(None, description='', alias='635')
-    HandlInst: Optional[str] = Field(None, description='', alias='21')
-    ExecInst: Optional[List[str]] = Field(None, description='', alias='18')
-    MinQty: Optional[float] = Field(None, description='', alias='110')
-    MaxFloor: Optional[float] = Field(None, description='', alias='111')
-    ExDestination: Optional[str] = Field(None, description='', alias='100')
-    ProcessCode: Optional[str] = Field(None, description='', alias='81')
-    Side: str = Field(..., description='', alias='54')
-    PrevClosePx: Optional[float] = Field(None, description='', alias='140')
-    LocateReqd: Optional[bool] = Field(None, description='', alias='114')
-    TransactTime: datetime = Field(..., description='', alias='60')
-    QtyType: Optional[int] = Field(None, description='', alias='854')
-    OrdType: str = Field(..., description='', alias='40')
-    PriceType: Optional[int] = Field(None, description='', alias='423')
-    Price: Optional[float] = Field(None, description='', alias='44')
-    StopPx: Optional[float] = Field(None, description='', alias='99')
-    Currency: Optional[str] = Field(None, description='', alias='15')
-    ComplianceID: Optional[str] = Field(None, description='', alias='376')
-    SolicitedFlag: Optional[bool] = Field(None, description='', alias='377')
-    IOIID: Optional[str] = Field(None, description='', alias='23')
-    QuoteID: Optional[str] = Field(None, description='', alias='117')
-    TimeInForce: Optional[str] = Field(None, description='', alias='59')
-    EffectiveTime: Optional[datetime] = Field(None, description='', alias='168')
-    ExpireDate: Optional[date] = Field(None, description='', alias='432')
-    ExpireTime: Optional[datetime] = Field(None, description='', alias='126')
-    GTBookingInst: Optional[int] = Field(None, description='', alias='427')
-    OrderCapacity: Optional[str] = Field(None, description='', alias='528')
-    OrderRestrictions: Optional[List[str]] = Field(None, description='', alias='529')
-    CustOrderCapacity: Optional[int] = Field(None, description='', alias='582')
-    ForexReq: Optional[bool] = Field(None, description='', alias='121')
-    SettlCurrency: Optional[str] = Field(None, description='', alias='120')
-    BookingType: Optional[int] = Field(None, description='', alias='775')
-    Text: Optional[str] = Field(None, description='', alias='58')
-    EncodedTextLen: Optional[int] = Field(None, description='', alias='354')
-    EncodedText: Optional[str] = Field(None, description='', alias='355')
-    PositionEffect: Optional[str] = Field(None, description='', alias='77')
-    CoveredOrUncovered: Optional[int] = Field(None, description='', alias='203')
-    MaxShow: Optional[float] = Field(None, description='', alias='210')
-    TargetStrategy: Optional[int] = Field(None, description='', alias='847')
-    TargetStrategyParameters: Optional[str] = Field(None, description='', alias='848')
-    ParticipationRate: Optional[float] = Field(None, description='', alias='849')
-    CancellationRights: Optional[str] = Field(None, description='', alias='480')
-    MoneyLaunderingStatus: Optional[str] = Field(None, description='', alias='481')
-    RegistID: Optional[str] = Field(None, description='', alias='513')
-    Designation: Optional[str] = Field(None, description='', alias='494')
-    MultiLegRptTypeReq: Optional[int] = Field(None, description='', alias='563')
-    Parties: Optional[PartiesComponent] = Field(None, description='Parties component')
-    PreAllocMlegGrp: Optional[PreAllocMlegGrpComponent] = Field(None, description='PreAllocMlegGrp component')
-    TrdgSesGrp: Optional[TrdgSesGrpComponent] = Field(None, description='TrdgSesGrp component')
-    Instrument: InstrumentComponent = Field(..., description='Instrument component')
-    UndInstrmtGrp: Optional[UndInstrmtGrpComponent] = Field(None, description='UndInstrmtGrp component')
-    LegOrdGrp: LegOrdGrpComponent = Field(..., description='LegOrdGrp component')
-    OrderQtyData: OrderQtyDataComponent = Field(..., description='OrderQtyData component')
-    CommissionData: Optional[CommissionDataComponent] = Field(None, description='CommissionData component')
-    PegInstructions: Optional[PegInstructionsComponent] = Field(None, description='PegInstructions component')
-    DiscretionInstructions: Optional[DiscretionInstructionsComponent] = Field(None, description='DiscretionInstructions component')
 
+# Forward references for components to avoid circular imports
+CommissionDataComponent = ForwardRef('CommissionDataComponent')
+DiscretionInstructionsComponent = ForwardRef('DiscretionInstructionsComponent')
+InstrumentComponent = ForwardRef('InstrumentComponent')
+LegOrdGrpComponent = ForwardRef('LegOrdGrpComponent')
+OrderQtyDataComponent = ForwardRef('OrderQtyDataComponent')
+PartiesComponent = ForwardRef('PartiesComponent')
+PegInstructionsComponent = ForwardRef('PegInstructionsComponent')
+PreAllocMlegGrpComponent = ForwardRef('PreAllocMlegGrpComponent')
+TrdgSesGrpComponent = ForwardRef('TrdgSesGrpComponent')
+UndInstrmtGrpComponent = ForwardRef('UndInstrmtGrpComponent')
+
+
+class MultilegOrderCancelReplaceMessage(FIXMessageBase):
+    """MultilegOrderCancelReplace Message"""
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat() if v else None,
+            date: lambda v: v.isoformat() if v else None,
+            time: lambda v: v.isoformat() if v else None
+        }
+    )
+
+    MsgType: Literal["MultilegOrderCancelReplace"] = Field("MultilegOrderCancelReplace", alias="35", description="Message Type")
+
+    OrderID: Optional[str] = Field(None, alias="37", description="")
+    OrigClOrdID: Optional[str] = Field(None, alias="41", description="")
+    ClOrdID: Optional[str] = Field(None, alias="11", description="")
+    SecondaryClOrdID: Optional[str] = Field(None, alias="526", description="")
+    ClOrdLinkID: Optional[str] = Field(None, alias="583", description="")
+    OrigOrdModTime: Optional[datetime] = Field(None, alias="586", description="")
+    TradeOriginationDate: Optional[date] = Field(None, alias="229", description="")
+    TradeDate: Optional[date] = Field(None, alias="75", description="")
+    Account: Optional[str] = Field(None, alias="1", description="")
+    AcctIDSource: Optional[int] = Field(None, alias="660", description="")
+    AccountType: Optional[int] = Field(None, alias="581", description="")
+    DayBookingInst: Optional[str] = Field(None, alias="589", description="")
+    BookingUnit: Optional[str] = Field(None, alias="590", description="")
+    PreallocMethod: Optional[str] = Field(None, alias="591", description="")
+    AllocID: Optional[str] = Field(None, alias="70", description="")
+    SettlType: Optional[str] = Field(None, alias="63", description="")
+    SettlDate: Optional[date] = Field(None, alias="64", description="")
+    CashMargin: Optional[str] = Field(None, alias="544", description="")
+    ClearingFeeIndicator: Optional[str] = Field(None, alias="635", description="")
+    HandlInst: Optional[str] = Field(None, alias="21", description="")
+    ExecInst: Optional[List[str]] = Field(None, alias="18", description="")
+    MinQty: Optional[float] = Field(None, alias="110", description="")
+    MaxFloor: Optional[float] = Field(None, alias="111", description="")
+    ExDestination: Optional[str] = Field(None, alias="100", description="")
+    ProcessCode: Optional[str] = Field(None, alias="81", description="")
+    Side: Optional[str] = Field(None, alias="54", description="")
+    PrevClosePx: Optional[float] = Field(None, alias="140", description="")
+    LocateReqd: Optional[bool] = Field(None, alias="114", description="")
+    TransactTime: Optional[datetime] = Field(None, alias="60", description="")
+    QtyType: Optional[int] = Field(None, alias="854", description="")
+    OrdType: Optional[str] = Field(None, alias="40", description="")
+    PriceType: Optional[int] = Field(None, alias="423", description="")
+    Price: Optional[float] = Field(None, alias="44", description="")
+    StopPx: Optional[float] = Field(None, alias="99", description="")
+    Currency: Optional[str] = Field(None, alias="15", description="")
+    ComplianceID: Optional[str] = Field(None, alias="376", description="")
+    SolicitedFlag: Optional[bool] = Field(None, alias="377", description="")
+    IOIID: Optional[str] = Field(None, alias="23", description="")
+    QuoteID: Optional[str] = Field(None, alias="117", description="")
+    TimeInForce: Optional[str] = Field(None, alias="59", description="")
+    EffectiveTime: Optional[datetime] = Field(None, alias="168", description="")
+    ExpireDate: Optional[date] = Field(None, alias="432", description="")
+    ExpireTime: Optional[datetime] = Field(None, alias="126", description="")
+    GTBookingInst: Optional[int] = Field(None, alias="427", description="")
+    OrderCapacity: Optional[str] = Field(None, alias="528", description="")
+    OrderRestrictions: Optional[List[str]] = Field(None, alias="529", description="")
+    CustOrderCapacity: Optional[int] = Field(None, alias="582", description="")
+    ForexReq: Optional[bool] = Field(None, alias="121", description="")
+    SettlCurrency: Optional[str] = Field(None, alias="120", description="")
+    BookingType: Optional[int] = Field(None, alias="775", description="")
+    Text: Optional[str] = Field(None, alias="58", description="")
+    EncodedTextLen: Optional[int] = Field(None, alias="354", description="")
+    EncodedText: Optional[str] = Field(None, alias="355", description="")
+    PositionEffect: Optional[str] = Field(None, alias="77", description="")
+    CoveredOrUncovered: Optional[int] = Field(None, alias="203", description="")
+    MaxShow: Optional[float] = Field(None, alias="210", description="")
+    TargetStrategy: Optional[int] = Field(None, alias="847", description="")
+    TargetStrategyParameters: Optional[str] = Field(None, alias="848", description="")
+    ParticipationRate: Optional[float] = Field(None, alias="849", description="")
+    CancellationRights: Optional[str] = Field(None, alias="480", description="")
+    MoneyLaunderingStatus: Optional[str] = Field(None, alias="481", description="")
+    RegistID: Optional[str] = Field(None, alias="513", description="")
+    Designation: Optional[str] = Field(None, alias="494", description="")
+    MultiLegRptTypeReq: Optional[int] = Field(None, alias="563", description="")
+    Parties: ForwardRef('PartiesComponent') = Field(None, description="Parties Component")
+    PreAllocMlegGrp: ForwardRef('PreAllocMlegGrpComponent') = Field(None, description="PreAllocMlegGrp Component")
+    TrdgSesGrp: ForwardRef('TrdgSesGrpComponent') = Field(None, description="TrdgSesGrp Component")
+    Instrument: ForwardRef('InstrumentComponent') = Field(None, description="Instrument Component")
+    UndInstrmtGrp: ForwardRef('UndInstrmtGrpComponent') = Field(None, description="UndInstrmtGrp Component")
+    LegOrdGrp: ForwardRef('LegOrdGrpComponent') = Field(None, description="LegOrdGrp Component")
+    OrderQtyData: ForwardRef('OrderQtyDataComponent') = Field(None, description="OrderQtyData Component")
+    CommissionData: ForwardRef('CommissionDataComponent') = Field(None, description="CommissionData Component")
+    PegInstructions: ForwardRef('PegInstructionsComponent') = Field(None, description="PegInstructions Component")
+    DiscretionInstructions: ForwardRef('DiscretionInstructionsComponent') = Field(None, description="DiscretionInstructions Component")
+
+    @model_validator(mode='after')
+    def resolve_forward_refs(self) -> 'FIXMessageBase':
+        """Resolve forward references."""
+        for field_name, field_value in self.model_fields.items():
+            if isinstance(field_value.annotation, ForwardRef):
+                field_value.annotation = eval(field_value.annotation.__forward_arg__)
+        return self
+
+    def __str__(self) -> str:
+        fields = []
+        if self.MsgType is not None:
+            fields.append(f"MsgType={self.MsgType}")
+        if self.OrderID is not None:
+            fields.append(f"OrderID={self.OrderID}")
+        if self.OrigClOrdID is not None:
+            fields.append(f"OrigClOrdID={self.OrigClOrdID}")
+        if self.ClOrdID is not None:
+            fields.append(f"ClOrdID={self.ClOrdID}")
+        if self.SecondaryClOrdID is not None:
+            fields.append(f"SecondaryClOrdID={self.SecondaryClOrdID}")
+        if self.ClOrdLinkID is not None:
+            fields.append(f"ClOrdLinkID={self.ClOrdLinkID}")
+        if self.OrigOrdModTime is not None:
+            fields.append(f"OrigOrdModTime={self.OrigOrdModTime}")
+        if self.TradeOriginationDate is not None:
+            fields.append(f"TradeOriginationDate={self.TradeOriginationDate}")
+        if self.TradeDate is not None:
+            fields.append(f"TradeDate={self.TradeDate}")
+        if self.Account is not None:
+            fields.append(f"Account={self.Account}")
+        if self.AcctIDSource is not None:
+            fields.append(f"AcctIDSource={self.AcctIDSource}")
+        if self.AccountType is not None:
+            fields.append(f"AccountType={self.AccountType}")
+        if self.DayBookingInst is not None:
+            fields.append(f"DayBookingInst={self.DayBookingInst}")
+        if self.BookingUnit is not None:
+            fields.append(f"BookingUnit={self.BookingUnit}")
+        if self.PreallocMethod is not None:
+            fields.append(f"PreallocMethod={self.PreallocMethod}")
+        if self.AllocID is not None:
+            fields.append(f"AllocID={self.AllocID}")
+        if self.SettlType is not None:
+            fields.append(f"SettlType={self.SettlType}")
+        if self.SettlDate is not None:
+            fields.append(f"SettlDate={self.SettlDate}")
+        if self.CashMargin is not None:
+            fields.append(f"CashMargin={self.CashMargin}")
+        if self.ClearingFeeIndicator is not None:
+            fields.append(f"ClearingFeeIndicator={self.ClearingFeeIndicator}")
+        if self.HandlInst is not None:
+            fields.append(f"HandlInst={self.HandlInst}")
+        if self.ExecInst is not None:
+            fields.append(f"ExecInst={self.ExecInst}")
+        if self.MinQty is not None:
+            fields.append(f"MinQty={self.MinQty}")
+        if self.MaxFloor is not None:
+            fields.append(f"MaxFloor={self.MaxFloor}")
+        if self.ExDestination is not None:
+            fields.append(f"ExDestination={self.ExDestination}")
+        if self.ProcessCode is not None:
+            fields.append(f"ProcessCode={self.ProcessCode}")
+        if self.Side is not None:
+            fields.append(f"Side={self.Side}")
+        if self.PrevClosePx is not None:
+            fields.append(f"PrevClosePx={self.PrevClosePx}")
+        if self.LocateReqd is not None:
+            fields.append(f"LocateReqd={self.LocateReqd}")
+        if self.TransactTime is not None:
+            fields.append(f"TransactTime={self.TransactTime}")
+        if self.QtyType is not None:
+            fields.append(f"QtyType={self.QtyType}")
+        if self.OrdType is not None:
+            fields.append(f"OrdType={self.OrdType}")
+        if self.PriceType is not None:
+            fields.append(f"PriceType={self.PriceType}")
+        if self.Price is not None:
+            fields.append(f"Price={self.Price}")
+        if self.StopPx is not None:
+            fields.append(f"StopPx={self.StopPx}")
+        if self.Currency is not None:
+            fields.append(f"Currency={self.Currency}")
+        if self.ComplianceID is not None:
+            fields.append(f"ComplianceID={self.ComplianceID}")
+        if self.SolicitedFlag is not None:
+            fields.append(f"SolicitedFlag={self.SolicitedFlag}")
+        if self.IOIID is not None:
+            fields.append(f"IOIID={self.IOIID}")
+        if self.QuoteID is not None:
+            fields.append(f"QuoteID={self.QuoteID}")
+        if self.TimeInForce is not None:
+            fields.append(f"TimeInForce={self.TimeInForce}")
+        if self.EffectiveTime is not None:
+            fields.append(f"EffectiveTime={self.EffectiveTime}")
+        if self.ExpireDate is not None:
+            fields.append(f"ExpireDate={self.ExpireDate}")
+        if self.ExpireTime is not None:
+            fields.append(f"ExpireTime={self.ExpireTime}")
+        if self.GTBookingInst is not None:
+            fields.append(f"GTBookingInst={self.GTBookingInst}")
+        if self.OrderCapacity is not None:
+            fields.append(f"OrderCapacity={self.OrderCapacity}")
+        if self.OrderRestrictions is not None:
+            fields.append(f"OrderRestrictions={self.OrderRestrictions}")
+        if self.CustOrderCapacity is not None:
+            fields.append(f"CustOrderCapacity={self.CustOrderCapacity}")
+        if self.ForexReq is not None:
+            fields.append(f"ForexReq={self.ForexReq}")
+        if self.SettlCurrency is not None:
+            fields.append(f"SettlCurrency={self.SettlCurrency}")
+        if self.BookingType is not None:
+            fields.append(f"BookingType={self.BookingType}")
+        if self.Text is not None:
+            fields.append(f"Text={self.Text}")
+        if self.EncodedTextLen is not None:
+            fields.append(f"EncodedTextLen={self.EncodedTextLen}")
+        if self.EncodedText is not None:
+            fields.append(f"EncodedText={self.EncodedText}")
+        if self.PositionEffect is not None:
+            fields.append(f"PositionEffect={self.PositionEffect}")
+        if self.CoveredOrUncovered is not None:
+            fields.append(f"CoveredOrUncovered={self.CoveredOrUncovered}")
+        if self.MaxShow is not None:
+            fields.append(f"MaxShow={self.MaxShow}")
+        if self.TargetStrategy is not None:
+            fields.append(f"TargetStrategy={self.TargetStrategy}")
+        if self.TargetStrategyParameters is not None:
+            fields.append(f"TargetStrategyParameters={self.TargetStrategyParameters}")
+        if self.ParticipationRate is not None:
+            fields.append(f"ParticipationRate={self.ParticipationRate}")
+        if self.CancellationRights is not None:
+            fields.append(f"CancellationRights={self.CancellationRights}")
+        if self.MoneyLaunderingStatus is not None:
+            fields.append(f"MoneyLaunderingStatus={self.MoneyLaunderingStatus}")
+        if self.RegistID is not None:
+            fields.append(f"RegistID={self.RegistID}")
+        if self.Designation is not None:
+            fields.append(f"Designation={self.Designation}")
+        if self.MultiLegRptTypeReq is not None:
+            fields.append(f"MultiLegRptTypeReq={self.MultiLegRptTypeReq}")
+        if self.Parties is not None:
+            fields.append(f"Parties={self.Parties}")
+        if self.PreAllocMlegGrp is not None:
+            fields.append(f"PreAllocMlegGrp={self.PreAllocMlegGrp}")
+        if self.TrdgSesGrp is not None:
+            fields.append(f"TrdgSesGrp={self.TrdgSesGrp}")
+        if self.Instrument is not None:
+            fields.append(f"Instrument={self.Instrument}")
+        if self.UndInstrmtGrp is not None:
+            fields.append(f"UndInstrmtGrp={self.UndInstrmtGrp}")
+        if self.LegOrdGrp is not None:
+            fields.append(f"LegOrdGrp={self.LegOrdGrp}")
+        if self.OrderQtyData is not None:
+            fields.append(f"OrderQtyData={self.OrderQtyData}")
+        if self.CommissionData is not None:
+            fields.append(f"CommissionData={self.CommissionData}")
+        if self.PegInstructions is not None:
+            fields.append(f"PegInstructions={self.PegInstructions}")
+        if self.DiscretionInstructions is not None:
+            fields.append(f"DiscretionInstructions={self.DiscretionInstructions}")
+        return f"{self.__class__.__name__}({', '.join(fields)})"
+
+
+# Rebuild model to resolve forward references
+MultilegOrderCancelReplaceMessage.model_rebuild()

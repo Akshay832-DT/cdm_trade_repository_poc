@@ -1,14 +1,26 @@
-
+"""
+FIX PreallocMethod field (tag 591).
+"""
 from .base import FIXFieldBase
-from .types import FIXChar
+from typing import Optional
+from .types import *
 
-class PreallocMethod(FIXFieldBase):
-    """FIX PreallocMethod field."""
+class PreallocMethodValues:
+    """Enumerated values for PreallocMethod."""
+    VALUE_0 = "0"  # PRO_RATA
+    VALUE_1 = "1"  # DO_NOT_PRO_RATA
+
+class PreallocMethodField(FIXFieldBase):
+    """"""
     tag: str = "591"
     name: str = "PreallocMethod"
     type: str = "CHAR"
-    value: FIXChar
+    value: Literal["0", "1"]
 
-    # Enum values
-    # 0: PRO_RATA
-    # 1: DO_NOT_PRO_RATA
+    # Helper methods for enum values
+    @property
+    def is_value_0(self) -> bool:
+        return self.value == "0"
+    @property
+    def is_value_1(self) -> bool:
+        return self.value == "1"

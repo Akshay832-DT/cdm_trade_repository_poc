@@ -1,10 +1,13 @@
-
+"""
+FIX AllocNetMoney field (tag 154).
+"""
 from .base import FIXFieldBase
-from .types import FIXAmt
+from typing import Optional
+from .types import *
 
-class AllocNetMoney(FIXFieldBase):
-    """FIX AllocNetMoney field."""
+class AllocNetMoneyField(FIXFieldBase):
+    """"""
     tag: str = "154"
     name: str = "AllocNetMoney"
     type: str = "AMT"
-    value: FIXAmt
+    value: float

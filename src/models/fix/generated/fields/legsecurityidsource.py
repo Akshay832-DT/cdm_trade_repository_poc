@@ -1,10 +1,13 @@
-
+"""
+FIX LegSecurityIDSource field (tag 603).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class LegSecurityIDSource(FIXFieldBase):
-    """FIX LegSecurityIDSource field."""
+class LegSecurityIDSourceField(FIXFieldBase):
+    """"""
     tag: str = "603"
     name: str = "LegSecurityIDSource"
     type: str = "STRING"
-    value: FIXString
+    value: str

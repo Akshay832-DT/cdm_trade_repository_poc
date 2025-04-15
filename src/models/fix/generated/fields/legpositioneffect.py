@@ -1,10 +1,13 @@
-
+"""
+FIX LegPositionEffect field (tag 564).
+"""
 from .base import FIXFieldBase
-from .types import FIXChar
+from typing import Optional
+from .types import *
 
-class LegPositionEffect(FIXFieldBase):
-    """FIX LegPositionEffect field."""
+class LegPositionEffectField(FIXFieldBase):
+    """"""
     tag: str = "564"
     name: str = "LegPositionEffect"
     type: str = "CHAR"
-    value: FIXChar
+    value: str

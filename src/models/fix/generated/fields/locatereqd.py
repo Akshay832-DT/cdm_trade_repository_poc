@@ -1,14 +1,26 @@
-
+"""
+FIX LocateReqd field (tag 114).
+"""
 from .base import FIXFieldBase
-from .types import FIXBoolean
+from typing import Optional
+from .types import *
 
-class LocateReqd(FIXFieldBase):
-    """FIX LocateReqd field."""
+class LocateReqdValues:
+    """Enumerated values for LocateReqd."""
+    Y = "Y"  # YES
+    N = "N"  # NO
+
+class LocateReqdField(FIXFieldBase):
+    """"""
     tag: str = "114"
     name: str = "LocateReqd"
     type: str = "BOOLEAN"
-    value: FIXBoolean
+    value: Literal["Y", "N"]
 
-    # Enum values
-    # Y: YES
-    # N: NO
+    # Helper methods for enum values
+    @property
+    def is_y(self) -> bool:
+        return self.value == "Y"
+    @property
+    def is_n(self) -> bool:
+        return self.value == "N"

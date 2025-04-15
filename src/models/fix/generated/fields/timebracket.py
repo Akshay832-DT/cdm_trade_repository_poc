@@ -1,10 +1,13 @@
-
+"""
+FIX TimeBracket field (tag 943).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class TimeBracket(FIXFieldBase):
-    """FIX TimeBracket field."""
+class TimeBracketField(FIXFieldBase):
+    """"""
     tag: str = "943"
     name: str = "TimeBracket"
     type: str = "STRING"
-    value: FIXString
+    value: str

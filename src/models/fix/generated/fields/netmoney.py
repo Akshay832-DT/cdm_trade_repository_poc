@@ -1,10 +1,13 @@
-
+"""
+FIX NetMoney field (tag 118).
+"""
 from .base import FIXFieldBase
-from .types import FIXAmt
+from typing import Optional
+from .types import *
 
-class NetMoney(FIXFieldBase):
-    """FIX NetMoney field."""
+class NetMoneyField(FIXFieldBase):
+    """"""
     tag: str = "118"
     name: str = "NetMoney"
     type: str = "AMT"
-    value: FIXAmt
+    value: float

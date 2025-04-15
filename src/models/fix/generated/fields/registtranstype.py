@@ -1,15 +1,30 @@
-
+"""
+FIX RegistTransType field (tag 514).
+"""
 from .base import FIXFieldBase
-from .types import FIXChar
+from typing import Optional
+from .types import *
 
-class RegistTransType(FIXFieldBase):
-    """FIX RegistTransType field."""
+class RegistTransTypeValues:
+    """Enumerated values for RegistTransType."""
+    VALUE_0 = "0"  # NEW
+    VALUE_1 = "1"  # REPLACE
+    VALUE_2 = "2"  # CANCEL
+
+class RegistTransTypeField(FIXFieldBase):
+    """"""
     tag: str = "514"
     name: str = "RegistTransType"
     type: str = "CHAR"
-    value: FIXChar
+    value: Literal["0", "1", "2"]
 
-    # Enum values
-    # 0: NEW
-    # 1: REPLACE
-    # 2: CANCEL
+    # Helper methods for enum values
+    @property
+    def is_value_0(self) -> bool:
+        return self.value == "0"
+    @property
+    def is_value_1(self) -> bool:
+        return self.value == "1"
+    @property
+    def is_value_2(self) -> bool:
+        return self.value == "2"

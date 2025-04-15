@@ -1,10 +1,13 @@
-
+"""
+FIX TargetCompID field (tag 56).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class TargetCompID(FIXFieldBase):
-    """FIX TargetCompID field."""
+class TargetCompIDField(FIXFieldBase):
+    """"""
     tag: str = "56"
     name: str = "TargetCompID"
     type: str = "STRING"
-    value: FIXString
+    value: str

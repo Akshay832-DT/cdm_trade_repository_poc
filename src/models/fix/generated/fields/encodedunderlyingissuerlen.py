@@ -1,10 +1,13 @@
-
+"""
+FIX EncodedUnderlyingIssuerLen field (tag 362).
+"""
 from .base import FIXFieldBase
-from .types import FIXLength
+from typing import Optional
+from .types import *
 
-class EncodedUnderlyingIssuerLen(FIXFieldBase):
-    """FIX EncodedUnderlyingIssuerLen field."""
+class EncodedUnderlyingIssuerLenField(FIXFieldBase):
+    """"""
     tag: str = "362"
     name: str = "EncodedUnderlyingIssuerLen"
     type: str = "LENGTH"
-    value: FIXLength
+    value: int

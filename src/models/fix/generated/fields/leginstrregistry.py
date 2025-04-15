@@ -1,10 +1,13 @@
-
+"""
+FIX LegInstrRegistry field (tag 599).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class LegInstrRegistry(FIXFieldBase):
-    """FIX LegInstrRegistry field."""
+class LegInstrRegistryField(FIXFieldBase):
+    """"""
     tag: str = "599"
     name: str = "LegInstrRegistry"
     type: str = "STRING"
-    value: FIXString
+    value: str

@@ -1,10 +1,13 @@
-
+"""
+FIX LiquidityValue field (tag 404).
+"""
 from .base import FIXFieldBase
-from .types import FIXAmt
+from typing import Optional
+from .types import *
 
-class LiquidityValue(FIXFieldBase):
-    """FIX LiquidityValue field."""
+class LiquidityValueField(FIXFieldBase):
+    """"""
     tag: str = "404"
     name: str = "LiquidityValue"
     type: str = "AMT"
-    value: FIXAmt
+    value: float

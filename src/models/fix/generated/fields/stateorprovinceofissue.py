@@ -1,10 +1,13 @@
-
+"""
+FIX StateOrProvinceOfIssue field (tag 471).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class StateOrProvinceOfIssue(FIXFieldBase):
-    """FIX StateOrProvinceOfIssue field."""
+class StateOrProvinceOfIssueField(FIXFieldBase):
+    """"""
     tag: str = "471"
     name: str = "StateOrProvinceOfIssue"
     type: str = "STRING"
-    value: FIXString
+    value: str

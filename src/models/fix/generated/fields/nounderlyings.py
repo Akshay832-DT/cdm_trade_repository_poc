@@ -1,10 +1,13 @@
-
+"""
+FIX NoUnderlyings field (tag 711).
+"""
 from .base import FIXFieldBase
-from .types import FIXNumInGroup
+from typing import Optional
+from .types import *
 
-class NoUnderlyings(FIXFieldBase):
-    """FIX NoUnderlyings field."""
+class NoUnderlyingsField(FIXFieldBase):
+    """"""
     tag: str = "711"
     name: str = "NoUnderlyings"
     type: str = "NUMINGROUP"
-    value: FIXNumInGroup
+    value: int

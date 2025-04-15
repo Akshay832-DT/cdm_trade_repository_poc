@@ -1,10 +1,13 @@
-
+"""
+FIX AltMDSourceID field (tag 817).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class AltMDSourceID(FIXFieldBase):
-    """FIX AltMDSourceID field."""
+class AltMDSourceIDField(FIXFieldBase):
+    """"""
     tag: str = "817"
     name: str = "AltMDSourceID"
     type: str = "STRING"
-    value: FIXString
+    value: str

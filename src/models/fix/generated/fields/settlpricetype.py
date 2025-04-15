@@ -1,14 +1,26 @@
-
+"""
+FIX SettlPriceType field (tag 731).
+"""
 from .base import FIXFieldBase
-from .types import FIXInt
+from typing import Optional
+from .types import *
 
-class SettlPriceType(FIXFieldBase):
-    """FIX SettlPriceType field."""
+class SettlPriceTypeValues:
+    """Enumerated values for SettlPriceType."""
+    VALUE_1 = "1"  # FINAL
+    VALUE_2 = "2"  # THEORETICAL
+
+class SettlPriceTypeField(FIXFieldBase):
+    """"""
     tag: str = "731"
     name: str = "SettlPriceType"
     type: str = "INT"
-    value: FIXInt
+    value: Literal["1", "2"]
 
-    # Enum values
-    # 1: FINAL
-    # 2: THEORETICAL
+    # Helper methods for enum values
+    @property
+    def is_value_1(self) -> bool:
+        return self.value == "1"
+    @property
+    def is_value_2(self) -> bool:
+        return self.value == "2"

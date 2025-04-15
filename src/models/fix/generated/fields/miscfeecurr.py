@@ -1,10 +1,13 @@
-
+"""
+FIX MiscFeeCurr field (tag 138).
+"""
 from .base import FIXFieldBase
-from .types import FIXCurrency
+from typing import Optional
+from .types import *
 
-class MiscFeeCurr(FIXFieldBase):
-    """FIX MiscFeeCurr field."""
+class MiscFeeCurrField(FIXFieldBase):
+    """"""
     tag: str = "138"
     name: str = "MiscFeeCurr"
     type: str = "CURRENCY"
-    value: FIXCurrency
+    value: str

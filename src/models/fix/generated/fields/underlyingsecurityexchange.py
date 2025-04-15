@@ -1,10 +1,13 @@
-
+"""
+FIX UnderlyingSecurityExchange field (tag 308).
+"""
 from .base import FIXFieldBase
-from .types import FIXExchange
+from typing import Optional
+from .types import *
 
-class UnderlyingSecurityExchange(FIXFieldBase):
-    """FIX UnderlyingSecurityExchange field."""
+class UnderlyingSecurityExchangeField(FIXFieldBase):
+    """"""
     tag: str = "308"
     name: str = "UnderlyingSecurityExchange"
     type: str = "EXCHANGE"
-    value: FIXExchange
+    value: str

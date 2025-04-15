@@ -1,29 +1,85 @@
-from typing import Optional, List
+"""
+FIX QuoteCancel Message
+"""
+from ..fields.types import *
+from .base import FIXMessageBase
 from datetime import datetime, date, time
-from pydantic import Field
-from src.models.fix.base import FIXMessageBase
-from src.models.fix.generated.components.parties import PartiesComponent
-from src.models.fix.generated.components.quotcxlentriesgrp import QuotCxlEntriesGrpComponent
+from pydantic import Field, ConfigDict, model_validator
+from typing import List, Optional, Dict, Any, Union, ForwardRef, TYPE_CHECKING, Literal
 
-class QuoteCancel(FIXMessageBase):
-    """FIX message model."""
+if TYPE_CHECKING:
+    from ..components.parties import PartiesComponent
+    from ..components.quotcxlentriesgrp import QuotCxlEntriesGrpComponent
 
-    BeginString: str = Field(..., description='', alias='8')
-    BodyLength: int = Field(..., description='', alias='9')
-    MsgType: str = Field(..., description='', alias='35')
-    SenderCompID: str = Field(..., description='', alias='49')
-    TargetCompID: str = Field(..., description='', alias='56')
-    MsgSeqNum: int = Field(..., description='', alias='34')
-    SendingTime: datetime = Field(..., description='', alias='52')
-    QuoteReqID: Optional[str] = Field(None, description='', alias='131')
-    QuoteID: str = Field(..., description='', alias='117')
-    QuoteCancelType: int = Field(..., description='', alias='298')
-    QuoteResponseLevel: Optional[int] = Field(None, description='', alias='301')
-    Account: Optional[str] = Field(None, description='', alias='1')
-    AcctIDSource: Optional[int] = Field(None, description='', alias='660')
-    AccountType: Optional[int] = Field(None, description='', alias='581')
-    TradingSessionID: Optional[str] = Field(None, description='', alias='336')
-    TradingSessionSubID: Optional[str] = Field(None, description='', alias='625')
-    Parties: Optional[PartiesComponent] = Field(None, description='Parties component')
-    QuotCxlEntriesGrp: Optional[QuotCxlEntriesGrpComponent] = Field(None, description='QuotCxlEntriesGrp component')
 
+# Forward references for components to avoid circular imports
+PartiesComponent = ForwardRef('PartiesComponent')
+QuotCxlEntriesGrpComponent = ForwardRef('QuotCxlEntriesGrpComponent')
+
+
+class QuoteCancelMessage(FIXMessageBase):
+    """QuoteCancel Message"""
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat() if v else None,
+            date: lambda v: v.isoformat() if v else None,
+            time: lambda v: v.isoformat() if v else None
+        }
+    )
+
+    MsgType: Literal["QuoteCancel"] = Field("QuoteCancel", alias="35", description="Message Type")
+
+    QuoteReqID: Optional[str] = Field(None, alias="131", description="")
+    QuoteID: Optional[str] = Field(None, alias="117", description="")
+    QuoteCancelType: Optional[int] = Field(None, alias="298", description="")
+    QuoteResponseLevel: Optional[int] = Field(None, alias="301", description="")
+    Account: Optional[str] = Field(None, alias="1", description="")
+    AcctIDSource: Optional[int] = Field(None, alias="660", description="")
+    AccountType: Optional[int] = Field(None, alias="581", description="")
+    TradingSessionID: Optional[str] = Field(None, alias="336", description="")
+    TradingSessionSubID: Optional[str] = Field(None, alias="625", description="")
+    Parties: ForwardRef('PartiesComponent') = Field(None, description="Parties Component")
+    QuotCxlEntriesGrp: ForwardRef('QuotCxlEntriesGrpComponent') = Field(None, description="QuotCxlEntriesGrp Component")
+
+    @model_validator(mode='after')
+    def resolve_forward_refs(self) -> 'FIXMessageBase':
+        """Resolve forward references."""
+        for field_name, field_value in self.model_fields.items():
+            if isinstance(field_value.annotation, ForwardRef):
+                field_value.annotation = eval(field_value.annotation.__forward_arg__)
+        return self
+
+    def __str__(self) -> str:
+        fields = []
+        if self.MsgType is not None:
+            fields.append(f"MsgType={self.MsgType}")
+        if self.QuoteReqID is not None:
+            fields.append(f"QuoteReqID={self.QuoteReqID}")
+        if self.QuoteID is not None:
+            fields.append(f"QuoteID={self.QuoteID}")
+        if self.QuoteCancelType is not None:
+            fields.append(f"QuoteCancelType={self.QuoteCancelType}")
+        if self.QuoteResponseLevel is not None:
+            fields.append(f"QuoteResponseLevel={self.QuoteResponseLevel}")
+        if self.Account is not None:
+            fields.append(f"Account={self.Account}")
+        if self.AcctIDSource is not None:
+            fields.append(f"AcctIDSource={self.AcctIDSource}")
+        if self.AccountType is not None:
+            fields.append(f"AccountType={self.AccountType}")
+        if self.TradingSessionID is not None:
+            fields.append(f"TradingSessionID={self.TradingSessionID}")
+        if self.TradingSessionSubID is not None:
+            fields.append(f"TradingSessionSubID={self.TradingSessionSubID}")
+        if self.Parties is not None:
+            fields.append(f"Parties={self.Parties}")
+        if self.QuotCxlEntriesGrp is not None:
+            fields.append(f"QuotCxlEntriesGrp={self.QuotCxlEntriesGrp}")
+        return f"{self.__class__.__name__}({', '.join(fields)})"
+
+
+# Rebuild model to resolve forward references
+QuoteCancelMessage.model_rebuild()

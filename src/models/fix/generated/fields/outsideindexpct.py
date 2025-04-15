@@ -1,10 +1,13 @@
-
+"""
+FIX OutsideIndexPct field (tag 407).
+"""
 from .base import FIXFieldBase
-from .types import FIXPercentage
+from typing import Optional
+from .types import *
 
-class OutsideIndexPct(FIXFieldBase):
-    """FIX OutsideIndexPct field."""
+class OutsideIndexPctField(FIXFieldBase):
+    """"""
     tag: str = "407"
     name: str = "OutsideIndexPct"
     type: str = "PERCENTAGE"
-    value: FIXPercentage
+    value: float

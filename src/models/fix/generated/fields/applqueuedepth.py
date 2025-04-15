@@ -1,10 +1,13 @@
-
+"""
+FIX ApplQueueDepth field (tag 813).
+"""
 from .base import FIXFieldBase
-from .types import FIXInt
+from typing import Optional
+from .types import *
 
-class ApplQueueDepth(FIXFieldBase):
-    """FIX ApplQueueDepth field."""
+class ApplQueueDepthField(FIXFieldBase):
+    """"""
     tag: str = "813"
     name: str = "ApplQueueDepth"
     type: str = "INT"
-    value: FIXInt
+    value: int

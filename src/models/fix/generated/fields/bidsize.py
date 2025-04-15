@@ -1,10 +1,13 @@
-
+"""
+FIX BidSize field (tag 134).
+"""
 from .base import FIXFieldBase
-from .types import FIXQty
+from typing import Optional
+from .types import *
 
-class BidSize(FIXFieldBase):
-    """FIX BidSize field."""
+class BidSizeField(FIXFieldBase):
+    """"""
     tag: str = "134"
     name: str = "BidSize"
     type: str = "QTY"
-    value: FIXQty
+    value: float

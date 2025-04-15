@@ -1,10 +1,13 @@
-
+"""
+FIX CollAsgnID field (tag 902).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class CollAsgnID(FIXFieldBase):
-    """FIX CollAsgnID field."""
+class CollAsgnIDField(FIXFieldBase):
+    """"""
     tag: str = "902"
     name: str = "CollAsgnID"
     type: str = "STRING"
-    value: FIXString
+    value: str

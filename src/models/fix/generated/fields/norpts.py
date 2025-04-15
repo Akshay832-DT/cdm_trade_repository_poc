@@ -1,10 +1,13 @@
-
+"""
+FIX NoRpts field (tag 82).
+"""
 from .base import FIXFieldBase
-from .types import FIXInt
+from typing import Optional
+from .types import *
 
-class NoRpts(FIXFieldBase):
-    """FIX NoRpts field."""
+class NoRptsField(FIXFieldBase):
+    """"""
     tag: str = "82"
     name: str = "NoRpts"
     type: str = "INT"
-    value: FIXInt
+    value: int

@@ -1,10 +1,13 @@
-
+"""
+FIX SettlPartyRole field (tag 784).
+"""
 from .base import FIXFieldBase
-from .types import FIXInt
+from typing import Optional
+from .types import *
 
-class SettlPartyRole(FIXFieldBase):
-    """FIX SettlPartyRole field."""
+class SettlPartyRoleField(FIXFieldBase):
+    """"""
     tag: str = "784"
     name: str = "SettlPartyRole"
     type: str = "INT"
-    value: FIXInt
+    value: int

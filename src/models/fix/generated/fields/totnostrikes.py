@@ -1,10 +1,13 @@
-
+"""
+FIX TotNoStrikes field (tag 422).
+"""
 from .base import FIXFieldBase
-from .types import FIXInt
+from typing import Optional
+from .types import *
 
-class TotNoStrikes(FIXFieldBase):
-    """FIX TotNoStrikes field."""
+class TotNoStrikesField(FIXFieldBase):
+    """"""
     tag: str = "422"
     name: str = "TotNoStrikes"
     type: str = "INT"
-    value: FIXInt
+    value: int

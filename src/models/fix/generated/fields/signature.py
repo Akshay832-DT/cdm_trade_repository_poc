@@ -1,10 +1,13 @@
-
+"""
+FIX Signature field (tag 89).
+"""
 from .base import FIXFieldBase
-from .types import FIXData
+from typing import Optional
+from .types import *
 
-class Signature(FIXFieldBase):
-    """FIX Signature field."""
+class SignatureField(FIXFieldBase):
+    """"""
     tag: str = "89"
     name: str = "Signature"
     type: str = "DATA"
-    value: FIXData
+    value: str

@@ -1,16 +1,34 @@
-
+"""
+FIX PositionEffect field (tag 77).
+"""
 from .base import FIXFieldBase
-from .types import FIXChar
+from typing import Optional
+from .types import *
 
-class PositionEffect(FIXFieldBase):
-    """FIX PositionEffect field."""
+class PositionEffectValues:
+    """Enumerated values for PositionEffect."""
+    O = "O"  # OPEN
+    C = "C"  # CLOSE
+    R = "R"  # ROLLED
+    F = "F"  # FIFO
+
+class PositionEffectField(FIXFieldBase):
+    """"""
     tag: str = "77"
     name: str = "PositionEffect"
     type: str = "CHAR"
-    value: FIXChar
+    value: Literal["O", "C", "R", "F"]
 
-    # Enum values
-    # O: OPEN
-    # C: CLOSE
-    # R: ROLLED
-    # F: FIFO
+    # Helper methods for enum values
+    @property
+    def is_o(self) -> bool:
+        return self.value == "O"
+    @property
+    def is_c(self) -> bool:
+        return self.value == "C"
+    @property
+    def is_r(self) -> bool:
+        return self.value == "R"
+    @property
+    def is_f(self) -> bool:
+        return self.value == "F"

@@ -1,10 +1,13 @@
-
+"""
+FIX UnderlyingStartValue field (tag 884).
+"""
 from .base import FIXFieldBase
-from .types import FIXAmt
+from typing import Optional
+from .types import *
 
-class UnderlyingStartValue(FIXFieldBase):
-    """FIX UnderlyingStartValue field."""
+class UnderlyingStartValueField(FIXFieldBase):
+    """"""
     tag: str = "884"
     name: str = "UnderlyingStartValue"
     type: str = "AMT"
-    value: FIXAmt
+    value: float

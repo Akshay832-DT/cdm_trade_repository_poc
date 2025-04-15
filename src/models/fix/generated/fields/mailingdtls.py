@@ -1,10 +1,13 @@
-
+"""
+FIX MailingDtls field (tag 474).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class MailingDtls(FIXFieldBase):
-    """FIX MailingDtls field."""
+class MailingDtlsField(FIXFieldBase):
+    """"""
     tag: str = "474"
     name: str = "MailingDtls"
     type: str = "STRING"
-    value: FIXString
+    value: str

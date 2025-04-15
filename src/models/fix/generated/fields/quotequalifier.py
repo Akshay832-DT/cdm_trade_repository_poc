@@ -1,10 +1,13 @@
-
+"""
+FIX QuoteQualifier field (tag 695).
+"""
 from .base import FIXFieldBase
-from .types import FIXChar
+from typing import Optional
+from .types import *
 
-class QuoteQualifier(FIXFieldBase):
-    """FIX QuoteQualifier field."""
+class QuoteQualifierField(FIXFieldBase):
+    """"""
     tag: str = "695"
     name: str = "QuoteQualifier"
     type: str = "CHAR"
-    value: FIXChar
+    value: str

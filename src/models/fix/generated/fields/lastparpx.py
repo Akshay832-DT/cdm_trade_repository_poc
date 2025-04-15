@@ -1,10 +1,13 @@
-
+"""
+FIX LastParPx field (tag 669).
+"""
 from .base import FIXFieldBase
-from .types import FIXPrice
+from typing import Optional
+from .types import *
 
-class LastParPx(FIXFieldBase):
-    """FIX LastParPx field."""
+class LastParPxField(FIXFieldBase):
+    """"""
     tag: str = "669"
     name: str = "LastParPx"
     type: str = "PRICE"
-    value: FIXPrice
+    value: float

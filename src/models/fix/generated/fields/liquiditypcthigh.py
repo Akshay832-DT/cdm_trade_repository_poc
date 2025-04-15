@@ -1,10 +1,13 @@
-
+"""
+FIX LiquidityPctHigh field (tag 403).
+"""
 from .base import FIXFieldBase
-from .types import FIXPercentage
+from typing import Optional
+from .types import *
 
-class LiquidityPctHigh(FIXFieldBase):
-    """FIX LiquidityPctHigh field."""
+class LiquidityPctHighField(FIXFieldBase):
+    """"""
     tag: str = "403"
     name: str = "LiquidityPctHigh"
     type: str = "PERCENTAGE"
-    value: FIXPercentage
+    value: float

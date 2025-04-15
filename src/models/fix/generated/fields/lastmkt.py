@@ -1,10 +1,13 @@
-
+"""
+FIX LastMkt field (tag 30).
+"""
 from .base import FIXFieldBase
-from .types import FIXExchange
+from typing import Optional
+from .types import *
 
-class LastMkt(FIXFieldBase):
-    """FIX LastMkt field."""
+class LastMktField(FIXFieldBase):
+    """"""
     tag: str = "30"
     name: str = "LastMkt"
     type: str = "EXCHANGE"
-    value: FIXExchange
+    value: str

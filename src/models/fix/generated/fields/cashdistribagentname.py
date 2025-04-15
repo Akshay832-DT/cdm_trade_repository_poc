@@ -1,10 +1,13 @@
-
+"""
+FIX CashDistribAgentName field (tag 498).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class CashDistribAgentName(FIXFieldBase):
-    """FIX CashDistribAgentName field."""
+class CashDistribAgentNameField(FIXFieldBase):
+    """"""
     tag: str = "498"
     name: str = "CashDistribAgentName"
     type: str = "STRING"
-    value: FIXString
+    value: str

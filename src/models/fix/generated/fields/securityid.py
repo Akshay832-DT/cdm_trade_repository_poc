@@ -1,10 +1,13 @@
-
+"""
+FIX SecurityID field (tag 48).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class SecurityID(FIXFieldBase):
-    """FIX SecurityID field."""
+class SecurityIDField(FIXFieldBase):
+    """"""
     tag: str = "48"
     name: str = "SecurityID"
     type: str = "STRING"
-    value: FIXString
+    value: str

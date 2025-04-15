@@ -1,10 +1,13 @@
-
+"""
+FIX AllocQty field (tag 80).
+"""
 from .base import FIXFieldBase
-from .types import FIXQty
+from typing import Optional
+from .types import *
 
-class AllocQty(FIXFieldBase):
-    """FIX AllocQty field."""
+class AllocQtyField(FIXFieldBase):
+    """"""
     tag: str = "80"
     name: str = "AllocQty"
     type: str = "QTY"
-    value: FIXQty
+    value: float

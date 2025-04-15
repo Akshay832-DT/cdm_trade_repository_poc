@@ -1,10 +1,13 @@
-
+"""
+FIX MinTradeVol field (tag 562).
+"""
 from .base import FIXFieldBase
-from .types import FIXQty
+from typing import Optional
+from .types import *
 
-class MinTradeVol(FIXFieldBase):
-    """FIX MinTradeVol field."""
+class MinTradeVolField(FIXFieldBase):
+    """"""
     tag: str = "562"
     name: str = "MinTradeVol"
     type: str = "QTY"
-    value: FIXQty
+    value: float

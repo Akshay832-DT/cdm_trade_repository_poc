@@ -1,10 +1,13 @@
-
+"""
+FIX StatusText field (tag 929).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class StatusText(FIXFieldBase):
-    """FIX StatusText field."""
+class StatusTextField(FIXFieldBase):
+    """"""
     tag: str = "929"
     name: str = "StatusText"
     type: str = "STRING"
-    value: FIXString
+    value: str

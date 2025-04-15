@@ -1,10 +1,13 @@
-
+"""
+FIX NoTradingSessions field (tag 386).
+"""
 from .base import FIXFieldBase
-from .types import FIXNumInGroup
+from typing import Optional
+from .types import *
 
-class NoTradingSessions(FIXFieldBase):
-    """FIX NoTradingSessions field."""
+class NoTradingSessionsField(FIXFieldBase):
+    """"""
     tag: str = "386"
     name: str = "NoTradingSessions"
     type: str = "NUMINGROUP"
-    value: FIXNumInGroup
+    value: int

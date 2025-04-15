@@ -1,10 +1,13 @@
-
+"""
+FIX EndCash field (tag 922).
+"""
 from .base import FIXFieldBase
-from .types import FIXAmt
+from typing import Optional
+from .types import *
 
-class EndCash(FIXFieldBase):
-    """FIX EndCash field."""
+class EndCashField(FIXFieldBase):
+    """"""
     tag: str = "922"
     name: str = "EndCash"
     type: str = "AMT"
-    value: FIXAmt
+    value: float

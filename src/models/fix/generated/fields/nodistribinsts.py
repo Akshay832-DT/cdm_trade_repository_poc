@@ -1,10 +1,13 @@
-
+"""
+FIX NoDistribInsts field (tag 510).
+"""
 from .base import FIXFieldBase
-from .types import FIXNumInGroup
+from typing import Optional
+from .types import *
 
-class NoDistribInsts(FIXFieldBase):
-    """FIX NoDistribInsts field."""
+class NoDistribInstsField(FIXFieldBase):
+    """"""
     tag: str = "510"
     name: str = "NoDistribInsts"
     type: str = "NUMINGROUP"
-    value: FIXNumInGroup
+    value: int

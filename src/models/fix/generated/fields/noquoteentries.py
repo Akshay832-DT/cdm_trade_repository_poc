@@ -1,10 +1,13 @@
-
+"""
+FIX NoQuoteEntries field (tag 295).
+"""
 from .base import FIXFieldBase
-from .types import FIXNumInGroup
+from typing import Optional
+from .types import *
 
-class NoQuoteEntries(FIXFieldBase):
-    """FIX NoQuoteEntries field."""
+class NoQuoteEntriesField(FIXFieldBase):
+    """"""
     tag: str = "295"
     name: str = "NoQuoteEntries"
     type: str = "NUMINGROUP"
-    value: FIXNumInGroup
+    value: int

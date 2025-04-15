@@ -1,10 +1,13 @@
-
+"""
+FIX NoTrdRegTimestamps field (tag 768).
+"""
 from .base import FIXFieldBase
-from .types import FIXNumInGroup
+from typing import Optional
+from .types import *
 
-class NoTrdRegTimestamps(FIXFieldBase):
-    """FIX NoTrdRegTimestamps field."""
+class NoTrdRegTimestampsField(FIXFieldBase):
+    """"""
     tag: str = "768"
     name: str = "NoTrdRegTimestamps"
     type: str = "NUMINGROUP"
-    value: FIXNumInGroup
+    value: int

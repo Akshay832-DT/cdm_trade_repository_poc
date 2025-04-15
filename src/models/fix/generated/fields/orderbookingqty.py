@@ -1,10 +1,13 @@
-
+"""
+FIX OrderBookingQty field (tag 800).
+"""
 from .base import FIXFieldBase
-from .types import FIXQty
+from typing import Optional
+from .types import *
 
-class OrderBookingQty(FIXFieldBase):
-    """FIX OrderBookingQty field."""
+class OrderBookingQtyField(FIXFieldBase):
+    """"""
     tag: str = "800"
     name: str = "OrderBookingQty"
     type: str = "QTY"
-    value: FIXQty
+    value: float

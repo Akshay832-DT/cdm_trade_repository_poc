@@ -1,10 +1,13 @@
-
+"""
+FIX BidDescriptor field (tag 400).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class BidDescriptor(FIXFieldBase):
-    """FIX BidDescriptor field."""
+class BidDescriptorField(FIXFieldBase):
+    """"""
     tag: str = "400"
     name: str = "BidDescriptor"
     type: str = "STRING"
-    value: FIXString
+    value: str

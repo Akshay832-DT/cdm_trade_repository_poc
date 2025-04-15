@@ -1,10 +1,13 @@
-
+"""
+FIX UnderlyingCurrentValue field (tag 885).
+"""
 from .base import FIXFieldBase
-from .types import FIXAmt
+from typing import Optional
+from .types import *
 
-class UnderlyingCurrentValue(FIXFieldBase):
-    """FIX UnderlyingCurrentValue field."""
+class UnderlyingCurrentValueField(FIXFieldBase):
+    """"""
     tag: str = "885"
     name: str = "UnderlyingCurrentValue"
     type: str = "AMT"
-    value: FIXAmt
+    value: float

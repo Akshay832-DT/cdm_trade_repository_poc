@@ -1,10 +1,13 @@
-
+"""
+FIX TargetStrategyPerformance field (tag 850).
+"""
 from .base import FIXFieldBase
-from .types import FIXFloat
+from typing import Optional
+from .types import *
 
-class TargetStrategyPerformance(FIXFieldBase):
-    """FIX TargetStrategyPerformance field."""
+class TargetStrategyPerformanceField(FIXFieldBase):
+    """"""
     tag: str = "850"
     name: str = "TargetStrategyPerformance"
     type: str = "FLOAT"
-    value: FIXFloat
+    value: float

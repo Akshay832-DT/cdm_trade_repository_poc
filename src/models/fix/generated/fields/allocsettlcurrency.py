@@ -1,10 +1,13 @@
-
+"""
+FIX AllocSettlCurrency field (tag 736).
+"""
 from .base import FIXFieldBase
-from .types import FIXCurrency
+from typing import Optional
+from .types import *
 
-class AllocSettlCurrency(FIXFieldBase):
-    """FIX AllocSettlCurrency field."""
+class AllocSettlCurrencyField(FIXFieldBase):
+    """"""
     tag: str = "736"
     name: str = "AllocSettlCurrency"
     type: str = "CURRENCY"
-    value: FIXCurrency
+    value: str

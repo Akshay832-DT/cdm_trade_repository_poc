@@ -1,10 +1,13 @@
-
+"""
+FIX EncodedHeadline field (tag 359).
+"""
 from .base import FIXFieldBase
-from .types import FIXData
+from typing import Optional
+from .types import *
 
-class EncodedHeadline(FIXFieldBase):
-    """FIX EncodedHeadline field."""
+class EncodedHeadlineField(FIXFieldBase):
+    """"""
     tag: str = "359"
     name: str = "EncodedHeadline"
     type: str = "DATA"
-    value: FIXData
+    value: str

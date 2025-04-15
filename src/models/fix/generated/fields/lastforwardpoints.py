@@ -1,10 +1,13 @@
-
+"""
+FIX LastForwardPoints field (tag 195).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class LastForwardPoints(FIXFieldBase):
-    """FIX LastForwardPoints field."""
+class LastForwardPointsField(FIXFieldBase):
+    """"""
     tag: str = "195"
     name: str = "LastForwardPoints"
     type: str = "PRICEOFFSET"
-    value: FIXString
+    value: float

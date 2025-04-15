@@ -1,10 +1,13 @@
-
+"""
+FIX OrigClOrdID field (tag 41).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class OrigClOrdID(FIXFieldBase):
-    """FIX OrigClOrdID field."""
+class OrigClOrdIDField(FIXFieldBase):
+    """"""
     tag: str = "41"
     name: str = "OrigClOrdID"
     type: str = "STRING"
-    value: FIXString
+    value: str

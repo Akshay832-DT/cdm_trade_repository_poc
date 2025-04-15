@@ -1,10 +1,13 @@
-
+"""
+FIX ExDestination field (tag 100).
+"""
 from .base import FIXFieldBase
-from .types import FIXExchange
+from typing import Optional
+from .types import *
 
-class ExDestination(FIXFieldBase):
-    """FIX ExDestination field."""
+class ExDestinationField(FIXFieldBase):
+    """"""
     tag: str = "100"
     name: str = "ExDestination"
     type: str = "EXCHANGE"
-    value: FIXExchange
+    value: str

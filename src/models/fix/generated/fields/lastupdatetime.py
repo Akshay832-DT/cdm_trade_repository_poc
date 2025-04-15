@@ -1,10 +1,13 @@
-
+"""
+FIX LastUpdateTime field (tag 779).
+"""
 from .base import FIXFieldBase
-from .types import FIXUTCTimestamp
+from typing import Optional
+from .types import *
 
-class LastUpdateTime(FIXFieldBase):
-    """FIX LastUpdateTime field."""
+class LastUpdateTimeField(FIXFieldBase):
+    """"""
     tag: str = "779"
     name: str = "LastUpdateTime"
     type: str = "UTCTIMESTAMP"
-    value: FIXUTCTimestamp
+    value: datetime

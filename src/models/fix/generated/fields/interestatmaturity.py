@@ -1,10 +1,13 @@
-
+"""
+FIX InterestAtMaturity field (tag 738).
+"""
 from .base import FIXFieldBase
-from .types import FIXAmt
+from typing import Optional
+from .types import *
 
-class InterestAtMaturity(FIXFieldBase):
-    """FIX InterestAtMaturity field."""
+class InterestAtMaturityField(FIXFieldBase):
+    """"""
     tag: str = "738"
     name: str = "InterestAtMaturity"
     type: str = "AMT"
-    value: FIXAmt
+    value: float

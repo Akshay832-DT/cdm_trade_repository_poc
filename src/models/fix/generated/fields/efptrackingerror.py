@@ -1,10 +1,13 @@
-
+"""
+FIX EFPTrackingError field (tag 405).
+"""
 from .base import FIXFieldBase
-from .types import FIXPercentage
+from typing import Optional
+from .types import *
 
-class EFPTrackingError(FIXFieldBase):
-    """FIX EFPTrackingError field."""
+class EFPTrackingErrorField(FIXFieldBase):
+    """"""
     tag: str = "405"
     name: str = "EFPTrackingError"
     type: str = "PERCENTAGE"
-    value: FIXPercentage
+    value: float

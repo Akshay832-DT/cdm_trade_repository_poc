@@ -1,10 +1,13 @@
-
+"""
+FIX LastRptRequested field (tag 912).
+"""
 from .base import FIXFieldBase
-from .types import FIXBoolean
+from typing import Optional
+from .types import *
 
-class LastRptRequested(FIXFieldBase):
-    """FIX LastRptRequested field."""
+class LastRptRequestedField(FIXFieldBase):
+    """"""
     tag: str = "912"
     name: str = "LastRptRequested"
     type: str = "BOOLEAN"
-    value: FIXBoolean
+    value: bool

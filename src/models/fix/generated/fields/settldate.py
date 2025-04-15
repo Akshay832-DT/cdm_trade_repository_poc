@@ -1,10 +1,13 @@
-
+"""
+FIX SettlDate field (tag 64).
+"""
 from .base import FIXFieldBase
-from .types import FIXLocalMktDate
+from typing import Optional
+from .types import *
 
-class SettlDate(FIXFieldBase):
-    """FIX SettlDate field."""
+class SettlDateField(FIXFieldBase):
+    """"""
     tag: str = "64"
     name: str = "SettlDate"
     type: str = "LOCALMKTDATE"
-    value: FIXLocalMktDate
+    value: date

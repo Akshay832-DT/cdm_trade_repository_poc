@@ -1,10 +1,13 @@
-
+"""
+FIX CrossID field (tag 548).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class CrossID(FIXFieldBase):
-    """FIX CrossID field."""
+class CrossIDField(FIXFieldBase):
+    """"""
     tag: str = "548"
     name: str = "CrossID"
     type: str = "STRING"
-    value: FIXString
+    value: str

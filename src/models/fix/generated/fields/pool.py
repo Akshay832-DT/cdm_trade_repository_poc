@@ -1,10 +1,13 @@
-
+"""
+FIX Pool field (tag 691).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class Pool(FIXFieldBase):
-    """FIX Pool field."""
+class PoolField(FIXFieldBase):
+    """"""
     tag: str = "691"
     name: str = "Pool"
     type: str = "STRING"
-    value: FIXString
+    value: str

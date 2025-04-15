@@ -1,10 +1,13 @@
-
+"""
+FIX EventPx field (tag 867).
+"""
 from .base import FIXFieldBase
-from .types import FIXPrice
+from typing import Optional
+from .types import *
 
-class EventPx(FIXFieldBase):
-    """FIX EventPx field."""
+class EventPxField(FIXFieldBase):
+    """"""
     tag: str = "867"
     name: str = "EventPx"
     type: str = "PRICE"
-    value: FIXPrice
+    value: float

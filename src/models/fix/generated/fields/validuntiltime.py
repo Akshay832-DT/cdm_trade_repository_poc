@@ -1,10 +1,13 @@
-
+"""
+FIX ValidUntilTime field (tag 62).
+"""
 from .base import FIXFieldBase
-from .types import FIXUTCTimestamp
+from typing import Optional
+from .types import *
 
-class ValidUntilTime(FIXFieldBase):
-    """FIX ValidUntilTime field."""
+class ValidUntilTimeField(FIXFieldBase):
+    """"""
     tag: str = "62"
     name: str = "ValidUntilTime"
     type: str = "UTCTIMESTAMP"
-    value: FIXUTCTimestamp
+    value: datetime

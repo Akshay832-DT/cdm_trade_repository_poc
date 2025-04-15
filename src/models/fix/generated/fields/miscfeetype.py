@@ -1,24 +1,66 @@
-
+"""
+FIX MiscFeeType field (tag 139).
+"""
 from .base import FIXFieldBase
-from .types import FIXChar
+from typing import Optional
+from .types import *
 
-class MiscFeeType(FIXFieldBase):
-    """FIX MiscFeeType field."""
+class MiscFeeTypeValues:
+    """Enumerated values for MiscFeeType."""
+    VALUE_1 = "1"  # REGULATORY
+    VALUE_2 = "2"  # TAX
+    VALUE_3 = "3"  # LOCAL_COMMISSION
+    VALUE_4 = "4"  # EXCHANGE_FEES
+    VALUE_5 = "5"  # STAMP
+    VALUE_6 = "6"  # LEVY
+    VALUE_7 = "7"  # OTHER
+    VALUE_8 = "8"  # MARKUP
+    VALUE_9 = "9"  # CONSUMPTION_TAX
+    VALUE_10 = "10"  # PER_TRANSACTION
+    VALUE_11 = "11"  # CONVERSION
+    VALUE_12 = "12"  # AGENT
+
+class MiscFeeTypeField(FIXFieldBase):
+    """"""
     tag: str = "139"
     name: str = "MiscFeeType"
     type: str = "CHAR"
-    value: FIXChar
+    value: Literal["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
 
-    # Enum values
-    # 1: REGULATORY
-    # 2: TAX
-    # 3: LOCAL_COMMISSION
-    # 4: EXCHANGE_FEES
-    # 5: STAMP
-    # 6: LEVY
-    # 7: OTHER
-    # 8: MARKUP
-    # 9: CONSUMPTION_TAX
-    # 10: PER_TRANSACTION
-    # 11: CONVERSION
-    # 12: AGENT
+    # Helper methods for enum values
+    @property
+    def is_value_1(self) -> bool:
+        return self.value == "1"
+    @property
+    def is_value_2(self) -> bool:
+        return self.value == "2"
+    @property
+    def is_value_3(self) -> bool:
+        return self.value == "3"
+    @property
+    def is_value_4(self) -> bool:
+        return self.value == "4"
+    @property
+    def is_value_5(self) -> bool:
+        return self.value == "5"
+    @property
+    def is_value_6(self) -> bool:
+        return self.value == "6"
+    @property
+    def is_value_7(self) -> bool:
+        return self.value == "7"
+    @property
+    def is_value_8(self) -> bool:
+        return self.value == "8"
+    @property
+    def is_value_9(self) -> bool:
+        return self.value == "9"
+    @property
+    def is_value_10(self) -> bool:
+        return self.value == "10"
+    @property
+    def is_value_11(self) -> bool:
+        return self.value == "11"
+    @property
+    def is_value_12(self) -> bool:
+        return self.value == "12"

@@ -1,15 +1,30 @@
-
+"""
+FIX OwnershipType field (tag 517).
+"""
 from .base import FIXFieldBase
-from .types import FIXChar
+from typing import Optional
+from .types import *
 
-class OwnershipType(FIXFieldBase):
-    """FIX OwnershipType field."""
+class OwnershipTypeValues:
+    """Enumerated values for OwnershipType."""
+    J = "J"  # JOINT_INVESTORS
+    T = "T"  # TENANTS_IN_COMMON
+    VALUE_2 = "2"  # JOINT_TRUSTEES
+
+class OwnershipTypeField(FIXFieldBase):
+    """"""
     tag: str = "517"
     name: str = "OwnershipType"
     type: str = "CHAR"
-    value: FIXChar
+    value: Literal["J", "T", "2"]
 
-    # Enum values
-    # J: JOINT_INVESTORS
-    # T: TENANTS_IN_COMMON
-    # 2: JOINT_TRUSTEES
+    # Helper methods for enum values
+    @property
+    def is_j(self) -> bool:
+        return self.value == "J"
+    @property
+    def is_t(self) -> bool:
+        return self.value == "T"
+    @property
+    def is_value_2(self) -> bool:
+        return self.value == "2"

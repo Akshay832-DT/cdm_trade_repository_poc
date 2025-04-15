@@ -1,14 +1,26 @@
-
+"""
+FIX DeleteReason field (tag 285).
+"""
 from .base import FIXFieldBase
-from .types import FIXChar
+from typing import Optional
+from .types import *
 
-class DeleteReason(FIXFieldBase):
-    """FIX DeleteReason field."""
+class DeleteReasonValues:
+    """Enumerated values for DeleteReason."""
+    VALUE_0 = "0"  # CANCELLATION
+    VALUE_1 = "1"  # ERROR
+
+class DeleteReasonField(FIXFieldBase):
+    """"""
     tag: str = "285"
     name: str = "DeleteReason"
     type: str = "CHAR"
-    value: FIXChar
+    value: Literal["0", "1"]
 
-    # Enum values
-    # 0: CANCELLATION
-    # 1: ERROR
+    # Helper methods for enum values
+    @property
+    def is_value_0(self) -> bool:
+        return self.value == "0"
+    @property
+    def is_value_1(self) -> bool:
+        return self.value == "1"

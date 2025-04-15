@@ -1,16 +1,34 @@
-
+"""
+FIX SettlInstTransType field (tag 163).
+"""
 from .base import FIXFieldBase
-from .types import FIXChar
+from typing import Optional
+from .types import *
 
-class SettlInstTransType(FIXFieldBase):
-    """FIX SettlInstTransType field."""
+class SettlInstTransTypeValues:
+    """Enumerated values for SettlInstTransType."""
+    N = "N"  # NEW
+    C = "C"  # CANCEL
+    R = "R"  # REPLACE
+    T = "T"  # RESTATE
+
+class SettlInstTransTypeField(FIXFieldBase):
+    """"""
     tag: str = "163"
     name: str = "SettlInstTransType"
     type: str = "CHAR"
-    value: FIXChar
+    value: Literal["N", "C", "R", "T"]
 
-    # Enum values
-    # N: NEW
-    # C: CANCEL
-    # R: REPLACE
-    # T: RESTATE
+    # Helper methods for enum values
+    @property
+    def is_n(self) -> bool:
+        return self.value == "N"
+    @property
+    def is_c(self) -> bool:
+        return self.value == "C"
+    @property
+    def is_r(self) -> bool:
+        return self.value == "R"
+    @property
+    def is_t(self) -> bool:
+        return self.value == "T"

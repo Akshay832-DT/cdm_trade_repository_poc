@@ -1,10 +1,13 @@
-
+"""
+FIX LegContractMultiplier field (tag 614).
+"""
 from .base import FIXFieldBase
-from .types import FIXFloat
+from typing import Optional
+from .types import *
 
-class LegContractMultiplier(FIXFieldBase):
-    """FIX LegContractMultiplier field."""
+class LegContractMultiplierField(FIXFieldBase):
+    """"""
     tag: str = "614"
     name: str = "LegContractMultiplier"
     type: str = "FLOAT"
-    value: FIXFloat
+    value: float

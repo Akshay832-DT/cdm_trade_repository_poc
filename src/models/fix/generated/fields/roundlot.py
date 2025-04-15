@@ -1,10 +1,13 @@
-
+"""
+FIX RoundLot field (tag 561).
+"""
 from .base import FIXFieldBase
-from .types import FIXQty
+from typing import Optional
+from .types import *
 
-class RoundLot(FIXFieldBase):
-    """FIX RoundLot field."""
+class RoundLotField(FIXFieldBase):
+    """"""
     tag: str = "561"
     name: str = "RoundLot"
     type: str = "QTY"
-    value: FIXQty
+    value: float

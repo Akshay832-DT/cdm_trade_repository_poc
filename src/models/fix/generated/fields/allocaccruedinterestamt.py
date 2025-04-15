@@ -1,10 +1,13 @@
-
+"""
+FIX AllocAccruedInterestAmt field (tag 742).
+"""
 from .base import FIXFieldBase
-from .types import FIXAmt
+from typing import Optional
+from .types import *
 
-class AllocAccruedInterestAmt(FIXFieldBase):
-    """FIX AllocAccruedInterestAmt field."""
+class AllocAccruedInterestAmtField(FIXFieldBase):
+    """"""
     tag: str = "742"
     name: str = "AllocAccruedInterestAmt"
     type: str = "AMT"
-    value: FIXAmt
+    value: float

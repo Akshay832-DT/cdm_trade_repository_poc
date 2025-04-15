@@ -7,9 +7,9 @@ import sys
 from datetime import datetime, date
 import simplefix
 from src.parsers.controller import ParserController
-from src.models.fix.generated.messages.newordersingle import NewOrderSingle
-from src.models.fix.generated.components.instrument import Instrument
-from src.models.fix.generated.components.orderqtydata import OrderQtyData
+from src.models.fix.generated.messages.newordersingle import NewOrderSingleMessage
+from src.models.fix.generated.components.instrument import InstrumentComponent
+from src.models.fix.generated.components.orderqtydata import OrderQtyDataComponent
 from src.parsers.fix.parser import FIXParser
 
 class TestIRSMessageParsing(unittest.TestCase):
@@ -64,27 +64,27 @@ class TestIRSMessageParsing(unittest.TestCase):
     
     async def test_fix_parser_validation(self):
         """Test that the FIX parser correctly validates a raw FIX message."""
-        self.assertTrue(await self.parser.validate(self.raw_fix_message.encode()), "Message should be valid")
-        parsed_data = await self.parser.parse(self.raw_fix_message.encode())
+        self.assertTrue(await self.parser.validate(self.raw_fix_message), "Message should be valid")
+        parsed_data = await self.parser.parse(self.raw_fix_message)
         
         # Verify common fields
-        self.assertEqual(parsed_data[8], 'FIX.4.4')
-        self.assertEqual(parsed_data[35], 'D')
-        self.assertEqual(parsed_data[49], 'SENDER')
-        self.assertEqual(parsed_data[56], 'TARGET')
+        self.assertEqual(parsed_data.BeginString, 'FIX.4.4')
+        self.assertEqual(parsed_data.MsgType, 'D')
+        self.assertEqual(parsed_data.SenderCompID, 'SENDER')
+        self.assertEqual(parsed_data.TargetCompID, 'TARGET')
         
         # Verify IRS specific fields
-        self.assertEqual(parsed_data[167], 'SWAP')
-        self.assertEqual(parsed_data[200], '202404')
-        self.assertEqual(parsed_data[541], '20240415')
+        self.assertEqual(parsed_data.Instrument.SecurityType, 'SWAP')
+        self.assertEqual(parsed_data.Instrument.MaturityMonthYear, '202404')
+        self.assertEqual(parsed_data.Instrument.MaturityDate.strftime('%Y%m%d'), '20240415')
         
         # Verify order fields
-        self.assertEqual(parsed_data[11], 'ORDER123')
-        self.assertEqual(parsed_data[1], 'ACCOUNT123')
-        self.assertEqual(parsed_data[54], '1')
-        self.assertEqual(parsed_data[40], '2')
-        self.assertEqual(parsed_data[44], '100.50')
-        self.assertEqual(parsed_data[947], 'USD')
+        self.assertEqual(parsed_data.ClOrdID, 'ORDER123')
+        self.assertEqual(parsed_data.Account, 'ACCOUNT123')
+        self.assertEqual(parsed_data.Side, '1')
+        self.assertEqual(parsed_data.OrdType, '2')
+        self.assertEqual(parsed_data.Price, 100.50)
+        self.assertEqual(parsed_data.Instrument.StrikeCurrency, 'USD')
     
     def test_full_message_parse(self):
         """Test full message parsing through the ParserController."""
@@ -97,8 +97,8 @@ class TestIRSMessageParsing(unittest.TestCase):
             # Now parse through the controller
             message = await self.parser_controller.parse_message(fix_msg, 'FIX')
             
-            # Verify message is correctly parsed as NewOrderSingle
-            self.assertIsInstance(message, NewOrderSingle)
+            # Verify message is correctly parsed as NewOrderSingleMessage
+            self.assertIsInstance(message, NewOrderSingleMessage)
             
             # Verify header fields
             self.assertEqual(message.BeginString, "FIX.4.4")

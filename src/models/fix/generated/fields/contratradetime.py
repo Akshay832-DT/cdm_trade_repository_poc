@@ -1,10 +1,13 @@
-
+"""
+FIX ContraTradeTime field (tag 438).
+"""
 from .base import FIXFieldBase
-from .types import FIXUTCTimestamp
+from typing import Optional
+from .types import *
 
-class ContraTradeTime(FIXFieldBase):
-    """FIX ContraTradeTime field."""
+class ContraTradeTimeField(FIXFieldBase):
+    """"""
     tag: str = "438"
     name: str = "ContraTradeTime"
     type: str = "UTCTIMESTAMP"
-    value: FIXUTCTimestamp
+    value: datetime

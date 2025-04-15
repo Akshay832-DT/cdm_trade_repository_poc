@@ -1,14 +1,26 @@
-
+"""
+FIX PossDupFlag field (tag 43).
+"""
 from .base import FIXFieldBase
-from .types import FIXBoolean
+from typing import Optional
+from .types import *
 
-class PossDupFlag(FIXFieldBase):
-    """FIX PossDupFlag field."""
+class PossDupFlagValues:
+    """Enumerated values for PossDupFlag."""
+    Y = "Y"  # YES
+    N = "N"  # NO
+
+class PossDupFlagField(FIXFieldBase):
+    """"""
     tag: str = "43"
     name: str = "PossDupFlag"
     type: str = "BOOLEAN"
-    value: FIXBoolean
+    value: Literal["Y", "N"]
 
-    # Enum values
-    # Y: YES
-    # N: NO
+    # Helper methods for enum values
+    @property
+    def is_y(self) -> bool:
+        return self.value == "Y"
+    @property
+    def is_n(self) -> bool:
+        return self.value == "N"

@@ -1,10 +1,13 @@
-
+"""
+FIX Nested2PartyID field (tag 757).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class Nested2PartyID(FIXFieldBase):
-    """FIX Nested2PartyID field."""
+class Nested2PartyIDField(FIXFieldBase):
+    """"""
     tag: str = "757"
     name: str = "Nested2PartyID"
     type: str = "STRING"
-    value: FIXString
+    value: str

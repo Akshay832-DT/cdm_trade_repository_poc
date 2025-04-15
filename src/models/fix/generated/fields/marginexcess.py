@@ -1,10 +1,13 @@
-
+"""
+FIX MarginExcess field (tag 899).
+"""
 from .base import FIXFieldBase
-from .types import FIXAmt
+from typing import Optional
+from .types import *
 
-class MarginExcess(FIXFieldBase):
-    """FIX MarginExcess field."""
+class MarginExcessField(FIXFieldBase):
+    """"""
     tag: str = "899"
     name: str = "MarginExcess"
     type: str = "AMT"
-    value: FIXAmt
+    value: float

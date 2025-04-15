@@ -1,10 +1,13 @@
-
+"""
+FIX SecureData field (tag 91).
+"""
 from .base import FIXFieldBase
-from .types import FIXData
+from typing import Optional
+from .types import *
 
-class SecureData(FIXFieldBase):
-    """FIX SecureData field."""
+class SecureDataField(FIXFieldBase):
+    """"""
     tag: str = "91"
     name: str = "SecureData"
     type: str = "DATA"
-    value: FIXData
+    value: str

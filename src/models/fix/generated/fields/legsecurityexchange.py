@@ -1,10 +1,13 @@
-
+"""
+FIX LegSecurityExchange field (tag 616).
+"""
 from .base import FIXFieldBase
-from .types import FIXExchange
+from typing import Optional
+from .types import *
 
-class LegSecurityExchange(FIXFieldBase):
-    """FIX LegSecurityExchange field."""
+class LegSecurityExchangeField(FIXFieldBase):
+    """"""
     tag: str = "616"
     name: str = "LegSecurityExchange"
     type: str = "EXCHANGE"
-    value: FIXExchange
+    value: str

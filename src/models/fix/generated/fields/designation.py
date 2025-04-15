@@ -1,10 +1,13 @@
-
+"""
+FIX Designation field (tag 494).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class Designation(FIXFieldBase):
-    """FIX Designation field."""
+class DesignationField(FIXFieldBase):
+    """"""
     tag: str = "494"
     name: str = "Designation"
     type: str = "STRING"
-    value: FIXString
+    value: str

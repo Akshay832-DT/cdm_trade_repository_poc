@@ -1,10 +1,13 @@
-
+"""
+FIX DatedDate field (tag 873).
+"""
 from .base import FIXFieldBase
-from .types import FIXLocalMktDate
+from typing import Optional
+from .types import *
 
-class DatedDate(FIXFieldBase):
-    """FIX DatedDate field."""
+class DatedDateField(FIXFieldBase):
+    """"""
     tag: str = "873"
     name: str = "DatedDate"
     type: str = "LOCALMKTDATE"
-    value: FIXLocalMktDate
+    value: date

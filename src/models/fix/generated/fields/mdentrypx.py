@@ -1,10 +1,13 @@
-
+"""
+FIX MDEntryPx field (tag 270).
+"""
 from .base import FIXFieldBase
-from .types import FIXPrice
+from typing import Optional
+from .types import *
 
-class MDEntryPx(FIXFieldBase):
-    """FIX MDEntryPx field."""
+class MDEntryPxField(FIXFieldBase):
+    """"""
     tag: str = "270"
     name: str = "MDEntryPx"
     type: str = "PRICE"
-    value: FIXPrice
+    value: float

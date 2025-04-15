@@ -1,10 +1,13 @@
-
+"""
+FIX OrderAvgPx field (tag 799).
+"""
 from .base import FIXFieldBase
-from .types import FIXPrice
+from typing import Optional
+from .types import *
 
-class OrderAvgPx(FIXFieldBase):
-    """FIX OrderAvgPx field."""
+class OrderAvgPxField(FIXFieldBase):
+    """"""
     tag: str = "799"
     name: str = "OrderAvgPx"
     type: str = "PRICE"
-    value: FIXPrice
+    value: float

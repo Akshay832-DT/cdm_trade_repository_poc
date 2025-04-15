@@ -1,10 +1,13 @@
-
+"""
+FIX HighPx field (tag 332).
+"""
 from .base import FIXFieldBase
-from .types import FIXPrice
+from typing import Optional
+from .types import *
 
-class HighPx(FIXFieldBase):
-    """FIX HighPx field."""
+class HighPxField(FIXFieldBase):
+    """"""
     tag: str = "332"
     name: str = "HighPx"
     type: str = "PRICE"
-    value: FIXPrice
+    value: float

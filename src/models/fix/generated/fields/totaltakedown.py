@@ -1,10 +1,13 @@
-
+"""
+FIX TotalTakedown field (tag 237).
+"""
 from .base import FIXFieldBase
-from .types import FIXAmt
+from typing import Optional
+from .types import *
 
-class TotalTakedown(FIXFieldBase):
-    """FIX TotalTakedown field."""
+class TotalTakedownField(FIXFieldBase):
+    """"""
     tag: str = "237"
     name: str = "TotalTakedown"
     type: str = "AMT"
-    value: FIXAmt
+    value: float

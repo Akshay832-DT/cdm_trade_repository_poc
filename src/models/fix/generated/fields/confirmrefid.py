@@ -1,10 +1,13 @@
-
+"""
+FIX ConfirmRefID field (tag 772).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class ConfirmRefID(FIXFieldBase):
-    """FIX ConfirmRefID field."""
+class ConfirmRefIDField(FIXFieldBase):
+    """"""
     tag: str = "772"
     name: str = "ConfirmRefID"
     type: str = "STRING"
-    value: FIXString
+    value: str

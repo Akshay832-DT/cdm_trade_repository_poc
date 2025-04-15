@@ -1,10 +1,13 @@
-
+"""
+FIX TotalNumPosReports field (tag 727).
+"""
 from .base import FIXFieldBase
-from .types import FIXInt
+from typing import Optional
+from .types import *
 
-class TotalNumPosReports(FIXFieldBase):
-    """FIX TotalNumPosReports field."""
+class TotalNumPosReportsField(FIXFieldBase):
+    """"""
     tag: str = "727"
     name: str = "TotalNumPosReports"
     type: str = "INT"
-    value: FIXInt
+    value: int

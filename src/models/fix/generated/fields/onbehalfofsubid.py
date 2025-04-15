@@ -1,10 +1,13 @@
-
+"""
+FIX OnBehalfOfSubID field (tag 116).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class OnBehalfOfSubID(FIXFieldBase):
-    """FIX OnBehalfOfSubID field."""
+class OnBehalfOfSubIDField(FIXFieldBase):
+    """"""
     tag: str = "116"
     name: str = "OnBehalfOfSubID"
     type: str = "STRING"
-    value: FIXString
+    value: str

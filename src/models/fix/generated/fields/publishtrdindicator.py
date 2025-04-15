@@ -1,14 +1,26 @@
-
+"""
+FIX PublishTrdIndicator field (tag 852).
+"""
 from .base import FIXFieldBase
-from .types import FIXBoolean
+from typing import Optional
+from .types import *
 
-class PublishTrdIndicator(FIXFieldBase):
-    """FIX PublishTrdIndicator field."""
+class PublishTrdIndicatorValues:
+    """Enumerated values for PublishTrdIndicator."""
+    Y = "Y"  # YES
+    N = "N"  # NO
+
+class PublishTrdIndicatorField(FIXFieldBase):
+    """"""
     tag: str = "852"
     name: str = "PublishTrdIndicator"
     type: str = "BOOLEAN"
-    value: FIXBoolean
+    value: Literal["Y", "N"]
 
-    # Enum values
-    # Y: YES
-    # N: NO
+    # Helper methods for enum values
+    @property
+    def is_y(self) -> bool:
+        return self.value == "Y"
+    @property
+    def is_n(self) -> bool:
+        return self.value == "N"

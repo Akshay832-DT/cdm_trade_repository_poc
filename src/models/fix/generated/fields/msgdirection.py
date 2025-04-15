@@ -1,14 +1,26 @@
-
+"""
+FIX MsgDirection field (tag 385).
+"""
 from .base import FIXFieldBase
-from .types import FIXChar
+from typing import Optional
+from .types import *
 
-class MsgDirection(FIXFieldBase):
-    """FIX MsgDirection field."""
+class MsgDirectionValues:
+    """Enumerated values for MsgDirection."""
+    S = "S"  # SEND
+    R = "R"  # RECEIVE
+
+class MsgDirectionField(FIXFieldBase):
+    """"""
     tag: str = "385"
     name: str = "MsgDirection"
     type: str = "CHAR"
-    value: FIXChar
+    value: Literal["S", "R"]
 
-    # Enum values
-    # S: SEND
-    # R: RECEIVE
+    # Helper methods for enum values
+    @property
+    def is_s(self) -> bool:
+        return self.value == "S"
+    @property
+    def is_r(self) -> bool:
+        return self.value == "R"

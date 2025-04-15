@@ -1,10 +1,13 @@
-
+"""
+FIX XmlDataLen field (tag 212).
+"""
 from .base import FIXFieldBase
-from .types import FIXLength
+from typing import Optional
+from .types import *
 
-class XmlDataLen(FIXFieldBase):
-    """FIX XmlDataLen field."""
+class XmlDataLenField(FIXFieldBase):
+    """"""
     tag: str = "212"
     name: str = "XmlDataLen"
     type: str = "LENGTH"
-    value: FIXLength
+    value: int

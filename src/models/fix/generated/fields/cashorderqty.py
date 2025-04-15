@@ -1,10 +1,13 @@
-
+"""
+FIX CashOrderQty field (tag 152).
+"""
 from .base import FIXFieldBase
-from .types import FIXQty
+from typing import Optional
+from .types import *
 
-class CashOrderQty(FIXFieldBase):
-    """FIX CashOrderQty field."""
+class CashOrderQtyField(FIXFieldBase):
+    """"""
     tag: str = "152"
     name: str = "CashOrderQty"
     type: str = "QTY"
-    value: FIXQty
+    value: float

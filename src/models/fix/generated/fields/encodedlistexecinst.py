@@ -1,10 +1,13 @@
-
+"""
+FIX EncodedListExecInst field (tag 353).
+"""
 from .base import FIXFieldBase
-from .types import FIXData
+from typing import Optional
+from .types import *
 
-class EncodedListExecInst(FIXFieldBase):
-    """FIX EncodedListExecInst field."""
+class EncodedListExecInstField(FIXFieldBase):
+    """"""
     tag: str = "353"
     name: str = "EncodedListExecInst"
     type: str = "DATA"
-    value: FIXData
+    value: str

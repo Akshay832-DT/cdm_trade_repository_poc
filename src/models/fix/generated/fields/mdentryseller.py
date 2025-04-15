@@ -1,10 +1,13 @@
-
+"""
+FIX MDEntrySeller field (tag 289).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class MDEntrySeller(FIXFieldBase):
-    """FIX MDEntrySeller field."""
+class MDEntrySellerField(FIXFieldBase):
+    """"""
     tag: str = "289"
     name: str = "MDEntrySeller"
     type: str = "STRING"
-    value: FIXString
+    value: str

@@ -1,10 +1,13 @@
-
+"""
+FIX URLLink field (tag 149).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class URLLink(FIXFieldBase):
-    """FIX URLLink field."""
+class URLLinkField(FIXFieldBase):
+    """"""
     tag: str = "149"
     name: str = "URLLink"
     type: str = "STRING"
-    value: FIXString
+    value: str

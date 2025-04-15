@@ -1,10 +1,13 @@
-
+"""
+FIX ExchangeRule field (tag 825).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class ExchangeRule(FIXFieldBase):
-    """FIX ExchangeRule field."""
+class ExchangeRuleField(FIXFieldBase):
+    """"""
     tag: str = "825"
     name: str = "ExchangeRule"
     type: str = "STRING"
-    value: FIXString
+    value: str

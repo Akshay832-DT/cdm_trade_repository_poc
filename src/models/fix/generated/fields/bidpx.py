@@ -1,10 +1,13 @@
-
+"""
+FIX BidPx field (tag 132).
+"""
 from .base import FIXFieldBase
-from .types import FIXPrice
+from typing import Optional
+from .types import *
 
-class BidPx(FIXFieldBase):
-    """FIX BidPx field."""
+class BidPxField(FIXFieldBase):
+    """"""
     tag: str = "132"
     name: str = "BidPx"
     type: str = "PRICE"
-    value: FIXPrice
+    value: float

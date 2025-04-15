@@ -1,10 +1,13 @@
-
+"""
+FIX TradSesOpenTime field (tag 342).
+"""
 from .base import FIXFieldBase
-from .types import FIXUTCTimestamp
+from typing import Optional
+from .types import *
 
-class TradSesOpenTime(FIXFieldBase):
-    """FIX TradSesOpenTime field."""
+class TradSesOpenTimeField(FIXFieldBase):
+    """"""
     tag: str = "342"
     name: str = "TradSesOpenTime"
     type: str = "UTCTIMESTAMP"
-    value: FIXUTCTimestamp
+    value: datetime

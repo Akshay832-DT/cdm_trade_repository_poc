@@ -1,10 +1,13 @@
-
+"""
+FIX ContraTradeQty field (tag 437).
+"""
 from .base import FIXFieldBase
-from .types import FIXQty
+from typing import Optional
+from .types import *
 
-class ContraTradeQty(FIXFieldBase):
-    """FIX ContraTradeQty field."""
+class ContraTradeQtyField(FIXFieldBase):
+    """"""
     tag: str = "437"
     name: str = "ContraTradeQty"
     type: str = "QTY"
-    value: FIXQty
+    value: float

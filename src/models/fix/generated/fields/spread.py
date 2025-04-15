@@ -1,10 +1,13 @@
-
+"""
+FIX Spread field (tag 218).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class Spread(FIXFieldBase):
-    """FIX Spread field."""
+class SpreadField(FIXFieldBase):
+    """"""
     tag: str = "218"
     name: str = "Spread"
     type: str = "PRICEOFFSET"
-    value: FIXString
+    value: float

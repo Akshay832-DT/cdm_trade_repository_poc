@@ -1,10 +1,13 @@
-
+"""
+FIX PriorSpreadIndicator field (tag 720).
+"""
 from .base import FIXFieldBase
-from .types import FIXBoolean
+from typing import Optional
+from .types import *
 
-class PriorSpreadIndicator(FIXFieldBase):
-    """FIX PriorSpreadIndicator field."""
+class PriorSpreadIndicatorField(FIXFieldBase):
+    """"""
     tag: str = "720"
     name: str = "PriorSpreadIndicator"
     type: str = "BOOLEAN"
-    value: FIXBoolean
+    value: bool

@@ -1,10 +1,13 @@
-
+"""
+FIX SellerDays field (tag 287).
+"""
 from .base import FIXFieldBase
-from .types import FIXInt
+from typing import Optional
+from .types import *
 
-class SellerDays(FIXFieldBase):
-    """FIX SellerDays field."""
+class SellerDaysField(FIXFieldBase):
+    """"""
     tag: str = "287"
     name: str = "SellerDays"
     type: str = "INT"
-    value: FIXInt
+    value: int

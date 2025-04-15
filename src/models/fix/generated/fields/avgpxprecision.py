@@ -1,10 +1,13 @@
-
+"""
+FIX AvgPxPrecision field (tag 74).
+"""
 from .base import FIXFieldBase
-from .types import FIXInt
+from typing import Optional
+from .types import *
 
-class AvgPxPrecision(FIXFieldBase):
-    """FIX AvgPxPrecision field."""
+class AvgPxPrecisionField(FIXFieldBase):
+    """"""
     tag: str = "74"
     name: str = "AvgPxPrecision"
     type: str = "INT"
-    value: FIXInt
+    value: int

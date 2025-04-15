@@ -8,7 +8,7 @@ from typing import Dict, Any, Type, Union
 import simplefix
 from pathlib import Path
 
-from src.models.fix.base import FIXMessageBase
+from src.models.fix.generated.messages.base import FIXMessageBase
 from src.parsers.fix.base_parser import FIXMessageParser
 from src.parsers.fix.message_parsers.bid_response_parser import BidResponseParser
 from src.parsers.fix.message_parsers.new_order_single_parser import NewOrderSingleParser
@@ -29,9 +29,11 @@ class FIXParser(BaseParser):
         Returns:
             Dict[str, FIXMessageParser]: Dictionary mapping message types to their parsers
         """
+        # Map message types to their parsers
+        # Use the MsgType value (FIX tag 35) as the key
         return {
-            'l': BidResponseParser(),  # BidResponse
-            'D': NewOrderSingleParser()  # NewOrderSingle
+            'l': BidResponseParser(),     # BidResponse - MsgType: l
+            'D': NewOrderSingleParser()   # NewOrderSingle - MsgType: D
         }
         
     def _parse_fields(self, message: simplefix.FixMessage) -> Dict[str, Any]:

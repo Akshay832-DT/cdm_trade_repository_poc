@@ -1,14 +1,26 @@
-
+"""
+FIX AssignmentMethod field (tag 744).
+"""
 from .base import FIXFieldBase
-from .types import FIXChar
+from typing import Optional
+from .types import *
 
-class AssignmentMethod(FIXFieldBase):
-    """FIX AssignmentMethod field."""
+class AssignmentMethodValues:
+    """Enumerated values for AssignmentMethod."""
+    R = "R"  # RANDOM
+    P = "P"  # PRO_RATA
+
+class AssignmentMethodField(FIXFieldBase):
+    """"""
     tag: str = "744"
     name: str = "AssignmentMethod"
     type: str = "CHAR"
-    value: FIXChar
+    value: Literal["R", "P"]
 
-    # Enum values
-    # R: RANDOM
-    # P: PRO_RATA
+    # Helper methods for enum values
+    @property
+    def is_r(self) -> bool:
+        return self.value == "R"
+    @property
+    def is_p(self) -> bool:
+        return self.value == "P"

@@ -1,10 +1,13 @@
-
+"""
+FIX PeggedPrice field (tag 839).
+"""
 from .base import FIXFieldBase
-from .types import FIXPrice
+from typing import Optional
+from .types import *
 
-class PeggedPrice(FIXFieldBase):
-    """FIX PeggedPrice field."""
+class PeggedPriceField(FIXFieldBase):
+    """"""
     tag: str = "839"
     name: str = "PeggedPrice"
     type: str = "PRICE"
-    value: FIXPrice
+    value: float

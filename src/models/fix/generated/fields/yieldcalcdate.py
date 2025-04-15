@@ -1,10 +1,13 @@
-
+"""
+FIX YieldCalcDate field (tag 701).
+"""
 from .base import FIXFieldBase
-from .types import FIXLocalMktDate
+from typing import Optional
+from .types import *
 
-class YieldCalcDate(FIXFieldBase):
-    """FIX YieldCalcDate field."""
+class YieldCalcDateField(FIXFieldBase):
+    """"""
     tag: str = "701"
     name: str = "YieldCalcDate"
     type: str = "LOCALMKTDATE"
-    value: FIXLocalMktDate
+    value: date

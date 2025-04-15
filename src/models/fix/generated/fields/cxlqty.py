@@ -1,10 +1,13 @@
-
+"""
+FIX CxlQty field (tag 84).
+"""
 from .base import FIXFieldBase
-from .types import FIXQty
+from typing import Optional
+from .types import *
 
-class CxlQty(FIXFieldBase):
-    """FIX CxlQty field."""
+class CxlQtyField(FIXFieldBase):
+    """"""
     tag: str = "84"
     name: str = "CxlQty"
     type: str = "QTY"
-    value: FIXQty
+    value: float

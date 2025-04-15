@@ -1,10 +1,13 @@
-
+"""
+FIX EffectiveTime field (tag 168).
+"""
 from .base import FIXFieldBase
-from .types import FIXUTCTimestamp
+from typing import Optional
+from .types import *
 
-class EffectiveTime(FIXFieldBase):
-    """FIX EffectiveTime field."""
+class EffectiveTimeField(FIXFieldBase):
+    """"""
     tag: str = "168"
     name: str = "EffectiveTime"
     type: str = "UTCTIMESTAMP"
-    value: FIXUTCTimestamp
+    value: datetime

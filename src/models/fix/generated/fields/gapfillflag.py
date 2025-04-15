@@ -1,14 +1,26 @@
-
+"""
+FIX GapFillFlag field (tag 123).
+"""
 from .base import FIXFieldBase
-from .types import FIXBoolean
+from typing import Optional
+from .types import *
 
-class GapFillFlag(FIXFieldBase):
-    """FIX GapFillFlag field."""
+class GapFillFlagValues:
+    """Enumerated values for GapFillFlag."""
+    Y = "Y"  # YES
+    N = "N"  # NO
+
+class GapFillFlagField(FIXFieldBase):
+    """"""
     tag: str = "123"
     name: str = "GapFillFlag"
     type: str = "BOOLEAN"
-    value: FIXBoolean
+    value: Literal["Y", "N"]
 
-    # Enum values
-    # Y: YES
-    # N: NO
+    # Helper methods for enum values
+    @property
+    def is_y(self) -> bool:
+        return self.value == "Y"
+    @property
+    def is_n(self) -> bool:
+        return self.value == "N"

@@ -1,10 +1,13 @@
-
+"""
+FIX RefSeqNum field (tag 45).
+"""
 from .base import FIXFieldBase
-from .types import FIXSeqNum
+from typing import Optional
+from .types import *
 
-class RefSeqNum(FIXFieldBase):
-    """FIX RefSeqNum field."""
+class RefSeqNumField(FIXFieldBase):
+    """"""
     tag: str = "45"
     name: str = "RefSeqNum"
     type: str = "SEQNUM"
-    value: FIXSeqNum
+    value: int

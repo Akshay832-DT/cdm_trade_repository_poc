@@ -1,10 +1,13 @@
-
+"""
+FIX EndSeqNo field (tag 16).
+"""
 from .base import FIXFieldBase
-from .types import FIXSeqNum
+from typing import Optional
+from .types import *
 
-class EndSeqNo(FIXFieldBase):
-    """FIX EndSeqNo field."""
+class EndSeqNoField(FIXFieldBase):
+    """"""
     tag: str = "16"
     name: str = "EndSeqNo"
     type: str = "SEQNUM"
-    value: FIXSeqNum
+    value: int

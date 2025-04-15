@@ -7,7 +7,7 @@ import sys
 from datetime import datetime, date
 import simplefix
 from src.parsers.controller import ParserController
-from src.models.fix.generated.messages.bidresponse import BidResponse
+from src.models.fix.generated.messages.bidresponse import BidResponseMessage
 from src.models.fix.generated.components.bidcomprspgrp import BidCompRspGrpComponent, NoBidComponentsGroup
 from src.models.fix.generated.components.commissiondata import CommissionDataComponent
 from src.parsers.fix.parser import FIXParser
@@ -99,8 +99,8 @@ class TestBidResponseParsing(unittest.TestCase):
             # Now parse through the controller
             message = await self.parser_controller.parse_message(fix_msg, 'FIX')
             
-            # Verify message is correctly parsed as BidResponse
-            self.assertIsInstance(message, BidResponse)
+            # Verify message is correctly parsed as BidResponseMessage
+            self.assertIsInstance(message, BidResponseMessage)
             
             # Verify header fields
             self.assertEqual(message.BeginString, "FIX.4.4")

@@ -1,10 +1,13 @@
-
+"""
+FIX LegBenchmarkCurvePoint field (tag 678).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class LegBenchmarkCurvePoint(FIXFieldBase):
-    """FIX LegBenchmarkCurvePoint field."""
+class LegBenchmarkCurvePointField(FIXFieldBase):
+    """"""
     tag: str = "678"
     name: str = "LegBenchmarkCurvePoint"
     type: str = "STRING"
-    value: FIXString
+    value: str

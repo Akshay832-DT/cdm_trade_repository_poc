@@ -1,10 +1,13 @@
-
+"""
+FIX AllowableOneSidednessCurr field (tag 767).
+"""
 from .base import FIXFieldBase
-from .types import FIXCurrency
+from typing import Optional
+from .types import *
 
-class AllowableOneSidednessCurr(FIXFieldBase):
-    """FIX AllowableOneSidednessCurr field."""
+class AllowableOneSidednessCurrField(FIXFieldBase):
+    """"""
     tag: str = "767"
     name: str = "AllowableOneSidednessCurr"
     type: str = "CURRENCY"
-    value: FIXCurrency
+    value: str

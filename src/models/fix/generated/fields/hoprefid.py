@@ -1,10 +1,13 @@
-
+"""
+FIX HopRefID field (tag 630).
+"""
 from .base import FIXFieldBase
-from .types import FIXSeqNum
+from typing import Optional
+from .types import *
 
-class HopRefID(FIXFieldBase):
-    """FIX HopRefID field."""
+class HopRefIDField(FIXFieldBase):
+    """"""
     tag: str = "630"
     name: str = "HopRefID"
     type: str = "SEQNUM"
-    value: FIXSeqNum
+    value: int

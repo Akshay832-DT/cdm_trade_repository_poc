@@ -1,10 +1,13 @@
-
+"""
+FIX HeartBtInt field (tag 108).
+"""
 from .base import FIXFieldBase
-from .types import FIXInt
+from typing import Optional
+from .types import *
 
-class HeartBtInt(FIXFieldBase):
-    """FIX HeartBtInt field."""
+class HeartBtIntField(FIXFieldBase):
+    """"""
     tag: str = "108"
     name: str = "HeartBtInt"
     type: str = "INT"
-    value: FIXInt
+    value: int

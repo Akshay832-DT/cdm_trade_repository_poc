@@ -1,10 +1,13 @@
-
+"""
+FIX ListExecInst field (tag 69).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class ListExecInst(FIXFieldBase):
-    """FIX ListExecInst field."""
+class ListExecInstField(FIXFieldBase):
+    """"""
     tag: str = "69"
     name: str = "ListExecInst"
     type: str = "STRING"
-    value: FIXString
+    value: str

@@ -1,10 +1,13 @@
-
+"""
+FIX TransactTime field (tag 60).
+"""
 from .base import FIXFieldBase
-from .types import FIXUTCTimestamp
+from typing import Optional
+from .types import *
 
-class TransactTime(FIXFieldBase):
-    """FIX TransactTime field."""
+class TransactTimeField(FIXFieldBase):
+    """"""
     tag: str = "60"
     name: str = "TransactTime"
     type: str = "UTCTIMESTAMP"
-    value: FIXUTCTimestamp
+    value: datetime

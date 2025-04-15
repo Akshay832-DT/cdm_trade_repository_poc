@@ -1,10 +1,13 @@
-
+"""
+FIX ExpireTime field (tag 126).
+"""
 from .base import FIXFieldBase
-from .types import FIXUTCTimestamp
+from typing import Optional
+from .types import *
 
-class ExpireTime(FIXFieldBase):
-    """FIX ExpireTime field."""
+class ExpireTimeField(FIXFieldBase):
+    """"""
     tag: str = "126"
     name: str = "ExpireTime"
     type: str = "UTCTIMESTAMP"
-    value: FIXUTCTimestamp
+    value: datetime

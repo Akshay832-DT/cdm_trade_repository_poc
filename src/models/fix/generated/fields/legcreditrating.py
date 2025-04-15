@@ -1,10 +1,13 @@
-
+"""
+FIX LegCreditRating field (tag 257).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class LegCreditRating(FIXFieldBase):
-    """FIX LegCreditRating field."""
+class LegCreditRatingField(FIXFieldBase):
+    """"""
     tag: str = "257"
     name: str = "LegCreditRating"
     type: str = "STRING"
-    value: FIXString
+    value: str

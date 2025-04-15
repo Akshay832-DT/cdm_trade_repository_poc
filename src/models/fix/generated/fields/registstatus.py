@@ -1,16 +1,34 @@
-
+"""
+FIX RegistStatus field (tag 506).
+"""
 from .base import FIXFieldBase
-from .types import FIXChar
+from typing import Optional
+from .types import *
 
-class RegistStatus(FIXFieldBase):
-    """FIX RegistStatus field."""
+class RegistStatusValues:
+    """Enumerated values for RegistStatus."""
+    A = "A"  # ACCEPTED
+    R = "R"  # REJECTED
+    H = "H"  # HELD
+    N = "N"  # REMINDER
+
+class RegistStatusField(FIXFieldBase):
+    """"""
     tag: str = "506"
     name: str = "RegistStatus"
     type: str = "CHAR"
-    value: FIXChar
+    value: Literal["A", "R", "H", "N"]
 
-    # Enum values
-    # A: ACCEPTED
-    # R: REJECTED
-    # H: HELD
-    # N: REMINDER
+    # Helper methods for enum values
+    @property
+    def is_a(self) -> bool:
+        return self.value == "A"
+    @property
+    def is_r(self) -> bool:
+        return self.value == "R"
+    @property
+    def is_h(self) -> bool:
+        return self.value == "H"
+    @property
+    def is_n(self) -> bool:
+        return self.value == "N"

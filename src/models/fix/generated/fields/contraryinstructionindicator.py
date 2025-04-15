@@ -1,10 +1,13 @@
-
+"""
+FIX ContraryInstructionIndicator field (tag 719).
+"""
 from .base import FIXFieldBase
-from .types import FIXBoolean
+from typing import Optional
+from .types import *
 
-class ContraryInstructionIndicator(FIXFieldBase):
-    """FIX ContraryInstructionIndicator field."""
+class ContraryInstructionIndicatorField(FIXFieldBase):
+    """"""
     tag: str = "719"
     name: str = "ContraryInstructionIndicator"
     type: str = "BOOLEAN"
-    value: FIXBoolean
+    value: bool

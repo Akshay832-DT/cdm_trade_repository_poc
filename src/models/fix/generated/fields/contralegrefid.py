@@ -1,10 +1,13 @@
-
+"""
+FIX ContraLegRefID field (tag 655).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class ContraLegRefID(FIXFieldBase):
-    """FIX ContraLegRefID field."""
+class ContraLegRefIDField(FIXFieldBase):
+    """"""
     tag: str = "655"
     name: str = "ContraLegRefID"
     type: str = "STRING"
-    value: FIXString
+    value: str

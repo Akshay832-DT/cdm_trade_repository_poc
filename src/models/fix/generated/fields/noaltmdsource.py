@@ -1,10 +1,13 @@
-
+"""
+FIX NoAltMDSource field (tag 816).
+"""
 from .base import FIXFieldBase
-from .types import FIXNumInGroup
+from typing import Optional
+from .types import *
 
-class NoAltMDSource(FIXFieldBase):
-    """FIX NoAltMDSource field."""
+class NoAltMDSourceField(FIXFieldBase):
+    """"""
     tag: str = "816"
     name: str = "NoAltMDSource"
     type: str = "NUMINGROUP"
-    value: FIXNumInGroup
+    value: int

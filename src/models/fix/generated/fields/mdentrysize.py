@@ -1,10 +1,13 @@
-
+"""
+FIX MDEntrySize field (tag 271).
+"""
 from .base import FIXFieldBase
-from .types import FIXQty
+from typing import Optional
+from .types import *
 
-class MDEntrySize(FIXFieldBase):
-    """FIX MDEntrySize field."""
+class MDEntrySizeField(FIXFieldBase):
+    """"""
     tag: str = "271"
     name: str = "MDEntrySize"
     type: str = "QTY"
-    value: FIXQty
+    value: float

@@ -1,10 +1,13 @@
-
+"""
+FIX NoCollInquiryQualifier field (tag 938).
+"""
 from .base import FIXFieldBase
-from .types import FIXNumInGroup
+from typing import Optional
+from .types import *
 
-class NoCollInquiryQualifier(FIXFieldBase):
-    """FIX NoCollInquiryQualifier field."""
+class NoCollInquiryQualifierField(FIXFieldBase):
+    """"""
     tag: str = "938"
     name: str = "NoCollInquiryQualifier"
     type: str = "NUMINGROUP"
-    value: FIXNumInGroup
+    value: int

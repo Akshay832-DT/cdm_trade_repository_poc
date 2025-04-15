@@ -1,10 +1,13 @@
-
+"""
+FIX IOIID field (tag 23).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class IOIID(FIXFieldBase):
-    """FIX IOIID field."""
+class IOIIDField(FIXFieldBase):
+    """"""
     tag: str = "23"
     name: str = "IOIID"
     type: str = "STRING"
-    value: FIXString
+    value: str

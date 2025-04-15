@@ -1,10 +1,13 @@
-
+"""
+FIX InstrAttribValue field (tag 872).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class InstrAttribValue(FIXFieldBase):
-    """FIX InstrAttribValue field."""
+class InstrAttribValueField(FIXFieldBase):
+    """"""
     tag: str = "872"
     name: str = "InstrAttribValue"
     type: str = "STRING"
-    value: FIXString
+    value: str

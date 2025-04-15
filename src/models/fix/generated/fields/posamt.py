@@ -1,10 +1,13 @@
-
+"""
+FIX PosAmt field (tag 708).
+"""
 from .base import FIXFieldBase
-from .types import FIXAmt
+from typing import Optional
+from .types import *
 
-class PosAmt(FIXFieldBase):
-    """FIX PosAmt field."""
+class PosAmtField(FIXFieldBase):
+    """"""
     tag: str = "708"
     name: str = "PosAmt"
     type: str = "AMT"
-    value: FIXAmt
+    value: float

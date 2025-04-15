@@ -1,10 +1,13 @@
-
+"""
+FIX AllocSettlCurrAmt field (tag 737).
+"""
 from .base import FIXFieldBase
-from .types import FIXAmt
+from typing import Optional
+from .types import *
 
-class AllocSettlCurrAmt(FIXFieldBase):
-    """FIX AllocSettlCurrAmt field."""
+class AllocSettlCurrAmtField(FIXFieldBase):
+    """"""
     tag: str = "737"
     name: str = "AllocSettlCurrAmt"
     type: str = "AMT"
-    value: FIXAmt
+    value: float

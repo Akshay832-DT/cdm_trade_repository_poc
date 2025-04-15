@@ -1,10 +1,13 @@
-
+"""
+FIX TradingSessionSubID field (tag 625).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class TradingSessionSubID(FIXFieldBase):
-    """FIX TradingSessionSubID field."""
+class TradingSessionSubIDField(FIXFieldBase):
+    """"""
     tag: str = "625"
     name: str = "TradingSessionSubID"
     type: str = "STRING"
-    value: FIXString
+    value: str

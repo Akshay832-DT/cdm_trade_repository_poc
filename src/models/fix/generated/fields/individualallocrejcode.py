@@ -1,10 +1,13 @@
-
+"""
+FIX IndividualAllocRejCode field (tag 776).
+"""
 from .base import FIXFieldBase
-from .types import FIXInt
+from typing import Optional
+from .types import *
 
-class IndividualAllocRejCode(FIXFieldBase):
-    """FIX IndividualAllocRejCode field."""
+class IndividualAllocRejCodeField(FIXFieldBase):
+    """"""
     tag: str = "776"
     name: str = "IndividualAllocRejCode"
     type: str = "INT"
-    value: FIXInt
+    value: int

@@ -1,10 +1,13 @@
-
+"""
+FIX DiscretionPrice field (tag 845).
+"""
 from .base import FIXFieldBase
-from .types import FIXPrice
+from typing import Optional
+from .types import *
 
-class DiscretionPrice(FIXFieldBase):
-    """FIX DiscretionPrice field."""
+class DiscretionPriceField(FIXFieldBase):
+    """"""
     tag: str = "845"
     name: str = "DiscretionPrice"
     type: str = "PRICE"
-    value: FIXPrice
+    value: float

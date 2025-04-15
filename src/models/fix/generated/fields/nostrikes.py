@@ -1,10 +1,13 @@
-
+"""
+FIX NoStrikes field (tag 428).
+"""
 from .base import FIXFieldBase
-from .types import FIXNumInGroup
+from typing import Optional
+from .types import *
 
-class NoStrikes(FIXFieldBase):
-    """FIX NoStrikes field."""
+class NoStrikesField(FIXFieldBase):
+    """"""
     tag: str = "428"
     name: str = "NoStrikes"
     type: str = "NUMINGROUP"
-    value: FIXNumInGroup
+    value: int

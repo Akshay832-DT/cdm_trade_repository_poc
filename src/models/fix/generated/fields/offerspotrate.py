@@ -1,10 +1,13 @@
-
+"""
+FIX OfferSpotRate field (tag 190).
+"""
 from .base import FIXFieldBase
-from .types import FIXPrice
+from typing import Optional
+from .types import *
 
-class OfferSpotRate(FIXFieldBase):
-    """FIX OfferSpotRate field."""
+class OfferSpotRateField(FIXFieldBase):
+    """"""
     tag: str = "190"
     name: str = "OfferSpotRate"
     type: str = "PRICE"
-    value: FIXPrice
+    value: float

@@ -1,10 +1,13 @@
-
+"""
+FIX NoAffectedOrders field (tag 534).
+"""
 from .base import FIXFieldBase
-from .types import FIXNumInGroup
+from typing import Optional
+from .types import *
 
-class NoAffectedOrders(FIXFieldBase):
-    """FIX NoAffectedOrders field."""
+class NoAffectedOrdersField(FIXFieldBase):
+    """"""
     tag: str = "534"
     name: str = "NoAffectedOrders"
     type: str = "NUMINGROUP"
-    value: FIXNumInGroup
+    value: int

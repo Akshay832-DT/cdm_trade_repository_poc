@@ -1,15 +1,30 @@
-
+"""
+FIX BidDescriptorType field (tag 399).
+"""
 from .base import FIXFieldBase
-from .types import FIXInt
+from typing import Optional
+from .types import *
 
-class BidDescriptorType(FIXFieldBase):
-    """FIX BidDescriptorType field."""
+class BidDescriptorTypeValues:
+    """Enumerated values for BidDescriptorType."""
+    VALUE_1 = "1"  # SECTOR
+    VALUE_2 = "2"  # COUNTRY
+    VALUE_3 = "3"  # INDEX
+
+class BidDescriptorTypeField(FIXFieldBase):
+    """"""
     tag: str = "399"
     name: str = "BidDescriptorType"
     type: str = "INT"
-    value: FIXInt
+    value: Literal["1", "2", "3"]
 
-    # Enum values
-    # 1: SECTOR
-    # 2: COUNTRY
-    # 3: INDEX
+    # Helper methods for enum values
+    @property
+    def is_value_1(self) -> bool:
+        return self.value == "1"
+    @property
+    def is_value_2(self) -> bool:
+        return self.value == "2"
+    @property
+    def is_value_3(self) -> bool:
+        return self.value == "3"

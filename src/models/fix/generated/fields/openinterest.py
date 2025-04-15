@@ -1,10 +1,13 @@
-
+"""
+FIX OpenInterest field (tag 746).
+"""
 from .base import FIXFieldBase
-from .types import FIXAmt
+from typing import Optional
+from .types import *
 
-class OpenInterest(FIXFieldBase):
-    """FIX OpenInterest field."""
+class OpenInterestField(FIXFieldBase):
+    """"""
     tag: str = "746"
     name: str = "OpenInterest"
     type: str = "AMT"
-    value: FIXAmt
+    value: float

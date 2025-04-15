@@ -1,10 +1,13 @@
-
+"""
+FIX EncodedUnderlyingIssuer field (tag 363).
+"""
 from .base import FIXFieldBase
-from .types import FIXData
+from typing import Optional
+from .types import *
 
-class EncodedUnderlyingIssuer(FIXFieldBase):
-    """FIX EncodedUnderlyingIssuer field."""
+class EncodedUnderlyingIssuerField(FIXFieldBase):
+    """"""
     tag: str = "363"
     name: str = "EncodedUnderlyingIssuer"
     type: str = "DATA"
-    value: FIXData
+    value: str

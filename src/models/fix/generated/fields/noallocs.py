@@ -1,10 +1,13 @@
-
+"""
+FIX NoAllocs field (tag 78).
+"""
 from .base import FIXFieldBase
-from .types import FIXNumInGroup
+from typing import Optional
+from .types import *
 
-class NoAllocs(FIXFieldBase):
-    """FIX NoAllocs field."""
+class NoAllocsField(FIXFieldBase):
+    """"""
     tag: str = "78"
     name: str = "NoAllocs"
     type: str = "NUMINGROUP"
-    value: FIXNumInGroup
+    value: int

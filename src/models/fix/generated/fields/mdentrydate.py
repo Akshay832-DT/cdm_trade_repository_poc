@@ -1,10 +1,13 @@
-
+"""
+FIX MDEntryDate field (tag 272).
+"""
 from .base import FIXFieldBase
-from .types import FIXUTCDateOnly
+from typing import Optional
+from .types import *
 
-class MDEntryDate(FIXFieldBase):
-    """FIX MDEntryDate field."""
+class MDEntryDateField(FIXFieldBase):
+    """"""
     tag: str = "272"
     name: str = "MDEntryDate"
     type: str = "UTCDATEONLY"
-    value: FIXUTCDateOnly
+    value: date

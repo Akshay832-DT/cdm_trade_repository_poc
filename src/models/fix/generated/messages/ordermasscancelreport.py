@@ -1,37 +1,108 @@
-from typing import Optional, List
+"""
+FIX OrderMassCancelReport Message
+"""
+from ..fields.types import *
+from .base import FIXMessageBase
 from datetime import datetime, date, time
-from pydantic import Field
-from src.models.fix.base import FIXMessageBase
-from src.models.fix.generated.components.affectedordgrp import AffectedOrdGrpComponent
-from src.models.fix.generated.components.instrument import InstrumentComponent
-from src.models.fix.generated.components.underlyinginstrument import UnderlyingInstrumentComponent
+from pydantic import Field, ConfigDict, model_validator
+from typing import List, Optional, Dict, Any, Union, ForwardRef, TYPE_CHECKING, Literal
 
-class OrderMassCancelReport(FIXMessageBase):
-    """FIX message model."""
+if TYPE_CHECKING:
+    from ..components.affectedordgrp import AffectedOrdGrpComponent
+    from ..components.instrument import InstrumentComponent
+    from ..components.underlyinginstrument import UnderlyingInstrumentComponent
 
-    BeginString: str = Field(..., description='', alias='8')
-    BodyLength: int = Field(..., description='', alias='9')
-    MsgType: str = Field(..., description='', alias='35')
-    SenderCompID: str = Field(..., description='', alias='49')
-    TargetCompID: str = Field(..., description='', alias='56')
-    MsgSeqNum: int = Field(..., description='', alias='34')
-    SendingTime: datetime = Field(..., description='', alias='52')
-    ClOrdID: Optional[str] = Field(None, description='', alias='11')
-    SecondaryClOrdID: Optional[str] = Field(None, description='', alias='526')
-    OrderID: str = Field(..., description='', alias='37')
-    SecondaryOrderID: Optional[str] = Field(None, description='', alias='198')
-    MassCancelRequestType: str = Field(..., description='', alias='530')
-    MassCancelResponse: str = Field(..., description='', alias='531')
-    MassCancelRejectReason: Optional[str] = Field(None, description='', alias='532')
-    TotalAffectedOrders: Optional[int] = Field(None, description='', alias='533')
-    TradingSessionID: Optional[str] = Field(None, description='', alias='336')
-    TradingSessionSubID: Optional[str] = Field(None, description='', alias='625')
-    Side: Optional[str] = Field(None, description='', alias='54')
-    TransactTime: Optional[datetime] = Field(None, description='', alias='60')
-    Text: Optional[str] = Field(None, description='', alias='58')
-    EncodedTextLen: Optional[int] = Field(None, description='', alias='354')
-    EncodedText: Optional[str] = Field(None, description='', alias='355')
-    AffectedOrdGrp: Optional[AffectedOrdGrpComponent] = Field(None, description='AffectedOrdGrp component')
-    Instrument: Optional[InstrumentComponent] = Field(None, description='Instrument component')
-    UnderlyingInstrument: Optional[UnderlyingInstrumentComponent] = Field(None, description='UnderlyingInstrument component')
 
+# Forward references for components to avoid circular imports
+AffectedOrdGrpComponent = ForwardRef('AffectedOrdGrpComponent')
+InstrumentComponent = ForwardRef('InstrumentComponent')
+UnderlyingInstrumentComponent = ForwardRef('UnderlyingInstrumentComponent')
+
+
+class OrderMassCancelReportMessage(FIXMessageBase):
+    """OrderMassCancelReport Message"""
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat() if v else None,
+            date: lambda v: v.isoformat() if v else None,
+            time: lambda v: v.isoformat() if v else None
+        }
+    )
+
+    MsgType: Literal["OrderMassCancelReport"] = Field("OrderMassCancelReport", alias="35", description="Message Type")
+
+    ClOrdID: Optional[str] = Field(None, alias="11", description="")
+    SecondaryClOrdID: Optional[str] = Field(None, alias="526", description="")
+    OrderID: Optional[str] = Field(None, alias="37", description="")
+    SecondaryOrderID: Optional[str] = Field(None, alias="198", description="")
+    MassCancelRequestType: Optional[str] = Field(None, alias="530", description="")
+    MassCancelResponse: Optional[str] = Field(None, alias="531", description="")
+    MassCancelRejectReason: Optional[str] = Field(None, alias="532", description="")
+    TotalAffectedOrders: Optional[int] = Field(None, alias="533", description="")
+    TradingSessionID: Optional[str] = Field(None, alias="336", description="")
+    TradingSessionSubID: Optional[str] = Field(None, alias="625", description="")
+    Side: Optional[str] = Field(None, alias="54", description="")
+    TransactTime: Optional[datetime] = Field(None, alias="60", description="")
+    Text: Optional[str] = Field(None, alias="58", description="")
+    EncodedTextLen: Optional[int] = Field(None, alias="354", description="")
+    EncodedText: Optional[str] = Field(None, alias="355", description="")
+    AffectedOrdGrp: ForwardRef('AffectedOrdGrpComponent') = Field(None, description="AffectedOrdGrp Component")
+    Instrument: ForwardRef('InstrumentComponent') = Field(None, description="Instrument Component")
+    UnderlyingInstrument: ForwardRef('UnderlyingInstrumentComponent') = Field(None, description="UnderlyingInstrument Component")
+
+    @model_validator(mode='after')
+    def resolve_forward_refs(self) -> 'FIXMessageBase':
+        """Resolve forward references."""
+        for field_name, field_value in self.model_fields.items():
+            if isinstance(field_value.annotation, ForwardRef):
+                field_value.annotation = eval(field_value.annotation.__forward_arg__)
+        return self
+
+    def __str__(self) -> str:
+        fields = []
+        if self.MsgType is not None:
+            fields.append(f"MsgType={self.MsgType}")
+        if self.ClOrdID is not None:
+            fields.append(f"ClOrdID={self.ClOrdID}")
+        if self.SecondaryClOrdID is not None:
+            fields.append(f"SecondaryClOrdID={self.SecondaryClOrdID}")
+        if self.OrderID is not None:
+            fields.append(f"OrderID={self.OrderID}")
+        if self.SecondaryOrderID is not None:
+            fields.append(f"SecondaryOrderID={self.SecondaryOrderID}")
+        if self.MassCancelRequestType is not None:
+            fields.append(f"MassCancelRequestType={self.MassCancelRequestType}")
+        if self.MassCancelResponse is not None:
+            fields.append(f"MassCancelResponse={self.MassCancelResponse}")
+        if self.MassCancelRejectReason is not None:
+            fields.append(f"MassCancelRejectReason={self.MassCancelRejectReason}")
+        if self.TotalAffectedOrders is not None:
+            fields.append(f"TotalAffectedOrders={self.TotalAffectedOrders}")
+        if self.TradingSessionID is not None:
+            fields.append(f"TradingSessionID={self.TradingSessionID}")
+        if self.TradingSessionSubID is not None:
+            fields.append(f"TradingSessionSubID={self.TradingSessionSubID}")
+        if self.Side is not None:
+            fields.append(f"Side={self.Side}")
+        if self.TransactTime is not None:
+            fields.append(f"TransactTime={self.TransactTime}")
+        if self.Text is not None:
+            fields.append(f"Text={self.Text}")
+        if self.EncodedTextLen is not None:
+            fields.append(f"EncodedTextLen={self.EncodedTextLen}")
+        if self.EncodedText is not None:
+            fields.append(f"EncodedText={self.EncodedText}")
+        if self.AffectedOrdGrp is not None:
+            fields.append(f"AffectedOrdGrp={self.AffectedOrdGrp}")
+        if self.Instrument is not None:
+            fields.append(f"Instrument={self.Instrument}")
+        if self.UnderlyingInstrument is not None:
+            fields.append(f"UnderlyingInstrument={self.UnderlyingInstrument}")
+        return f"{self.__class__.__name__}({', '.join(fields)})"
+
+
+# Rebuild model to resolve forward references
+OrderMassCancelReportMessage.model_rebuild()

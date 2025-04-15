@@ -1,10 +1,13 @@
-
+"""
+FIX SharedCommission field (tag 858).
+"""
 from .base import FIXFieldBase
-from .types import FIXAmt
+from typing import Optional
+from .types import *
 
-class SharedCommission(FIXFieldBase):
-    """FIX SharedCommission field."""
+class SharedCommissionField(FIXFieldBase):
+    """"""
     tag: str = "858"
     name: str = "SharedCommission"
     type: str = "AMT"
-    value: FIXAmt
+    value: float

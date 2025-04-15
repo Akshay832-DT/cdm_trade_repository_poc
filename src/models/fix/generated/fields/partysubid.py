@@ -1,10 +1,13 @@
-
+"""
+FIX PartySubID field (tag 523).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class PartySubID(FIXFieldBase):
-    """FIX PartySubID field."""
+class PartySubIDField(FIXFieldBase):
+    """"""
     tag: str = "523"
     name: str = "PartySubID"
     type: str = "STRING"
-    value: FIXString
+    value: str

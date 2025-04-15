@@ -1,10 +1,13 @@
-
+"""
+FIX NetworkResponseID field (tag 932).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class NetworkResponseID(FIXFieldBase):
-    """FIX NetworkResponseID field."""
+class NetworkResponseIDField(FIXFieldBase):
+    """"""
     tag: str = "932"
     name: str = "NetworkResponseID"
     type: str = "STRING"
-    value: FIXString
+    value: str

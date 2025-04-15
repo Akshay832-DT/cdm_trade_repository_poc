@@ -1,10 +1,13 @@
-
+"""
+FIX StipulationValue field (tag 234).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class StipulationValue(FIXFieldBase):
-    """FIX StipulationValue field."""
+class StipulationValueField(FIXFieldBase):
+    """"""
     tag: str = "234"
     name: str = "StipulationValue"
     type: str = "STRING"
-    value: FIXString
+    value: str

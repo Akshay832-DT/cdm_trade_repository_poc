@@ -1,15 +1,30 @@
-
+"""
+FIX IOIQty field (tag 27).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class IOIQty(FIXFieldBase):
-    """FIX IOIQty field."""
+class IOIQtyValues:
+    """Enumerated values for IOIQty."""
+    S = "S"  # SMALL
+    M = "M"  # MEDIUM
+    L = "L"  # LARGE
+
+class IOIQtyField(FIXFieldBase):
+    """"""
     tag: str = "27"
     name: str = "IOIQty"
     type: str = "STRING"
-    value: FIXString
+    value: Literal["S", "M", "L"]
 
-    # Enum values
-    # S: SMALL
-    # M: MEDIUM
-    # L: LARGE
+    # Helper methods for enum values
+    @property
+    def is_s(self) -> bool:
+        return self.value == "S"
+    @property
+    def is_m(self) -> bool:
+        return self.value == "M"
+    @property
+    def is_l(self) -> bool:
+        return self.value == "L"

@@ -1,10 +1,13 @@
-
+"""
+FIX OutMainCntryUIndex field (tag 412).
+"""
 from .base import FIXFieldBase
-from .types import FIXAmt
+from typing import Optional
+from .types import *
 
-class OutMainCntryUIndex(FIXFieldBase):
-    """FIX OutMainCntryUIndex field."""
+class OutMainCntryUIndexField(FIXFieldBase):
+    """"""
     tag: str = "412"
     name: str = "OutMainCntryUIndex"
     type: str = "AMT"
-    value: FIXAmt
+    value: float

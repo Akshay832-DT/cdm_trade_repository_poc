@@ -1,10 +1,13 @@
-
+"""
+FIX MDReqID field (tag 262).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class MDReqID(FIXFieldBase):
-    """FIX MDReqID field."""
+class MDReqIDField(FIXFieldBase):
+    """"""
     tag: str = "262"
     name: str = "MDReqID"
     type: str = "STRING"
-    value: FIXString
+    value: str

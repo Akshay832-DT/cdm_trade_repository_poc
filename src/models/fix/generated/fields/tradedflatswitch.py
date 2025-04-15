@@ -1,14 +1,26 @@
-
+"""
+FIX TradedFlatSwitch field (tag 258).
+"""
 from .base import FIXFieldBase
-from .types import FIXBoolean
+from typing import Optional
+from .types import *
 
-class TradedFlatSwitch(FIXFieldBase):
-    """FIX TradedFlatSwitch field."""
+class TradedFlatSwitchValues:
+    """Enumerated values for TradedFlatSwitch."""
+    Y = "Y"  # YES
+    N = "N"  # NO
+
+class TradedFlatSwitchField(FIXFieldBase):
+    """"""
     tag: str = "258"
     name: str = "TradedFlatSwitch"
     type: str = "BOOLEAN"
-    value: FIXBoolean
+    value: Literal["Y", "N"]
 
-    # Enum values
-    # Y: YES
-    # N: NO
+    # Helper methods for enum values
+    @property
+    def is_y(self) -> bool:
+        return self.value == "Y"
+    @property
+    def is_n(self) -> bool:
+        return self.value == "N"

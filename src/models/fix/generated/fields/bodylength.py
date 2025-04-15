@@ -1,10 +1,13 @@
-
+"""
+FIX BodyLength field (tag 9).
+"""
 from .base import FIXFieldBase
-from .types import FIXLength
+from typing import Optional
+from .types import *
 
-class BodyLength(FIXFieldBase):
-    """FIX BodyLength field."""
+class BodyLengthField(FIXFieldBase):
+    """"""
     tag: str = "9"
     name: str = "BodyLength"
     type: str = "LENGTH"
-    value: FIXLength
+    value: int

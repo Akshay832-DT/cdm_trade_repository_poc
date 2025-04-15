@@ -1,10 +1,13 @@
-
+"""
+FIX UnderlyingCouponPaymentDate field (tag 241).
+"""
 from .base import FIXFieldBase
-from .types import FIXLocalMktDate
+from typing import Optional
+from .types import *
 
-class UnderlyingCouponPaymentDate(FIXFieldBase):
-    """FIX UnderlyingCouponPaymentDate field."""
+class UnderlyingCouponPaymentDateField(FIXFieldBase):
+    """"""
     tag: str = "241"
     name: str = "UnderlyingCouponPaymentDate"
     type: str = "LOCALMKTDATE"
-    value: FIXLocalMktDate
+    value: date

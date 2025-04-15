@@ -1,10 +1,13 @@
-
+"""
+FIX NoLinesOfText field (tag 33).
+"""
 from .base import FIXFieldBase
-from .types import FIXNumInGroup
+from typing import Optional
+from .types import *
 
-class NoLinesOfText(FIXFieldBase):
-    """FIX NoLinesOfText field."""
+class NoLinesOfTextField(FIXFieldBase):
+    """"""
     tag: str = "33"
     name: str = "NoLinesOfText"
     type: str = "NUMINGROUP"
-    value: FIXNumInGroup
+    value: int

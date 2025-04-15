@@ -1,10 +1,13 @@
-
+"""
+FIX SenderSubID field (tag 50).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class SenderSubID(FIXFieldBase):
-    """FIX SenderSubID field."""
+class SenderSubIDField(FIXFieldBase):
+    """"""
     tag: str = "50"
     name: str = "SenderSubID"
     type: str = "STRING"
-    value: FIXString
+    value: str

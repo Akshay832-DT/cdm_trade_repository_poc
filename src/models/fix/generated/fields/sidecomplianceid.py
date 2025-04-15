@@ -1,10 +1,13 @@
-
+"""
+FIX SideComplianceID field (tag 659).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class SideComplianceID(FIXFieldBase):
-    """FIX SideComplianceID field."""
+class SideComplianceIDField(FIXFieldBase):
+    """"""
     tag: str = "659"
     name: str = "SideComplianceID"
     type: str = "STRING"
-    value: FIXString
+    value: str

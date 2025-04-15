@@ -1,14 +1,26 @@
-
+"""
+FIX PegRoundDirection field (tag 838).
+"""
 from .base import FIXFieldBase
-from .types import FIXInt
+from typing import Optional
+from .types import *
 
-class PegRoundDirection(FIXFieldBase):
-    """FIX PegRoundDirection field."""
+class PegRoundDirectionValues:
+    """Enumerated values for PegRoundDirection."""
+    VALUE_1 = "1"  # MORE_AGGRESSIVE
+    VALUE_2 = "2"  # MORE_PASSIVE
+
+class PegRoundDirectionField(FIXFieldBase):
+    """"""
     tag: str = "838"
     name: str = "PegRoundDirection"
     type: str = "INT"
-    value: FIXInt
+    value: Literal["1", "2"]
 
-    # Enum values
-    # 1: MORE_AGGRESSIVE
-    # 2: MORE_PASSIVE
+    # Helper methods for enum values
+    @property
+    def is_value_1(self) -> bool:
+        return self.value == "1"
+    @property
+    def is_value_2(self) -> bool:
+        return self.value == "2"

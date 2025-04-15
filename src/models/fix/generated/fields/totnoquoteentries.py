@@ -1,10 +1,13 @@
-
+"""
+FIX TotNoQuoteEntries field (tag 304).
+"""
 from .base import FIXFieldBase
-from .types import FIXInt
+from typing import Optional
+from .types import *
 
-class TotNoQuoteEntries(FIXFieldBase):
-    """FIX TotNoQuoteEntries field."""
+class TotNoQuoteEntriesField(FIXFieldBase):
+    """"""
     tag: str = "304"
     name: str = "TotNoQuoteEntries"
     type: str = "INT"
-    value: FIXInt
+    value: int

@@ -1,10 +1,13 @@
-
+"""
+FIX WtAverageLiquidity field (tag 410).
+"""
 from .base import FIXFieldBase
-from .types import FIXPercentage
+from typing import Optional
+from .types import *
 
-class WtAverageLiquidity(FIXFieldBase):
-    """FIX WtAverageLiquidity field."""
+class WtAverageLiquidityField(FIXFieldBase):
+    """"""
     tag: str = "410"
     name: str = "WtAverageLiquidity"
     type: str = "PERCENTAGE"
-    value: FIXPercentage
+    value: float

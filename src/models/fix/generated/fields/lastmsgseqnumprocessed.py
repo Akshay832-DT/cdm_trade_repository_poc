@@ -1,10 +1,13 @@
-
+"""
+FIX LastMsgSeqNumProcessed field (tag 369).
+"""
 from .base import FIXFieldBase
-from .types import FIXSeqNum
+from typing import Optional
+from .types import *
 
-class LastMsgSeqNumProcessed(FIXFieldBase):
-    """FIX LastMsgSeqNumProcessed field."""
+class LastMsgSeqNumProcessedField(FIXFieldBase):
+    """"""
     tag: str = "369"
     name: str = "LastMsgSeqNumProcessed"
     type: str = "SEQNUM"
-    value: FIXSeqNum
+    value: int

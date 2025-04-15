@@ -1,10 +1,13 @@
-
+"""
+FIX LongQty field (tag 704).
+"""
 from .base import FIXFieldBase
-from .types import FIXQty
+from typing import Optional
+from .types import *
 
-class LongQty(FIXFieldBase):
-    """FIX LongQty field."""
+class LongQtyField(FIXFieldBase):
+    """"""
     tag: str = "704"
     name: str = "LongQty"
     type: str = "QTY"
-    value: FIXQty
+    value: float

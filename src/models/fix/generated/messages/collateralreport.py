@@ -1,73 +1,207 @@
-from typing import Optional, List
+"""
+FIX CollateralReport Message
+"""
+from ..fields.types import *
+from .base import FIXMessageBase
 from datetime import datetime, date, time
-from pydantic import Field
-from src.models.fix.base import FIXMessageBase
-from src.models.fix.generated.components.parties import PartiesComponent
-from src.models.fix.generated.components.execcollgrp import ExecCollGrpComponent
-from src.models.fix.generated.components.trdcollgrp import TrdCollGrpComponent
-from src.models.fix.generated.components.instrument import InstrumentComponent
-from src.models.fix.generated.components.financingdetails import FinancingDetailsComponent
-from src.models.fix.generated.components.instrmtleggrp import InstrmtLegGrpComponent
-from src.models.fix.generated.components.undinstrmtgrp import UndInstrmtGrpComponent
-from src.models.fix.generated.components.trdregtimestamps import TrdRegTimestampsComponent
-from src.models.fix.generated.components.miscfeesgrp import MiscFeesGrpComponent
-from src.models.fix.generated.components.spreadorbenchmarkcurvedata import SpreadOrBenchmarkCurveDataComponent
-from src.models.fix.generated.components.stipulations import StipulationsComponent
-from src.models.fix.generated.components.settlinstructionsdata import SettlInstructionsDataComponent
+from pydantic import Field, ConfigDict, model_validator
+from typing import List, Optional, Dict, Any, Union, ForwardRef, TYPE_CHECKING, Literal
 
-class CollateralReport(FIXMessageBase):
-    """FIX message model."""
+if TYPE_CHECKING:
+    from ..components.execcollgrp import ExecCollGrpComponent
+    from ..components.financingdetails import FinancingDetailsComponent
+    from ..components.instrmtleggrp import InstrmtLegGrpComponent
+    from ..components.instrument import InstrumentComponent
+    from ..components.miscfeesgrp import MiscFeesGrpComponent
+    from ..components.parties import PartiesComponent
+    from ..components.settlinstructionsdata import SettlInstructionsDataComponent
+    from ..components.spreadorbenchmarkcurvedata import SpreadOrBenchmarkCurveDataComponent
+    from ..components.stipulations import StipulationsComponent
+    from ..components.trdcollgrp import TrdCollGrpComponent
+    from ..components.trdregtimestamps import TrdRegTimestampsComponent
+    from ..components.undinstrmtgrp import UndInstrmtGrpComponent
 
-    BeginString: str = Field(..., description='', alias='8')
-    BodyLength: int = Field(..., description='', alias='9')
-    MsgType: str = Field(..., description='', alias='35')
-    SenderCompID: str = Field(..., description='', alias='49')
-    TargetCompID: str = Field(..., description='', alias='56')
-    MsgSeqNum: int = Field(..., description='', alias='34')
-    SendingTime: datetime = Field(..., description='', alias='52')
-    CollRptID: str = Field(..., description='', alias='908')
-    CollInquiryID: Optional[str] = Field(None, description='', alias='909')
-    CollStatus: int = Field(..., description='', alias='910')
-    TotNumReports: Optional[int] = Field(None, description='', alias='911')
-    LastRptRequested: Optional[bool] = Field(None, description='', alias='912')
-    Account: Optional[str] = Field(None, description='', alias='1')
-    AccountType: Optional[int] = Field(None, description='', alias='581')
-    ClOrdID: Optional[str] = Field(None, description='', alias='11')
-    OrderID: Optional[str] = Field(None, description='', alias='37')
-    SecondaryOrderID: Optional[str] = Field(None, description='', alias='198')
-    SecondaryClOrdID: Optional[str] = Field(None, description='', alias='526')
-    SettlDate: Optional[date] = Field(None, description='', alias='64')
-    Quantity: Optional[float] = Field(None, description='', alias='53')
-    QtyType: Optional[int] = Field(None, description='', alias='854')
-    Currency: Optional[str] = Field(None, description='', alias='15')
-    MarginExcess: Optional[float] = Field(None, description='', alias='899')
-    TotalNetValue: Optional[float] = Field(None, description='', alias='900')
-    CashOutstanding: Optional[float] = Field(None, description='', alias='901')
-    Side: Optional[str] = Field(None, description='', alias='54')
-    Price: Optional[float] = Field(None, description='', alias='44')
-    PriceType: Optional[int] = Field(None, description='', alias='423')
-    AccruedInterestAmt: Optional[float] = Field(None, description='', alias='159')
-    EndAccruedInterestAmt: Optional[float] = Field(None, description='', alias='920')
-    StartCash: Optional[float] = Field(None, description='', alias='921')
-    EndCash: Optional[float] = Field(None, description='', alias='922')
-    TradingSessionID: Optional[str] = Field(None, description='', alias='336')
-    TradingSessionSubID: Optional[str] = Field(None, description='', alias='625')
-    SettlSessID: Optional[str] = Field(None, description='', alias='716')
-    SettlSessSubID: Optional[str] = Field(None, description='', alias='717')
-    ClearingBusinessDate: Optional[date] = Field(None, description='', alias='715')
-    Text: Optional[str] = Field(None, description='', alias='58')
-    EncodedTextLen: Optional[int] = Field(None, description='', alias='354')
-    EncodedText: Optional[str] = Field(None, description='', alias='355')
-    Parties: Optional[PartiesComponent] = Field(None, description='Parties component')
-    ExecCollGrp: Optional[ExecCollGrpComponent] = Field(None, description='ExecCollGrp component')
-    TrdCollGrp: Optional[TrdCollGrpComponent] = Field(None, description='TrdCollGrp component')
-    Instrument: Optional[InstrumentComponent] = Field(None, description='Instrument component')
-    FinancingDetails: Optional[FinancingDetailsComponent] = Field(None, description='FinancingDetails component')
-    InstrmtLegGrp: Optional[InstrmtLegGrpComponent] = Field(None, description='InstrmtLegGrp component')
-    UndInstrmtGrp: Optional[UndInstrmtGrpComponent] = Field(None, description='UndInstrmtGrp component')
-    TrdRegTimestamps: Optional[TrdRegTimestampsComponent] = Field(None, description='TrdRegTimestamps component')
-    MiscFeesGrp: Optional[MiscFeesGrpComponent] = Field(None, description='MiscFeesGrp component')
-    SpreadOrBenchmarkCurveData: Optional[SpreadOrBenchmarkCurveDataComponent] = Field(None, description='SpreadOrBenchmarkCurveData component')
-    Stipulations: Optional[StipulationsComponent] = Field(None, description='Stipulations component')
-    SettlInstructionsData: Optional[SettlInstructionsDataComponent] = Field(None, description='SettlInstructionsData component')
 
+# Forward references for components to avoid circular imports
+ExecCollGrpComponent = ForwardRef('ExecCollGrpComponent')
+FinancingDetailsComponent = ForwardRef('FinancingDetailsComponent')
+InstrmtLegGrpComponent = ForwardRef('InstrmtLegGrpComponent')
+InstrumentComponent = ForwardRef('InstrumentComponent')
+MiscFeesGrpComponent = ForwardRef('MiscFeesGrpComponent')
+PartiesComponent = ForwardRef('PartiesComponent')
+SettlInstructionsDataComponent = ForwardRef('SettlInstructionsDataComponent')
+SpreadOrBenchmarkCurveDataComponent = ForwardRef('SpreadOrBenchmarkCurveDataComponent')
+StipulationsComponent = ForwardRef('StipulationsComponent')
+TrdCollGrpComponent = ForwardRef('TrdCollGrpComponent')
+TrdRegTimestampsComponent = ForwardRef('TrdRegTimestampsComponent')
+UndInstrmtGrpComponent = ForwardRef('UndInstrmtGrpComponent')
+
+
+class CollateralReportMessage(FIXMessageBase):
+    """CollateralReport Message"""
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat() if v else None,
+            date: lambda v: v.isoformat() if v else None,
+            time: lambda v: v.isoformat() if v else None
+        }
+    )
+
+    MsgType: Literal["CollateralReport"] = Field("CollateralReport", alias="35", description="Message Type")
+
+    CollRptID: Optional[str] = Field(None, alias="908", description="")
+    CollInquiryID: Optional[str] = Field(None, alias="909", description="")
+    CollStatus: Optional[int] = Field(None, alias="910", description="")
+    TotNumReports: Optional[int] = Field(None, alias="911", description="")
+    LastRptRequested: Optional[bool] = Field(None, alias="912", description="")
+    Account: Optional[str] = Field(None, alias="1", description="")
+    AccountType: Optional[int] = Field(None, alias="581", description="")
+    ClOrdID: Optional[str] = Field(None, alias="11", description="")
+    OrderID: Optional[str] = Field(None, alias="37", description="")
+    SecondaryOrderID: Optional[str] = Field(None, alias="198", description="")
+    SecondaryClOrdID: Optional[str] = Field(None, alias="526", description="")
+    SettlDate: Optional[date] = Field(None, alias="64", description="")
+    Quantity: Optional[float] = Field(None, alias="53", description="")
+    QtyType: Optional[int] = Field(None, alias="854", description="")
+    Currency: Optional[str] = Field(None, alias="15", description="")
+    MarginExcess: Optional[float] = Field(None, alias="899", description="")
+    TotalNetValue: Optional[float] = Field(None, alias="900", description="")
+    CashOutstanding: Optional[float] = Field(None, alias="901", description="")
+    Side: Optional[str] = Field(None, alias="54", description="")
+    Price: Optional[float] = Field(None, alias="44", description="")
+    PriceType: Optional[int] = Field(None, alias="423", description="")
+    AccruedInterestAmt: Optional[float] = Field(None, alias="159", description="")
+    EndAccruedInterestAmt: Optional[float] = Field(None, alias="920", description="")
+    StartCash: Optional[float] = Field(None, alias="921", description="")
+    EndCash: Optional[float] = Field(None, alias="922", description="")
+    TradingSessionID: Optional[str] = Field(None, alias="336", description="")
+    TradingSessionSubID: Optional[str] = Field(None, alias="625", description="")
+    SettlSessID: Optional[str] = Field(None, alias="716", description="")
+    SettlSessSubID: Optional[str] = Field(None, alias="717", description="")
+    ClearingBusinessDate: Optional[date] = Field(None, alias="715", description="")
+    Text: Optional[str] = Field(None, alias="58", description="")
+    EncodedTextLen: Optional[int] = Field(None, alias="354", description="")
+    EncodedText: Optional[str] = Field(None, alias="355", description="")
+    Parties: ForwardRef('PartiesComponent') = Field(None, description="Parties Component")
+    ExecCollGrp: ForwardRef('ExecCollGrpComponent') = Field(None, description="ExecCollGrp Component")
+    TrdCollGrp: ForwardRef('TrdCollGrpComponent') = Field(None, description="TrdCollGrp Component")
+    Instrument: ForwardRef('InstrumentComponent') = Field(None, description="Instrument Component")
+    FinancingDetails: ForwardRef('FinancingDetailsComponent') = Field(None, description="FinancingDetails Component")
+    InstrmtLegGrp: ForwardRef('InstrmtLegGrpComponent') = Field(None, description="InstrmtLegGrp Component")
+    UndInstrmtGrp: ForwardRef('UndInstrmtGrpComponent') = Field(None, description="UndInstrmtGrp Component")
+    TrdRegTimestamps: ForwardRef('TrdRegTimestampsComponent') = Field(None, description="TrdRegTimestamps Component")
+    MiscFeesGrp: ForwardRef('MiscFeesGrpComponent') = Field(None, description="MiscFeesGrp Component")
+    SpreadOrBenchmarkCurveData: ForwardRef('SpreadOrBenchmarkCurveDataComponent') = Field(None, description="SpreadOrBenchmarkCurveData Component")
+    Stipulations: ForwardRef('StipulationsComponent') = Field(None, description="Stipulations Component")
+    SettlInstructionsData: ForwardRef('SettlInstructionsDataComponent') = Field(None, description="SettlInstructionsData Component")
+
+    @model_validator(mode='after')
+    def resolve_forward_refs(self) -> 'FIXMessageBase':
+        """Resolve forward references."""
+        for field_name, field_value in self.model_fields.items():
+            if isinstance(field_value.annotation, ForwardRef):
+                field_value.annotation = eval(field_value.annotation.__forward_arg__)
+        return self
+
+    def __str__(self) -> str:
+        fields = []
+        if self.MsgType is not None:
+            fields.append(f"MsgType={self.MsgType}")
+        if self.CollRptID is not None:
+            fields.append(f"CollRptID={self.CollRptID}")
+        if self.CollInquiryID is not None:
+            fields.append(f"CollInquiryID={self.CollInquiryID}")
+        if self.CollStatus is not None:
+            fields.append(f"CollStatus={self.CollStatus}")
+        if self.TotNumReports is not None:
+            fields.append(f"TotNumReports={self.TotNumReports}")
+        if self.LastRptRequested is not None:
+            fields.append(f"LastRptRequested={self.LastRptRequested}")
+        if self.Account is not None:
+            fields.append(f"Account={self.Account}")
+        if self.AccountType is not None:
+            fields.append(f"AccountType={self.AccountType}")
+        if self.ClOrdID is not None:
+            fields.append(f"ClOrdID={self.ClOrdID}")
+        if self.OrderID is not None:
+            fields.append(f"OrderID={self.OrderID}")
+        if self.SecondaryOrderID is not None:
+            fields.append(f"SecondaryOrderID={self.SecondaryOrderID}")
+        if self.SecondaryClOrdID is not None:
+            fields.append(f"SecondaryClOrdID={self.SecondaryClOrdID}")
+        if self.SettlDate is not None:
+            fields.append(f"SettlDate={self.SettlDate}")
+        if self.Quantity is not None:
+            fields.append(f"Quantity={self.Quantity}")
+        if self.QtyType is not None:
+            fields.append(f"QtyType={self.QtyType}")
+        if self.Currency is not None:
+            fields.append(f"Currency={self.Currency}")
+        if self.MarginExcess is not None:
+            fields.append(f"MarginExcess={self.MarginExcess}")
+        if self.TotalNetValue is not None:
+            fields.append(f"TotalNetValue={self.TotalNetValue}")
+        if self.CashOutstanding is not None:
+            fields.append(f"CashOutstanding={self.CashOutstanding}")
+        if self.Side is not None:
+            fields.append(f"Side={self.Side}")
+        if self.Price is not None:
+            fields.append(f"Price={self.Price}")
+        if self.PriceType is not None:
+            fields.append(f"PriceType={self.PriceType}")
+        if self.AccruedInterestAmt is not None:
+            fields.append(f"AccruedInterestAmt={self.AccruedInterestAmt}")
+        if self.EndAccruedInterestAmt is not None:
+            fields.append(f"EndAccruedInterestAmt={self.EndAccruedInterestAmt}")
+        if self.StartCash is not None:
+            fields.append(f"StartCash={self.StartCash}")
+        if self.EndCash is not None:
+            fields.append(f"EndCash={self.EndCash}")
+        if self.TradingSessionID is not None:
+            fields.append(f"TradingSessionID={self.TradingSessionID}")
+        if self.TradingSessionSubID is not None:
+            fields.append(f"TradingSessionSubID={self.TradingSessionSubID}")
+        if self.SettlSessID is not None:
+            fields.append(f"SettlSessID={self.SettlSessID}")
+        if self.SettlSessSubID is not None:
+            fields.append(f"SettlSessSubID={self.SettlSessSubID}")
+        if self.ClearingBusinessDate is not None:
+            fields.append(f"ClearingBusinessDate={self.ClearingBusinessDate}")
+        if self.Text is not None:
+            fields.append(f"Text={self.Text}")
+        if self.EncodedTextLen is not None:
+            fields.append(f"EncodedTextLen={self.EncodedTextLen}")
+        if self.EncodedText is not None:
+            fields.append(f"EncodedText={self.EncodedText}")
+        if self.Parties is not None:
+            fields.append(f"Parties={self.Parties}")
+        if self.ExecCollGrp is not None:
+            fields.append(f"ExecCollGrp={self.ExecCollGrp}")
+        if self.TrdCollGrp is not None:
+            fields.append(f"TrdCollGrp={self.TrdCollGrp}")
+        if self.Instrument is not None:
+            fields.append(f"Instrument={self.Instrument}")
+        if self.FinancingDetails is not None:
+            fields.append(f"FinancingDetails={self.FinancingDetails}")
+        if self.InstrmtLegGrp is not None:
+            fields.append(f"InstrmtLegGrp={self.InstrmtLegGrp}")
+        if self.UndInstrmtGrp is not None:
+            fields.append(f"UndInstrmtGrp={self.UndInstrmtGrp}")
+        if self.TrdRegTimestamps is not None:
+            fields.append(f"TrdRegTimestamps={self.TrdRegTimestamps}")
+        if self.MiscFeesGrp is not None:
+            fields.append(f"MiscFeesGrp={self.MiscFeesGrp}")
+        if self.SpreadOrBenchmarkCurveData is not None:
+            fields.append(f"SpreadOrBenchmarkCurveData={self.SpreadOrBenchmarkCurveData}")
+        if self.Stipulations is not None:
+            fields.append(f"Stipulations={self.Stipulations}")
+        if self.SettlInstructionsData is not None:
+            fields.append(f"SettlInstructionsData={self.SettlInstructionsData}")
+        return f"{self.__class__.__name__}({', '.join(fields)})"
+
+
+# Rebuild model to resolve forward references
+CollateralReportMessage.model_rebuild()

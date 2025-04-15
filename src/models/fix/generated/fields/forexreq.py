@@ -1,14 +1,26 @@
-
+"""
+FIX ForexReq field (tag 121).
+"""
 from .base import FIXFieldBase
-from .types import FIXBoolean
+from typing import Optional
+from .types import *
 
-class ForexReq(FIXFieldBase):
-    """FIX ForexReq field."""
+class ForexReqValues:
+    """Enumerated values for ForexReq."""
+    Y = "Y"  # YES
+    N = "N"  # NO
+
+class ForexReqField(FIXFieldBase):
+    """"""
     tag: str = "121"
     name: str = "ForexReq"
     type: str = "BOOLEAN"
-    value: FIXBoolean
+    value: Literal["Y", "N"]
 
-    # Enum values
-    # Y: YES
-    # N: NO
+    # Helper methods for enum values
+    @property
+    def is_y(self) -> bool:
+        return self.value == "Y"
+    @property
+    def is_n(self) -> bool:
+        return self.value == "N"

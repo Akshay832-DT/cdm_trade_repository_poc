@@ -1,10 +1,13 @@
-
+"""
+FIX AutoAcceptIndicator field (tag 754).
+"""
 from .base import FIXFieldBase
-from .types import FIXBoolean
+from typing import Optional
+from .types import *
 
-class AutoAcceptIndicator(FIXFieldBase):
-    """FIX AutoAcceptIndicator field."""
+class AutoAcceptIndicatorField(FIXFieldBase):
+    """"""
     tag: str = "754"
     name: str = "AutoAcceptIndicator"
     type: str = "BOOLEAN"
-    value: FIXBoolean
+    value: bool

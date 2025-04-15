@@ -1,10 +1,13 @@
-
+"""
+FIX ExpireDate field (tag 432).
+"""
 from .base import FIXFieldBase
-from .types import FIXLocalMktDate
+from typing import Optional
+from .types import *
 
-class ExpireDate(FIXFieldBase):
-    """FIX ExpireDate field."""
+class ExpireDateField(FIXFieldBase):
+    """"""
     tag: str = "432"
     name: str = "ExpireDate"
     type: str = "LOCALMKTDATE"
-    value: FIXLocalMktDate
+    value: date

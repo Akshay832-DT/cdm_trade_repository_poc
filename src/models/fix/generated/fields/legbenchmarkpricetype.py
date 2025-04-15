@@ -1,10 +1,13 @@
-
+"""
+FIX LegBenchmarkPriceType field (tag 680).
+"""
 from .base import FIXFieldBase
-from .types import FIXInt
+from typing import Optional
+from .types import *
 
-class LegBenchmarkPriceType(FIXFieldBase):
-    """FIX LegBenchmarkPriceType field."""
+class LegBenchmarkPriceTypeField(FIXFieldBase):
+    """"""
     tag: str = "680"
     name: str = "LegBenchmarkPriceType"
     type: str = "INT"
-    value: FIXInt
+    value: int

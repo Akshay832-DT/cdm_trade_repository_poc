@@ -1,14 +1,26 @@
-
+"""
+FIX NotifyBrokerOfCredit field (tag 208).
+"""
 from .base import FIXFieldBase
-from .types import FIXBoolean
+from typing import Optional
+from .types import *
 
-class NotifyBrokerOfCredit(FIXFieldBase):
-    """FIX NotifyBrokerOfCredit field."""
+class NotifyBrokerOfCreditValues:
+    """Enumerated values for NotifyBrokerOfCredit."""
+    Y = "Y"  # YES
+    N = "N"  # NO
+
+class NotifyBrokerOfCreditField(FIXFieldBase):
+    """"""
     tag: str = "208"
     name: str = "NotifyBrokerOfCredit"
     type: str = "BOOLEAN"
-    value: FIXBoolean
+    value: Literal["Y", "N"]
 
-    # Enum values
-    # Y: YES
-    # N: NO
+    # Helper methods for enum values
+    @property
+    def is_y(self) -> bool:
+        return self.value == "Y"
+    @property
+    def is_n(self) -> bool:
+        return self.value == "N"

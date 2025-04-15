@@ -1,10 +1,13 @@
-
+"""
+FIX CardStartDate field (tag 503).
+"""
 from .base import FIXFieldBase
-from .types import FIXLocalMktDate
+from typing import Optional
+from .types import *
 
-class CardStartDate(FIXFieldBase):
-    """FIX CardStartDate field."""
+class CardStartDateField(FIXFieldBase):
+    """"""
     tag: str = "503"
     name: str = "CardStartDate"
     type: str = "LOCALMKTDATE"
-    value: FIXLocalMktDate
+    value: date

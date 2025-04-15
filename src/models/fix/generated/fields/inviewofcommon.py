@@ -1,14 +1,26 @@
-
+"""
+FIX InViewOfCommon field (tag 328).
+"""
 from .base import FIXFieldBase
-from .types import FIXBoolean
+from typing import Optional
+from .types import *
 
-class InViewOfCommon(FIXFieldBase):
-    """FIX InViewOfCommon field."""
+class InViewOfCommonValues:
+    """Enumerated values for InViewOfCommon."""
+    Y = "Y"  # YES
+    N = "N"  # NO
+
+class InViewOfCommonField(FIXFieldBase):
+    """"""
     tag: str = "328"
     name: str = "InViewOfCommon"
     type: str = "BOOLEAN"
-    value: FIXBoolean
+    value: Literal["Y", "N"]
 
-    # Enum values
-    # Y: YES
-    # N: NO
+    # Helper methods for enum values
+    @property
+    def is_y(self) -> bool:
+        return self.value == "Y"
+    @property
+    def is_n(self) -> bool:
+        return self.value == "N"

@@ -1,10 +1,13 @@
-
+"""
+FIX MarginRatio field (tag 898).
+"""
 from .base import FIXFieldBase
-from .types import FIXPercentage
+from typing import Optional
+from .types import *
 
-class MarginRatio(FIXFieldBase):
-    """FIX MarginRatio field."""
+class MarginRatioField(FIXFieldBase):
+    """"""
     tag: str = "898"
     name: str = "MarginRatio"
     type: str = "PERCENTAGE"
-    value: FIXPercentage
+    value: float

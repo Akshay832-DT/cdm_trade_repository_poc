@@ -1,33 +1,93 @@
-from typing import Optional, List
+"""
+FIX TradingSessionStatus Message
+"""
+from ..fields.types import *
+from .base import FIXMessageBase
 from datetime import datetime, date, time
-from pydantic import Field
-from src.models.fix.base import FIXMessageBase
+from pydantic import Field, ConfigDict, model_validator
+from typing import List, Optional, Dict, Any, Union, ForwardRef, TYPE_CHECKING, Literal
 
-class TradingSessionStatus(FIXMessageBase):
-    """FIX message model."""
+class TradingSessionStatusMessage(FIXMessageBase):
+    """TradingSessionStatus Message"""
 
-    BeginString: str = Field(..., description='', alias='8')
-    BodyLength: int = Field(..., description='', alias='9')
-    MsgType: str = Field(..., description='', alias='35')
-    SenderCompID: str = Field(..., description='', alias='49')
-    TargetCompID: str = Field(..., description='', alias='56')
-    MsgSeqNum: int = Field(..., description='', alias='34')
-    SendingTime: datetime = Field(..., description='', alias='52')
-    TradSesReqID: Optional[str] = Field(None, description='', alias='335')
-    TradingSessionID: str = Field(..., description='', alias='336')
-    TradingSessionSubID: Optional[str] = Field(None, description='', alias='625')
-    TradSesMethod: Optional[int] = Field(None, description='', alias='338')
-    TradSesMode: Optional[int] = Field(None, description='', alias='339')
-    UnsolicitedIndicator: Optional[bool] = Field(None, description='', alias='325')
-    TradSesStatus: int = Field(..., description='', alias='340')
-    TradSesStatusRejReason: Optional[int] = Field(None, description='', alias='567')
-    TradSesStartTime: Optional[datetime] = Field(None, description='', alias='341')
-    TradSesOpenTime: Optional[datetime] = Field(None, description='', alias='342')
-    TradSesPreCloseTime: Optional[datetime] = Field(None, description='', alias='343')
-    TradSesCloseTime: Optional[datetime] = Field(None, description='', alias='344')
-    TradSesEndTime: Optional[datetime] = Field(None, description='', alias='345')
-    TotalVolumeTraded: Optional[float] = Field(None, description='', alias='387')
-    Text: Optional[str] = Field(None, description='', alias='58')
-    EncodedTextLen: Optional[int] = Field(None, description='', alias='354')
-    EncodedText: Optional[str] = Field(None, description='', alias='355')
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat() if v else None,
+            date: lambda v: v.isoformat() if v else None,
+            time: lambda v: v.isoformat() if v else None
+        }
+    )
 
+    MsgType: Literal["TradingSessionStatus"] = Field("TradingSessionStatus", alias="35", description="Message Type")
+
+    TradSesReqID: Optional[str] = Field(None, alias="335", description="")
+    TradingSessionID: Optional[str] = Field(None, alias="336", description="")
+    TradingSessionSubID: Optional[str] = Field(None, alias="625", description="")
+    TradSesMethod: Optional[int] = Field(None, alias="338", description="")
+    TradSesMode: Optional[int] = Field(None, alias="339", description="")
+    UnsolicitedIndicator: Optional[bool] = Field(None, alias="325", description="")
+    TradSesStatus: Optional[int] = Field(None, alias="340", description="")
+    TradSesStatusRejReason: Optional[int] = Field(None, alias="567", description="")
+    TradSesStartTime: Optional[datetime] = Field(None, alias="341", description="")
+    TradSesOpenTime: Optional[datetime] = Field(None, alias="342", description="")
+    TradSesPreCloseTime: Optional[datetime] = Field(None, alias="343", description="")
+    TradSesCloseTime: Optional[datetime] = Field(None, alias="344", description="")
+    TradSesEndTime: Optional[datetime] = Field(None, alias="345", description="")
+    TotalVolumeTraded: Optional[float] = Field(None, alias="387", description="")
+    Text: Optional[str] = Field(None, alias="58", description="")
+    EncodedTextLen: Optional[int] = Field(None, alias="354", description="")
+    EncodedText: Optional[str] = Field(None, alias="355", description="")
+
+    @model_validator(mode='after')
+    def resolve_forward_refs(self) -> 'FIXMessageBase':
+        """Resolve forward references."""
+        for field_name, field_value in self.model_fields.items():
+            if isinstance(field_value.annotation, ForwardRef):
+                field_value.annotation = eval(field_value.annotation.__forward_arg__)
+        return self
+
+    def __str__(self) -> str:
+        fields = []
+        if self.MsgType is not None:
+            fields.append(f"MsgType={self.MsgType}")
+        if self.TradSesReqID is not None:
+            fields.append(f"TradSesReqID={self.TradSesReqID}")
+        if self.TradingSessionID is not None:
+            fields.append(f"TradingSessionID={self.TradingSessionID}")
+        if self.TradingSessionSubID is not None:
+            fields.append(f"TradingSessionSubID={self.TradingSessionSubID}")
+        if self.TradSesMethod is not None:
+            fields.append(f"TradSesMethod={self.TradSesMethod}")
+        if self.TradSesMode is not None:
+            fields.append(f"TradSesMode={self.TradSesMode}")
+        if self.UnsolicitedIndicator is not None:
+            fields.append(f"UnsolicitedIndicator={self.UnsolicitedIndicator}")
+        if self.TradSesStatus is not None:
+            fields.append(f"TradSesStatus={self.TradSesStatus}")
+        if self.TradSesStatusRejReason is not None:
+            fields.append(f"TradSesStatusRejReason={self.TradSesStatusRejReason}")
+        if self.TradSesStartTime is not None:
+            fields.append(f"TradSesStartTime={self.TradSesStartTime}")
+        if self.TradSesOpenTime is not None:
+            fields.append(f"TradSesOpenTime={self.TradSesOpenTime}")
+        if self.TradSesPreCloseTime is not None:
+            fields.append(f"TradSesPreCloseTime={self.TradSesPreCloseTime}")
+        if self.TradSesCloseTime is not None:
+            fields.append(f"TradSesCloseTime={self.TradSesCloseTime}")
+        if self.TradSesEndTime is not None:
+            fields.append(f"TradSesEndTime={self.TradSesEndTime}")
+        if self.TotalVolumeTraded is not None:
+            fields.append(f"TotalVolumeTraded={self.TotalVolumeTraded}")
+        if self.Text is not None:
+            fields.append(f"Text={self.Text}")
+        if self.EncodedTextLen is not None:
+            fields.append(f"EncodedTextLen={self.EncodedTextLen}")
+        if self.EncodedText is not None:
+            fields.append(f"EncodedText={self.EncodedText}")
+        return f"{self.__class__.__name__}({', '.join(fields)})"
+
+
+# Rebuild model to resolve forward references
+TradingSessionStatusMessage.model_rebuild()

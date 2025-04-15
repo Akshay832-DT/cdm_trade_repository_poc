@@ -1,10 +1,13 @@
-
+"""
+FIX MidPx field (tag 631).
+"""
 from .base import FIXFieldBase
-from .types import FIXPrice
+from typing import Optional
+from .types import *
 
-class MidPx(FIXFieldBase):
-    """FIX MidPx field."""
+class MidPxField(FIXFieldBase):
+    """"""
     tag: str = "631"
     name: str = "MidPx"
     type: str = "PRICE"
-    value: FIXPrice
+    value: float

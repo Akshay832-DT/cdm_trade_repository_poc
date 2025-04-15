@@ -1,10 +1,13 @@
-
+"""
+FIX StrikeTime field (tag 443).
+"""
 from .base import FIXFieldBase
-from .types import FIXUTCTimestamp
+from typing import Optional
+from .types import *
 
-class StrikeTime(FIXFieldBase):
-    """FIX StrikeTime field."""
+class StrikeTimeField(FIXFieldBase):
+    """"""
     tag: str = "443"
     name: str = "StrikeTime"
     type: str = "UTCTIMESTAMP"
-    value: FIXUTCTimestamp
+    value: datetime

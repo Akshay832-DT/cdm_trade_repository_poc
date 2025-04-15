@@ -1,10 +1,13 @@
-
+"""
+FIX DeliverToCompID field (tag 128).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class DeliverToCompID(FIXFieldBase):
-    """FIX DeliverToCompID field."""
+class DeliverToCompIDField(FIXFieldBase):
+    """"""
     tag: str = "128"
     name: str = "DeliverToCompID"
     type: str = "STRING"
-    value: FIXString
+    value: str

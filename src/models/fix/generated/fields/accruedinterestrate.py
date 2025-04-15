@@ -1,10 +1,13 @@
-
+"""
+FIX AccruedInterestRate field (tag 158).
+"""
 from .base import FIXFieldBase
-from .types import FIXPercentage
+from typing import Optional
+from .types import *
 
-class AccruedInterestRate(FIXFieldBase):
-    """FIX AccruedInterestRate field."""
+class AccruedInterestRateField(FIXFieldBase):
+    """"""
     tag: str = "158"
     name: str = "AccruedInterestRate"
     type: str = "PERCENTAGE"
-    value: FIXPercentage
+    value: float

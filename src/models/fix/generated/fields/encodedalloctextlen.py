@@ -1,10 +1,13 @@
-
+"""
+FIX EncodedAllocTextLen field (tag 360).
+"""
 from .base import FIXFieldBase
-from .types import FIXLength
+from typing import Optional
+from .types import *
 
-class EncodedAllocTextLen(FIXFieldBase):
-    """FIX EncodedAllocTextLen field."""
+class EncodedAllocTextLenField(FIXFieldBase):
+    """"""
     tag: str = "360"
     name: str = "EncodedAllocTextLen"
     type: str = "LENGTH"
-    value: FIXLength
+    value: int

@@ -1,10 +1,13 @@
-
+"""
+FIX UnderlyingQty field (tag 879).
+"""
 from .base import FIXFieldBase
-from .types import FIXQty
+from typing import Optional
+from .types import *
 
-class UnderlyingQty(FIXFieldBase):
-    """FIX UnderlyingQty field."""
+class UnderlyingQtyField(FIXFieldBase):
+    """"""
     tag: str = "879"
     name: str = "UnderlyingQty"
     type: str = "QTY"
-    value: FIXQty
+    value: float

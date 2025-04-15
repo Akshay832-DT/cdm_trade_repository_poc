@@ -1,10 +1,13 @@
-
+"""
+FIX RawDataLength field (tag 95).
+"""
 from .base import FIXFieldBase
-from .types import FIXLength
+from typing import Optional
+from .types import *
 
-class RawDataLength(FIXFieldBase):
-    """FIX RawDataLength field."""
+class RawDataLengthField(FIXFieldBase):
+    """"""
     tag: str = "95"
     name: str = "RawDataLength"
     type: str = "LENGTH"
-    value: FIXLength
+    value: int

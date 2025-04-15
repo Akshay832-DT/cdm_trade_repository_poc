@@ -1,10 +1,13 @@
-
+"""
+FIX LegLocaleOfIssue field (tag 598).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class LegLocaleOfIssue(FIXFieldBase):
-    """FIX LegLocaleOfIssue field."""
+class LegLocaleOfIssueField(FIXFieldBase):
+    """"""
     tag: str = "598"
     name: str = "LegLocaleOfIssue"
     type: str = "STRING"
-    value: FIXString
+    value: str

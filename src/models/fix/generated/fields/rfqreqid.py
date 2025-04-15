@@ -1,10 +1,13 @@
-
+"""
+FIX RFQReqID field (tag 644).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class RFQReqID(FIXFieldBase):
-    """FIX RFQReqID field."""
+class RFQReqIDField(FIXFieldBase):
+    """"""
     tag: str = "644"
     name: str = "RFQReqID"
     type: str = "STRING"
-    value: FIXString
+    value: str

@@ -1,10 +1,13 @@
-
+"""
+FIX AllowableOneSidednessPct field (tag 765).
+"""
 from .base import FIXFieldBase
-from .types import FIXPercentage
+from typing import Optional
+from .types import *
 
-class AllowableOneSidednessPct(FIXFieldBase):
-    """FIX AllowableOneSidednessPct field."""
+class AllowableOneSidednessPctField(FIXFieldBase):
+    """"""
     tag: str = "765"
     name: str = "AllowableOneSidednessPct"
     type: str = "PERCENTAGE"
-    value: FIXPercentage
+    value: float

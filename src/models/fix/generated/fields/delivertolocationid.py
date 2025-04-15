@@ -1,10 +1,13 @@
-
+"""
+FIX DeliverToLocationID field (tag 145).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class DeliverToLocationID(FIXFieldBase):
-    """FIX DeliverToLocationID field."""
+class DeliverToLocationIDField(FIXFieldBase):
+    """"""
     tag: str = "145"
     name: str = "DeliverToLocationID"
     type: str = "STRING"
-    value: FIXString
+    value: str

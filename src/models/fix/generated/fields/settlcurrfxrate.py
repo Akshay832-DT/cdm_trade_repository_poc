@@ -1,10 +1,13 @@
-
+"""
+FIX SettlCurrFxRate field (tag 155).
+"""
 from .base import FIXFieldBase
-from .types import FIXFloat
+from typing import Optional
+from .types import *
 
-class SettlCurrFxRate(FIXFieldBase):
-    """FIX SettlCurrFxRate field."""
+class SettlCurrFxRateField(FIXFieldBase):
+    """"""
     tag: str = "155"
     name: str = "SettlCurrFxRate"
     type: str = "FLOAT"
-    value: FIXFloat
+    value: float

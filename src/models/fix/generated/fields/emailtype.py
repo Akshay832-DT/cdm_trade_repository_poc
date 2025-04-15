@@ -1,15 +1,30 @@
-
+"""
+FIX EmailType field (tag 94).
+"""
 from .base import FIXFieldBase
-from .types import FIXChar
+from typing import Optional
+from .types import *
 
-class EmailType(FIXFieldBase):
-    """FIX EmailType field."""
+class EmailTypeValues:
+    """Enumerated values for EmailType."""
+    VALUE_0 = "0"  # NEW
+    VALUE_1 = "1"  # REPLY
+    VALUE_2 = "2"  # ADMIN_REPLY
+
+class EmailTypeField(FIXFieldBase):
+    """"""
     tag: str = "94"
     name: str = "EmailType"
     type: str = "CHAR"
-    value: FIXChar
+    value: Literal["0", "1", "2"]
 
-    # Enum values
-    # 0: NEW
-    # 1: REPLY
-    # 2: ADMIN_REPLY
+    # Helper methods for enum values
+    @property
+    def is_value_0(self) -> bool:
+        return self.value == "0"
+    @property
+    def is_value_1(self) -> bool:
+        return self.value == "1"
+    @property
+    def is_value_2(self) -> bool:
+        return self.value == "2"

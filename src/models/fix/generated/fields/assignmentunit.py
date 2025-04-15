@@ -1,10 +1,13 @@
-
+"""
+FIX AssignmentUnit field (tag 745).
+"""
 from .base import FIXFieldBase
-from .types import FIXQty
+from typing import Optional
+from .types import *
 
-class AssignmentUnit(FIXFieldBase):
-    """FIX AssignmentUnit field."""
+class AssignmentUnitField(FIXFieldBase):
+    """"""
     tag: str = "745"
     name: str = "AssignmentUnit"
     type: str = "QTY"
-    value: FIXQty
+    value: float

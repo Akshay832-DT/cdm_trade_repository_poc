@@ -1,10 +1,13 @@
-
+"""
+FIX PrevClosePx field (tag 140).
+"""
 from .base import FIXFieldBase
-from .types import FIXPrice
+from typing import Optional
+from .types import *
 
-class PrevClosePx(FIXFieldBase):
-    """FIX PrevClosePx field."""
+class PrevClosePxField(FIXFieldBase):
+    """"""
     tag: str = "140"
     name: str = "PrevClosePx"
     type: str = "PRICE"
-    value: FIXPrice
+    value: float

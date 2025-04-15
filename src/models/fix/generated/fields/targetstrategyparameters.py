@@ -1,10 +1,13 @@
-
+"""
+FIX TargetStrategyParameters field (tag 848).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class TargetStrategyParameters(FIXFieldBase):
-    """FIX TargetStrategyParameters field."""
+class TargetStrategyParametersField(FIXFieldBase):
+    """"""
     tag: str = "848"
     name: str = "TargetStrategyParameters"
     type: str = "STRING"
-    value: FIXString
+    value: str

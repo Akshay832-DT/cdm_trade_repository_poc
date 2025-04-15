@@ -1,14 +1,26 @@
-
+"""
+FIX ExchangeForPhysical field (tag 411).
+"""
 from .base import FIXFieldBase
-from .types import FIXBoolean
+from typing import Optional
+from .types import *
 
-class ExchangeForPhysical(FIXFieldBase):
-    """FIX ExchangeForPhysical field."""
+class ExchangeForPhysicalValues:
+    """Enumerated values for ExchangeForPhysical."""
+    Y = "Y"  # YES
+    N = "N"  # NO
+
+class ExchangeForPhysicalField(FIXFieldBase):
+    """"""
     tag: str = "411"
     name: str = "ExchangeForPhysical"
     type: str = "BOOLEAN"
-    value: FIXBoolean
+    value: Literal["Y", "N"]
 
-    # Enum values
-    # Y: YES
-    # N: NO
+    # Helper methods for enum values
+    @property
+    def is_y(self) -> bool:
+        return self.value == "Y"
+    @property
+    def is_n(self) -> bool:
+        return self.value == "N"

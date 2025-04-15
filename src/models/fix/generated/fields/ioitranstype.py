@@ -1,15 +1,30 @@
-
+"""
+FIX IOITransType field (tag 28).
+"""
 from .base import FIXFieldBase
-from .types import FIXChar
+from typing import Optional
+from .types import *
 
-class IOITransType(FIXFieldBase):
-    """FIX IOITransType field."""
+class IOITransTypeValues:
+    """Enumerated values for IOITransType."""
+    N = "N"  # NEW
+    C = "C"  # CANCEL
+    R = "R"  # REPLACE
+
+class IOITransTypeField(FIXFieldBase):
+    """"""
     tag: str = "28"
     name: str = "IOITransType"
     type: str = "CHAR"
-    value: FIXChar
+    value: Literal["N", "C", "R"]
 
-    # Enum values
-    # N: NEW
-    # C: CANCEL
-    # R: REPLACE
+    # Helper methods for enum values
+    @property
+    def is_n(self) -> bool:
+        return self.value == "N"
+    @property
+    def is_c(self) -> bool:
+        return self.value == "C"
+    @property
+    def is_r(self) -> bool:
+        return self.value == "R"

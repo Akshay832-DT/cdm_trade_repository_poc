@@ -1,10 +1,13 @@
-
+"""
+FIX NoIOIQualifiers field (tag 199).
+"""
 from .base import FIXFieldBase
-from .types import FIXNumInGroup
+from typing import Optional
+from .types import *
 
-class NoIOIQualifiers(FIXFieldBase):
-    """FIX NoIOIQualifiers field."""
+class NoIOIQualifiersField(FIXFieldBase):
+    """"""
     tag: str = "199"
     name: str = "NoIOIQualifiers"
     type: str = "NUMINGROUP"
-    value: FIXNumInGroup
+    value: int

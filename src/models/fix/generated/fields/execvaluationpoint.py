@@ -1,10 +1,13 @@
-
+"""
+FIX ExecValuationPoint field (tag 515).
+"""
 from .base import FIXFieldBase
-from .types import FIXUTCTimestamp
+from typing import Optional
+from .types import *
 
-class ExecValuationPoint(FIXFieldBase):
-    """FIX ExecValuationPoint field."""
+class ExecValuationPointField(FIXFieldBase):
+    """"""
     tag: str = "515"
     name: str = "ExecValuationPoint"
     type: str = "UTCTIMESTAMP"
-    value: FIXUTCTimestamp
+    value: datetime

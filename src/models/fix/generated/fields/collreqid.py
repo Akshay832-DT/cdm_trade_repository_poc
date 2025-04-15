@@ -1,10 +1,13 @@
-
+"""
+FIX CollReqID field (tag 894).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class CollReqID(FIXFieldBase):
-    """FIX CollReqID field."""
+class CollReqIDField(FIXFieldBase):
+    """"""
     tag: str = "894"
     name: str = "CollReqID"
     type: str = "STRING"
-    value: FIXString
+    value: str

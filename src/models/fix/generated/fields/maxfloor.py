@@ -1,10 +1,13 @@
-
+"""
+FIX MaxFloor field (tag 111).
+"""
 from .base import FIXFieldBase
-from .types import FIXQty
+from typing import Optional
+from .types import *
 
-class MaxFloor(FIXFieldBase):
-    """FIX MaxFloor field."""
+class MaxFloorField(FIXFieldBase):
+    """"""
     tag: str = "111"
     name: str = "MaxFloor"
     type: str = "QTY"
-    value: FIXQty
+    value: float

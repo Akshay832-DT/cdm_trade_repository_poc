@@ -1,10 +1,13 @@
-
+"""
+FIX SideValue1 field (tag 396).
+"""
 from .base import FIXFieldBase
-from .types import FIXAmt
+from typing import Optional
+from .types import *
 
-class SideValue1(FIXFieldBase):
-    """FIX SideValue1 field."""
+class SideValue1Field(FIXFieldBase):
+    """"""
     tag: str = "396"
     name: str = "SideValue1"
     type: str = "AMT"
-    value: FIXAmt
+    value: float

@@ -1,17 +1,38 @@
-
+"""
+FIX PosMaintStatus field (tag 722).
+"""
 from .base import FIXFieldBase
-from .types import FIXInt
+from typing import Optional
+from .types import *
 
-class PosMaintStatus(FIXFieldBase):
-    """FIX PosMaintStatus field."""
+class PosMaintStatusValues:
+    """Enumerated values for PosMaintStatus."""
+    VALUE_0 = "0"  # ACCEPTED
+    VALUE_1 = "1"  # ACCEPTED_WITH_WARNINGS
+    VALUE_2 = "2"  # REJECTED
+    VALUE_3 = "3"  # COMPLETED
+    VALUE_4 = "4"  # COMPLETED_WITH_WARNINGS
+
+class PosMaintStatusField(FIXFieldBase):
+    """"""
     tag: str = "722"
     name: str = "PosMaintStatus"
     type: str = "INT"
-    value: FIXInt
+    value: Literal["0", "1", "2", "3", "4"]
 
-    # Enum values
-    # 0: ACCEPTED
-    # 1: ACCEPTED_WITH_WARNINGS
-    # 2: REJECTED
-    # 3: COMPLETED
-    # 4: COMPLETED_WITH_WARNINGS
+    # Helper methods for enum values
+    @property
+    def is_value_0(self) -> bool:
+        return self.value == "0"
+    @property
+    def is_value_1(self) -> bool:
+        return self.value == "1"
+    @property
+    def is_value_2(self) -> bool:
+        return self.value == "2"
+    @property
+    def is_value_3(self) -> bool:
+        return self.value == "3"
+    @property
+    def is_value_4(self) -> bool:
+        return self.value == "4"

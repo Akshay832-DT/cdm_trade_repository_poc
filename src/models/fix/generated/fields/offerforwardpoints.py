@@ -1,10 +1,13 @@
-
+"""
+FIX OfferForwardPoints field (tag 191).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class OfferForwardPoints(FIXFieldBase):
-    """FIX OfferForwardPoints field."""
+class OfferForwardPointsField(FIXFieldBase):
+    """"""
     tag: str = "191"
     name: str = "OfferForwardPoints"
     type: str = "PRICEOFFSET"
-    value: FIXString
+    value: float

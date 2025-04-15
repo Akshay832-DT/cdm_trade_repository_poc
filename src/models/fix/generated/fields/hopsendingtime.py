@@ -1,10 +1,13 @@
-
+"""
+FIX HopSendingTime field (tag 629).
+"""
 from .base import FIXFieldBase
-from .types import FIXUTCTimestamp
+from typing import Optional
+from .types import *
 
-class HopSendingTime(FIXFieldBase):
-    """FIX HopSendingTime field."""
+class HopSendingTimeField(FIXFieldBase):
+    """"""
     tag: str = "629"
     name: str = "HopSendingTime"
     type: str = "UTCTIMESTAMP"
-    value: FIXUTCTimestamp
+    value: datetime

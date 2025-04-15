@@ -1,10 +1,13 @@
-
+"""
+FIX ListName field (tag 392).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class ListName(FIXFieldBase):
-    """FIX ListName field."""
+class ListNameField(FIXFieldBase):
+    """"""
     tag: str = "392"
     name: str = "ListName"
     type: str = "STRING"
-    value: FIXString
+    value: str

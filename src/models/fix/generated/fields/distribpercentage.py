@@ -1,10 +1,13 @@
-
+"""
+FIX DistribPercentage field (tag 512).
+"""
 from .base import FIXFieldBase
-from .types import FIXPercentage
+from typing import Optional
+from .types import *
 
-class DistribPercentage(FIXFieldBase):
-    """FIX DistribPercentage field."""
+class DistribPercentageField(FIXFieldBase):
+    """"""
     tag: str = "512"
     name: str = "DistribPercentage"
     type: str = "PERCENTAGE"
-    value: FIXPercentage
+    value: float

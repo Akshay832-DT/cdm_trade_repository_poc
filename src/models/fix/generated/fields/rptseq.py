@@ -1,10 +1,13 @@
-
+"""
+FIX RptSeq field (tag 83).
+"""
 from .base import FIXFieldBase
-from .types import FIXInt
+from typing import Optional
+from .types import *
 
-class RptSeq(FIXFieldBase):
-    """FIX RptSeq field."""
+class RptSeqField(FIXFieldBase):
+    """"""
     tag: str = "83"
     name: str = "RptSeq"
     type: str = "INT"
-    value: FIXInt
+    value: int

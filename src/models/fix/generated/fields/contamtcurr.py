@@ -1,10 +1,13 @@
-
+"""
+FIX ContAmtCurr field (tag 521).
+"""
 from .base import FIXFieldBase
-from .types import FIXCurrency
+from typing import Optional
+from .types import *
 
-class ContAmtCurr(FIXFieldBase):
-    """FIX ContAmtCurr field."""
+class ContAmtCurrField(FIXFieldBase):
+    """"""
     tag: str = "521"
     name: str = "ContAmtCurr"
     type: str = "CURRENCY"
-    value: FIXCurrency
+    value: str

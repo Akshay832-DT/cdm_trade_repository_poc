@@ -1,10 +1,13 @@
-
+"""
+FIX UnderlyingStipType field (tag 888).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class UnderlyingStipType(FIXFieldBase):
-    """FIX UnderlyingStipType field."""
+class UnderlyingStipTypeField(FIXFieldBase):
+    """"""
     tag: str = "888"
     name: str = "UnderlyingStipType"
     type: str = "STRING"
-    value: FIXString
+    value: str

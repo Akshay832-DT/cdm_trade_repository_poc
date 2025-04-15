@@ -1,10 +1,13 @@
-
+"""
+FIX SecondaryTrdType field (tag 855).
+"""
 from .base import FIXFieldBase
-from .types import FIXInt
+from typing import Optional
+from .types import *
 
-class SecondaryTrdType(FIXFieldBase):
-    """FIX SecondaryTrdType field."""
+class SecondaryTrdTypeField(FIXFieldBase):
+    """"""
     tag: str = "855"
     name: str = "SecondaryTrdType"
     type: str = "INT"
-    value: FIXInt
+    value: int

@@ -1,10 +1,13 @@
-
+"""
+FIX MaxMessageSize field (tag 383).
+"""
 from .base import FIXFieldBase
-from .types import FIXLength
+from typing import Optional
+from .types import *
 
-class MaxMessageSize(FIXFieldBase):
-    """FIX MaxMessageSize field."""
+class MaxMessageSizeField(FIXFieldBase):
+    """"""
     tag: str = "383"
     name: str = "MaxMessageSize"
     type: str = "LENGTH"
-    value: FIXLength
+    value: int

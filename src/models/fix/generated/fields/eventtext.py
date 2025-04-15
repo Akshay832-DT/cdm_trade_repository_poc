@@ -1,10 +1,13 @@
-
+"""
+FIX EventText field (tag 868).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class EventText(FIXFieldBase):
-    """FIX EventText field."""
+class EventTextField(FIXFieldBase):
+    """"""
     tag: str = "868"
     name: str = "EventText"
     type: str = "STRING"
-    value: FIXString
+    value: str

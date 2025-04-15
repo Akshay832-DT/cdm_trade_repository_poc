@@ -1,10 +1,13 @@
-
+"""
+FIX MinQty field (tag 110).
+"""
 from .base import FIXFieldBase
-from .types import FIXQty
+from typing import Optional
+from .types import *
 
-class MinQty(FIXFieldBase):
-    """FIX MinQty field."""
+class MinQtyField(FIXFieldBase):
+    """"""
     tag: str = "110"
     name: str = "MinQty"
     type: str = "QTY"
-    value: FIXQty
+    value: float

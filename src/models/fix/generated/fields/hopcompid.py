@@ -1,10 +1,13 @@
-
+"""
+FIX HopCompID field (tag 628).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class HopCompID(FIXFieldBase):
-    """FIX HopCompID field."""
+class HopCompIDField(FIXFieldBase):
+    """"""
     tag: str = "628"
     name: str = "HopCompID"
     type: str = "STRING"
-    value: FIXString
+    value: str

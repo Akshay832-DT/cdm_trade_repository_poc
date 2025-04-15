@@ -1,14 +1,26 @@
-
+"""
+FIX BidRequestTransType field (tag 374).
+"""
 from .base import FIXFieldBase
-from .types import FIXChar
+from typing import Optional
+from .types import *
 
-class BidRequestTransType(FIXFieldBase):
-    """FIX BidRequestTransType field."""
+class BidRequestTransTypeValues:
+    """Enumerated values for BidRequestTransType."""
+    N = "N"  # NEW
+    C = "C"  # CANCEL
+
+class BidRequestTransTypeField(FIXFieldBase):
+    """"""
     tag: str = "374"
     name: str = "BidRequestTransType"
     type: str = "CHAR"
-    value: FIXChar
+    value: Literal["N", "C"]
 
-    # Enum values
-    # N: NEW
-    # C: CANCEL
+    # Helper methods for enum values
+    @property
+    def is_n(self) -> bool:
+        return self.value == "N"
+    @property
+    def is_c(self) -> bool:
+        return self.value == "C"

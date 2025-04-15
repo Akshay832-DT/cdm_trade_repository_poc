@@ -1,10 +1,13 @@
-
+"""
+FIX UnderlyingCouponRate field (tag 435).
+"""
 from .base import FIXFieldBase
-from .types import FIXPercentage
+from typing import Optional
+from .types import *
 
-class UnderlyingCouponRate(FIXFieldBase):
-    """FIX UnderlyingCouponRate field."""
+class UnderlyingCouponRateField(FIXFieldBase):
+    """"""
     tag: str = "435"
     name: str = "UnderlyingCouponRate"
     type: str = "PERCENTAGE"
-    value: FIXPercentage
+    value: float

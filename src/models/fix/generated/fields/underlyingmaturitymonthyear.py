@@ -1,10 +1,13 @@
-
+"""
+FIX UnderlyingMaturityMonthYear field (tag 313).
+"""
 from .base import FIXFieldBase
-from .types import FIXMonthYear
+from typing import Optional
+from .types import *
 
-class UnderlyingMaturityMonthYear(FIXFieldBase):
-    """FIX UnderlyingMaturityMonthYear field."""
+class UnderlyingMaturityMonthYearField(FIXFieldBase):
+    """"""
     tag: str = "313"
     name: str = "UnderlyingMaturityMonthYear"
     type: str = "MONTHYEAR"
-    value: FIXMonthYear
+    value: str

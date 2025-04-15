@@ -1,10 +1,13 @@
-
+"""
+FIX NoDlvyInst field (tag 85).
+"""
 from .base import FIXFieldBase
-from .types import FIXNumInGroup
+from typing import Optional
+from .types import *
 
-class NoDlvyInst(FIXFieldBase):
-    """FIX NoDlvyInst field."""
+class NoDlvyInstField(FIXFieldBase):
+    """"""
     tag: str = "85"
     name: str = "NoDlvyInst"
     type: str = "NUMINGROUP"
-    value: FIXNumInGroup
+    value: int

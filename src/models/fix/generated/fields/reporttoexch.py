@@ -1,14 +1,26 @@
-
+"""
+FIX ReportToExch field (tag 113).
+"""
 from .base import FIXFieldBase
-from .types import FIXBoolean
+from typing import Optional
+from .types import *
 
-class ReportToExch(FIXFieldBase):
-    """FIX ReportToExch field."""
+class ReportToExchValues:
+    """Enumerated values for ReportToExch."""
+    Y = "Y"  # YES
+    N = "N"  # NO
+
+class ReportToExchField(FIXFieldBase):
+    """"""
     tag: str = "113"
     name: str = "ReportToExch"
     type: str = "BOOLEAN"
-    value: FIXBoolean
+    value: Literal["Y", "N"]
 
-    # Enum values
-    # Y: YES
-    # N: NO
+    # Helper methods for enum values
+    @property
+    def is_y(self) -> bool:
+        return self.value == "Y"
+    @property
+    def is_n(self) -> bool:
+        return self.value == "N"

@@ -1,14 +1,26 @@
-
+"""
+FIX ResponseTransportType field (tag 725).
+"""
 from .base import FIXFieldBase
-from .types import FIXInt
+from typing import Optional
+from .types import *
 
-class ResponseTransportType(FIXFieldBase):
-    """FIX ResponseTransportType field."""
+class ResponseTransportTypeValues:
+    """Enumerated values for ResponseTransportType."""
+    VALUE_0 = "0"  # INBAND
+    VALUE_1 = "1"  # OUT_OF_BAND
+
+class ResponseTransportTypeField(FIXFieldBase):
+    """"""
     tag: str = "725"
     name: str = "ResponseTransportType"
     type: str = "INT"
-    value: FIXInt
+    value: Literal["0", "1"]
 
-    # Enum values
-    # 0: INBAND
-    # 1: OUT_OF_BAND
+    # Helper methods for enum values
+    @property
+    def is_value_0(self) -> bool:
+        return self.value == "0"
+    @property
+    def is_value_1(self) -> bool:
+        return self.value == "1"

@@ -1,10 +1,13 @@
-
+"""
+FIX EncodedSubject field (tag 357).
+"""
 from .base import FIXFieldBase
-from .types import FIXData
+from typing import Optional
+from .types import *
 
-class EncodedSubject(FIXFieldBase):
-    """FIX EncodedSubject field."""
+class EncodedSubjectField(FIXFieldBase):
+    """"""
     tag: str = "357"
     name: str = "EncodedSubject"
     type: str = "DATA"
-    value: FIXData
+    value: str

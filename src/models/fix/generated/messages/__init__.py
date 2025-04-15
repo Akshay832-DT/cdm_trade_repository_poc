@@ -1,1 +1,4 @@
-# Generated FIX message models
+"""
+FIX message models.
+"""
+from .base import FIXMessageBase

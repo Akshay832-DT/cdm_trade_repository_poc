@@ -1,10 +1,13 @@
-
+"""
+FIX LegRatioQty field (tag 623).
+"""
 from .base import FIXFieldBase
-from .types import FIXFloat
+from typing import Optional
+from .types import *
 
-class LegRatioQty(FIXFieldBase):
-    """FIX LegRatioQty field."""
+class LegRatioQtyField(FIXFieldBase):
+    """"""
     tag: str = "623"
     name: str = "LegRatioQty"
     type: str = "FLOAT"
-    value: FIXFloat
+    value: float

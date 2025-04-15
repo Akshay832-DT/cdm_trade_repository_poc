@@ -1,10 +1,13 @@
-
+"""
+FIX LiquidityNumSecurities field (tag 441).
+"""
 from .base import FIXFieldBase
-from .types import FIXInt
+from typing import Optional
+from .types import *
 
-class LiquidityNumSecurities(FIXFieldBase):
-    """FIX LiquidityNumSecurities field."""
+class LiquidityNumSecuritiesField(FIXFieldBase):
+    """"""
     tag: str = "441"
     name: str = "LiquidityNumSecurities"
     type: str = "INT"
-    value: FIXInt
+    value: int

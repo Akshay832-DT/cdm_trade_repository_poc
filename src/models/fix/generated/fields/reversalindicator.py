@@ -1,10 +1,13 @@
-
+"""
+FIX ReversalIndicator field (tag 700).
+"""
 from .base import FIXFieldBase
-from .types import FIXBoolean
+from typing import Optional
+from .types import *
 
-class ReversalIndicator(FIXFieldBase):
-    """FIX ReversalIndicator field."""
+class ReversalIndicatorField(FIXFieldBase):
+    """"""
     tag: str = "700"
     name: str = "ReversalIndicator"
     type: str = "BOOLEAN"
-    value: FIXBoolean
+    value: bool

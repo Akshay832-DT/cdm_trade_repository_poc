@@ -1,10 +1,13 @@
-
+"""
+FIX UnderlyingSymbol field (tag 311).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class UnderlyingSymbol(FIXFieldBase):
-    """FIX UnderlyingSymbol field."""
+class UnderlyingSymbolField(FIXFieldBase):
+    """"""
     tag: str = "311"
     name: str = "UnderlyingSymbol"
     type: str = "STRING"
-    value: FIXString
+    value: str

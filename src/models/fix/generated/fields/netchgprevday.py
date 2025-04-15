@@ -1,10 +1,13 @@
-
+"""
+FIX NetChgPrevDay field (tag 451).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class NetChgPrevDay(FIXFieldBase):
-    """FIX NetChgPrevDay field."""
+class NetChgPrevDayField(FIXFieldBase):
+    """"""
     tag: str = "451"
     name: str = "NetChgPrevDay"
     type: str = "PRICEOFFSET"
-    value: FIXString
+    value: float

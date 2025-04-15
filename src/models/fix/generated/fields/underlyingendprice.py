@@ -1,10 +1,13 @@
-
+"""
+FIX UnderlyingEndPrice field (tag 883).
+"""
 from .base import FIXFieldBase
-from .types import FIXPrice
+from typing import Optional
+from .types import *
 
-class UnderlyingEndPrice(FIXFieldBase):
-    """FIX UnderlyingEndPrice field."""
+class UnderlyingEndPriceField(FIXFieldBase):
+    """"""
     tag: str = "883"
     name: str = "UnderlyingEndPrice"
     type: str = "PRICE"
-    value: FIXPrice
+    value: float

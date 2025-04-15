@@ -1,10 +1,13 @@
-
+"""
+FIX MarketDepth field (tag 264).
+"""
 from .base import FIXFieldBase
-from .types import FIXInt
+from typing import Optional
+from .types import *
 
-class MarketDepth(FIXFieldBase):
-    """FIX MarketDepth field."""
+class MarketDepthField(FIXFieldBase):
+    """"""
     tag: str = "264"
     name: str = "MarketDepth"
     type: str = "INT"
-    value: FIXInt
+    value: int

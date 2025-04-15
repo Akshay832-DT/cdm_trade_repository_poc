@@ -1,10 +1,13 @@
-
+"""
+FIX StrikeCurrency field (tag 947).
+"""
 from .base import FIXFieldBase
-from .types import FIXCurrency
+from typing import Optional
+from .types import *
 
-class StrikeCurrency(FIXFieldBase):
-    """FIX StrikeCurrency field."""
+class StrikeCurrencyField(FIXFieldBase):
+    """"""
     tag: str = "947"
     name: str = "StrikeCurrency"
     type: str = "CURRENCY"
-    value: FIXCurrency
+    value: str

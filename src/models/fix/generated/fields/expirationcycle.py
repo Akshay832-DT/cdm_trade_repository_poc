@@ -1,14 +1,26 @@
-
+"""
+FIX ExpirationCycle field (tag 827).
+"""
 from .base import FIXFieldBase
-from .types import FIXInt
+from typing import Optional
+from .types import *
 
-class ExpirationCycle(FIXFieldBase):
-    """FIX ExpirationCycle field."""
+class ExpirationCycleValues:
+    """Enumerated values for ExpirationCycle."""
+    VALUE_0 = "0"  # EXPIRE_ON_TRADING_SESSION_CLOSE
+    VALUE_1 = "1"  # EXPIRE_ON_TRADING_SESSION_OPEN
+
+class ExpirationCycleField(FIXFieldBase):
+    """"""
     tag: str = "827"
     name: str = "ExpirationCycle"
     type: str = "INT"
-    value: FIXInt
+    value: Literal["0", "1"]
 
-    # Enum values
-    # 0: EXPIRE_ON_TRADING_SESSION_CLOSE
-    # 1: EXPIRE_ON_TRADING_SESSION_OPEN
+    # Helper methods for enum values
+    @property
+    def is_value_0(self) -> bool:
+        return self.value == "0"
+    @property
+    def is_value_1(self) -> bool:
+        return self.value == "1"

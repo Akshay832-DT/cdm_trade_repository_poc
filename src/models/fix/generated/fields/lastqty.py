@@ -1,10 +1,13 @@
-
+"""
+FIX LastQty field (tag 32).
+"""
 from .base import FIXFieldBase
-from .types import FIXQty
+from typing import Optional
+from .types import *
 
-class LastQty(FIXFieldBase):
-    """FIX LastQty field."""
+class LastQtyField(FIXFieldBase):
+    """"""
     tag: str = "32"
     name: str = "LastQty"
     type: str = "QTY"
-    value: FIXQty
+    value: float

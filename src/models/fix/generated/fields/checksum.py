@@ -1,10 +1,13 @@
-
+"""
+FIX CheckSum field (tag 10).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class CheckSum(FIXFieldBase):
-    """FIX CheckSum field."""
+class CheckSumField(FIXFieldBase):
+    """"""
     tag: str = "10"
     name: str = "CheckSum"
     type: str = "STRING"
-    value: FIXString
+    value: str

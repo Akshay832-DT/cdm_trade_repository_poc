@@ -1,14 +1,26 @@
-
+"""
+FIX NoSides field (tag 552).
+"""
 from .base import FIXFieldBase
-from .types import FIXNumInGroup
+from typing import Optional
+from .types import *
 
-class NoSides(FIXFieldBase):
-    """FIX NoSides field."""
+class NoSidesValues:
+    """Enumerated values for NoSides."""
+    VALUE_1 = "1"  # ONE_SIDE
+    VALUE_2 = "2"  # BOTH_SIDES
+
+class NoSidesField(FIXFieldBase):
+    """"""
     tag: str = "552"
     name: str = "NoSides"
     type: str = "NUMINGROUP"
-    value: FIXNumInGroup
+    value: Literal["1", "2"]
 
-    # Enum values
-    # 1: ONE_SIDE
-    # 2: BOTH_SIDES
+    # Helper methods for enum values
+    @property
+    def is_value_1(self) -> bool:
+        return self.value == "1"
+    @property
+    def is_value_2(self) -> bool:
+        return self.value == "2"

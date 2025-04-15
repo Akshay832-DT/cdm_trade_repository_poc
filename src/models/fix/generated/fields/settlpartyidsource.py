@@ -1,10 +1,13 @@
-
+"""
+FIX SettlPartyIDSource field (tag 783).
+"""
 from .base import FIXFieldBase
-from .types import FIXChar
+from typing import Optional
+from .types import *
 
-class SettlPartyIDSource(FIXFieldBase):
-    """FIX SettlPartyIDSource field."""
+class SettlPartyIDSourceField(FIXFieldBase):
+    """"""
     tag: str = "783"
     name: str = "SettlPartyIDSource"
     type: str = "CHAR"
-    value: FIXChar
+    value: str

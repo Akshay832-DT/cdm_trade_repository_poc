@@ -1,10 +1,13 @@
-
+"""
+FIX AllocID field (tag 70).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class AllocID(FIXFieldBase):
-    """FIX AllocID field."""
+class AllocIDField(FIXFieldBase):
+    """"""
     tag: str = "70"
     name: str = "AllocID"
     type: str = "STRING"
-    value: FIXString
+    value: str

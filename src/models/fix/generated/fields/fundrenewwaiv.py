@@ -1,14 +1,26 @@
-
+"""
+FIX FundRenewWaiv field (tag 497).
+"""
 from .base import FIXFieldBase
-from .types import FIXChar
+from typing import Optional
+from .types import *
 
-class FundRenewWaiv(FIXFieldBase):
-    """FIX FundRenewWaiv field."""
+class FundRenewWaivValues:
+    """Enumerated values for FundRenewWaiv."""
+    Y = "Y"  # YES
+    N = "N"  # NO
+
+class FundRenewWaivField(FIXFieldBase):
+    """"""
     tag: str = "497"
     name: str = "FundRenewWaiv"
     type: str = "CHAR"
-    value: FIXChar
+    value: Literal["Y", "N"]
 
-    # Enum values
-    # Y: YES
-    # N: NO
+    # Helper methods for enum values
+    @property
+    def is_y(self) -> bool:
+        return self.value == "Y"
+    @property
+    def is_n(self) -> bool:
+        return self.value == "N"

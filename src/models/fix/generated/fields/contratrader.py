@@ -1,10 +1,13 @@
-
+"""
+FIX ContraTrader field (tag 337).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class ContraTrader(FIXFieldBase):
-    """FIX ContraTrader field."""
+class ContraTraderField(FIXFieldBase):
+    """"""
     tag: str = "337"
     name: str = "ContraTrader"
     type: str = "STRING"
-    value: FIXString
+    value: str

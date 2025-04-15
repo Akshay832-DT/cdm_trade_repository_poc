@@ -1,10 +1,13 @@
-
+"""
+FIX ThresholdAmount field (tag 834).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class ThresholdAmount(FIXFieldBase):
-    """FIX ThresholdAmount field."""
+class ThresholdAmountField(FIXFieldBase):
+    """"""
     tag: str = "834"
     name: str = "ThresholdAmount"
     type: str = "PRICEOFFSET"
-    value: FIXString
+    value: float

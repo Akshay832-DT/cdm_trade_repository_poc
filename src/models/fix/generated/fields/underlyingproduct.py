@@ -1,10 +1,13 @@
-
+"""
+FIX UnderlyingProduct field (tag 462).
+"""
 from .base import FIXFieldBase
-from .types import FIXInt
+from typing import Optional
+from .types import *
 
-class UnderlyingProduct(FIXFieldBase):
-    """FIX UnderlyingProduct field."""
+class UnderlyingProductField(FIXFieldBase):
+    """"""
     tag: str = "462"
     name: str = "UnderlyingProduct"
     type: str = "INT"
-    value: FIXInt
+    value: int

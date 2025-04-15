@@ -1,10 +1,13 @@
-
+"""
+FIX RegistEmail field (tag 511).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class RegistEmail(FIXFieldBase):
-    """FIX RegistEmail field."""
+class RegistEmailField(FIXFieldBase):
+    """"""
     tag: str = "511"
     name: str = "RegistEmail"
     type: str = "STRING"
-    value: FIXString
+    value: str

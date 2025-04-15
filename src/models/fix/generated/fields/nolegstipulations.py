@@ -1,10 +1,13 @@
-
+"""
+FIX NoLegStipulations field (tag 683).
+"""
 from .base import FIXFieldBase
-from .types import FIXNumInGroup
+from typing import Optional
+from .types import *
 
-class NoLegStipulations(FIXFieldBase):
-    """FIX NoLegStipulations field."""
+class NoLegStipulationsField(FIXFieldBase):
+    """"""
     tag: str = "683"
     name: str = "NoLegStipulations"
     type: str = "NUMINGROUP"
-    value: FIXNumInGroup
+    value: int

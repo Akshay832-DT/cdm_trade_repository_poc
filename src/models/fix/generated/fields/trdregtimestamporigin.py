@@ -1,10 +1,13 @@
-
+"""
+FIX TrdRegTimestampOrigin field (tag 771).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class TrdRegTimestampOrigin(FIXFieldBase):
-    """FIX TrdRegTimestampOrigin field."""
+class TrdRegTimestampOriginField(FIXFieldBase):
+    """"""
     tag: str = "771"
     name: str = "TrdRegTimestampOrigin"
     type: str = "STRING"
-    value: FIXString
+    value: str

@@ -1,10 +1,13 @@
-
+"""
+FIX TransBkdTime field (tag 483).
+"""
 from .base import FIXFieldBase
-from .types import FIXUTCTimestamp
+from typing import Optional
+from .types import *
 
-class TransBkdTime(FIXFieldBase):
-    """FIX TransBkdTime field."""
+class TransBkdTimeField(FIXFieldBase):
+    """"""
     tag: str = "483"
     name: str = "TransBkdTime"
     type: str = "UTCTIMESTAMP"
-    value: FIXUTCTimestamp
+    value: datetime

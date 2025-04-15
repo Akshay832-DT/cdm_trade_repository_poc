@@ -1,10 +1,13 @@
-
+"""
+FIX UnderlyingCountryOfIssue field (tag 592).
+"""
 from .base import FIXFieldBase
-from .types import FIXCountry
+from typing import Optional
+from .types import *
 
-class UnderlyingCountryOfIssue(FIXFieldBase):
-    """FIX UnderlyingCountryOfIssue field."""
+class UnderlyingCountryOfIssueField(FIXFieldBase):
+    """"""
     tag: str = "592"
     name: str = "UnderlyingCountryOfIssue"
     type: str = "COUNTRY"
-    value: FIXCountry
+    value: str

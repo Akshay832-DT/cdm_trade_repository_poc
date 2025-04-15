@@ -1,10 +1,13 @@
-
+"""
+FIX AllowableOneSidednessValue field (tag 766).
+"""
 from .base import FIXFieldBase
-from .types import FIXAmt
+from typing import Optional
+from .types import *
 
-class AllowableOneSidednessValue(FIXFieldBase):
-    """FIX AllowableOneSidednessValue field."""
+class AllowableOneSidednessValueField(FIXFieldBase):
+    """"""
     tag: str = "766"
     name: str = "AllowableOneSidednessValue"
     type: str = "AMT"
-    value: FIXAmt
+    value: float

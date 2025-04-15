@@ -1,10 +1,13 @@
-
+"""
+FIX SellVolume field (tag 331).
+"""
 from .base import FIXFieldBase
-from .types import FIXQty
+from typing import Optional
+from .types import *
 
-class SellVolume(FIXFieldBase):
-    """FIX SellVolume field."""
+class SellVolumeField(FIXFieldBase):
+    """"""
     tag: str = "331"
     name: str = "SellVolume"
     type: str = "QTY"
-    value: FIXQty
+    value: float

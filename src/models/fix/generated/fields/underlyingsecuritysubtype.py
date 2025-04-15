@@ -1,10 +1,13 @@
-
+"""
+FIX UnderlyingSecuritySubType field (tag 763).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class UnderlyingSecuritySubType(FIXFieldBase):
-    """FIX UnderlyingSecuritySubType field."""
+class UnderlyingSecuritySubTypeField(FIXFieldBase):
+    """"""
     tag: str = "763"
     name: str = "UnderlyingSecuritySubType"
     type: str = "STRING"
-    value: FIXString
+    value: str

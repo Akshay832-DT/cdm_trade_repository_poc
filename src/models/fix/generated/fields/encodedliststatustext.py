@@ -1,10 +1,13 @@
-
+"""
+FIX EncodedListStatusText field (tag 446).
+"""
 from .base import FIXFieldBase
-from .types import FIXData
+from typing import Optional
+from .types import *
 
-class EncodedListStatusText(FIXFieldBase):
-    """FIX EncodedListStatusText field."""
+class EncodedListStatusTextField(FIXFieldBase):
+    """"""
     tag: str = "446"
     name: str = "EncodedListStatusText"
     type: str = "DATA"
-    value: FIXData
+    value: str

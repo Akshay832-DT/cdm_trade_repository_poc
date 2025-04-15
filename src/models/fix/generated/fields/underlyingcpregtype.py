@@ -1,10 +1,13 @@
-
+"""
+FIX UnderlyingCPRegType field (tag 878).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class UnderlyingCPRegType(FIXFieldBase):
-    """FIX UnderlyingCPRegType field."""
+class UnderlyingCPRegTypeField(FIXFieldBase):
+    """"""
     tag: str = "878"
     name: str = "UnderlyingCPRegType"
     type: str = "STRING"
-    value: FIXString
+    value: str

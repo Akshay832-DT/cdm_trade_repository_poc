@@ -1,14 +1,26 @@
-
+"""
+FIX MDImplicitDelete field (tag 547).
+"""
 from .base import FIXFieldBase
-from .types import FIXBoolean
+from typing import Optional
+from .types import *
 
-class MDImplicitDelete(FIXFieldBase):
-    """FIX MDImplicitDelete field."""
+class MDImplicitDeleteValues:
+    """Enumerated values for MDImplicitDelete."""
+    Y = "Y"  # YES
+    N = "N"  # NO
+
+class MDImplicitDeleteField(FIXFieldBase):
+    """"""
     tag: str = "547"
     name: str = "MDImplicitDelete"
     type: str = "BOOLEAN"
-    value: FIXBoolean
+    value: Literal["Y", "N"]
 
-    # Enum values
-    # Y: YES
-    # N: NO
+    # Helper methods for enum values
+    @property
+    def is_y(self) -> bool:
+        return self.value == "Y"
+    @property
+    def is_n(self) -> bool:
+        return self.value == "N"

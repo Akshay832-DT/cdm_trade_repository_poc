@@ -1,10 +1,13 @@
-
+"""
+FIX NextExpectedMsgSeqNum field (tag 789).
+"""
 from .base import FIXFieldBase
-from .types import FIXSeqNum
+from typing import Optional
+from .types import *
 
-class NextExpectedMsgSeqNum(FIXFieldBase):
-    """FIX NextExpectedMsgSeqNum field."""
+class NextExpectedMsgSeqNumField(FIXFieldBase):
+    """"""
     tag: str = "789"
     name: str = "NextExpectedMsgSeqNum"
     type: str = "SEQNUM"
-    value: FIXSeqNum
+    value: int

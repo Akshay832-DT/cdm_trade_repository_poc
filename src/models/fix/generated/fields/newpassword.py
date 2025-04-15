@@ -1,10 +1,13 @@
-
+"""
+FIX NewPassword field (tag 925).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class NewPassword(FIXFieldBase):
-    """FIX NewPassword field."""
+class NewPasswordField(FIXFieldBase):
+    """"""
     tag: str = "925"
     name: str = "NewPassword"
     type: str = "STRING"
-    value: FIXString
+    value: str

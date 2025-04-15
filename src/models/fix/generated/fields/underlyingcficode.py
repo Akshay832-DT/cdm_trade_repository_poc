@@ -1,10 +1,13 @@
-
+"""
+FIX UnderlyingCFICode field (tag 463).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class UnderlyingCFICode(FIXFieldBase):
-    """FIX UnderlyingCFICode field."""
+class UnderlyingCFICodeField(FIXFieldBase):
+    """"""
     tag: str = "463"
     name: str = "UnderlyingCFICode"
     type: str = "STRING"
-    value: FIXString
+    value: str

@@ -1,10 +1,13 @@
-
+"""
+FIX ValueOfFutures field (tag 408).
+"""
 from .base import FIXFieldBase
-from .types import FIXAmt
+from typing import Optional
+from .types import *
 
-class ValueOfFutures(FIXFieldBase):
-    """FIX ValueOfFutures field."""
+class ValueOfFuturesField(FIXFieldBase):
+    """"""
     tag: str = "408"
     name: str = "ValueOfFutures"
     type: str = "AMT"
-    value: FIXAmt
+    value: float

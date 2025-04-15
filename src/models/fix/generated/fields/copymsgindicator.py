@@ -1,10 +1,13 @@
-
+"""
+FIX CopyMsgIndicator field (tag 797).
+"""
 from .base import FIXFieldBase
-from .types import FIXBoolean
+from typing import Optional
+from .types import *
 
-class CopyMsgIndicator(FIXFieldBase):
-    """FIX CopyMsgIndicator field."""
+class CopyMsgIndicatorField(FIXFieldBase):
+    """"""
     tag: str = "797"
     name: str = "CopyMsgIndicator"
     type: str = "BOOLEAN"
-    value: FIXBoolean
+    value: bool

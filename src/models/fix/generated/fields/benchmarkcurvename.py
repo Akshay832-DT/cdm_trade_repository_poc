@@ -1,10 +1,13 @@
-
+"""
+FIX BenchmarkCurveName field (tag 221).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class BenchmarkCurveName(FIXFieldBase):
-    """FIX BenchmarkCurveName field."""
+class BenchmarkCurveNameField(FIXFieldBase):
+    """"""
     tag: str = "221"
     name: str = "BenchmarkCurveName"
     type: str = "STRING"
-    value: FIXString
+    value: str

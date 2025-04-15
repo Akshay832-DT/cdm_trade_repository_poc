@@ -1,10 +1,13 @@
-
+"""
+FIX TotalVolumeTraded field (tag 387).
+"""
 from .base import FIXFieldBase
-from .types import FIXQty
+from typing import Optional
+from .types import *
 
-class TotalVolumeTraded(FIXFieldBase):
-    """FIX TotalVolumeTraded field."""
+class TotalVolumeTradedField(FIXFieldBase):
+    """"""
     tag: str = "387"
     name: str = "TotalVolumeTraded"
     type: str = "QTY"
-    value: FIXQty
+    value: float

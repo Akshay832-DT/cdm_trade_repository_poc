@@ -1,10 +1,13 @@
-
+"""
+FIX RegistRefID field (tag 508).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class RegistRefID(FIXFieldBase):
-    """FIX RegistRefID field."""
+class RegistRefIDField(FIXFieldBase):
+    """"""
     tag: str = "508"
     name: str = "RegistRefID"
     type: str = "STRING"
-    value: FIXString
+    value: str

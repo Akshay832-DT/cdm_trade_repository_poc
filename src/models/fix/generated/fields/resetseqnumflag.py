@@ -1,14 +1,26 @@
-
+"""
+FIX ResetSeqNumFlag field (tag 141).
+"""
 from .base import FIXFieldBase
-from .types import FIXBoolean
+from typing import Optional
+from .types import *
 
-class ResetSeqNumFlag(FIXFieldBase):
-    """FIX ResetSeqNumFlag field."""
+class ResetSeqNumFlagValues:
+    """Enumerated values for ResetSeqNumFlag."""
+    Y = "Y"  # YES
+    N = "N"  # NO
+
+class ResetSeqNumFlagField(FIXFieldBase):
+    """"""
     tag: str = "141"
     name: str = "ResetSeqNumFlag"
     type: str = "BOOLEAN"
-    value: FIXBoolean
+    value: Literal["Y", "N"]
 
-    # Enum values
-    # Y: YES
-    # N: NO
+    # Helper methods for enum values
+    @property
+    def is_y(self) -> bool:
+        return self.value == "Y"
+    @property
+    def is_n(self) -> bool:
+        return self.value == "N"

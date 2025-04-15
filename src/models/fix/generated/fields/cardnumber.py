@@ -1,10 +1,13 @@
-
+"""
+FIX CardNumber field (tag 489).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class CardNumber(FIXFieldBase):
-    """FIX CardNumber field."""
+class CardNumberField(FIXFieldBase):
+    """"""
     tag: str = "489"
     name: str = "CardNumber"
     type: str = "STRING"
-    value: FIXString
+    value: str

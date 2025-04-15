@@ -1,10 +1,13 @@
-
+"""
+FIX YieldRedemptionPrice field (tag 697).
+"""
 from .base import FIXFieldBase
-from .types import FIXPrice
+from typing import Optional
+from .types import *
 
-class YieldRedemptionPrice(FIXFieldBase):
-    """FIX YieldRedemptionPrice field."""
+class YieldRedemptionPriceField(FIXFieldBase):
+    """"""
     tag: str = "697"
     name: str = "YieldRedemptionPrice"
     type: str = "PRICE"
-    value: FIXPrice
+    value: float

@@ -1,10 +1,13 @@
-
+"""
+FIX ResponseDestination field (tag 726).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class ResponseDestination(FIXFieldBase):
-    """FIX ResponseDestination field."""
+class ResponseDestinationField(FIXFieldBase):
+    """"""
     tag: str = "726"
     name: str = "ResponseDestination"
     type: str = "STRING"
-    value: FIXString
+    value: str

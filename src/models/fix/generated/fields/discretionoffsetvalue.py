@@ -1,10 +1,13 @@
-
+"""
+FIX DiscretionOffsetValue field (tag 389).
+"""
 from .base import FIXFieldBase
-from .types import FIXFloat
+from typing import Optional
+from .types import *
 
-class DiscretionOffsetValue(FIXFieldBase):
-    """FIX DiscretionOffsetValue field."""
+class DiscretionOffsetValueField(FIXFieldBase):
+    """"""
     tag: str = "389"
     name: str = "DiscretionOffsetValue"
     type: str = "FLOAT"
-    value: FIXFloat
+    value: float

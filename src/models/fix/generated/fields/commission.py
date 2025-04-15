@@ -1,10 +1,13 @@
-
+"""
+FIX Commission field (tag 12).
+"""
 from .base import FIXFieldBase
-from .types import FIXAmt
+from typing import Optional
+from .types import *
 
-class Commission(FIXFieldBase):
-    """FIX Commission field."""
+class CommissionField(FIXFieldBase):
+    """"""
     tag: str = "12"
     name: str = "Commission"
     type: str = "AMT"
-    value: FIXAmt
+    value: float

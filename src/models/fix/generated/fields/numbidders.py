@@ -1,10 +1,13 @@
-
+"""
+FIX NumBidders field (tag 417).
+"""
 from .base import FIXFieldBase
-from .types import FIXInt
+from typing import Optional
+from .types import *
 
-class NumBidders(FIXFieldBase):
-    """FIX NumBidders field."""
+class NumBiddersField(FIXFieldBase):
+    """"""
     tag: str = "417"
     name: str = "NumBidders"
     type: str = "INT"
-    value: FIXInt
+    value: int

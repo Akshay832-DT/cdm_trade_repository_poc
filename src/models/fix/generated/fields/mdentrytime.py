@@ -1,10 +1,13 @@
-
+"""
+FIX MDEntryTime field (tag 273).
+"""
 from .base import FIXFieldBase
-from .types import FIXUTCTimeOnly
+from typing import Optional
+from .types import *
 
-class MDEntryTime(FIXFieldBase):
-    """FIX MDEntryTime field."""
+class MDEntryTimeField(FIXFieldBase):
+    """"""
     tag: str = "273"
     name: str = "MDEntryTime"
     type: str = "UTCTIMEONLY"
-    value: FIXUTCTimeOnly
+    value: time

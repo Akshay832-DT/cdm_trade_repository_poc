@@ -1,10 +1,13 @@
-
+"""
+FIX NoNested3PartySubIDs field (tag 952).
+"""
 from .base import FIXFieldBase
-from .types import FIXNumInGroup
+from typing import Optional
+from .types import *
 
-class NoNested3PartySubIDs(FIXFieldBase):
-    """FIX NoNested3PartySubIDs field."""
+class NoNested3PartySubIDsField(FIXFieldBase):
+    """"""
     tag: str = "952"
     name: str = "NoNested3PartySubIDs"
     type: str = "NUMINGROUP"
-    value: FIXNumInGroup
+    value: int

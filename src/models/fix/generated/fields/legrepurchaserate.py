@@ -1,10 +1,13 @@
-
+"""
+FIX LegRepurchaseRate field (tag 252).
+"""
 from .base import FIXFieldBase
-from .types import FIXPercentage
+from typing import Optional
+from .types import *
 
-class LegRepurchaseRate(FIXFieldBase):
-    """FIX LegRepurchaseRate field."""
+class LegRepurchaseRateField(FIXFieldBase):
+    """"""
     tag: str = "252"
     name: str = "LegRepurchaseRate"
     type: str = "PERCENTAGE"
-    value: FIXPercentage
+    value: float

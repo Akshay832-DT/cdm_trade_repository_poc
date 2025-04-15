@@ -1,10 +1,13 @@
-
+"""
+FIX Yield field (tag 236).
+"""
 from .base import FIXFieldBase
-from .types import FIXPercentage
+from typing import Optional
+from .types import *
 
-class Yield(FIXFieldBase):
-    """FIX Yield field."""
+class YieldField(FIXFieldBase):
+    """"""
     tag: str = "236"
     name: str = "Yield"
     type: str = "PERCENTAGE"
-    value: FIXPercentage
+    value: float

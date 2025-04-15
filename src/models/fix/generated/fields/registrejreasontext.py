@@ -1,10 +1,13 @@
-
+"""
+FIX RegistRejReasonText field (tag 496).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class RegistRejReasonText(FIXFieldBase):
-    """FIX RegistRejReasonText field."""
+class RegistRejReasonTextField(FIXFieldBase):
+    """"""
     tag: str = "496"
     name: str = "RegistRejReasonText"
     type: str = "STRING"
-    value: FIXString
+    value: str

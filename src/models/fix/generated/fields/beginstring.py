@@ -1,10 +1,13 @@
-
+"""
+FIX BeginString field (tag 8).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class BeginString(FIXFieldBase):
-    """FIX BeginString field."""
+class BeginStringField(FIXFieldBase):
+    """"""
     tag: str = "8"
     name: str = "BeginString"
     type: str = "STRING"
-    value: FIXString
+    value: str

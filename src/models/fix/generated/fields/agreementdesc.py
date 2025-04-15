@@ -1,10 +1,13 @@
-
+"""
+FIX AgreementDesc field (tag 913).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class AgreementDesc(FIXFieldBase):
-    """FIX AgreementDesc field."""
+class AgreementDescField(FIXFieldBase):
+    """"""
     tag: str = "913"
     name: str = "AgreementDesc"
     type: str = "STRING"
-    value: FIXString
+    value: str

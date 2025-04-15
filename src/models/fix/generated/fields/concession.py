@@ -1,10 +1,13 @@
-
+"""
+FIX Concession field (tag 238).
+"""
 from .base import FIXFieldBase
-from .types import FIXAmt
+from typing import Optional
+from .types import *
 
-class Concession(FIXFieldBase):
-    """FIX Concession field."""
+class ConcessionField(FIXFieldBase):
+    """"""
     tag: str = "238"
     name: str = "Concession"
     type: str = "AMT"
-    value: FIXAmt
+    value: float

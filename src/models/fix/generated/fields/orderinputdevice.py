@@ -1,10 +1,13 @@
-
+"""
+FIX OrderInputDevice field (tag 821).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class OrderInputDevice(FIXFieldBase):
-    """FIX OrderInputDevice field."""
+class OrderInputDeviceField(FIXFieldBase):
+    """"""
     tag: str = "821"
     name: str = "OrderInputDevice"
     type: str = "STRING"
-    value: FIXString
+    value: str

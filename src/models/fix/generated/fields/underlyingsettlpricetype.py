@@ -1,10 +1,13 @@
-
+"""
+FIX UnderlyingSettlPriceType field (tag 733).
+"""
 from .base import FIXFieldBase
-from .types import FIXInt
+from typing import Optional
+from .types import *
 
-class UnderlyingSettlPriceType(FIXFieldBase):
-    """FIX UnderlyingSettlPriceType field."""
+class UnderlyingSettlPriceTypeField(FIXFieldBase):
+    """"""
     tag: str = "733"
     name: str = "UnderlyingSettlPriceType"
     type: str = "INT"
-    value: FIXInt
+    value: int

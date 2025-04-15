@@ -1,10 +1,13 @@
-
+"""
+FIX EndDate field (tag 917).
+"""
 from .base import FIXFieldBase
-from .types import FIXLocalMktDate
+from typing import Optional
+from .types import *
 
-class EndDate(FIXFieldBase):
-    """FIX EndDate field."""
+class EndDateField(FIXFieldBase):
+    """"""
     tag: str = "917"
     name: str = "EndDate"
     type: str = "LOCALMKTDATE"
-    value: FIXLocalMktDate
+    value: date

@@ -1,10 +1,13 @@
-
+"""
+FIX PegOffsetValue field (tag 211).
+"""
 from .base import FIXFieldBase
-from .types import FIXFloat
+from typing import Optional
+from .types import *
 
-class PegOffsetValue(FIXFieldBase):
-    """FIX PegOffsetValue field."""
+class PegOffsetValueField(FIXFieldBase):
+    """"""
     tag: str = "211"
     name: str = "PegOffsetValue"
     type: str = "FLOAT"
-    value: FIXFloat
+    value: float

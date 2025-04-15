@@ -1,10 +1,13 @@
-
+"""
+FIX Subject field (tag 147).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class Subject(FIXFieldBase):
-    """FIX Subject field."""
+class SubjectField(FIXFieldBase):
+    """"""
     tag: str = "147"
     name: str = "Subject"
     type: str = "STRING"
-    value: FIXString
+    value: str

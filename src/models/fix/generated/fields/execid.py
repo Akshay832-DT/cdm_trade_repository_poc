@@ -1,10 +1,13 @@
-
+"""
+FIX ExecID field (tag 17).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class ExecID(FIXFieldBase):
-    """FIX ExecID field."""
+class ExecIDField(FIXFieldBase):
+    """"""
     tag: str = "17"
     name: str = "ExecID"
     type: str = "STRING"
-    value: FIXString
+    value: str

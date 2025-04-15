@@ -1,10 +1,13 @@
-
+"""
+FIX AffectedSecondaryOrderID field (tag 536).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class AffectedSecondaryOrderID(FIXFieldBase):
-    """FIX AffectedSecondaryOrderID field."""
+class AffectedSecondaryOrderIDField(FIXFieldBase):
+    """"""
     tag: str = "536"
     name: str = "AffectedSecondaryOrderID"
     type: str = "STRING"
-    value: FIXString
+    value: str

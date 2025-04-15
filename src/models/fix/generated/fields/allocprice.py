@@ -1,10 +1,13 @@
-
+"""
+FIX AllocPrice field (tag 366).
+"""
 from .base import FIXFieldBase
-from .types import FIXPrice
+from typing import Optional
+from .types import *
 
-class AllocPrice(FIXFieldBase):
-    """FIX AllocPrice field."""
+class AllocPriceField(FIXFieldBase):
+    """"""
     tag: str = "366"
     name: str = "AllocPrice"
     type: str = "PRICE"
-    value: FIXPrice
+    value: float

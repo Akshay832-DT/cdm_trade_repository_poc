@@ -1,10 +1,13 @@
-
+"""
+FIX OptAttribute field (tag 206).
+"""
 from .base import FIXFieldBase
-from .types import FIXChar
+from typing import Optional
+from .types import *
 
-class OptAttribute(FIXFieldBase):
-    """FIX OptAttribute field."""
+class OptAttributeField(FIXFieldBase):
+    """"""
     tag: str = "206"
     name: str = "OptAttribute"
     type: str = "CHAR"
-    value: FIXChar
+    value: str

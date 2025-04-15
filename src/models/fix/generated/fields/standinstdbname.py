@@ -1,10 +1,13 @@
-
+"""
+FIX StandInstDbName field (tag 170).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class StandInstDbName(FIXFieldBase):
-    """FIX StandInstDbName field."""
+class StandInstDbNameField(FIXFieldBase):
+    """"""
     tag: str = "170"
     name: str = "StandInstDbName"
     type: str = "STRING"
-    value: FIXString
+    value: str

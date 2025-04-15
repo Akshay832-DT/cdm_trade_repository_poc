@@ -1,10 +1,13 @@
-
+"""
+FIX EncodedListExecInstLen field (tag 352).
+"""
 from .base import FIXFieldBase
-from .types import FIXLength
+from typing import Optional
+from .types import *
 
-class EncodedListExecInstLen(FIXFieldBase):
-    """FIX EncodedListExecInstLen field."""
+class EncodedListExecInstLenField(FIXFieldBase):
+    """"""
     tag: str = "352"
     name: str = "EncodedListExecInstLen"
     type: str = "LENGTH"
-    value: FIXLength
+    value: int

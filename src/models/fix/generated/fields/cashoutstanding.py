@@ -1,10 +1,13 @@
-
+"""
+FIX CashOutstanding field (tag 901).
+"""
 from .base import FIXFieldBase
-from .types import FIXAmt
+from typing import Optional
+from .types import *
 
-class CashOutstanding(FIXFieldBase):
-    """FIX CashOutstanding field."""
+class CashOutstandingField(FIXFieldBase):
+    """"""
     tag: str = "901"
     name: str = "CashOutstanding"
     type: str = "AMT"
-    value: FIXAmt
+    value: float

@@ -1,10 +1,13 @@
-
+"""
+FIX NoRegistDtls field (tag 473).
+"""
 from .base import FIXFieldBase
-from .types import FIXNumInGroup
+from typing import Optional
+from .types import *
 
-class NoRegistDtls(FIXFieldBase):
-    """FIX NoRegistDtls field."""
+class NoRegistDtlsField(FIXFieldBase):
+    """"""
     tag: str = "473"
     name: str = "NoRegistDtls"
     type: str = "NUMINGROUP"
-    value: FIXNumInGroup
+    value: int

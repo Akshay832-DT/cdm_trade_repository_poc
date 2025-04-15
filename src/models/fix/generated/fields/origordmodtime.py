@@ -1,10 +1,13 @@
-
+"""
+FIX OrigOrdModTime field (tag 586).
+"""
 from .base import FIXFieldBase
-from .types import FIXUTCTimestamp
+from typing import Optional
+from .types import *
 
-class OrigOrdModTime(FIXFieldBase):
-    """FIX OrigOrdModTime field."""
+class OrigOrdModTimeField(FIXFieldBase):
+    """"""
     tag: str = "586"
     name: str = "OrigOrdModTime"
     type: str = "UTCTIMESTAMP"
-    value: FIXUTCTimestamp
+    value: datetime

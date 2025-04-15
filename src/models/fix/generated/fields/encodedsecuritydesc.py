@@ -1,10 +1,13 @@
-
+"""
+FIX EncodedSecurityDesc field (tag 351).
+"""
 from .base import FIXFieldBase
-from .types import FIXData
+from typing import Optional
+from .types import *
 
-class EncodedSecurityDesc(FIXFieldBase):
-    """FIX EncodedSecurityDesc field."""
+class EncodedSecurityDescField(FIXFieldBase):
+    """"""
     tag: str = "351"
     name: str = "EncodedSecurityDesc"
     type: str = "DATA"
-    value: FIXData
+    value: str

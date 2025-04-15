@@ -1,10 +1,13 @@
-
+"""
+FIX NoBidDescriptors field (tag 398).
+"""
 from .base import FIXFieldBase
-from .types import FIXNumInGroup
+from typing import Optional
+from .types import *
 
-class NoBidDescriptors(FIXFieldBase):
-    """FIX NoBidDescriptors field."""
+class NoBidDescriptorsField(FIXFieldBase):
+    """"""
     tag: str = "398"
     name: str = "NoBidDescriptors"
     type: str = "NUMINGROUP"
-    value: FIXNumInGroup
+    value: int

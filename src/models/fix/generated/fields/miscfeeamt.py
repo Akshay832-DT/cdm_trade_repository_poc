@@ -1,10 +1,13 @@
-
+"""
+FIX MiscFeeAmt field (tag 137).
+"""
 from .base import FIXFieldBase
-from .types import FIXAmt
+from typing import Optional
+from .types import *
 
-class MiscFeeAmt(FIXFieldBase):
-    """FIX MiscFeeAmt field."""
+class MiscFeeAmtField(FIXFieldBase):
+    """"""
     tag: str = "137"
     name: str = "MiscFeeAmt"
     type: str = "AMT"
-    value: FIXAmt
+    value: float

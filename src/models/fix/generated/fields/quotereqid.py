@@ -1,10 +1,13 @@
-
+"""
+FIX QuoteReqID field (tag 131).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class QuoteReqID(FIXFieldBase):
-    """FIX QuoteReqID field."""
+class QuoteReqIDField(FIXFieldBase):
+    """"""
     tag: str = "131"
     name: str = "QuoteReqID"
     type: str = "STRING"
-    value: FIXString
+    value: str

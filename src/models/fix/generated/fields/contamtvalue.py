@@ -1,10 +1,13 @@
-
+"""
+FIX ContAmtValue field (tag 520).
+"""
 from .base import FIXFieldBase
-from .types import FIXFloat
+from typing import Optional
+from .types import *
 
-class ContAmtValue(FIXFieldBase):
-    """FIX ContAmtValue field."""
+class ContAmtValueField(FIXFieldBase):
+    """"""
     tag: str = "520"
     name: str = "ContAmtValue"
     type: str = "FLOAT"
-    value: FIXFloat
+    value: float

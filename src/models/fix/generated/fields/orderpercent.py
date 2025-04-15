@@ -1,10 +1,13 @@
-
+"""
+FIX OrderPercent field (tag 516).
+"""
 from .base import FIXFieldBase
-from .types import FIXPercentage
+from typing import Optional
+from .types import *
 
-class OrderPercent(FIXFieldBase):
-    """FIX OrderPercent field."""
+class OrderPercentField(FIXFieldBase):
+    """"""
     tag: str = "516"
     name: str = "OrderPercent"
     type: str = "PERCENTAGE"
-    value: FIXPercentage
+    value: float

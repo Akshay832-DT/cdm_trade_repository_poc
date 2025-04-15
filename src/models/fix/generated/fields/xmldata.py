@@ -1,10 +1,13 @@
-
+"""
+FIX XmlData field (tag 213).
+"""
 from .base import FIXFieldBase
-from .types import FIXData
+from typing import Optional
+from .types import *
 
-class XmlData(FIXFieldBase):
-    """FIX XmlData field."""
+class XmlDataField(FIXFieldBase):
+    """"""
     tag: str = "213"
     name: str = "XmlData"
     type: str = "DATA"
-    value: FIXData
+    value: str

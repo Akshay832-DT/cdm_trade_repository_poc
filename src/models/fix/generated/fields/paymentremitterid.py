@@ -1,10 +1,13 @@
-
+"""
+FIX PaymentRemitterID field (tag 505).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class PaymentRemitterID(FIXFieldBase):
-    """FIX PaymentRemitterID field."""
+class PaymentRemitterIDField(FIXFieldBase):
+    """"""
     tag: str = "505"
     name: str = "PaymentRemitterID"
     type: str = "STRING"
-    value: FIXString
+    value: str

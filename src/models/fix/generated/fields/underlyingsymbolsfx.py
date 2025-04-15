@@ -1,10 +1,13 @@
-
+"""
+FIX UnderlyingSymbolSfx field (tag 312).
+"""
 from .base import FIXFieldBase
-from .types import FIXString
+from typing import Optional
+from .types import *
 
-class UnderlyingSymbolSfx(FIXFieldBase):
-    """FIX UnderlyingSymbolSfx field."""
+class UnderlyingSymbolSfxField(FIXFieldBase):
+    """"""
     tag: str = "312"
     name: str = "UnderlyingSymbolSfx"
     type: str = "STRING"
-    value: FIXString
+    value: str

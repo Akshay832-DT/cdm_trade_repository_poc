@@ -5,8 +5,8 @@ import unittest
 import asyncio
 from datetime import datetime, date
 from src.parsers.controller import ParserController
-from src.models.fix.generated.messages.bidresponse import BidResponse
-from src.models.fix.generated.components.bidcomprspgrp import NoBidComponents
+from src.models.fix.generated.messages.bidresponse import BidResponseMessage
+from src.models.fix.generated.components.bidcomprspgrp import NoBidComponentsGroup
 
 class TestFIXParser(unittest.TestCase):
     """Test FIX message parsing functionality."""
@@ -35,53 +35,54 @@ class TestFIXParser(unittest.TestCase):
         # Parse the message asynchronously
         message = asyncio.run(self.parser_controller.parse_message(raw_fix_message, 'FIX'))
         
-        # Verify message is correctly parsed as BidResponse
-        self.assertIsInstance(message, BidResponse)
+        # Verify message is correctly parsed as BidResponseMessage
+        self.assertIsInstance(message, BidResponseMessage)
         
         # Verify header fields
-        self.assertEqual(message.begin_string, "FIX.4.4")
-        self.assertEqual(message.msg_type, "l")
-        self.assertEqual(message.sender_comp_id, "SENDER")
-        self.assertEqual(message.target_comp_id, "TARGET")
-        self.assertEqual(message.msg_seq_num, 1)
+        self.assertEqual(message.BeginString, "FIX.4.4")
+        self.assertEqual(message.MsgType, "l")
+        self.assertEqual(message.SenderCompID, "SENDER")
+        self.assertEqual(message.TargetCompID, "TARGET")
+        self.assertEqual(message.MsgSeqNum, 1)
         
         # Verify BidResponse fields
-        self.assertEqual(message.bid_id, "BID123")
-        self.assertEqual(message.client_bid_id, "CLIENT123")
+        self.assertEqual(message.BidID, "BID123")
+        self.assertEqual(message.ClientBidID, "CLIENT123")
         
         # Verify Instrument fields
-        self.assertEqual(message.instrument.symbol, "AAPL")
-        self.assertEqual(message.instrument.security_id, "US0378331005")
-        self.assertEqual(message.instrument.security_id_source, "8")
-        self.assertEqual(message.instrument.security_type, "CS")
-        self.assertEqual(message.instrument.currency, "USD")
+        self.assertEqual(message.Instrument.Symbol, "AAPL")
+        self.assertEqual(message.Instrument.SecurityID, "US0378331005")
+        self.assertEqual(message.Instrument.SecurityIDSource, "8")
+        self.assertEqual(message.Instrument.SecurityType, "CS")
+        self.assertEqual(message.Instrument.Currency, "USD")
         
         # Verify Parties fields
-        self.assertEqual(message.parties.no_party_ids, 1)
-        self.assertEqual(message.parties.no_party_ids_items[0].party_id, "PARTY123")
-        self.assertEqual(message.parties.no_party_ids_items[0].party_id_source, "D")
-        self.assertEqual(message.parties.no_party_ids_items[0].party_role, 1)
+        self.assertEqual(message.Parties.NoParty, 1)
+        party = message.Parties.NoParty_items[0]
+        self.assertEqual(party.PartyID, "PARTY123")
+        self.assertEqual(party.PartyIDSource, "D")
+        self.assertEqual(party.PartyRole, 1)
         
         # Verify BidComponents fields
-        self.assertEqual(message.bid_comp_rsp_grp.no_bid_components, 1)
-        bid_component = message.bid_comp_rsp_grp.no_bid_components_items[0]
-        self.assertEqual(bid_component.list_id, "LIST123")
-        self.assertEqual(bid_component.country, "US")
-        self.assertEqual(bid_component.side, "1")
-        self.assertEqual(bid_component.price, 100.50)
-        self.assertEqual(bid_component.price_type, 1)
-        self.assertEqual(bid_component.fair_value, 101.25)
-        self.assertEqual(bid_component.net_gross_ind, 1)
-        self.assertEqual(bid_component.settl_type, "0")
-        self.assertEqual(bid_component.settl_date, date(2024, 12, 31))
-        self.assertEqual(bid_component.trading_session_id, "TSE1")
-        self.assertEqual(bid_component.trading_session_sub_id, "MORNING")
-        self.assertEqual(bid_component.text, "Sample bid component")
+        self.assertEqual(message.BidCompRspGrp.NoBidComponents, 1)
+        bid_component = message.BidCompRspGrp.NoBidComponents_items[0]
+        self.assertEqual(bid_component.ListID, "LIST123")
+        self.assertEqual(bid_component.Country, "US")
+        self.assertEqual(bid_component.Side, "1")
+        self.assertEqual(bid_component.Price, 100.50)
+        self.assertEqual(bid_component.PriceType, 1)
+        self.assertEqual(bid_component.FairValue, 101.25)
+        self.assertEqual(bid_component.NetGrossInd, 1)
+        self.assertEqual(bid_component.SettlType, "0")
+        self.assertEqual(bid_component.SettlDate, date(2024, 12, 31))
+        self.assertEqual(bid_component.TradingSessionID, "TSE1")
+        self.assertEqual(bid_component.TradingSessionSubID, "MORNING")
+        self.assertEqual(bid_component.Text, "Sample bid component")
         
         # Verify CommissionData fields
-        self.assertEqual(bid_component.commission_data.commission, 1.25)
-        self.assertEqual(bid_component.commission_data.comm_type, "1")
-        self.assertEqual(bid_component.commission_data.comm_currency, "USD")
+        self.assertEqual(bid_component.CommissionData.Commission, 1.25)
+        self.assertEqual(bid_component.CommissionData.CommType, "1")
+        self.assertEqual(bid_component.CommissionData.CommCurrency, "USD")
 
 if __name__ == '__main__':
     unittest.main() 
