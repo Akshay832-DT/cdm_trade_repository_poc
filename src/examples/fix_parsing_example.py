@@ -1,13 +1,21 @@
 #!/usr/bin/env python3
 """
-FIX 4.4 Parsing Example
+FIX Message Parsing Example
 
-This example demonstrates how to use the comprehensive FIX 4.4 models.
+This script demonstrates how to use the generated FIX models to parse FIX messages.
 """
-import asyncio
+import sys
 import logging
-from ..parsers.controller import ParserController
-from ..models.fix.generated.messages import NewOrderSingle, ExecutionReport
+from datetime import datetime
+from typing import Dict, Any, Optional, List
+import os
+
+# Add the project root to sys.path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+
+from src.models.generated import MESSAGE_TYPES
+from src.models.generated.fields.types import *
+from src.models.generated.messages.base import FIXMessageBase
 
 # Configure logging
 logging.basicConfig(
@@ -16,55 +24,166 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Example FIX 4.4 Messages
-NEW_ORDER_SINGLE = """8=FIX.4.4|9=176|35=D|34=124|49=FIXTEST|52=20220101-10:10:10|56=FIXSERVER|11=ABC123|21=1|38=100|40=2|44=150.5|54=1|55=AAPL|59=0|60=20220101-10:10:10|10=120|"""
-
-EXECUTION_REPORT = """8=FIX.4.4|9=252|35=8|34=125|49=FIXSERVER|52=20220101-10:10:11|56=FIXTEST|6=0|11=ABC123|14=100|17=1|20=0|31=150.5|32=100|37=1|38=100|39=2|40=2|54=1|55=AAPL|60=20220101-10:10:11|150=2|151=0|10=148|"""
-
-async def parse_examples():
-    """Parse example FIX messages using both generic and specific models."""
-    parser_controller = ParserController()
+def parse_fix_message(message: str) -> Optional[FIXMessageBase]:
+    """
+    Parse a FIX message string into a Pydantic model.
     
+    Args:
+        message: The FIX message string
+        
+    Returns:
+        A FIX message model if parsing was successful, None otherwise
+    """
     try:
-        # Parse New Order Single message
-        logger.info("Parsing New Order Single message...")
-        new_order = await parser_controller.parse_message(NEW_ORDER_SINGLE, "FIX")
+        # Split the message into fields
+        fields = message.strip().split('\x01')
         
-        # Check if we got the specific model or generic model
-        if isinstance(new_order, NewOrderSingle):
-            logger.info("Parsed as NewOrderSingle model")
-        else:
-            logger.info("Parsed as generic FIXMessage model")
+        # Extract data as key-value pairs
+        data = {}
+        for field in fields:
+            if '=' in field:
+                tag, value = field.split('=', 1)
+                data[tag] = value
         
-        # Access fields using model attributes
-        logger.info(f"Order ID: {new_order.ClOrdID}")
-        logger.info(f"Symbol: {new_order.Symbol}")
-        logger.info(f"Order Qty: {new_order.OrderQty}")
+        # Get the message type
+        msg_type = data.get('35')
+        if not msg_type:
+            logger.error("Message type (tag 35) not found in the message")
+            return None
         
-        # Convert to JSON
-        logger.info(f"New Order JSON: {new_order.to_json()}")
+        # Find the corresponding message model class
+        message_class = MESSAGE_TYPES.get(msg_type)
+        if not message_class:
+            logger.error(f"Unknown message type: {msg_type}")
+            return None
         
-        # Parse Execution Report message
-        logger.info("\nParsing Execution Report message...")
-        exec_report = await parser_controller.parse_message(EXECUTION_REPORT, "FIX")
+        # Convert field values to appropriate types
+        # Datetime fields
+        datetime_fields = {'52', '60', '122', '779'}
+        for tag in datetime_fields:
+            if tag in data:
+                try:
+                    # Handle both formats: YYYYMMDD-HH:MM:SS.sss and YYYYMMDD-HH:MM:SS
+                    if '.' in data[tag]:
+                        data[tag] = datetime.strptime(data[tag], '%Y%m%d-%H:%M:%S.%f')
+                    else:
+                        data[tag] = datetime.strptime(data[tag], '%Y%m%d-%H:%M:%S')
+                except ValueError:
+                    logger.warning(f"Could not parse datetime for tag {tag}: {data[tag]}")
         
-        # Check if we got the specific model or generic model
-        if isinstance(exec_report, ExecutionReport):
-            logger.info("Parsed as ExecutionReport model")
-        else:
-            logger.info("Parsed as generic FIXMessage model")
-        
-        # Access fields using model attributes
-        logger.info(f"Order ID: {exec_report.ClOrdID}")
-        logger.info(f"Exec ID: {exec_report.ExecID}")
-        logger.info(f"Exec Type: {exec_report.ExecType}")
-        logger.info(f"Order Status: {exec_report.OrdStatus}")
-        
-        # Convert to JSON
-        logger.info(f"Execution Report JSON: {exec_report.to_json()}")
-        
+        # Create the message object
+        message_obj = message_class(**data)
+        return message_obj
+    
     except Exception as e:
-        logger.error(f"Error parsing FIX messages: {str(e)}")
+        logger.error(f"Error parsing FIX message: {e}")
+        return None
+
+def format_fix_message(message: FIXMessageBase) -> str:
+    """
+    Format a FIX message model into a FIX message string.
+    
+    Args:
+        message: The FIX message model
+        
+    Returns:
+        The formatted FIX message string
+    """
+    try:
+        # Dump the message to a dictionary
+        data = message.model_dump(exclude_none=True)
+        
+        # Format the fields
+        fields = []
+        
+        # Handle header fields first
+        header_fields = [
+            ('8', 'BeginString'),
+            ('9', 'BodyLength'),
+            ('35', 'MsgType'),
+            ('49', 'SenderCompID'),
+            ('56', 'TargetCompID'),
+            ('34', 'MsgSeqNum'),
+            ('52', 'SendingTime')
+        ]
+        
+        for tag, field_name in header_fields:
+            if field_name in data:
+                value = data[field_name]
+                # Format datetime fields
+                if isinstance(value, datetime):
+                    value = value.strftime('%Y%m%d-%H:%M:%S.%f')[:-3]
+                fields.append(f"{tag}={value}")
+                
+        # Handle other fields
+        for key, value in data.items():
+            # Skip header fields
+            if key in [field_name for _, field_name in header_fields]:
+                continue
+                
+            # Skip additional_fields dictionary
+            if key == 'additional_fields':
+                continue
+                
+            # Find the tag for this field
+            tag = None
+            field_info = getattr(message.__class__, key, None)
+            if field_info is not None and hasattr(field_info, 'alias'):
+                tag = field_info.alias
+            
+            if tag is not None:
+                # Format datetime fields
+                if isinstance(value, datetime):
+                    value = value.strftime('%Y%m%d-%H:%M:%S.%f')[:-3]
+                fields.append(f"{tag}={value}")
+        
+        # Add any additional fields
+        if 'additional_fields' in data:
+            for tag, value in data['additional_fields'].items():
+                fields.append(f"{tag}={value}")
+        
+        # Join fields with SOH delimiter
+        return '\x01'.join(fields) + '\x01'
+    
+    except Exception as e:
+        logger.error(f"Error formatting FIX message: {e}")
+        return ""
+
+def main():
+    """Main function to demonstrate FIX message parsing."""
+    # Example FIX message (new order single)
+    fix_message = (
+        "8=FIX.4.4\x019=145\x0135=D\x0134=1\x0149=SENDER\x0156=TARGET\x0152=20250413-18:30:00\x01"
+        "11=ClientOrderID\x0121=1\x0155=AAPL\x0154=1\x0160=20250413-18:30:00\x0138=100\x0140=2\x01"
+        "44=155.50\x0159=0\x0110=123\x01"
+    )
+    
+    logger.info("Original FIX message:")
+    logger.info(fix_message.replace('\x01', '|'))
+    
+    # Parse the message
+    message_obj = parse_fix_message(fix_message)
+    
+    if message_obj:
+        logger.info("\nParsed message:")
+        logger.info(f"Message Type: {message_obj.MsgType}")
+        logger.info(f"Order ID: {message_obj.ClOrdID}")
+        logger.info(f"Symbol: {message_obj.Symbol}")
+        logger.info(f"Side: {message_obj.Side}")
+        logger.info(f"Price: {message_obj.Price}")
+        logger.info(f"Quantity: {message_obj.OrderQty}")
+        
+        # Modify the message
+        message_obj.OrderQty = 200
+        message_obj.Price = 156.75
+        
+        # Format back to FIX message
+        formatted_message = format_fix_message(message_obj)
+        
+        logger.info("\nModified FIX message:")
+        logger.info(formatted_message.replace('\x01', '|'))
+    else:
+        logger.error("Failed to parse the message")
 
 if __name__ == "__main__":
-    asyncio.run(parse_examples()) 
+    main() 

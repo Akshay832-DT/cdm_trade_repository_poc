@@ -1,42 +1,24 @@
-"""
-FIX SecurityRequestResult field (tag 560).
-"""
-from .base import FIXFieldBase
-from typing import Optional
-from .types import *
-
-class SecurityRequestResultValues:
-    """Enumerated values for SecurityRequestResult."""
-    VALUE_0 = "0"  # VALID_REQUEST
-    VALUE_1 = "1"  # INVALID_OR_UNSUPPORTED_REQUEST
-    VALUE_2 = "2"  # NO_INSTRUMENTS_FOUND
-    VALUE_3 = "3"  # NOT_AUTHORIZED_TO_RETRIEVE_INSTRUMENT_DATA
-    VALUE_4 = "4"  # INSTRUMENT_DATA_TEMPORARILY_UNAVAILABLE
-    VALUE_5 = "5"  # REQUEST_FOR_INSTRUMENT_DATA_NOT_SUPPORTED
+"""FIX Field Model"""
+from typing import Optional, List, Dict, Any, Union, Literal
+from pydantic import Field, ConfigDict
+from datetime import datetime, date, time
+from decimal import Decimal
+from ..base.base import FIXFieldBase
 
 class SecurityRequestResultField(FIXFieldBase):
-    """"""
-    tag: str = "560"
-    name: str = "SecurityRequestResult"
-    type: str = "INT"
-    value: Literal["0", "1", "2", "3", "4", "5"]
+    """FIX SecurityRequestResult Field"""
 
-    # Helper methods for enum values
-    @property
-    def is_value_0(self) -> bool:
-        return self.value == "0"
-    @property
-    def is_value_1(self) -> bool:
-        return self.value == "1"
-    @property
-    def is_value_2(self) -> bool:
-        return self.value == "2"
-    @property
-    def is_value_3(self) -> bool:
-        return self.value == "3"
-    @property
-    def is_value_4(self) -> bool:
-        return self.value == "4"
-    @property
-    def is_value_5(self) -> bool:
-        return self.value == "5"
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat() if v else None,
+            date: lambda v: v.isoformat() if v else None,
+            time: lambda v: v.isoformat() if v else None
+        }
+    )
+
+    value: Optional[int] = Field(None, alias='560', description='')
+
+    def __str__(self) -> str:
+        return f"{self.__class__.__name__}(value={self.value})"

@@ -1,26 +1,24 @@
-"""
-FIX ExpirationCycle field (tag 827).
-"""
-from .base import FIXFieldBase
-from typing import Optional
-from .types import *
-
-class ExpirationCycleValues:
-    """Enumerated values for ExpirationCycle."""
-    VALUE_0 = "0"  # EXPIRE_ON_TRADING_SESSION_CLOSE
-    VALUE_1 = "1"  # EXPIRE_ON_TRADING_SESSION_OPEN
+"""FIX Field Model"""
+from typing import Optional, List, Dict, Any, Union, Literal
+from pydantic import Field, ConfigDict
+from datetime import datetime, date, time
+from decimal import Decimal
+from ..base.base import FIXFieldBase
 
 class ExpirationCycleField(FIXFieldBase):
-    """"""
-    tag: str = "827"
-    name: str = "ExpirationCycle"
-    type: str = "INT"
-    value: Literal["0", "1"]
+    """FIX ExpirationCycle Field"""
 
-    # Helper methods for enum values
-    @property
-    def is_value_0(self) -> bool:
-        return self.value == "0"
-    @property
-    def is_value_1(self) -> bool:
-        return self.value == "1"
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat() if v else None,
+            date: lambda v: v.isoformat() if v else None,
+            time: lambda v: v.isoformat() if v else None
+        }
+    )
+
+    value: Optional[int] = Field(None, alias='827', description='')
+
+    def __str__(self) -> str:
+        return f"{self.__class__.__name__}(value={self.value})"

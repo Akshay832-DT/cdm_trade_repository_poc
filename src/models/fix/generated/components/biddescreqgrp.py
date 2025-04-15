@@ -1,53 +1,32 @@
 """
-FIX 4.4 BidDescReqGrp Component
-
-This module contains the Pydantic model for the BidDescReqGrp component.
+FIX Component Model - BidDescReqGrp
 """
-from datetime import datetime, date, time
-from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import Field, ConfigDict
-from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXComponentBase
+
+from ..base import FIXComponentBase
+from datetime import date, datetime, time
+from pydantic import Field
+from typing import Optional, List
+
+
 class NoBidDescriptorsGroup(FIXComponentBase):
-    """
-    NoBidDescriptors group fields
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    BidDescriptorType: Optional[int] = Field(None, description='', alias='399')
-    BidDescriptor: Optional[str] = Field(None, description='', alias='400')
-    SideValueInd: Optional[int] = Field(None, description='', alias='401')
-    LiquidityValue: Optional[float] = Field(None, description='', alias='404')
-    LiquidityNumSecurities: Optional[int] = Field(None, description='', alias='441')
-    LiquidityPctLow: Optional[float] = Field(None, description='', alias='402')
-    LiquidityPctHigh: Optional[float] = Field(None, description='', alias='403')
-    EFPTrackingError: Optional[float] = Field(None, description='', alias='405')
-    FairValue: Optional[float] = Field(None, description='', alias='406')
-    OutsideIndexPct: Optional[float] = Field(None, description='', alias='407')
-    ValueOfFutures: Optional[float] = Field(None, description='', alias='408')
+
+    """FIX Group - NoBidDescriptors"""
+
+    BidDescriptorType: Optional[int] = Field(None, alias='399', description='')
+    BidDescriptor: Optional[str] = Field(None, alias='400', description='')
+    SideValueInd: Optional[int] = Field(None, alias='401', description='')
+    LiquidityValue: Optional[float] = Field(None, alias='404', description='')
+    LiquidityNumSecurities: Optional[int] = Field(None, alias='441', description='')
+    LiquidityPctLow: Optional[float] = Field(None, alias='402', description='')
+    LiquidityPctHigh: Optional[float] = Field(None, alias='403', description='')
+    EFPTrackingError: Optional[float] = Field(None, alias='405', description='')
+    FairValue: Optional[float] = Field(None, alias='406', description='')
+    OutsideIndexPct: Optional[float] = Field(None, alias='407', description='')
+    ValueOfFutures: Optional[float] = Field(None, alias='408', description='')
+
 
 
 class BidDescReqGrpComponent(FIXComponentBase):
-    """
-    FIX 4.4 BidDescReqGrp Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    NoBidDescriptors: Optional[int] = Field(None, description='Number of NoBidDescriptors entries', alias='')
-    NoBidDescriptors_items: List[NoBidDescriptorsGroup] = Field(default_factory=list)
+    """FIX Component - BidDescReqGrp"""
+
+

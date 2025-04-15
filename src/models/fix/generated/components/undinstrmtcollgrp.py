@@ -1,44 +1,24 @@
 """
-FIX 4.4 UndInstrmtCollGrp Component
-
-This module contains the Pydantic model for the UndInstrmtCollGrp component.
+FIX Component Model - UndInstrmtCollGrp
 """
-from datetime import datetime, date, time
-from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import Field, ConfigDict
-from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXComponentBase
+
+from ..base import FIXComponentBase
+from .underlyinginstrument import UnderlyingInstrumentComponent
+from datetime import date, datetime, time
+from pydantic import Field
+from typing import Optional, List
+
+
 class NoUnderlyingsGroup(FIXComponentBase):
-    """
-    NoUnderlyings group fields
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    CollAction: Optional[int] = Field(None, description='', alias='944')
+
+    """FIX Group - NoUnderlyings"""
+
+    CollAction: Optional[int] = Field(None, alias='944', description='')
+    UnderlyingInstrument: Optional[UnderlyingInstrumentComponent] = Field(None, description='')
+
 
 
 class UndInstrmtCollGrpComponent(FIXComponentBase):
-    """
-    FIX 4.4 UndInstrmtCollGrp Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    UnderlyingInstrument: Optional[UnderlyingInstrumentComponent] = Field(None, description='UnderlyingInstrument component')
-    NoUnderlyings: Optional[int] = Field(None, description='Number of NoUnderlyings entries', alias='')
-    NoUnderlyings_items: List[NoUnderlyingsGroup] = Field(default_factory=list)
+    """FIX Component - UndInstrmtCollGrp"""
+
+

@@ -1,57 +1,37 @@
 """
-FIX 4.4 BidCompRspGrp Component
-
-This module contains the Pydantic model for the BidCompRspGrp component.
+FIX Component Model - BidCompRspGrp
 """
-from datetime import datetime, date, time
-from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import Field, ConfigDict
-from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXComponentBase
+
+from ..base import FIXComponentBase
+from .commissiondata import CommissionDataComponent
+from datetime import date, datetime, time
+from pydantic import Field
+from typing import Optional, List
+
+
 class NoBidComponentsGroup(FIXComponentBase):
-    """
-    NoBidComponents group fields
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    ListID: Optional[str] = Field(None, description='', alias='66')
-    Country: Optional[str] = Field(None, description='', alias='421')
-    Side: Optional[str] = Field(None, description='', alias='54')
-    Price: Optional[float] = Field(None, description='', alias='44')
-    PriceType: Optional[int] = Field(None, description='', alias='423')
-    FairValue: Optional[float] = Field(None, description='', alias='406')
-    NetGrossInd: Optional[int] = Field(None, description='', alias='430')
-    SettlType: Optional[str] = Field(None, description='', alias='63')
-    SettlDate: Optional[date] = Field(None, description='', alias='64')
-    TradingSessionID: Optional[str] = Field(None, description='', alias='336')
-    TradingSessionSubID: Optional[str] = Field(None, description='', alias='625')
-    Text: Optional[str] = Field(None, description='', alias='58')
-    EncodedTextLen: Optional[int] = Field(None, description='', alias='354')
-    EncodedText: Optional[str] = Field(None, description='', alias='355')
+
+    """FIX Group - NoBidComponents"""
+
+    ListID: Optional[str] = Field(None, alias='66', description='')
+    Country: Optional[str] = Field(None, alias='421', description='')
+    Side: Optional[str] = Field(None, alias='54', description='')
+    Price: Optional[float] = Field(None, alias='44', description='')
+    PriceType: Optional[int] = Field(None, alias='423', description='')
+    FairValue: Optional[float] = Field(None, alias='406', description='')
+    NetGrossInd: Optional[int] = Field(None, alias='430', description='')
+    SettlType: Optional[str] = Field(None, alias='63', description='')
+    SettlDate: Optional[date] = Field(None, alias='64', description='')
+    TradingSessionID: Optional[str] = Field(None, alias='336', description='')
+    TradingSessionSubID: Optional[str] = Field(None, alias='625', description='')
+    Text: Optional[str] = Field(None, alias='58', description='')
+    EncodedTextLen: Optional[int] = Field(None, alias='354', description='')
+    EncodedText: Optional[str] = Field(None, alias='355', description='')
+    CommissionData: CommissionDataComponent
+
 
 
 class BidCompRspGrpComponent(FIXComponentBase):
-    """
-    FIX 4.4 BidCompRspGrp Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    CommissionData: CommissionDataComponent = Field(..., description='CommissionData component')
-    NoBidComponents: Optional[int] = Field(None, description='Number of NoBidComponents entries', alias='')
-    NoBidComponents_items: List[NoBidComponentsGroup] = Field(default_factory=list)
+    """FIX Component - BidCompRspGrp"""
+
+

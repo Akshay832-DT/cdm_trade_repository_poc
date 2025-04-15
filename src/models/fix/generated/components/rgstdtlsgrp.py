@@ -1,50 +1,30 @@
 """
-FIX 4.4 RgstDtlsGrp Component
-
-This module contains the Pydantic model for the RgstDtlsGrp component.
+FIX Component Model - RgstDtlsGrp
 """
-from datetime import datetime, date, time
-from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import Field, ConfigDict
-from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXComponentBase
+
+from ..base import FIXComponentBase
+from .nestedparties import NestedPartiesComponent
+from datetime import date, datetime, time
+from pydantic import Field
+from typing import Optional, List
+
+
 class NoRegistDtlsGroup(FIXComponentBase):
-    """
-    NoRegistDtls group fields
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    RegistDtls: Optional[str] = Field(None, description='', alias='509')
-    RegistEmail: Optional[str] = Field(None, description='', alias='511')
-    MailingDtls: Optional[str] = Field(None, description='', alias='474')
-    MailingInst: Optional[str] = Field(None, description='', alias='482')
-    OwnerType: Optional[int] = Field(None, description='', alias='522')
-    DateOfBirth: Optional[date] = Field(None, description='', alias='486')
-    InvestorCountryOfResidence: Optional[str] = Field(None, description='', alias='475')
+
+    """FIX Group - NoRegistDtls"""
+
+    RegistDtls: Optional[str] = Field(None, alias='509', description='')
+    RegistEmail: Optional[str] = Field(None, alias='511', description='')
+    MailingDtls: Optional[str] = Field(None, alias='474', description='')
+    MailingInst: Optional[str] = Field(None, alias='482', description='')
+    OwnerType: Optional[int] = Field(None, alias='522', description='')
+    DateOfBirth: Optional[date] = Field(None, alias='486', description='')
+    InvestorCountryOfResidence: Optional[str] = Field(None, alias='475', description='')
+    NestedParties: Optional[NestedPartiesComponent] = Field(None, description='')
+
 
 
 class RgstDtlsGrpComponent(FIXComponentBase):
-    """
-    FIX 4.4 RgstDtlsGrp Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    NestedParties: Optional[NestedPartiesComponent] = Field(None, description='NestedParties component')
-    NoRegistDtls: Optional[int] = Field(None, description='Number of NoRegistDtls entries', alias='')
-    NoRegistDtls_items: List[NoRegistDtlsGroup] = Field(default_factory=list)
+    """FIX Component - RgstDtlsGrp"""
+
+

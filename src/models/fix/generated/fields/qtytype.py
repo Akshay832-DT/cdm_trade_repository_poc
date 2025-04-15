@@ -1,26 +1,24 @@
-"""
-FIX QtyType field (tag 854).
-"""
-from .base import FIXFieldBase
-from typing import Optional
-from .types import *
-
-class QtyTypeValues:
-    """Enumerated values for QtyType."""
-    VALUE_0 = "0"  # UNITS
-    VALUE_1 = "1"  # CONTRACTS
+"""FIX Field Model"""
+from typing import Optional, List, Dict, Any, Union, Literal
+from pydantic import Field, ConfigDict
+from datetime import datetime, date, time
+from decimal import Decimal
+from ..base.base import FIXFieldBase
 
 class QtyTypeField(FIXFieldBase):
-    """"""
-    tag: str = "854"
-    name: str = "QtyType"
-    type: str = "INT"
-    value: Literal["0", "1"]
+    """FIX QtyType Field"""
 
-    # Helper methods for enum values
-    @property
-    def is_value_0(self) -> bool:
-        return self.value == "0"
-    @property
-    def is_value_1(self) -> bool:
-        return self.value == "1"
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat() if v else None,
+            date: lambda v: v.isoformat() if v else None,
+            time: lambda v: v.isoformat() if v else None
+        }
+    )
+
+    value: Optional[int] = Field(None, alias='854', description='')
+
+    def __str__(self) -> str:
+        return f"{self.__class__.__name__}(value={self.value})"

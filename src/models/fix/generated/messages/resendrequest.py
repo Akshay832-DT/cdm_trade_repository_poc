@@ -1,48 +1,17 @@
+"""FIX message model for ResendRequest (2).
+
+Category: 
 """
-FIX ResendRequest Message
-"""
-from ..fields.types import *
-from .base import FIXMessageBase
-from datetime import datetime, date, time
-from pydantic import Field, ConfigDict, model_validator
-from typing import List, Optional, Dict, Any, Union, ForwardRef, TYPE_CHECKING, Literal
+from typing import List, Optional
+from datetime import date, datetime, time
+from pydantic import Field
+from ..base import FIXMessageBase
 
 class ResendRequestMessage(FIXMessageBase):
-    """ResendRequest Message"""
+    """FIX message model for ResendRequest."""
 
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_assignment=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat() if v else None,
-            date: lambda v: v.isoformat() if v else None,
-            time: lambda v: v.isoformat() if v else None
-        }
-    )
+    MsgType: str = Field("2", alias="35")
 
-    MsgType: Literal["ResendRequest"] = Field("ResendRequest", alias="35", description="Message Type")
+    BeginSeqNo: int = Field(..., alias='7', description='')
+    EndSeqNo: int = Field(..., alias='16', description='')
 
-    BeginSeqNo: Optional[int] = Field(None, alias="7", description="")
-    EndSeqNo: Optional[int] = Field(None, alias="16", description="")
-
-    @model_validator(mode='after')
-    def resolve_forward_refs(self) -> 'FIXMessageBase':
-        """Resolve forward references."""
-        for field_name, field_value in self.model_fields.items():
-            if isinstance(field_value.annotation, ForwardRef):
-                field_value.annotation = eval(field_value.annotation.__forward_arg__)
-        return self
-
-    def __str__(self) -> str:
-        fields = []
-        if self.MsgType is not None:
-            fields.append(f"MsgType={self.MsgType}")
-        if self.BeginSeqNo is not None:
-            fields.append(f"BeginSeqNo={self.BeginSeqNo}")
-        if self.EndSeqNo is not None:
-            fields.append(f"EndSeqNo={self.EndSeqNo}")
-        return f"{self.__class__.__name__}({', '.join(fields)})"
-
-
-# Rebuild model to resolve forward references
-ResendRequestMessage.model_rebuild()

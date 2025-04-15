@@ -1,30 +1,24 @@
-"""
-FIX IOIQltyInd field (tag 25).
-"""
-from .base import FIXFieldBase
-from typing import Optional
-from .types import *
-
-class IOIQltyIndValues:
-    """Enumerated values for IOIQltyInd."""
-    L = "L"  # LOW
-    M = "M"  # MEDIUM
-    H = "H"  # HIGH
+"""FIX Field Model"""
+from typing import Optional, List, Dict, Any, Union, Literal
+from pydantic import Field, ConfigDict
+from datetime import datetime, date, time
+from decimal import Decimal
+from ..base.base import FIXFieldBase
 
 class IOIQltyIndField(FIXFieldBase):
-    """"""
-    tag: str = "25"
-    name: str = "IOIQltyInd"
-    type: str = "CHAR"
-    value: Literal["L", "M", "H"]
+    """FIX IOIQltyInd Field"""
 
-    # Helper methods for enum values
-    @property
-    def is_l(self) -> bool:
-        return self.value == "L"
-    @property
-    def is_m(self) -> bool:
-        return self.value == "M"
-    @property
-    def is_h(self) -> bool:
-        return self.value == "H"
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat() if v else None,
+            date: lambda v: v.isoformat() if v else None,
+            time: lambda v: v.isoformat() if v else None
+        }
+    )
+
+    value: Optional[str] = Field(None, alias='25', description='')
+
+    def __str__(self) -> str:
+        return f"{self.__class__.__name__}(value={self.value})"

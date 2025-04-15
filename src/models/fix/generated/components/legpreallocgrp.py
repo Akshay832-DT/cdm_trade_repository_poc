@@ -1,48 +1,28 @@
 """
-FIX 4.4 LegPreAllocGrp Component
-
-This module contains the Pydantic model for the LegPreAllocGrp component.
+FIX Component Model - LegPreAllocGrp
 """
-from datetime import datetime, date, time
-from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import Field, ConfigDict
-from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXComponentBase
+
+from ..base import FIXComponentBase
+from .nestedparties2 import NestedParties2Component
+from datetime import date, datetime, time
+from pydantic import Field
+from typing import Optional, List
+
+
 class NoLegAllocsGroup(FIXComponentBase):
-    """
-    NoLegAllocs group fields
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    LegAllocAccount: Optional[str] = Field(None, description='', alias='671')
-    LegIndividualAllocID: Optional[str] = Field(None, description='', alias='672')
-    LegAllocQty: Optional[float] = Field(None, description='', alias='673')
-    LegAllocAcctIDSource: Optional[str] = Field(None, description='', alias='674')
-    LegSettlCurrency: Optional[str] = Field(None, description='', alias='675')
+
+    """FIX Group - NoLegAllocs"""
+
+    LegAllocAccount: Optional[str] = Field(None, alias='671', description='')
+    LegIndividualAllocID: Optional[str] = Field(None, alias='672', description='')
+    LegAllocQty: Optional[float] = Field(None, alias='673', description='')
+    LegAllocAcctIDSource: Optional[str] = Field(None, alias='674', description='')
+    LegSettlCurrency: Optional[str] = Field(None, alias='675', description='')
+    NestedParties2: Optional[NestedParties2Component] = Field(None, description='')
+
 
 
 class LegPreAllocGrpComponent(FIXComponentBase):
-    """
-    FIX 4.4 LegPreAllocGrp Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    NestedParties2: Optional[NestedParties2Component] = Field(None, description='NestedParties2 component')
-    NoLegAllocs: Optional[int] = Field(None, description='Number of NoLegAllocs entries', alias='')
-    NoLegAllocs_items: List[NoLegAllocsGroup] = Field(default_factory=list)
+    """FIX Component - LegPreAllocGrp"""
+
+

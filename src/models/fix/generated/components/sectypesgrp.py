@@ -1,46 +1,25 @@
 """
-FIX 4.4 SecTypesGrp Component
-
-This module contains the Pydantic model for the SecTypesGrp component.
+FIX Component Model - SecTypesGrp
 """
-from datetime import datetime, date, time
-from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import Field, ConfigDict
-from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXComponentBase
+
+from ..base import FIXComponentBase
+from datetime import date, datetime, time
+from pydantic import Field
+from typing import Optional, List
+
+
 class NoSecurityTypesGroup(FIXComponentBase):
-    """
-    NoSecurityTypes group fields
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    SecurityType: Optional[str] = Field(None, description='', alias='167')
-    SecuritySubType: Optional[str] = Field(None, description='', alias='762')
-    Product: Optional[int] = Field(None, description='', alias='460')
-    CFICode: Optional[str] = Field(None, description='', alias='461')
+
+    """FIX Group - NoSecurityTypes"""
+
+    SecurityType: Optional[str] = Field(None, alias='167', description='')
+    SecuritySubType: Optional[str] = Field(None, alias='762', description='')
+    Product: Optional[int] = Field(None, alias='460', description='')
+    CFICode: Optional[str] = Field(None, alias='461', description='')
+
 
 
 class SecTypesGrpComponent(FIXComponentBase):
-    """
-    FIX 4.4 SecTypesGrp Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    NoSecurityTypes: Optional[int] = Field(None, description='Number of NoSecurityTypes entries', alias='')
-    NoSecurityTypes_items: List[NoSecurityTypesGroup] = Field(default_factory=list)
+    """FIX Component - SecTypesGrp"""
+
+

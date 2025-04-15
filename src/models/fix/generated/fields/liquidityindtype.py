@@ -1,34 +1,24 @@
-"""
-FIX LiquidityIndType field (tag 409).
-"""
-from .base import FIXFieldBase
-from typing import Optional
-from .types import *
-
-class LiquidityIndTypeValues:
-    """Enumerated values for LiquidityIndType."""
-    VALUE_1 = "1"  # FIVE_DAY_MOVING_AVERAGE
-    VALUE_2 = "2"  # TWENTY_DAY_MOVING_AVERAGE
-    VALUE_3 = "3"  # NORMAL_MARKET_SIZE
-    VALUE_4 = "4"  # OTHER
+"""FIX Field Model"""
+from typing import Optional, List, Dict, Any, Union, Literal
+from pydantic import Field, ConfigDict
+from datetime import datetime, date, time
+from decimal import Decimal
+from ..base.base import FIXFieldBase
 
 class LiquidityIndTypeField(FIXFieldBase):
-    """"""
-    tag: str = "409"
-    name: str = "LiquidityIndType"
-    type: str = "INT"
-    value: Literal["1", "2", "3", "4"]
+    """FIX LiquidityIndType Field"""
 
-    # Helper methods for enum values
-    @property
-    def is_value_1(self) -> bool:
-        return self.value == "1"
-    @property
-    def is_value_2(self) -> bool:
-        return self.value == "2"
-    @property
-    def is_value_3(self) -> bool:
-        return self.value == "3"
-    @property
-    def is_value_4(self) -> bool:
-        return self.value == "4"
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat() if v else None,
+            date: lambda v: v.isoformat() if v else None,
+            time: lambda v: v.isoformat() if v else None
+        }
+    )
+
+    value: Optional[int] = Field(None, alias='409', description='')
+
+    def __str__(self) -> str:
+        return f"{self.__class__.__name__}(value={self.value})"

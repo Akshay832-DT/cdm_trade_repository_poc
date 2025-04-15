@@ -1,100 +1,86 @@
 """
-FIX 4.4 TrdCapRptSideGrp Component
-
-This module contains the Pydantic model for the TrdCapRptSideGrp component.
+FIX Component Model - TrdCapRptSideGrp
 """
-from datetime import datetime, date, time
-from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import Field, ConfigDict
-from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXComponentBase
+
+from ..base import FIXComponentBase
+from .clrinstgrp import ClrInstGrpComponent
+from .commissiondata import CommissionDataComponent
+from .contamtgrp import ContAmtGrpComponent
+from .miscfeesgrp import MiscFeesGrpComponent
+from .parties import PartiesComponent
+from .stipulations import StipulationsComponent
+from .trdallocgrp import TrdAllocGrpComponent
+from datetime import date, datetime, time
+from pydantic import Field
+from typing import Optional, List
+
+
 class NoSidesGroup(FIXComponentBase):
-    """
-    NoSides group fields
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    Side: str = Field(..., description='', alias='54')
-    OrderID: str = Field(..., description='', alias='37')
-    SecondaryOrderID: Optional[str] = Field(None, description='', alias='198')
-    ClOrdID: Optional[str] = Field(None, description='', alias='11')
-    SecondaryClOrdID: Optional[str] = Field(None, description='', alias='526')
-    ListID: Optional[str] = Field(None, description='', alias='66')
-    Account: Optional[str] = Field(None, description='', alias='1')
-    AcctIDSource: Optional[int] = Field(None, description='', alias='660')
-    AccountType: Optional[int] = Field(None, description='', alias='581')
-    ProcessCode: Optional[str] = Field(None, description='', alias='81')
-    OddLot: Optional[bool] = Field(None, description='', alias='575')
-    TradeInputSource: Optional[str] = Field(None, description='', alias='578')
-    TradeInputDevice: Optional[str] = Field(None, description='', alias='579')
-    OrderInputDevice: Optional[str] = Field(None, description='', alias='821')
-    Currency: Optional[str] = Field(None, description='', alias='15')
-    ComplianceID: Optional[str] = Field(None, description='', alias='376')
-    SolicitedFlag: Optional[bool] = Field(None, description='', alias='377')
-    OrderCapacity: Optional[str] = Field(None, description='', alias='528')
-    OrderRestrictions: Optional[List[str]] = Field(None, description='', alias='529')
-    CustOrderCapacity: Optional[int] = Field(None, description='', alias='582')
-    OrdType: Optional[str] = Field(None, description='', alias='40')
-    ExecInst: Optional[List[str]] = Field(None, description='', alias='18')
-    TransBkdTime: Optional[datetime] = Field(None, description='', alias='483')
-    TradingSessionID: Optional[str] = Field(None, description='', alias='336')
-    TradingSessionSubID: Optional[str] = Field(None, description='', alias='625')
-    TimeBracket: Optional[str] = Field(None, description='', alias='943')
-    GrossTradeAmt: Optional[float] = Field(None, description='', alias='381')
-    NumDaysInterest: Optional[int] = Field(None, description='', alias='157')
-    ExDate: Optional[date] = Field(None, description='', alias='230')
-    AccruedInterestRate: Optional[float] = Field(None, description='', alias='158')
-    AccruedInterestAmt: Optional[float] = Field(None, description='', alias='159')
-    InterestAtMaturity: Optional[float] = Field(None, description='', alias='738')
-    EndAccruedInterestAmt: Optional[float] = Field(None, description='', alias='920')
-    StartCash: Optional[float] = Field(None, description='', alias='921')
-    EndCash: Optional[float] = Field(None, description='', alias='922')
-    Concession: Optional[float] = Field(None, description='', alias='238')
-    TotalTakedown: Optional[float] = Field(None, description='', alias='237')
-    NetMoney: Optional[float] = Field(None, description='', alias='118')
-    SettlCurrAmt: Optional[float] = Field(None, description='', alias='119')
-    SettlCurrency: Optional[str] = Field(None, description='', alias='120')
-    SettlCurrFxRate: Optional[float] = Field(None, description='', alias='155')
-    SettlCurrFxRateCalc: Optional[str] = Field(None, description='', alias='156')
-    PositionEffect: Optional[str] = Field(None, description='', alias='77')
-    Text: Optional[str] = Field(None, description='', alias='58')
-    EncodedTextLen: Optional[int] = Field(None, description='', alias='354')
-    EncodedText: Optional[str] = Field(None, description='', alias='355')
-    SideMultiLegReportingType: Optional[int] = Field(None, description='', alias='752')
-    ExchangeRule: Optional[str] = Field(None, description='', alias='825')
-    TradeAllocIndicator: Optional[int] = Field(None, description='', alias='826')
-    PreallocMethod: Optional[str] = Field(None, description='', alias='591')
-    AllocID: Optional[str] = Field(None, description='', alias='70')
+
+    """FIX Group - NoSides"""
+
+    Side: str = Field(alias='54', description='')
+    OrderID: str = Field(alias='37', description='')
+    SecondaryOrderID: Optional[str] = Field(None, alias='198', description='')
+    ClOrdID: Optional[str] = Field(None, alias='11', description='')
+    SecondaryClOrdID: Optional[str] = Field(None, alias='526', description='')
+    ListID: Optional[str] = Field(None, alias='66', description='')
+    Account: Optional[str] = Field(None, alias='1', description='')
+    AcctIDSource: Optional[int] = Field(None, alias='660', description='')
+    AccountType: Optional[int] = Field(None, alias='581', description='')
+    ProcessCode: Optional[str] = Field(None, alias='81', description='')
+    OddLot: Optional[bool] = Field(None, alias='575', description='')
+    TradeInputSource: Optional[str] = Field(None, alias='578', description='')
+    TradeInputDevice: Optional[str] = Field(None, alias='579', description='')
+    OrderInputDevice: Optional[str] = Field(None, alias='821', description='')
+    Currency: Optional[str] = Field(None, alias='15', description='')
+    ComplianceID: Optional[str] = Field(None, alias='376', description='')
+    SolicitedFlag: Optional[bool] = Field(None, alias='377', description='')
+    OrderCapacity: Optional[str] = Field(None, alias='528', description='')
+    OrderRestrictions: Optional[str] = Field(None, alias='529', description='')
+    CustOrderCapacity: Optional[int] = Field(None, alias='582', description='')
+    OrdType: Optional[str] = Field(None, alias='40', description='')
+    ExecInst: Optional[str] = Field(None, alias='18', description='')
+    TransBkdTime: Optional[datetime] = Field(None, alias='483', description='')
+    TradingSessionID: Optional[str] = Field(None, alias='336', description='')
+    TradingSessionSubID: Optional[str] = Field(None, alias='625', description='')
+    TimeBracket: Optional[str] = Field(None, alias='943', description='')
+    GrossTradeAmt: Optional[float] = Field(None, alias='381', description='')
+    NumDaysInterest: Optional[int] = Field(None, alias='157', description='')
+    ExDate: Optional[date] = Field(None, alias='230', description='')
+    AccruedInterestRate: Optional[float] = Field(None, alias='158', description='')
+    AccruedInterestAmt: Optional[float] = Field(None, alias='159', description='')
+    InterestAtMaturity: Optional[float] = Field(None, alias='738', description='')
+    EndAccruedInterestAmt: Optional[float] = Field(None, alias='920', description='')
+    StartCash: Optional[float] = Field(None, alias='921', description='')
+    EndCash: Optional[float] = Field(None, alias='922', description='')
+    Concession: Optional[float] = Field(None, alias='238', description='')
+    TotalTakedown: Optional[float] = Field(None, alias='237', description='')
+    NetMoney: Optional[float] = Field(None, alias='118', description='')
+    SettlCurrAmt: Optional[float] = Field(None, alias='119', description='')
+    SettlCurrency: Optional[str] = Field(None, alias='120', description='')
+    SettlCurrFxRate: Optional[float] = Field(None, alias='155', description='')
+    SettlCurrFxRateCalc: Optional[str] = Field(None, alias='156', description='')
+    PositionEffect: Optional[str] = Field(None, alias='77', description='')
+    Text: Optional[str] = Field(None, alias='58', description='')
+    EncodedTextLen: Optional[int] = Field(None, alias='354', description='')
+    EncodedText: Optional[str] = Field(None, alias='355', description='')
+    SideMultiLegReportingType: Optional[int] = Field(None, alias='752', description='')
+    ExchangeRule: Optional[str] = Field(None, alias='825', description='')
+    TradeAllocIndicator: Optional[int] = Field(None, alias='826', description='')
+    PreallocMethod: Optional[str] = Field(None, alias='591', description='')
+    AllocID: Optional[str] = Field(None, alias='70', description='')
+    Parties: Optional[PartiesComponent] = Field(None, description='')
+    ClrInstGrp: Optional[ClrInstGrpComponent] = Field(None, description='')
+    CommissionData: Optional[CommissionDataComponent] = Field(None, description='')
+    ContAmtGrp: Optional[ContAmtGrpComponent] = Field(None, description='')
+    Stipulations: Optional[StipulationsComponent] = Field(None, description='')
+    MiscFeesGrp: Optional[MiscFeesGrpComponent] = Field(None, description='')
+    TrdAllocGrp: Optional[TrdAllocGrpComponent] = Field(None, description='')
+
 
 
 class TrdCapRptSideGrpComponent(FIXComponentBase):
-    """
-    FIX 4.4 TrdCapRptSideGrp Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    Parties: Optional[PartiesComponent] = Field(None, description='Parties component')
-    ClrInstGrp: Optional[ClrInstGrpComponent] = Field(None, description='ClrInstGrp component')
-    CommissionData: Optional[CommissionDataComponent] = Field(None, description='CommissionData component')
-    ContAmtGrp: Optional[ContAmtGrpComponent] = Field(None, description='ContAmtGrp component')
-    Stipulations: Optional[StipulationsComponent] = Field(None, description='Stipulations component')
-    MiscFeesGrp: Optional[MiscFeesGrpComponent] = Field(None, description='MiscFeesGrp component')
-    TrdAllocGrp: Optional[TrdAllocGrpComponent] = Field(None, description='TrdAllocGrp component')
-    NoSides: Optional[int] = Field(None, description='Number of NoSides entries', alias='')
-    NoSides_items: List[NoSidesGroup] = Field(default_factory=list)
+    """FIX Component - TrdCapRptSideGrp"""
+
+

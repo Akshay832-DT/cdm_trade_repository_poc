@@ -1,38 +1,24 @@
-"""
-FIX MoneyLaunderingStatus field (tag 481).
-"""
-from .base import FIXFieldBase
-from typing import Optional
-from .types import *
-
-class MoneyLaunderingStatusValues:
-    """Enumerated values for MoneyLaunderingStatus."""
-    Y = "Y"  # PASSED
-    N = "N"  # NOT_CHECKED
-    VALUE_1 = "1"  # EXEMPT_BELOW_LIMIT
-    VALUE_2 = "2"  # EXEMPT_MONEY_TYPE
-    VALUE_3 = "3"  # EXEMPT_AUTHORISED
+"""FIX Field Model"""
+from typing import Optional, List, Dict, Any, Union, Literal
+from pydantic import Field, ConfigDict
+from datetime import datetime, date, time
+from decimal import Decimal
+from ..base.base import FIXFieldBase
 
 class MoneyLaunderingStatusField(FIXFieldBase):
-    """"""
-    tag: str = "481"
-    name: str = "MoneyLaunderingStatus"
-    type: str = "CHAR"
-    value: Literal["Y", "N", "1", "2", "3"]
+    """FIX MoneyLaunderingStatus Field"""
 
-    # Helper methods for enum values
-    @property
-    def is_y(self) -> bool:
-        return self.value == "Y"
-    @property
-    def is_n(self) -> bool:
-        return self.value == "N"
-    @property
-    def is_value_1(self) -> bool:
-        return self.value == "1"
-    @property
-    def is_value_2(self) -> bool:
-        return self.value == "2"
-    @property
-    def is_value_3(self) -> bool:
-        return self.value == "3"
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat() if v else None,
+            date: lambda v: v.isoformat() if v else None,
+            time: lambda v: v.isoformat() if v else None
+        }
+    )
+
+    value: Optional[str] = Field(None, alias='481', description='')
+
+    def __str__(self) -> str:
+        return f"{self.__class__.__name__}(value={self.value})"

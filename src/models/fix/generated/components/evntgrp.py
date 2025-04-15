@@ -1,46 +1,25 @@
 """
-FIX 4.4 EvntGrp Component
-
-This module contains the Pydantic model for the EvntGrp component.
+FIX Component Model - EvntGrp
 """
-from datetime import datetime, date, time
-from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import Field, ConfigDict
-from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXComponentBase
+
+from ..base import FIXComponentBase
+from datetime import date, datetime, time
+from pydantic import Field
+from typing import Optional, List
+
+
 class NoEventsGroup(FIXComponentBase):
-    """
-    NoEvents group fields
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    EventType: Optional[int] = Field(None, description='', alias='865')
-    EventDate: Optional[date] = Field(None, description='', alias='866')
-    EventPx: Optional[float] = Field(None, description='', alias='867')
-    EventText: Optional[str] = Field(None, description='', alias='868')
+
+    """FIX Group - NoEvents"""
+
+    EventType: Optional[int] = Field(None, alias='865', description='')
+    EventDate: Optional[date] = Field(None, alias='866', description='')
+    EventPx: Optional[float] = Field(None, alias='867', description='')
+    EventText: Optional[str] = Field(None, alias='868', description='')
+
 
 
 class EvntGrpComponent(FIXComponentBase):
-    """
-    FIX 4.4 EvntGrp Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    NoEvents: Optional[int] = Field(None, description='Number of NoEvents entries', alias='')
-    NoEvents_items: List[NoEventsGroup] = Field(default_factory=list)
+    """FIX Component - EvntGrp"""
+
+

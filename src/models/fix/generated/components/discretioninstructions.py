@@ -1,31 +1,22 @@
 """
-FIX 4.4 DiscretionInstructions Component
-
-This module contains the Pydantic model for the DiscretionInstructions component.
+FIX Component Model - DiscretionInstructions
 """
-from datetime import datetime, date, time
-from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import Field, ConfigDict
-from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXComponentBase
+
+from ..base import FIXComponentBase
+from datetime import date, datetime, time
+from pydantic import Field
+from typing import Optional, List
+
+
+
+
 class DiscretionInstructionsComponent(FIXComponentBase):
-    """
-    FIX 4.4 DiscretionInstructions Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    DiscretionInst: Optional[str] = Field(None, description='', alias='388')
-    DiscretionOffsetValue: Optional[float] = Field(None, description='', alias='389')
-    DiscretionMoveType: Optional[int] = Field(None, description='', alias='841')
-    DiscretionOffsetType: Optional[int] = Field(None, description='', alias='842')
-    DiscretionLimitType: Optional[int] = Field(None, description='', alias='843')
-    DiscretionRoundDirection: Optional[int] = Field(None, description='', alias='844')
-    DiscretionScope: Optional[int] = Field(None, description='', alias='846')
+    """FIX Component - DiscretionInstructions"""
+    DiscretionInst: Optional[str] = Field(None, alias='388', description='')
+    DiscretionOffsetValue: Optional[float] = Field(None, alias='389', description='')
+    DiscretionMoveType: Optional[int] = Field(None, alias='841', description='')
+    DiscretionOffsetType: Optional[int] = Field(None, alias='842', description='')
+    DiscretionLimitType: Optional[int] = Field(None, alias='843', description='')
+    DiscretionRoundDirection: Optional[int] = Field(None, alias='844', description='')
+    DiscretionScope: Optional[int] = Field(None, alias='846', description='')
+

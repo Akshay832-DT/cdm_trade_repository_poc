@@ -1,30 +1,21 @@
 """
-FIX 4.4 PegInstructions Component
-
-This module contains the Pydantic model for the PegInstructions component.
+FIX Component Model - PegInstructions
 """
-from datetime import datetime, date, time
-from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import Field, ConfigDict
-from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXComponentBase
+
+from ..base import FIXComponentBase
+from datetime import date, datetime, time
+from pydantic import Field
+from typing import Optional, List
+
+
+
+
 class PegInstructionsComponent(FIXComponentBase):
-    """
-    FIX 4.4 PegInstructions Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    PegOffsetValue: Optional[float] = Field(None, description='', alias='211')
-    PegMoveType: Optional[int] = Field(None, description='', alias='835')
-    PegOffsetType: Optional[int] = Field(None, description='', alias='836')
-    PegLimitType: Optional[int] = Field(None, description='', alias='837')
-    PegRoundDirection: Optional[int] = Field(None, description='', alias='838')
-    PegScope: Optional[int] = Field(None, description='', alias='840')
+    """FIX Component - PegInstructions"""
+    PegOffsetValue: Optional[float] = Field(None, alias='211', description='')
+    PegMoveType: Optional[int] = Field(None, alias='835', description='')
+    PegOffsetType: Optional[int] = Field(None, alias='836', description='')
+    PegLimitType: Optional[int] = Field(None, alias='837', description='')
+    PegRoundDirection: Optional[int] = Field(None, alias='838', description='')
+    PegScope: Optional[int] = Field(None, alias='840', description='')
+

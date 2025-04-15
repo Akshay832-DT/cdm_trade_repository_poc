@@ -1,34 +1,24 @@
-"""
-FIX AdvSide field (tag 4).
-"""
-from .base import FIXFieldBase
-from typing import Optional
-from .types import *
-
-class AdvSideValues:
-    """Enumerated values for AdvSide."""
-    B = "B"  # BUY
-    S = "S"  # SELL
-    X = "X"  # CROSS
-    T = "T"  # TRADE
+"""FIX Field Model"""
+from typing import Optional, List, Dict, Any, Union, Literal
+from pydantic import Field, ConfigDict
+from datetime import datetime, date, time
+from decimal import Decimal
+from ..base.base import FIXFieldBase
 
 class AdvSideField(FIXFieldBase):
-    """"""
-    tag: str = "4"
-    name: str = "AdvSide"
-    type: str = "CHAR"
-    value: Literal["B", "S", "X", "T"]
+    """FIX AdvSide Field"""
 
-    # Helper methods for enum values
-    @property
-    def is_b(self) -> bool:
-        return self.value == "B"
-    @property
-    def is_s(self) -> bool:
-        return self.value == "S"
-    @property
-    def is_x(self) -> bool:
-        return self.value == "X"
-    @property
-    def is_t(self) -> bool:
-        return self.value == "T"
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat() if v else None,
+            date: lambda v: v.isoformat() if v else None,
+            time: lambda v: v.isoformat() if v else None
+        }
+    )
+
+    value: Optional[str] = Field(None, alias='4', description='')
+
+    def __str__(self) -> str:
+        return f"{self.__class__.__name__}(value={self.value})"

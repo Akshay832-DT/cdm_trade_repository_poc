@@ -1,46 +1,24 @@
-"""
-FIX CollAsgnRejectReason field (tag 906).
-"""
-from .base import FIXFieldBase
-from typing import Optional
-from .types import *
-
-class CollAsgnRejectReasonValues:
-    """Enumerated values for CollAsgnRejectReason."""
-    VALUE_0 = "0"  # UNKNOWN_DEAL
-    VALUE_1 = "1"  # UNKNOWN_OR_INVALID_INSTRUMENT
-    VALUE_2 = "2"  # UNAUTHORIZED_TRANSACTION
-    VALUE_3 = "3"  # INSUFFICIENT_COLLATERAL
-    VALUE_4 = "4"  # INVALID_TYPE_OF_COLLATERAL
-    VALUE_5 = "5"  # EXCESSIVE_SUBSTITUTION
-    VALUE_99 = "99"  # OTHER
+"""FIX Field Model"""
+from typing import Optional, List, Dict, Any, Union, Literal
+from pydantic import Field, ConfigDict
+from datetime import datetime, date, time
+from decimal import Decimal
+from ..base.base import FIXFieldBase
 
 class CollAsgnRejectReasonField(FIXFieldBase):
-    """"""
-    tag: str = "906"
-    name: str = "CollAsgnRejectReason"
-    type: str = "INT"
-    value: Literal["0", "1", "2", "3", "4", "5", "99"]
+    """FIX CollAsgnRejectReason Field"""
 
-    # Helper methods for enum values
-    @property
-    def is_value_0(self) -> bool:
-        return self.value == "0"
-    @property
-    def is_value_1(self) -> bool:
-        return self.value == "1"
-    @property
-    def is_value_2(self) -> bool:
-        return self.value == "2"
-    @property
-    def is_value_3(self) -> bool:
-        return self.value == "3"
-    @property
-    def is_value_4(self) -> bool:
-        return self.value == "4"
-    @property
-    def is_value_5(self) -> bool:
-        return self.value == "5"
-    @property
-    def is_value_99(self) -> bool:
-        return self.value == "99"
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat() if v else None,
+            date: lambda v: v.isoformat() if v else None,
+            time: lambda v: v.isoformat() if v else None
+        }
+    )
+
+    value: Optional[int] = Field(None, alias='906', description='')
+
+    def __str__(self) -> str:
+        return f"{self.__class__.__name__}(value={self.value})"

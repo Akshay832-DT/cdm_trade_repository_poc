@@ -1,98 +1,33 @@
+"""FIX message model for SecurityDefinitionRequest (c).
+
+Category: 
 """
-FIX SecurityDefinitionRequest Message
-"""
-from ..fields.types import *
-from .base import FIXMessageBase
-from datetime import datetime, date, time
-from pydantic import Field, ConfigDict, model_validator
-from typing import List, Optional, Dict, Any, Union, ForwardRef, TYPE_CHECKING, Literal
-
-if TYPE_CHECKING:
-    from ..components.instrmtleggrp import InstrmtLegGrpComponent
-    from ..components.instrument import InstrumentComponent
-    from ..components.instrumentextension import InstrumentExtensionComponent
-    from ..components.undinstrmtgrp import UndInstrmtGrpComponent
-
-
-# Forward references for components to avoid circular imports
-InstrmtLegGrpComponent = ForwardRef('InstrmtLegGrpComponent')
-InstrumentComponent = ForwardRef('InstrumentComponent')
-InstrumentExtensionComponent = ForwardRef('InstrumentExtensionComponent')
-UndInstrmtGrpComponent = ForwardRef('UndInstrmtGrpComponent')
-
+from typing import List, Optional
+from datetime import date, datetime, time
+from pydantic import Field
+from ..base import FIXMessageBase
+from ..components.instrmtleggrp import InstrmtLegGrpComponent
+from ..components.instrument import InstrumentComponent
+from ..components.instrumentextension import InstrumentExtensionComponent
+from ..components.undinstrmtgrp import UndInstrmtGrpComponent
 
 class SecurityDefinitionRequestMessage(FIXMessageBase):
-    """SecurityDefinitionRequest Message"""
+    """FIX message model for SecurityDefinitionRequest."""
 
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_assignment=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat() if v else None,
-            date: lambda v: v.isoformat() if v else None,
-            time: lambda v: v.isoformat() if v else None
-        }
-    )
+    MsgType: str = Field("c", alias="35")
 
-    MsgType: Literal["SecurityDefinitionRequest"] = Field("SecurityDefinitionRequest", alias="35", description="Message Type")
+    SecurityReqID: str = Field(..., alias='320', description='')
+    SecurityRequestType: int = Field(..., alias='321', description='')
+    Currency: Optional[str] = Field(None, alias='15', description='')
+    Text: Optional[str] = Field(None, alias='58', description='')
+    EncodedTextLen: Optional[int] = Field(None, alias='354', description='')
+    EncodedText: Optional[str] = Field(None, alias='355', description='')
+    TradingSessionID: Optional[str] = Field(None, alias='336', description='')
+    TradingSessionSubID: Optional[str] = Field(None, alias='625', description='')
+    ExpirationCycle: Optional[int] = Field(None, alias='827', description='')
+    SubscriptionRequestType: Optional[str] = Field(None, alias='263', description='')
+    Instrument: Optional[InstrumentComponent] = Field(None, description='')
+    InstrumentExtension: Optional[InstrumentExtensionComponent] = Field(None, description='')
+    UndInstrmtGrp: Optional[UndInstrmtGrpComponent] = Field(None, description='')
+    InstrmtLegGrp: Optional[InstrmtLegGrpComponent] = Field(None, description='')
 
-    SecurityReqID: Optional[str] = Field(None, alias="320", description="")
-    SecurityRequestType: Optional[int] = Field(None, alias="321", description="")
-    Currency: Optional[str] = Field(None, alias="15", description="")
-    Text: Optional[str] = Field(None, alias="58", description="")
-    EncodedTextLen: Optional[int] = Field(None, alias="354", description="")
-    EncodedText: Optional[str] = Field(None, alias="355", description="")
-    TradingSessionID: Optional[str] = Field(None, alias="336", description="")
-    TradingSessionSubID: Optional[str] = Field(None, alias="625", description="")
-    ExpirationCycle: Optional[int] = Field(None, alias="827", description="")
-    SubscriptionRequestType: Optional[str] = Field(None, alias="263", description="")
-    Instrument: ForwardRef('InstrumentComponent') = Field(None, description="Instrument Component")
-    InstrumentExtension: ForwardRef('InstrumentExtensionComponent') = Field(None, description="InstrumentExtension Component")
-    UndInstrmtGrp: ForwardRef('UndInstrmtGrpComponent') = Field(None, description="UndInstrmtGrp Component")
-    InstrmtLegGrp: ForwardRef('InstrmtLegGrpComponent') = Field(None, description="InstrmtLegGrp Component")
-
-    @model_validator(mode='after')
-    def resolve_forward_refs(self) -> 'FIXMessageBase':
-        """Resolve forward references."""
-        for field_name, field_value in self.model_fields.items():
-            if isinstance(field_value.annotation, ForwardRef):
-                field_value.annotation = eval(field_value.annotation.__forward_arg__)
-        return self
-
-    def __str__(self) -> str:
-        fields = []
-        if self.MsgType is not None:
-            fields.append(f"MsgType={self.MsgType}")
-        if self.SecurityReqID is not None:
-            fields.append(f"SecurityReqID={self.SecurityReqID}")
-        if self.SecurityRequestType is not None:
-            fields.append(f"SecurityRequestType={self.SecurityRequestType}")
-        if self.Currency is not None:
-            fields.append(f"Currency={self.Currency}")
-        if self.Text is not None:
-            fields.append(f"Text={self.Text}")
-        if self.EncodedTextLen is not None:
-            fields.append(f"EncodedTextLen={self.EncodedTextLen}")
-        if self.EncodedText is not None:
-            fields.append(f"EncodedText={self.EncodedText}")
-        if self.TradingSessionID is not None:
-            fields.append(f"TradingSessionID={self.TradingSessionID}")
-        if self.TradingSessionSubID is not None:
-            fields.append(f"TradingSessionSubID={self.TradingSessionSubID}")
-        if self.ExpirationCycle is not None:
-            fields.append(f"ExpirationCycle={self.ExpirationCycle}")
-        if self.SubscriptionRequestType is not None:
-            fields.append(f"SubscriptionRequestType={self.SubscriptionRequestType}")
-        if self.Instrument is not None:
-            fields.append(f"Instrument={self.Instrument}")
-        if self.InstrumentExtension is not None:
-            fields.append(f"InstrumentExtension={self.InstrumentExtension}")
-        if self.UndInstrmtGrp is not None:
-            fields.append(f"UndInstrmtGrp={self.UndInstrmtGrp}")
-        if self.InstrmtLegGrp is not None:
-            fields.append(f"InstrmtLegGrp={self.InstrmtLegGrp}")
-        return f"{self.__class__.__name__}({', '.join(fields)})"
-
-
-# Rebuild model to resolve forward references
-SecurityDefinitionRequestMessage.model_rebuild()

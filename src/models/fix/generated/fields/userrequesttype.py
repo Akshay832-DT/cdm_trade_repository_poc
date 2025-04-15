@@ -1,34 +1,24 @@
-"""
-FIX UserRequestType field (tag 924).
-"""
-from .base import FIXFieldBase
-from typing import Optional
-from .types import *
-
-class UserRequestTypeValues:
-    """Enumerated values for UserRequestType."""
-    VALUE_1 = "1"  # LOG_ON_USER
-    VALUE_2 = "2"  # LOG_OFF_USER
-    VALUE_3 = "3"  # CHANGE_PASSWORD_FOR_USER
-    VALUE_4 = "4"  # REQUEST_INDIVIDUAL_USER_STATUS
+"""FIX Field Model"""
+from typing import Optional, List, Dict, Any, Union, Literal
+from pydantic import Field, ConfigDict
+from datetime import datetime, date, time
+from decimal import Decimal
+from ..base.base import FIXFieldBase
 
 class UserRequestTypeField(FIXFieldBase):
-    """"""
-    tag: str = "924"
-    name: str = "UserRequestType"
-    type: str = "INT"
-    value: Literal["1", "2", "3", "4"]
+    """FIX UserRequestType Field"""
 
-    # Helper methods for enum values
-    @property
-    def is_value_1(self) -> bool:
-        return self.value == "1"
-    @property
-    def is_value_2(self) -> bool:
-        return self.value == "2"
-    @property
-    def is_value_3(self) -> bool:
-        return self.value == "3"
-    @property
-    def is_value_4(self) -> bool:
-        return self.value == "4"
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat() if v else None,
+            date: lambda v: v.isoformat() if v else None,
+            time: lambda v: v.isoformat() if v else None
+        }
+    )
+
+    value: Optional[int] = Field(None, alias='924', description='')
+
+    def __str__(self) -> str:
+        return f"{self.__class__.__name__}(value={self.value})"

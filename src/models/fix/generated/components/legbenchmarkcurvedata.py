@@ -1,29 +1,20 @@
 """
-FIX 4.4 LegBenchmarkCurveData Component
-
-This module contains the Pydantic model for the LegBenchmarkCurveData component.
+FIX Component Model - LegBenchmarkCurveData
 """
-from datetime import datetime, date, time
-from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import Field, ConfigDict
-from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXComponentBase
+
+from ..base import FIXComponentBase
+from datetime import date, datetime, time
+from pydantic import Field
+from typing import Optional, List
+
+
+
+
 class LegBenchmarkCurveDataComponent(FIXComponentBase):
-    """
-    FIX 4.4 LegBenchmarkCurveData Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    LegBenchmarkCurveCurrency: Optional[str] = Field(None, description='', alias='676')
-    LegBenchmarkCurveName: Optional[str] = Field(None, description='', alias='677')
-    LegBenchmarkCurvePoint: Optional[str] = Field(None, description='', alias='678')
-    LegBenchmarkPrice: Optional[float] = Field(None, description='', alias='679')
-    LegBenchmarkPriceType: Optional[int] = Field(None, description='', alias='680')
+    """FIX Component - LegBenchmarkCurveData"""
+    LegBenchmarkCurveCurrency: Optional[str] = Field(None, alias='676', description='')
+    LegBenchmarkCurveName: Optional[str] = Field(None, alias='677', description='')
+    LegBenchmarkCurvePoint: Optional[str] = Field(None, alias='678', description='')
+    LegBenchmarkPrice: Optional[float] = Field(None, alias='679', description='')
+    LegBenchmarkPriceType: Optional[int] = Field(None, alias='680', description='')
+

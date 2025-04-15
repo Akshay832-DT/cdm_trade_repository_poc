@@ -1,47 +1,29 @@
 """
-FIX 4.4 InstrmtLegSecListGrp Component
-
-This module contains the Pydantic model for the InstrmtLegSecListGrp component.
+FIX Component Model - InstrmtLegSecListGrp
 """
-from datetime import datetime, date, time
-from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import Field, ConfigDict
-from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXComponentBase
+
+from ..base import FIXComponentBase
+from .instrumentleg import InstrumentLegComponent
+from .legbenchmarkcurvedata import LegBenchmarkCurveDataComponent
+from .legstipulations import LegStipulationsComponent
+from datetime import date, datetime, time
+from pydantic import Field
+from typing import Optional, List
+
+
 class NoLegsGroup(FIXComponentBase):
-    """
-    NoLegs group fields
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    LegSwapType: Optional[int] = Field(None, description='', alias='690')
-    LegSettlType: Optional[str] = Field(None, description='', alias='587')
+
+    """FIX Group - NoLegs"""
+
+    LegSwapType: Optional[int] = Field(None, alias='690', description='')
+    LegSettlType: Optional[str] = Field(None, alias='587', description='')
+    InstrumentLeg: Optional[InstrumentLegComponent] = Field(None, description='')
+    LegStipulations: Optional[LegStipulationsComponent] = Field(None, description='')
+    LegBenchmarkCurveData: Optional[LegBenchmarkCurveDataComponent] = Field(None, description='')
+
 
 
 class InstrmtLegSecListGrpComponent(FIXComponentBase):
-    """
-    FIX 4.4 InstrmtLegSecListGrp Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    InstrumentLeg: Optional[InstrumentLegComponent] = Field(None, description='InstrumentLeg component')
-    LegStipulations: Optional[LegStipulationsComponent] = Field(None, description='LegStipulations component')
-    LegBenchmarkCurveData: Optional[LegBenchmarkCurveDataComponent] = Field(None, description='LegBenchmarkCurveData component')
-    NoLegs: Optional[int] = Field(None, description='Number of NoLegs entries', alias='')
-    NoLegs_items: List[NoLegsGroup] = Field(default_factory=list)
+    """FIX Component - InstrmtLegSecListGrp"""
+
+

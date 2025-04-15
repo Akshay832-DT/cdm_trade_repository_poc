@@ -1,45 +1,24 @@
 """
-FIX 4.4 Hop Component
-
-This module contains the Pydantic model for the Hop component.
+FIX Component Model - Hop
 """
-from datetime import datetime, date, time
-from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import Field, ConfigDict
-from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXComponentBase
+
+from ..base import FIXComponentBase
+from datetime import date, datetime, time
+from pydantic import Field
+from typing import Optional, List
+
+
 class NoHopsGroup(FIXComponentBase):
-    """
-    NoHops group fields
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    HopCompID: Optional[str] = Field(None, description='', alias='628')
-    HopSendingTime: Optional[datetime] = Field(None, description='', alias='629')
-    HopRefID: Optional[int] = Field(None, description='', alias='630')
+
+    """FIX Group - NoHops"""
+
+    HopCompID: Optional[str] = Field(None, alias='628', description='')
+    HopSendingTime: Optional[datetime] = Field(None, alias='629', description='')
+    HopRefID: Optional[int] = Field(None, alias='630', description='')
+
 
 
 class HopComponent(FIXComponentBase):
-    """
-    FIX 4.4 Hop Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    NoHops: Optional[int] = Field(None, description='Number of NoHops entries', alias='')
-    NoHops_items: List[NoHopsGroup] = Field(default_factory=list)
+    """FIX Component - Hop"""
+
+

@@ -1,30 +1,24 @@
-"""
-FIX MultiLegReportingType field (tag 442).
-"""
-from .base import FIXFieldBase
-from typing import Optional
-from .types import *
-
-class MultiLegReportingTypeValues:
-    """Enumerated values for MultiLegReportingType."""
-    VALUE_1 = "1"  # SINGLE_SECURITY
-    VALUE_2 = "2"  # INDIVIDUAL_LEG_OF_A_MULTI_LEG_SECURITY
-    VALUE_3 = "3"  # MULTI_LEG_SECURITY
+"""FIX Field Model"""
+from typing import Optional, List, Dict, Any, Union, Literal
+from pydantic import Field, ConfigDict
+from datetime import datetime, date, time
+from decimal import Decimal
+from ..base.base import FIXFieldBase
 
 class MultiLegReportingTypeField(FIXFieldBase):
-    """"""
-    tag: str = "442"
-    name: str = "MultiLegReportingType"
-    type: str = "CHAR"
-    value: Literal["1", "2", "3"]
+    """FIX MultiLegReportingType Field"""
 
-    # Helper methods for enum values
-    @property
-    def is_value_1(self) -> bool:
-        return self.value == "1"
-    @property
-    def is_value_2(self) -> bool:
-        return self.value == "2"
-    @property
-    def is_value_3(self) -> bool:
-        return self.value == "3"
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat() if v else None,
+            date: lambda v: v.isoformat() if v else None,
+            time: lambda v: v.isoformat() if v else None
+        }
+    )
+
+    value: Optional[str] = Field(None, alias='442', description='')
+
+    def __str__(self) -> str:
+        return f"{self.__class__.__name__}(value={self.value})"

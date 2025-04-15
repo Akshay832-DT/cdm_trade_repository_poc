@@ -1,70 +1,54 @@
 """
-FIX 4.4 AllocGrp Component
-
-This module contains the Pydantic model for the AllocGrp component.
+FIX Component Model - AllocGrp
 """
-from datetime import datetime, date, time
-from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import Field, ConfigDict
-from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXComponentBase
+
+from ..base import FIXComponentBase
+from .clrinstgrp import ClrInstGrpComponent
+from .commissiondata import CommissionDataComponent
+from .miscfeesgrp import MiscFeesGrpComponent
+from .nestedparties import NestedPartiesComponent
+from .settlinstructionsdata import SettlInstructionsDataComponent
+from datetime import date, datetime, time
+from pydantic import Field
+from typing import Optional, List
+
+
 class NoAllocsGroup(FIXComponentBase):
-    """
-    NoAllocs group fields
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    AllocAccount: Optional[str] = Field(None, description='', alias='79')
-    AllocAcctIDSource: Optional[int] = Field(None, description='', alias='661')
-    MatchStatus: Optional[str] = Field(None, description='', alias='573')
-    AllocPrice: Optional[float] = Field(None, description='', alias='366')
-    AllocQty: Optional[float] = Field(None, description='', alias='80')
-    IndividualAllocID: Optional[str] = Field(None, description='', alias='467')
-    ProcessCode: Optional[str] = Field(None, description='', alias='81')
-    NotifyBrokerOfCredit: Optional[bool] = Field(None, description='', alias='208')
-    AllocHandlInst: Optional[int] = Field(None, description='', alias='209')
-    AllocText: Optional[str] = Field(None, description='', alias='161')
-    EncodedAllocTextLen: Optional[int] = Field(None, description='', alias='360')
-    EncodedAllocText: Optional[str] = Field(None, description='', alias='361')
-    AllocAvgPx: Optional[float] = Field(None, description='', alias='153')
-    AllocNetMoney: Optional[float] = Field(None, description='', alias='154')
-    SettlCurrAmt: Optional[float] = Field(None, description='', alias='119')
-    AllocSettlCurrAmt: Optional[float] = Field(None, description='', alias='737')
-    SettlCurrency: Optional[str] = Field(None, description='', alias='120')
-    AllocSettlCurrency: Optional[str] = Field(None, description='', alias='736')
-    SettlCurrFxRate: Optional[float] = Field(None, description='', alias='155')
-    SettlCurrFxRateCalc: Optional[str] = Field(None, description='', alias='156')
-    AllocAccruedInterestAmt: Optional[float] = Field(None, description='', alias='742')
-    AllocInterestAtMaturity: Optional[float] = Field(None, description='', alias='741')
-    AllocSettlInstType: Optional[int] = Field(None, description='', alias='780')
+
+    """FIX Group - NoAllocs"""
+
+    AllocAccount: Optional[str] = Field(None, alias='79', description='')
+    AllocAcctIDSource: Optional[int] = Field(None, alias='661', description='')
+    MatchStatus: Optional[str] = Field(None, alias='573', description='')
+    AllocPrice: Optional[float] = Field(None, alias='366', description='')
+    AllocQty: Optional[float] = Field(None, alias='80', description='')
+    IndividualAllocID: Optional[str] = Field(None, alias='467', description='')
+    ProcessCode: Optional[str] = Field(None, alias='81', description='')
+    NotifyBrokerOfCredit: Optional[bool] = Field(None, alias='208', description='')
+    AllocHandlInst: Optional[int] = Field(None, alias='209', description='')
+    AllocText: Optional[str] = Field(None, alias='161', description='')
+    EncodedAllocTextLen: Optional[int] = Field(None, alias='360', description='')
+    EncodedAllocText: Optional[str] = Field(None, alias='361', description='')
+    AllocAvgPx: Optional[float] = Field(None, alias='153', description='')
+    AllocNetMoney: Optional[float] = Field(None, alias='154', description='')
+    SettlCurrAmt: Optional[float] = Field(None, alias='119', description='')
+    AllocSettlCurrAmt: Optional[float] = Field(None, alias='737', description='')
+    SettlCurrency: Optional[str] = Field(None, alias='120', description='')
+    AllocSettlCurrency: Optional[str] = Field(None, alias='736', description='')
+    SettlCurrFxRate: Optional[float] = Field(None, alias='155', description='')
+    SettlCurrFxRateCalc: Optional[str] = Field(None, alias='156', description='')
+    AllocAccruedInterestAmt: Optional[float] = Field(None, alias='742', description='')
+    AllocInterestAtMaturity: Optional[float] = Field(None, alias='741', description='')
+    AllocSettlInstType: Optional[int] = Field(None, alias='780', description='')
+    NestedParties: Optional[NestedPartiesComponent] = Field(None, description='')
+    CommissionData: Optional[CommissionDataComponent] = Field(None, description='')
+    MiscFeesGrp: Optional[MiscFeesGrpComponent] = Field(None, description='')
+    ClrInstGrp: Optional[ClrInstGrpComponent] = Field(None, description='')
+    SettlInstructionsData: Optional[SettlInstructionsDataComponent] = Field(None, description='')
+
 
 
 class AllocGrpComponent(FIXComponentBase):
-    """
-    FIX 4.4 AllocGrp Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    NestedParties: Optional[NestedPartiesComponent] = Field(None, description='NestedParties component')
-    CommissionData: Optional[CommissionDataComponent] = Field(None, description='CommissionData component')
-    MiscFeesGrp: Optional[MiscFeesGrpComponent] = Field(None, description='MiscFeesGrp component')
-    ClrInstGrp: Optional[ClrInstGrpComponent] = Field(None, description='ClrInstGrp component')
-    SettlInstructionsData: Optional[SettlInstructionsDataComponent] = Field(None, description='SettlInstructionsData component')
-    NoAllocs: Optional[int] = Field(None, description='Number of NoAllocs entries', alias='')
-    NoAllocs_items: List[NoAllocsGroup] = Field(default_factory=list)
+    """FIX Component - AllocGrp"""
+
+

@@ -1,0 +1,847 @@
+#!/usr/bin/env python3
+"""
+FIX 4.4 Pydantic Model Generator
+
+This script generates comprehensive Pydantic models for the FIX 4.4 specification.
+"""
+import os
+import sys
+import logging
+import textwrap
+from pathlib import Path
+from src.generators.fix_spec_downloader import download_fix_spec, parse_fix_spec, LOCAL_SPEC_PATH
+from datetime import datetime, date, time
+from typing import List, Optional, Union, Dict, Any, Literal, Tuple, Set
+from pydantic import BaseModel, Field, ConfigDict
+import json
+import xml.etree.ElementTree as ET
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
+
+# Output directory for generated models
+OUTPUT_DIR = Path("src/models/fix/generated")
+
+# Define FIX field types mapping
+FIELD_TYPES = {
+    'STRING': 'str',
+    'CHAR': 'str',
+    'PRICE': 'float',
+    'INT': 'int',
+    'AMT': 'float',
+    'QTY': 'float',
+    'CURRENCY': 'str',
+    'MULTIPLEVALUESTRING': 'str',
+    'MULTIPLESTRINGVALUE': 'str',
+    'MULTIPLECHARVALUE': 'str',
+    'BOOLEAN': 'bool',
+    'LOCALMKTDATE': 'str',
+    'DATE': 'str',
+    'MONTHYEAR': 'str',
+    'UTCTIMESTAMP': 'str',
+    'UTCTIMEONLY': 'str',
+    'UTCDATE': 'str',
+    'UTCDATEONLY': 'str',
+    'NUMINGROUP': 'int',
+    'PERCENTAGE': 'float',
+    'SEQNUM': 'int',
+    'LENGTH': 'int',
+    'COUNTRY': 'str',
+    'TZTIMEONLY': 'str',
+    'TZTIMESTAMP': 'str',
+    'DATA': 'str',
+    'EXCHANGE': 'str',
+    'LANGUAGE': 'str',
+    'XMLDATA': 'str',
+    'DAYOFMONTH': 'int',
+    'FLOAT': 'float',
+    'PRICEOFFSET': 'float'
+}
+
+# FIX type to Python type mapping
+FIX_TYPE_MAP = {
+    'STRING': 'str',
+    'CHAR': 'str',
+    'PRICE': 'float',
+    'INT': 'int',
+    'AMT': 'float',
+    'QTY': 'float',
+    'CURRENCY': 'str',
+    'MULTIPLEVALUESTRING': 'List[str]',
+    'EXCHANGE': 'str',
+    'UTCTIMESTAMP': 'datetime',
+    'BOOLEAN': 'bool',
+    'LOCALMKTDATE': 'date',
+    'DATA': 'str',
+    'FLOAT': 'float',
+    'PRICEOFFSET': 'float',
+    'MONTHYEAR': 'str',
+    'DAYOFMONTH': 'int',
+    'UTCDATEONLY': 'date',
+    'UTCTIMEONLY': 'time',
+    'NUMINGROUP': 'int',
+    'PERCENTAGE': 'float',
+    'SEQNUM': 'int',
+    'LENGTH': 'int',
+    'COUNTRY': 'str',
+}
+
+def create_output_dirs():
+    """Create the necessary output directories."""
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
+    os.makedirs(OUTPUT_DIR / "components", exist_ok=True)
+    os.makedirs(OUTPUT_DIR / "messages", exist_ok=True)
+    os.makedirs(OUTPUT_DIR / "fields", exist_ok=True)
+
+def generate_field_models(fields, fields_dir):
+    """
+    Generate Pydantic models for FIX fields.
+    
+    Args:
+        fields: Dictionary of field definitions from the FIX specification
+        fields_dir: Directory to save field models
+    """
+    logger.info("Generating field models...")
+    
+    # Create fields directory if it doesn't exist
+    os.makedirs(fields_dir, exist_ok=True)
+    
+    # Generate common.py with type definitions
+    generate_common_field_types(fields_dir)
+    
+    # Generate __init__.py
+    with open(os.path.join(fields_dir, '__init__.py'), 'w') as f:
+        f.write("from .base import FIXFieldBase\n")
+        f.write("from .types import *\n")
+    
+    # Generate base.py
+    with open(os.path.join(fields_dir, 'base.py'), 'w') as f:
+        f.write("""
+from pydantic import BaseModel, Field
+
+class FIXFieldBase(BaseModel):
+    \"\"\"Base class for FIX fields.\"\"\"
+    tag: str
+    name: str
+    type: str
+    description: str = ""
+    values: list = []
+""")
+    
+    # Generate types.py
+    with open(os.path.join(fields_dir, 'types.py'), 'w') as f:
+        f.write("""
+from typing import Literal, Union, Optional
+from datetime import datetime
+from decimal import Decimal
+
+# Define type aliases for FIX field types
+FIXString = str
+FIXChar = str
+FIXPrice = Decimal
+FIXInt = int
+FIXAmt = Decimal
+FIXQty = Decimal
+FIXCurrency = str
+FIXMultipleValueString = str
+FIXExchange = str
+FIXMonthYear = str
+FIXDayOfMonth = int
+FIXBoolean = bool
+FIXLocalMktDate = str
+FIXData = str
+FIXFloat = float
+FIXLength = int
+FIXNumInGroup = int
+FIXPercentage = float
+FIXSeqNum = int
+FIXUTCTimestamp = datetime
+FIXUTCTimeOnly = str
+FIXUTCDateOnly = str
+FIXCountry = str
+FIXTZTimeOnly = str
+FIXTZTimestamp = datetime
+FIXXMLData = str
+FIXLanguage = str
+""")
+    
+    # Generate field models
+    for field_name, field_info in fields.items():
+        field_tag = field_info['tag']
+        field_type = field_info['type']
+        field_values = field_info.get('values', {})
+        
+        # Map FIX types to Python types
+        type_mapping = {
+            'STRING': 'FIXString',
+            'CHAR': 'FIXChar',
+            'PRICE': 'FIXPrice',
+            'INT': 'FIXInt',
+            'AMT': 'FIXAmt',
+            'QTY': 'FIXQty',
+            'CURRENCY': 'FIXCurrency',
+            'MULTIPLEVALUESTRING': 'FIXMultipleValueString',
+            'EXCHANGE': 'FIXExchange',
+            'MONTHYEAR': 'FIXMonthYear',
+            'DAYOFMONTH': 'FIXDayOfMonth',
+            'BOOLEAN': 'FIXBoolean',
+            'LOCALMKTDATE': 'FIXLocalMktDate',
+            'DATA': 'FIXData',
+            'FLOAT': 'FIXFloat',
+            'LENGTH': 'FIXLength',
+            'NUMINGROUP': 'FIXNumInGroup',
+            'PERCENTAGE': 'FIXPercentage',
+            'SEQNUM': 'FIXSeqNum',
+            'UTCTIMESTAMP': 'FIXUTCTimestamp',
+            'UTCTIMEONLY': 'FIXUTCTimeOnly',
+            'UTCDATEONLY': 'FIXUTCDateOnly',
+            'COUNTRY': 'FIXCountry',
+            'TZTIMEONLY': 'FIXTZTimeOnly',
+            'TZTIMESTAMP': 'FIXTZTimestamp',
+            'XMLDATA': 'FIXXMLData',
+            'LANGUAGE': 'FIXLanguage'
+        }
+        
+        python_type = type_mapping.get(field_type, 'FIXString')
+        
+        # Create field model file
+        field_file = os.path.join(fields_dir, f"{field_name.lower()}.py")
+        with open(field_file, 'w') as f:
+            f.write(f"""
+from .base import FIXFieldBase
+from .types import {python_type}
+
+class {field_name}(FIXFieldBase):
+    \"\"\"FIX {field_name} field.\"\"\"
+    tag: str = "{field_tag}"
+    name: str = "{field_name}"
+    type: str = "{field_type}"
+    value: {python_type}
+""")
+            
+            # Add enum values if present
+            if field_values:
+                f.write("\n    # Enum values\n")
+                for enum_value, description in field_values.items():
+                    f.write(f"    # {enum_value}: {description}\n")
+
+def generate_common_field_types(fields_dir):
+    """Generate the common.py file with type definitions used by all components."""
+    logger.info("Generating common field types...")
+    
+    common_py_path = os.path.join(fields_dir, "common.py")
+    with open(common_py_path, "w") as f:
+        f.write('''"""
+Common field types for FIX 4.4 messages.
+
+This module provides common field type definitions used by FIX 4.4 components and messages.
+"""
+from typing import Optional, Union, List, Dict, Any
+from datetime import datetime, date, time
+from pydantic import BaseModel, Field
+
+# Define common type aliases
+TagNum = str  # FIX tag numbers
+NumInGroup = int  # Number of repeated groups
+SeqNum = int  # Message sequence number
+Length = int  # Length field
+Boolean = str  # Y/N boolean
+Price = float  # Price field
+Qty = float  # Quantity field
+Currency = str  # Currency code
+Country = str  # Country code
+Exchange = str  # Exchange identifier
+UTCTimestamp = datetime  # UTC timestamp
+UTCDate = date  # UTC date
+UTCTimeOnly = time  # UTC time
+LocalMktDate = date  # Local market date
+Percentage = float  # Percentage
+Amt = float  # Monetary amount
+MultipleValueString = str  # Multiple value string
+''')
+
+def get_required_imports(fields: List[Dict]) -> Set[str]:
+    """Get required Python imports for the given fields."""
+    imports = {
+        "from datetime import datetime, date, time",
+        "from typing import List, Optional, Union, Dict, Any, Literal",
+        "from pydantic import Field, ConfigDict",
+        "from src.models.fix.generated.fields.common import *",
+        "from src.models.fix.base import FIXComponentBase"
+    }
+    
+    for field in fields:
+        if field.get("type") == "COMPONENT":
+            component_name = field["name"]
+            imports.add(f"from .{component_name.lower()} import {component_name}Component")
+        elif field.get("type") == "GROUP":
+            group_name = field["name"]
+            imports.add(f"from .{group_name.lower()} import {group_name}Group")
+    
+    return imports
+
+def generate_field_model(field: Dict) -> str:
+    """Generate Pydantic field model for a FIX field."""
+    name = field["name"]
+    tag = field.get("tag", "")
+    field_type = field.get("type", "STRING")
+    description = field.get("description", "").replace('"', '\\"')
+    required = field.get("required", "0") == "Y"
+    
+    # Handle special cases for types
+    if field_type == "DATA":
+        python_type = "bytes"
+    elif field_type in ["UTCTIMESTAMP", "TZTIMESTAMP"]:
+        python_type = "datetime"
+    elif field_type in ["UTCDATE", "UTCDATEONLY", "LOCALMKTDATE"]:
+        python_type = "date"
+    elif field_type in ["UTCTIMEONLY", "TZTIMEONLY"]:
+        python_type = "time"
+    else:
+        python_type = FIX_TYPE_MAP.get(field_type, "str")
+    
+    # Handle optional fields
+    if not required:
+        python_type = f"Optional[{python_type}]"
+    
+    # Generate field model
+    if required:
+        return f"{name}: {python_type} = Field(..., description='{description}', alias='{tag}')"
+    else:
+        return f"{name}: {python_type} = Field(None, description='{description}', alias='{tag}')"
+
+def generate_component_models(components, fields, output_dir):
+    """Generate Pydantic models for FIX components."""
+    logger.info("Generating component models...")
+    components_dir = os.path.join(output_dir, "components")
+    os.makedirs(components_dir, exist_ok=True)
+
+    # Create __init__.py
+    init_path = os.path.join(components_dir, "__init__.py")
+    with open(init_path, "w") as f:
+        f.write("# FIX 4.4 Component models\n")
+
+    # Track which component files have been written to avoid duplicates
+    written_components = set()
+
+    for comp_name, comp_fields in components.items():
+        # Skip if we've already written this component file
+        if comp_name.lower() in written_components:
+            logger.info(f"Skipping duplicate component {comp_name} (already processed)")
+            continue
+
+        # Mark this component as written
+        written_components.add(comp_name.lower())
+        
+        # Set to track imported components to avoid duplicates
+        imported_components = set()
+        
+        # Import preamble
+        imports = [
+            '"""\n',
+            f"FIX 4.4 {comp_name} Component\n\n",
+            f"This module contains the Pydantic model for the {comp_name} component.\n",
+            '"""\n',
+            "from datetime import datetime, date, time\n",
+            "from typing import List, Optional, Union, Dict, Any, Literal\n",
+            "from pydantic import BaseModel, Field, ConfigDict\n",
+            "from src.models.fix.generated.fields.common import *\n",
+            "from src.models.fix.base import FIXMessageBase\n"
+        ]
+
+        # Track the mapping of components to their respective groups
+        component_to_group_map = {}
+        group_fields = {}
+        field_names_in_groups = set()
+        
+        # First pass - identify groups and their components
+        for field in comp_fields:
+            field_name = field.get('name', '')
+            
+            # Collect group fields and their components
+            if field.get('is_group', False):
+                group_name = field_name
+                group_fields[group_name] = field.get('fields', [])
+                
+                # Track which components belong to this group
+                for group_field in field.get('fields', []):
+                    group_field_name = group_field.get('name', '')
+                    field_names_in_groups.add(group_field_name.lower())
+                    
+                    # If this is a component, map it to this group
+                    if group_field.get('is_component', False):
+                        component_to_group_map[group_field_name] = group_name
+        
+        # Special case for BidCompRspGrp - CommissionData should be in NoBidComponents
+        if comp_name == "BidCompRspGrp":
+            logger.info(f"Special case handling for BidCompRspGrp: Moving CommissionData to NoBidComponents group")
+            # Find CommissionData field
+            commission_data_field = next((f for f in comp_fields if f.get('is_component', False) and f.get('name') == 'CommissionData'), None)
+            if commission_data_field:
+                # Remove CommissionData from main component fields
+                comp_fields = [f for f in comp_fields if not (f.get('is_component', False) and f.get('name') == 'CommissionData')]
+                
+                # Add CommissionData to NoBidComponents group if it exists
+                if 'NoBidComponents' in group_fields:
+                    # Add CommissionData to group fields
+                    group_fields['NoBidComponents'].append(commission_data_field)
+                    # Mark CommissionData as belonging to NoBidComponents group
+                    component_to_group_map['CommissionData'] = 'NoBidComponents'
+                    # Add to field_names_in_groups
+                    field_names_in_groups.add('commissiondata')
+                    
+                    # Ensure NoBidComponents group is properly structured
+                    group_fields['NoBidComponents'] = [
+                        {
+                            'name': 'NoBidComponents',
+                            'type': 'NUMINGROUP',
+                            'tag': '420',
+                            'required': True
+                        },
+                        *group_fields['NoBidComponents']
+                    ]
+                    
+                    # Make CommissionData optional in the group
+                    for field in group_fields['NoBidComponents']:
+                        if field.get('name') == 'CommissionData':
+                            field['required'] = False
+        
+        # Debug log the group mapping
+        logger.info(f"Component to group mapping for {comp_name}: {component_to_group_map}")
+        logger.info(f"Fields in groups for {comp_name}: {field_names_in_groups}")
+        
+        # Second pass - collect imports
+        for field in comp_fields:
+            if field.get('is_component', False):
+                comp_name_to_import = field.get('name', '')
+                if comp_name_to_import and comp_name_to_import not in imported_components:
+                    # Don't import the component itself to avoid circular imports
+                    if comp_name_to_import.lower() != comp_name.lower():
+                        imports.append(f"from src.models.fix.generated.components.{comp_name_to_import.lower()} import {comp_name_to_import}Component\n")
+                        imported_components.add(comp_name_to_import)
+        
+        # Also add imports for components in groups
+        for group_name, group_fields_list in group_fields.items():
+            for field in group_fields_list:
+                if field.get('is_component', False):
+                    comp_name_to_import = field.get('name', '')
+                    if comp_name_to_import and comp_name_to_import not in imported_components:
+                        # Don't import the component itself to avoid circular imports
+                        if comp_name_to_import.lower() != comp_name.lower():
+                            imports.append(f"from src.models.fix.generated.components.{comp_name_to_import.lower()} import {comp_name_to_import}Component\n")
+                            imported_components.add(comp_name_to_import)
+        
+        # Add blank line after imports
+        imports.append("\n\n")
+        
+        # Generate group classes
+        group_classes = []
+        for group_name, group_field_list in group_fields.items():
+            # Add Group suffix to class name
+            class_name = f"{group_name}Group"
+            group_class = [
+                f"class {class_name}(FIXMessageBase):\n",
+                f'    """\n',
+                f"    {group_name} group fields\n",
+                f'    """\n',
+                f"    model_config = ConfigDict(\n",
+                f"        populate_by_name=True,\n",
+                f"        validate_by_name=True,\n",
+                f"        json_encoders={{\n",
+                f"            datetime: lambda v: v.isoformat(),\n",
+                f"            date: lambda v: v.isoformat(),\n",
+                f"            time: lambda v: v.isoformat()\n",
+                f"        }}\n",
+                f"    )\n",
+                f"    \n"
+            ]
+            
+            # Add fields to the group class
+            for field in group_field_list:
+                field_name = field.get('name', '')
+                field_type = field.get('type', 'STRING')
+                tag = field.get('tag', '')
+                description = field.get('description', '')
+                required = field.get('required', False)
+                
+                if field.get('is_component', False):
+                    # Handle component fields
+                    if required:
+                        group_class.append(f"    {field_name}: {field_name}Component = Field(..., description='{field_name} component')\n")
+                    else:
+                        group_class.append(f"    {field_name}: Optional[{field_name}Component] = Field(None, description='{field_name} component')\n")
+                else:
+                    # Handle regular fields
+                    python_type = FIX_TYPE_MAP.get(field_type, 'str')
+                    if required:
+                        group_class.append(f"    {field_name}: {python_type} = Field(..., description='{description}', alias='{tag}')\n")
+                    else:
+                        group_class.append(f"    {field_name}: Optional[{python_type}] = Field(None, description='{description}', alias='{tag}')\n")
+            
+            group_class.append("\n\n")
+            group_classes.extend(group_class)
+        
+        # Generate the main component class with Component suffix
+        component_class = [
+            f"class {comp_name}Component(FIXMessageBase):\n",
+            f'    """\n',
+            f"    FIX 4.4 {comp_name} Component\n",
+            f'    """\n',
+            f"    model_config = ConfigDict(\n",
+            f"        populate_by_name=True,\n",
+            f"        validate_by_name=True,\n",
+            f"        json_encoders={{\n",
+            f"            datetime: lambda v: v.isoformat(),\n",
+            f"            date: lambda v: v.isoformat(),\n",
+            f"            time: lambda v: v.isoformat()\n",
+            f"        }}\n",
+            f"    )\n",
+            f"    \n"
+        ]
+        
+        # Add fields to the component class (excluding those in groups)
+        for field in comp_fields:
+            field_name = field.get('name', '')
+            
+            # Skip fields that are groups (they'll be added as count and items fields)
+            if field.get('is_group', False):
+                continue
+                
+            # Skip fields that are already in groups to avoid duplication
+            if field_name.lower() in field_names_in_groups:
+                continue
+                
+            # Skip component fields that belong to a group
+            if field.get('is_component', False) and field_name in component_to_group_map:
+                logger.info(f"Skipping component {field_name} in {comp_name} as it belongs to group {component_to_group_map[field_name]}")
+                continue
+                
+            field_type = field.get('type', 'STRING')
+            tag = field.get('tag', '')
+            description = field.get('description', '')
+            required = field.get('required', False)
+            
+            if field.get('is_component', False):
+                # Handle component fields (only if they don't belong to a group)
+                if required:
+                    component_class.append(f"    {field_name}: {field_name}Component = Field(..., description='{field_name} component')\n")
+                else:
+                    component_class.append(f"    {field_name}: Optional[{field_name}Component] = Field(None, description='{field_name} component')\n")
+            else:
+                # Handle regular fields
+                python_type = FIX_TYPE_MAP.get(field_type, 'str')
+                if required:
+                    component_class.append(f"    {field_name}: {python_type} = Field(..., description='{description}', alias='{tag}')\n")
+                else:
+                    component_class.append(f"    {field_name}: Optional[{python_type}] = Field(None, description='{description}', alias='{tag}')\n")
+        
+        # Add the group count and items fields
+        for group_name, group_field_list in group_fields.items():
+            # Get the tag for the group count field
+            group_count_tag = ''
+            for field in fields.values():
+                if field.get('name') == group_name:
+                    group_count_tag = field.get('tag', '')
+                    break
+            
+            logger.info(f"Looking for tag for group: {group_name}, initial tag value: '{group_count_tag}'")
+            
+            if not group_count_tag and group_name in fields:
+                group_count_tag = fields[group_name].get('tag', '')
+                logger.info(f"  Looked up tag in fields[{group_name}]: '{group_count_tag}'")
+            
+            logger.info(f"Final tag for {group_name}: '{group_count_tag}'")
+            
+            # Add the count field
+            component_class.append(f"    {group_name}: Optional[int] = Field(None, description='Number of {group_name} entries', alias='{group_count_tag}')\n")
+            
+            # Add the items field with _items suffix
+            items_field_name = f"{group_name}_items"
+            component_class.append(f"    {items_field_name}: Optional[List[{group_name}Group]] = Field(None, description='{group_name} entries')\n")
+        
+        component_class.append("\n")
+        
+        # Write the component model file
+        file_path = os.path.join(components_dir, f"{comp_name.lower()}.py")
+        with open(file_path, "w") as f:
+            # Write imports
+            for line in imports:
+                f.write(line)
+            
+            # Write group classes
+            for line in group_classes:
+                f.write(line)
+            
+            # Write component class
+            for line in component_class:
+                f.write(line)
+
+def generate_message_models(messages: Dict[str, Any], components: Dict[str, Any], output_dir: str) -> None:
+    """Generate Pydantic models for FIX messages."""
+    logger.info("Generating message models...")
+    
+    # Create messages directory if it doesn't exist
+    messages_dir = os.path.join(output_dir, 'messages')
+    os.makedirs(messages_dir, exist_ok=True)
+    
+    for msg_name, msg_data in messages.items():
+        logger.info(f"Generating model for message: {msg_name}")
+        
+        # Initialize empty dictionaries for fields and components
+        fields = {}
+        msg_components = {}
+        
+        # Handle both list and dictionary formats
+        if isinstance(msg_data, list):
+            for field in msg_data:
+                if isinstance(field, dict):
+                    field_name = field.get('name', '')
+                    if field_name:
+                        fields[field_name] = field
+                else:
+                    logger.warning(f"Unexpected field format in {msg_name}: {field}")
+        elif isinstance(msg_data, dict):
+            fields = msg_data.get('fields', {})
+            msg_components = msg_data.get('components', {})
+        
+        # Generate imports
+        imports = [
+            "from pydantic import BaseModel, Field",
+            "from typing import Optional, List",
+            "from datetime import datetime",
+            "from decimal import Decimal",
+            "from ..base import FIXMessageBase"
+        ]
+        
+        # Add component imports
+        components_used = set()
+        for comp_name in msg_components:
+            comp_data = components.get(comp_name, {})
+            if not comp_data:
+                logger.warning(f"Component {comp_name} not found in components dictionary")
+                continue
+            components_used.add(comp_name)
+            imports.append(f"from ..components.{comp_name.lower()} import {comp_name}Component")
+        
+        # Generate model string
+        model_string = f"""class {msg_name}Message(FIXMessageBase):
+    \"""FIX {msg_name} Message\"""
+    MsgType: str = Field('{msg_data.get('msgtype', '')}', description='Message Type')
+
+    # Standard FIX fields
+    SendingTime: Optional[datetime] = Field(None, description='Sending Time')
+    OrigSendingTime: Optional[datetime] = Field(None, description='Original Sending Time')
+    PossDupFlag: Optional[bool] = Field(None, description='Possibly Duplicate')
+    PossResend: Optional[bool] = Field(None, description='Possibly Resend')
+"""
+        
+        # Add fields and components
+        if isinstance(fields, dict):
+            for field_name, field_data in fields.items():
+                if field_name in msg_components:
+                    # Handle component fields
+                    comp_name = field_name
+                    comp_data = components.get(comp_name, {})
+                    if not comp_data:
+                        logger.warning(f"Component {comp_name} not found in components dictionary")
+                        continue
+                        
+                    # Special handling for BidCompRspGrp in BidResponse
+                    if msg_name == "BidResponse" and comp_name == "BidCompRspGrp":
+                        model_string += f"    {comp_name}: Optional[{comp_name}Component] = Field(None, description='Bid Response Group Component')\n"
+                        if comp_name not in components_used:
+                            components_used.add(comp_name)
+                            imports.append(f"from ..components.{comp_name.lower()} import {comp_name}Component")
+                    else:
+                        if field_data.get('required', True):
+                            model_string += f"    {comp_name}: {comp_name}Component = Field(..., description='{comp_name} component')\n"
+                        else:
+                            model_string += f"    {comp_name}: Optional[{comp_name}Component] = Field(None, description='{comp_name} component')\n"
+                        if comp_name not in components_used:
+                            components_used.add(comp_name)
+                            imports.append(f"from ..components.{comp_name.lower()} import {comp_name}Component")
+                else:
+                    # Handle regular fields
+                    field_type = FIELD_TYPES.get(field_data.get('type', 'STRING'), 'str')
+                    tag = field_data.get('tag', '')
+                    if field_data.get('required', True):
+                        model_string += f"    {field_name}: {field_type} = Field(..., description='', alias='{tag}')\n"
+                    else:
+                        model_string += f"    {field_name}: Optional[{field_type}] = Field(None, description='', alias='{tag}')\n"
+        else:
+            # Handle list format
+            for field in fields:
+                if isinstance(field, dict):
+                    field_name = field.get('name', '')
+                    field_type = FIELD_TYPES.get(field.get('type', 'STRING'), 'str')
+                    tag = field.get('tag', '')
+                    required = field.get('required', True)
+                    
+                    if field_name in msg_components:
+                        # Handle component fields
+                        comp_data = components.get(field_name, {})
+                        if not comp_data:
+                            logger.warning(f"Component {field_name} not found in components dictionary")
+                            continue
+                            
+                        # Special handling for BidCompRspGrp in BidResponse
+                        if msg_name == "BidResponse" and field_name == "BidCompRspGrp":
+                            model_string += f"    {field_name}: Optional[{field_name}Component] = Field(None, description='Bid Response Group Component')\n"
+                        else:
+                            if required:
+                                model_string += f"    {field_name}: {field_name}Component = Field(..., description='{field_name} component')\n"
+                            else:
+                                model_string += f"    {field_name}: Optional[{field_name}Component] = Field(None, description='{field_name} component')\n"
+                    else:
+                        # Handle regular fields
+                        if required:
+                            model_string += f"    {field_name}: {field_type} = Field(..., description='', alias='{tag}')\n"
+                        else:
+                            model_string += f"    {field_name}: Optional[{field_type}] = Field(None, description='', alias='{tag}')\n"
+        
+        # Add model_dump method
+        model_string += """
+    def model_dump(self, *args, **kwargs):
+        data = super().model_dump(*args, **kwargs)
+        # Handle nested components
+        for field_name, field_value in data.items():
+            if hasattr(field_value, 'model_dump'):
+                data[field_name] = field_value.model_dump(*args, **kwargs)
+        return data
+"""
+        
+        # Write model to file
+        output_file = os.path.join(messages_dir, f"{msg_name.lower()}.py")
+        with open(output_file, 'w') as f:
+            # Write imports first
+            f.write('\n'.join(imports))
+            f.write('\n\n')
+            # Write model class
+            f.write(model_string)
+        
+        logger.info(f"Generated message model: {output_file}")
+
+def generate_base_models(output_dir: str) -> None:
+    """Generate base models for FIX messages."""
+    logger.info("Generating base models...")
+    base_dir = os.path.join(output_dir, "base")
+    os.makedirs(base_dir, exist_ok=True)
+
+    # Create __init__.py
+    with open(os.path.join(base_dir, "__init__.py"), "w") as f:
+        f.write("# Generated FIX base models\n")
+
+    # Create base.py
+    base_content = '''from datetime import datetime, date, time
+from typing import Dict, Any, Optional, Literal
+from pydantic import BaseModel, Field, ConfigDict
+
+class FIXMessageBase(BaseModel):
+    """FIX message base model with standard header fields."""
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_by_name=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat(),
+            date: lambda v: v.isoformat(),
+            time: lambda v: v.isoformat()
+        }
+    )
+
+    # Standard FIX Header Fields
+    BeginString: Literal["FIX.4.4"] = Field("FIX.4.4", alias='8')
+    BodyLength: Optional[int] = Field(None, alias='9')
+    MsgType: str = Field(..., alias='35')
+    SenderCompID: str = Field(..., alias='49')
+    TargetCompID: str = Field(..., alias='56')
+    MsgSeqNum: int = Field(..., alias='34')
+    SendingTime: datetime = Field(..., alias='52')
+    CheckSum: Optional[str] = Field(None, alias='10')
+    
+    # Additional Standard Header Fields
+    PossDupFlag: Optional[bool] = Field(None, alias='43')
+    PossResend: Optional[bool] = Field(None, alias='97')
+    OrigSendingTime: Optional[datetime] = Field(None, alias='122')
+    DeliverToCompID: Optional[str] = Field(None, alias='128')
+    DeliverToSubID: Optional[str] = Field(None, alias='129')
+    OnBehalfOfCompID: Optional[str] = Field(None, alias='115')
+    OnBehalfOfSubID: Optional[str] = Field(None, alias='116')
+    SecureDataLen: Optional[int] = Field(None, alias='90')
+    SecureData: Optional[str] = Field(None, alias='91')
+    SenderSubID: Optional[str] = Field(None, alias='50')
+    SenderLocationID: Optional[str] = Field(None, alias='142')
+    TargetSubID: Optional[str] = Field(None, alias='57')
+    TargetLocationID: Optional[str] = Field(None, alias='143')
+    OnBehalfOfLocationID: Optional[str] = Field(None, alias='144')
+    DeliverToLocationID: Optional[str] = Field(None, alias='145')
+    LastMsgSeqNumProcessed: Optional[int] = Field(None, alias='369')
+    
+    # Additional fields will be stored in a dictionary
+    additional_fields: Dict[str, Any] = Field(default_factory=dict)
+
+    def model_dump(self, **kwargs) -> Dict[str, Any]:
+        """
+        Convert the message to a dictionary representation.
+        
+        Returns:
+            Dict[str, Any]: Dictionary representation of the message
+        """
+        # Get base fields
+        data = super().model_dump(**kwargs)
+        # Add additional fields
+        if self.additional_fields:
+            data.update(self.additional_fields)
+        return {k: v for k, v in data.items() if v is not None}
+'''
+    with open(os.path.join(base_dir, "base.py"), "w") as f:
+        f.write(base_content)
+
+def generate_init_file(messages, components):
+    """Generate the __init__.py file for the generated models."""
+    logger.info("Generating __init__.py file...")
+    
+    with open(OUTPUT_DIR / "__init__.py", 'w') as f:
+        f.write('''"""
+FIX 4.4 Generated Models
+
+This package contains automatically generated Pydantic models for FIX 4.4.
+"""
+from .base import FIXMessageBase
+from .messages import *
+from .components import *
+''')
+
+def main():
+    """Main function to generate FIX 4.4 Pydantic models."""
+    # Create output directories
+    create_output_dirs()
+    
+    # Parse FIX specification
+    spec_data = parse_fix_spec(str(LOCAL_SPEC_PATH))
+    if not spec_data:
+        logger.error("Failed to parse FIX 4.4 specification")
+        sys.exit(1)
+    
+    # Generate base models
+    generate_base_models(OUTPUT_DIR)
+    
+    # Generate field models
+    generate_field_models(spec_data['fields'], OUTPUT_DIR / "fields")
+    
+    # Generate component models
+    generate_component_models(spec_data['components'], spec_data['fields'], OUTPUT_DIR)
+    
+    # Generate message models
+    generate_message_models(spec_data['messages'], spec_data['components'], OUTPUT_DIR)
+    
+    # Generate __init__.py
+    generate_init_file(spec_data['messages'], spec_data['components'])
+    
+    logger.info(f"Successfully generated FIX 4.4 Pydantic models in {OUTPUT_DIR}")
+
+if __name__ == "__main__":
+    main() 

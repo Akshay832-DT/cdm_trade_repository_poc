@@ -1,29 +1,21 @@
 """
-FIX 4.4 SettlInstructionsData Component
-
-This module contains the Pydantic model for the SettlInstructionsData component.
+FIX Component Model - SettlInstructionsData
 """
-from datetime import datetime, date, time
-from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import Field, ConfigDict
-from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXComponentBase
+
+from ..base import FIXComponentBase
+from .dlvyinstgrp import DlvyInstGrpComponent
+from datetime import date, datetime, time
+from pydantic import Field
+from typing import Optional, List
+
+
+
+
 class SettlInstructionsDataComponent(FIXComponentBase):
-    """
-    FIX 4.4 SettlInstructionsData Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    SettlDeliveryType: Optional[int] = Field(None, description='', alias='172')
-    StandInstDbType: Optional[int] = Field(None, description='', alias='169')
-    StandInstDbName: Optional[str] = Field(None, description='', alias='170')
-    StandInstDbID: Optional[str] = Field(None, description='', alias='171')
-    DlvyInstGrp: Optional[DlvyInstGrpComponent] = Field(None, description='DlvyInstGrp component')
+    """FIX Component - SettlInstructionsData"""
+    SettlDeliveryType: Optional[int] = Field(None, alias='172', description='')
+    StandInstDbType: Optional[int] = Field(None, alias='169', description='')
+    StandInstDbName: Optional[str] = Field(None, alias='170', description='')
+    StandInstDbID: Optional[str] = Field(None, alias='171', description='')
+    DlvyInstGrp: Optional[DlvyInstGrpComponent] = Field(None, description='')
+

@@ -1,30 +1,24 @@
-"""
-FIX Urgency field (tag 61).
-"""
-from .base import FIXFieldBase
-from typing import Optional
-from .types import *
-
-class UrgencyValues:
-    """Enumerated values for Urgency."""
-    VALUE_0 = "0"  # NORMAL
-    VALUE_1 = "1"  # FLASH
-    VALUE_2 = "2"  # BACKGROUND
+"""FIX Field Model"""
+from typing import Optional, List, Dict, Any, Union, Literal
+from pydantic import Field, ConfigDict
+from datetime import datetime, date, time
+from decimal import Decimal
+from ..base.base import FIXFieldBase
 
 class UrgencyField(FIXFieldBase):
-    """"""
-    tag: str = "61"
-    name: str = "Urgency"
-    type: str = "CHAR"
-    value: Literal["0", "1", "2"]
+    """FIX Urgency Field"""
 
-    # Helper methods for enum values
-    @property
-    def is_value_0(self) -> bool:
-        return self.value == "0"
-    @property
-    def is_value_1(self) -> bool:
-        return self.value == "1"
-    @property
-    def is_value_2(self) -> bool:
-        return self.value == "2"
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat() if v else None,
+            date: lambda v: v.isoformat() if v else None,
+            time: lambda v: v.isoformat() if v else None
+        }
+    )
+
+    value: Optional[str] = Field(None, alias='61', description='')
+
+    def __str__(self) -> str:
+        return f"{self.__class__.__name__}(value={self.value})"

@@ -1,59 +1,19 @@
+"""FIX message model for NetworkCounterpartySystemStatusRequest (BC).
+
+Category: 
 """
-FIX NetworkCounterpartySystemStatusRequest Message
-"""
-from ..fields.types import *
-from .base import FIXMessageBase
-from datetime import datetime, date, time
-from pydantic import Field, ConfigDict, model_validator
-from typing import List, Optional, Dict, Any, Union, ForwardRef, TYPE_CHECKING, Literal
-
-if TYPE_CHECKING:
-    from ..components.compidreqgrp import CompIDReqGrpComponent
-
-
-# Forward references for components to avoid circular imports
-CompIDReqGrpComponent = ForwardRef('CompIDReqGrpComponent')
-
+from typing import List, Optional
+from datetime import date, datetime, time
+from pydantic import Field
+from ..base import FIXMessageBase
+from ..components.compidreqgrp import CompIDReqGrpComponent
 
 class NetworkCounterpartySystemStatusRequestMessage(FIXMessageBase):
-    """NetworkCounterpartySystemStatusRequest Message"""
+    """FIX message model for NetworkCounterpartySystemStatusRequest."""
 
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_assignment=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat() if v else None,
-            date: lambda v: v.isoformat() if v else None,
-            time: lambda v: v.isoformat() if v else None
-        }
-    )
+    MsgType: str = Field("BC", alias="35")
 
-    MsgType: Literal["NetworkCounterpartySystemStatusRequest"] = Field("NetworkCounterpartySystemStatusRequest", alias="35", description="Message Type")
+    NetworkRequestType: int = Field(..., alias='935', description='')
+    NetworkRequestID: str = Field(..., alias='933', description='')
+    CompIDReqGrp: Optional[CompIDReqGrpComponent] = Field(None, description='')
 
-    NetworkRequestType: Optional[int] = Field(None, alias="935", description="")
-    NetworkRequestID: Optional[str] = Field(None, alias="933", description="")
-    CompIDReqGrp: ForwardRef('CompIDReqGrpComponent') = Field(None, description="CompIDReqGrp Component")
-
-    @model_validator(mode='after')
-    def resolve_forward_refs(self) -> 'FIXMessageBase':
-        """Resolve forward references."""
-        for field_name, field_value in self.model_fields.items():
-            if isinstance(field_value.annotation, ForwardRef):
-                field_value.annotation = eval(field_value.annotation.__forward_arg__)
-        return self
-
-    def __str__(self) -> str:
-        fields = []
-        if self.MsgType is not None:
-            fields.append(f"MsgType={self.MsgType}")
-        if self.NetworkRequestType is not None:
-            fields.append(f"NetworkRequestType={self.NetworkRequestType}")
-        if self.NetworkRequestID is not None:
-            fields.append(f"NetworkRequestID={self.NetworkRequestID}")
-        if self.CompIDReqGrp is not None:
-            fields.append(f"CompIDReqGrp={self.CompIDReqGrp}")
-        return f"{self.__class__.__name__}({', '.join(fields)})"
-
-
-# Rebuild model to resolve forward references
-NetworkCounterpartySystemStatusRequestMessage.model_rebuild()

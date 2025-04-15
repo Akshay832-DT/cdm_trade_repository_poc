@@ -1,26 +1,24 @@
-"""
-FIX BidRequestTransType field (tag 374).
-"""
-from .base import FIXFieldBase
-from typing import Optional
-from .types import *
-
-class BidRequestTransTypeValues:
-    """Enumerated values for BidRequestTransType."""
-    N = "N"  # NEW
-    C = "C"  # CANCEL
+"""FIX Field Model"""
+from typing import Optional, List, Dict, Any, Union, Literal
+from pydantic import Field, ConfigDict
+from datetime import datetime, date, time
+from decimal import Decimal
+from ..base.base import FIXFieldBase
 
 class BidRequestTransTypeField(FIXFieldBase):
-    """"""
-    tag: str = "374"
-    name: str = "BidRequestTransType"
-    type: str = "CHAR"
-    value: Literal["N", "C"]
+    """FIX BidRequestTransType Field"""
 
-    # Helper methods for enum values
-    @property
-    def is_n(self) -> bool:
-        return self.value == "N"
-    @property
-    def is_c(self) -> bool:
-        return self.value == "C"
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat() if v else None,
+            date: lambda v: v.isoformat() if v else None,
+            time: lambda v: v.isoformat() if v else None
+        }
+    )
+
+    value: Optional[str] = Field(None, alias='374', description='')
+
+    def __str__(self) -> str:
+        return f"{self.__class__.__name__}(value={self.value})"

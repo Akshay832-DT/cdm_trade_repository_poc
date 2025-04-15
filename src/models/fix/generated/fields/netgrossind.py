@@ -1,26 +1,24 @@
-"""
-FIX NetGrossInd field (tag 430).
-"""
-from .base import FIXFieldBase
-from typing import Optional
-from .types import *
-
-class NetGrossIndValues:
-    """Enumerated values for NetGrossInd."""
-    VALUE_1 = "1"  # NET
-    VALUE_2 = "2"  # GROSS
+"""FIX Field Model"""
+from typing import Optional, List, Dict, Any, Union, Literal
+from pydantic import Field, ConfigDict
+from datetime import datetime, date, time
+from decimal import Decimal
+from ..base.base import FIXFieldBase
 
 class NetGrossIndField(FIXFieldBase):
-    """"""
-    tag: str = "430"
-    name: str = "NetGrossInd"
-    type: str = "INT"
-    value: Literal["1", "2"]
+    """FIX NetGrossInd Field"""
 
-    # Helper methods for enum values
-    @property
-    def is_value_1(self) -> bool:
-        return self.value == "1"
-    @property
-    def is_value_2(self) -> bool:
-        return self.value == "2"
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat() if v else None,
+            date: lambda v: v.isoformat() if v else None,
+            time: lambda v: v.isoformat() if v else None
+        }
+    )
+
+    value: Optional[int] = Field(None, alias='430', description='')
+
+    def __str__(self) -> str:
+        return f"{self.__class__.__name__}(value={self.value})"

@@ -1,30 +1,24 @@
-"""
-FIX IOITransType field (tag 28).
-"""
-from .base import FIXFieldBase
-from typing import Optional
-from .types import *
-
-class IOITransTypeValues:
-    """Enumerated values for IOITransType."""
-    N = "N"  # NEW
-    C = "C"  # CANCEL
-    R = "R"  # REPLACE
+"""FIX Field Model"""
+from typing import Optional, List, Dict, Any, Union, Literal
+from pydantic import Field, ConfigDict
+from datetime import datetime, date, time
+from decimal import Decimal
+from ..base.base import FIXFieldBase
 
 class IOITransTypeField(FIXFieldBase):
-    """"""
-    tag: str = "28"
-    name: str = "IOITransType"
-    type: str = "CHAR"
-    value: Literal["N", "C", "R"]
+    """FIX IOITransType Field"""
 
-    # Helper methods for enum values
-    @property
-    def is_n(self) -> bool:
-        return self.value == "N"
-    @property
-    def is_c(self) -> bool:
-        return self.value == "C"
-    @property
-    def is_r(self) -> bool:
-        return self.value == "R"
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat() if v else None,
+            date: lambda v: v.isoformat() if v else None,
+            time: lambda v: v.isoformat() if v else None
+        }
+    )
+
+    value: Optional[str] = Field(None, alias='28', description='')
+
+    def __str__(self) -> str:
+        return f"{self.__class__.__name__}(value={self.value})"

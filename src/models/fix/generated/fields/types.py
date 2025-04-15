@@ -1,34 +1,33 @@
-"""
-Type definitions for FIX fields.
-"""
-from typing import List, Optional, Union, Literal
-from datetime import datetime, date, time
+
+from typing import Literal, Union, Optional
+from datetime import datetime
 from decimal import Decimal
 
-# Common FIX field type aliases
+# Define type aliases for FIX field types
 FIXString = str
 FIXChar = str
-FIXPrice = float
+FIXPrice = Decimal
 FIXInt = int
-FIXAmt = float
-FIXQty = float
+FIXAmt = Decimal
+FIXQty = Decimal
 FIXCurrency = str
-FIXMultipleValueString = List[str]
-FIXMultipleStringValue = List[str]
-FIXMultipleCharValue = List[str]
-FIXBoolean = bool
-FIXLocalMktDate = date
+FIXMultipleValueString = str
+FIXExchange = str
 FIXMonthYear = str
-FIXUTCTimestamp = datetime
-FIXUTCTimeOnly = time
-FIXUTCDateOnly = date
+FIXDayOfMonth = int
+FIXBoolean = bool
+FIXLocalMktDate = str
+FIXData = str
+FIXFloat = float
+FIXLength = int
 FIXNumInGroup = int
 FIXPercentage = float
 FIXSeqNum = int
-FIXLength = int
-FIXData = str
+FIXUTCTimestamp = datetime
+FIXUTCTimeOnly = str
+FIXUTCDateOnly = str
 FIXCountry = str
-FIXExchange = str
-FIXLanguage = str
+FIXTZTimeOnly = str
+FIXTZTimestamp = datetime
 FIXXMLData = str
-FIXDayOfMonth = int
+FIXLanguage = str

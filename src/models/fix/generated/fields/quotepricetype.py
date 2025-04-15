@@ -1,58 +1,24 @@
-"""
-FIX QuotePriceType field (tag 692).
-"""
-from .base import FIXFieldBase
-from typing import Optional
-from .types import *
-
-class QuotePriceTypeValues:
-    """Enumerated values for QuotePriceType."""
-    VALUE_1 = "1"  # PERCENT
-    VALUE_2 = "2"  # PER_SHARE
-    VALUE_3 = "3"  # FIXED_AMOUNT
-    VALUE_4 = "4"  # DISCOUNT
-    VALUE_5 = "5"  # PREMIUM
-    VALUE_6 = "6"  # SPREAD
-    VALUE_7 = "7"  # TED_PRICE
-    VALUE_8 = "8"  # TED_YIELD
-    VALUE_9 = "9"  # YIELD_SPREAD
-    VALUE_10 = "10"  # YIELD
+"""FIX Field Model"""
+from typing import Optional, List, Dict, Any, Union, Literal
+from pydantic import Field, ConfigDict
+from datetime import datetime, date, time
+from decimal import Decimal
+from ..base.base import FIXFieldBase
 
 class QuotePriceTypeField(FIXFieldBase):
-    """"""
-    tag: str = "692"
-    name: str = "QuotePriceType"
-    type: str = "INT"
-    value: Literal["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+    """FIX QuotePriceType Field"""
 
-    # Helper methods for enum values
-    @property
-    def is_value_1(self) -> bool:
-        return self.value == "1"
-    @property
-    def is_value_2(self) -> bool:
-        return self.value == "2"
-    @property
-    def is_value_3(self) -> bool:
-        return self.value == "3"
-    @property
-    def is_value_4(self) -> bool:
-        return self.value == "4"
-    @property
-    def is_value_5(self) -> bool:
-        return self.value == "5"
-    @property
-    def is_value_6(self) -> bool:
-        return self.value == "6"
-    @property
-    def is_value_7(self) -> bool:
-        return self.value == "7"
-    @property
-    def is_value_8(self) -> bool:
-        return self.value == "8"
-    @property
-    def is_value_9(self) -> bool:
-        return self.value == "9"
-    @property
-    def is_value_10(self) -> bool:
-        return self.value == "10"
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat() if v else None,
+            date: lambda v: v.isoformat() if v else None,
+            time: lambda v: v.isoformat() if v else None
+        }
+    )
+
+    value: Optional[int] = Field(None, alias='692', description='')
+
+    def __str__(self) -> str:
+        return f"{self.__class__.__name__}(value={self.value})"

@@ -1,69 +1,50 @@
 """
-FIX 4.4 QuotEntryAckGrp Component
-
-This module contains the Pydantic model for the QuotEntryAckGrp component.
+FIX Component Model - QuotEntryAckGrp
 """
-from datetime import datetime, date, time
-from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import Field, ConfigDict
-from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXComponentBase
+
+from ..base import FIXComponentBase
+from .instrmtleggrp import InstrmtLegGrpComponent
+from .instrument import InstrumentComponent
+from datetime import date, datetime, time
+from pydantic import Field
+from typing import Optional, List
+
+
 class NoQuoteEntriesGroup(FIXComponentBase):
-    """
-    NoQuoteEntries group fields
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    QuoteEntryID: Optional[str] = Field(None, description='', alias='299')
-    BidPx: Optional[float] = Field(None, description='', alias='132')
-    OfferPx: Optional[float] = Field(None, description='', alias='133')
-    BidSize: Optional[float] = Field(None, description='', alias='134')
-    OfferSize: Optional[float] = Field(None, description='', alias='135')
-    ValidUntilTime: Optional[datetime] = Field(None, description='', alias='62')
-    BidSpotRate: Optional[float] = Field(None, description='', alias='188')
-    OfferSpotRate: Optional[float] = Field(None, description='', alias='190')
-    BidForwardPoints: Optional[float] = Field(None, description='', alias='189')
-    OfferForwardPoints: Optional[float] = Field(None, description='', alias='191')
-    MidPx: Optional[float] = Field(None, description='', alias='631')
-    BidYield: Optional[float] = Field(None, description='', alias='632')
-    MidYield: Optional[float] = Field(None, description='', alias='633')
-    OfferYield: Optional[float] = Field(None, description='', alias='634')
-    TransactTime: Optional[datetime] = Field(None, description='', alias='60')
-    TradingSessionID: Optional[str] = Field(None, description='', alias='336')
-    TradingSessionSubID: Optional[str] = Field(None, description='', alias='625')
-    SettlDate: Optional[date] = Field(None, description='', alias='64')
-    OrdType: Optional[str] = Field(None, description='', alias='40')
-    SettlDate2: Optional[date] = Field(None, description='', alias='193')
-    OrderQty2: Optional[float] = Field(None, description='', alias='192')
-    BidForwardPoints2: Optional[float] = Field(None, description='', alias='642')
-    OfferForwardPoints2: Optional[float] = Field(None, description='', alias='643')
-    Currency: Optional[str] = Field(None, description='', alias='15')
-    QuoteEntryRejectReason: Optional[int] = Field(None, description='', alias='368')
+
+    """FIX Group - NoQuoteEntries"""
+
+    QuoteEntryID: Optional[str] = Field(None, alias='299', description='')
+    BidPx: Optional[float] = Field(None, alias='132', description='')
+    OfferPx: Optional[float] = Field(None, alias='133', description='')
+    BidSize: Optional[float] = Field(None, alias='134', description='')
+    OfferSize: Optional[float] = Field(None, alias='135', description='')
+    ValidUntilTime: Optional[datetime] = Field(None, alias='62', description='')
+    BidSpotRate: Optional[float] = Field(None, alias='188', description='')
+    OfferSpotRate: Optional[float] = Field(None, alias='190', description='')
+    BidForwardPoints: Optional[float] = Field(None, alias='189', description='')
+    OfferForwardPoints: Optional[float] = Field(None, alias='191', description='')
+    MidPx: Optional[float] = Field(None, alias='631', description='')
+    BidYield: Optional[float] = Field(None, alias='632', description='')
+    MidYield: Optional[float] = Field(None, alias='633', description='')
+    OfferYield: Optional[float] = Field(None, alias='634', description='')
+    TransactTime: Optional[datetime] = Field(None, alias='60', description='')
+    TradingSessionID: Optional[str] = Field(None, alias='336', description='')
+    TradingSessionSubID: Optional[str] = Field(None, alias='625', description='')
+    SettlDate: Optional[date] = Field(None, alias='64', description='')
+    OrdType: Optional[str] = Field(None, alias='40', description='')
+    SettlDate2: Optional[date] = Field(None, alias='193', description='')
+    OrderQty2: Optional[float] = Field(None, alias='192', description='')
+    BidForwardPoints2: Optional[float] = Field(None, alias='642', description='')
+    OfferForwardPoints2: Optional[float] = Field(None, alias='643', description='')
+    Currency: Optional[str] = Field(None, alias='15', description='')
+    QuoteEntryRejectReason: Optional[int] = Field(None, alias='368', description='')
+    Instrument: Optional[InstrumentComponent] = Field(None, description='')
+    InstrmtLegGrp: Optional[InstrmtLegGrpComponent] = Field(None, description='')
+
 
 
 class QuotEntryAckGrpComponent(FIXComponentBase):
-    """
-    FIX 4.4 QuotEntryAckGrp Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    Instrument: Optional[InstrumentComponent] = Field(None, description='Instrument component')
-    InstrmtLegGrp: Optional[InstrmtLegGrpComponent] = Field(None, description='InstrmtLegGrp component')
-    NoQuoteEntries: Optional[int] = Field(None, description='Number of NoQuoteEntries entries', alias='')
-    NoQuoteEntries_items: List[NoQuoteEntriesGroup] = Field(default_factory=list)
+    """FIX Component - QuotEntryAckGrp"""
+
+

@@ -1,45 +1,24 @@
 """
-FIX 4.4 CpctyConfGrp Component
-
-This module contains the Pydantic model for the CpctyConfGrp component.
+FIX Component Model - CpctyConfGrp
 """
-from datetime import datetime, date, time
-from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import Field, ConfigDict
-from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXComponentBase
+
+from ..base import FIXComponentBase
+from datetime import date, datetime, time
+from pydantic import Field
+from typing import Optional, List
+
+
 class NoCapacitiesGroup(FIXComponentBase):
-    """
-    NoCapacities group fields
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    OrderCapacity: str = Field(..., description='', alias='528')
-    OrderRestrictions: Optional[List[str]] = Field(None, description='', alias='529')
-    OrderCapacityQty: float = Field(..., description='', alias='863')
+
+    """FIX Group - NoCapacities"""
+
+    OrderCapacity: str = Field(alias='528', description='')
+    OrderRestrictions: Optional[str] = Field(None, alias='529', description='')
+    OrderCapacityQty: float = Field(alias='863', description='')
+
 
 
 class CpctyConfGrpComponent(FIXComponentBase):
-    """
-    FIX 4.4 CpctyConfGrp Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    NoCapacities: Optional[int] = Field(None, description='Number of NoCapacities entries', alias='')
-    NoCapacities_items: List[NoCapacitiesGroup] = Field(default_factory=list)
+    """FIX Component - CpctyConfGrp"""
+
+

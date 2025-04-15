@@ -1,75 +1,58 @@
 """
-FIX 4.4 SideCrossOrdModGrp Component
-
-This module contains the Pydantic model for the SideCrossOrdModGrp component.
+FIX Component Model - SideCrossOrdModGrp
 """
-from datetime import datetime, date, time
-from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import Field, ConfigDict
-from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXComponentBase
+
+from ..base import FIXComponentBase
+from .commissiondata import CommissionDataComponent
+from .orderqtydata import OrderQtyDataComponent
+from .parties import PartiesComponent
+from .preallocgrp import PreAllocGrpComponent
+from datetime import date, datetime, time
+from pydantic import Field
+from typing import Optional, List
+
+
 class NoSidesGroup(FIXComponentBase):
-    """
-    NoSides group fields
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    Side: str = Field(..., description='', alias='54')
-    ClOrdID: str = Field(..., description='', alias='11')
-    SecondaryClOrdID: Optional[str] = Field(None, description='', alias='526')
-    ClOrdLinkID: Optional[str] = Field(None, description='', alias='583')
-    TradeOriginationDate: Optional[date] = Field(None, description='', alias='229')
-    TradeDate: Optional[date] = Field(None, description='', alias='75')
-    Account: Optional[str] = Field(None, description='', alias='1')
-    AcctIDSource: Optional[int] = Field(None, description='', alias='660')
-    AccountType: Optional[int] = Field(None, description='', alias='581')
-    DayBookingInst: Optional[str] = Field(None, description='', alias='589')
-    BookingUnit: Optional[str] = Field(None, description='', alias='590')
-    PreallocMethod: Optional[str] = Field(None, description='', alias='591')
-    AllocID: Optional[str] = Field(None, description='', alias='70')
-    QtyType: Optional[int] = Field(None, description='', alias='854')
-    OrderCapacity: Optional[str] = Field(None, description='', alias='528')
-    OrderRestrictions: Optional[List[str]] = Field(None, description='', alias='529')
-    CustOrderCapacity: Optional[int] = Field(None, description='', alias='582')
-    ForexReq: Optional[bool] = Field(None, description='', alias='121')
-    SettlCurrency: Optional[str] = Field(None, description='', alias='120')
-    BookingType: Optional[int] = Field(None, description='', alias='775')
-    Text: Optional[str] = Field(None, description='', alias='58')
-    EncodedTextLen: Optional[int] = Field(None, description='', alias='354')
-    EncodedText: Optional[str] = Field(None, description='', alias='355')
-    PositionEffect: Optional[str] = Field(None, description='', alias='77')
-    CoveredOrUncovered: Optional[int] = Field(None, description='', alias='203')
-    CashMargin: Optional[str] = Field(None, description='', alias='544')
-    ClearingFeeIndicator: Optional[str] = Field(None, description='', alias='635')
-    SolicitedFlag: Optional[bool] = Field(None, description='', alias='377')
-    SideComplianceID: Optional[str] = Field(None, description='', alias='659')
+
+    """FIX Group - NoSides"""
+
+    Side: str = Field(alias='54', description='')
+    ClOrdID: str = Field(alias='11', description='')
+    SecondaryClOrdID: Optional[str] = Field(None, alias='526', description='')
+    ClOrdLinkID: Optional[str] = Field(None, alias='583', description='')
+    TradeOriginationDate: Optional[date] = Field(None, alias='229', description='')
+    TradeDate: Optional[date] = Field(None, alias='75', description='')
+    Account: Optional[str] = Field(None, alias='1', description='')
+    AcctIDSource: Optional[int] = Field(None, alias='660', description='')
+    AccountType: Optional[int] = Field(None, alias='581', description='')
+    DayBookingInst: Optional[str] = Field(None, alias='589', description='')
+    BookingUnit: Optional[str] = Field(None, alias='590', description='')
+    PreallocMethod: Optional[str] = Field(None, alias='591', description='')
+    AllocID: Optional[str] = Field(None, alias='70', description='')
+    QtyType: Optional[int] = Field(None, alias='854', description='')
+    OrderCapacity: Optional[str] = Field(None, alias='528', description='')
+    OrderRestrictions: Optional[str] = Field(None, alias='529', description='')
+    CustOrderCapacity: Optional[int] = Field(None, alias='582', description='')
+    ForexReq: Optional[bool] = Field(None, alias='121', description='')
+    SettlCurrency: Optional[str] = Field(None, alias='120', description='')
+    BookingType: Optional[int] = Field(None, alias='775', description='')
+    Text: Optional[str] = Field(None, alias='58', description='')
+    EncodedTextLen: Optional[int] = Field(None, alias='354', description='')
+    EncodedText: Optional[str] = Field(None, alias='355', description='')
+    PositionEffect: Optional[str] = Field(None, alias='77', description='')
+    CoveredOrUncovered: Optional[int] = Field(None, alias='203', description='')
+    CashMargin: Optional[str] = Field(None, alias='544', description='')
+    ClearingFeeIndicator: Optional[str] = Field(None, alias='635', description='')
+    SolicitedFlag: Optional[bool] = Field(None, alias='377', description='')
+    SideComplianceID: Optional[str] = Field(None, alias='659', description='')
+    Parties: Optional[PartiesComponent] = Field(None, description='')
+    PreAllocGrp: Optional[PreAllocGrpComponent] = Field(None, description='')
+    OrderQtyData: OrderQtyDataComponent
+    CommissionData: Optional[CommissionDataComponent] = Field(None, description='')
+
 
 
 class SideCrossOrdModGrpComponent(FIXComponentBase):
-    """
-    FIX 4.4 SideCrossOrdModGrp Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    Parties: Optional[PartiesComponent] = Field(None, description='Parties component')
-    PreAllocGrp: Optional[PreAllocGrpComponent] = Field(None, description='PreAllocGrp component')
-    OrderQtyData: OrderQtyDataComponent = Field(..., description='OrderQtyData component')
-    CommissionData: Optional[CommissionDataComponent] = Field(None, description='CommissionData component')
-    NoSides: Optional[int] = Field(None, description='Number of NoSides entries', alias='')
-    NoSides_items: List[NoSidesGroup] = Field(default_factory=list)
+    """FIX Component - SideCrossOrdModGrp"""
+
+

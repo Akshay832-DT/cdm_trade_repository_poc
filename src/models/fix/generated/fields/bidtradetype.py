@@ -1,34 +1,24 @@
-"""
-FIX BidTradeType field (tag 418).
-"""
-from .base import FIXFieldBase
-from typing import Optional
-from .types import *
-
-class BidTradeTypeValues:
-    """Enumerated values for BidTradeType."""
-    R = "R"  # RISK_TRADE
-    G = "G"  # VWAP_GUARANTEE
-    A = "A"  # AGENCY
-    J = "J"  # GUARANTEED_CLOSE
+"""FIX Field Model"""
+from typing import Optional, List, Dict, Any, Union, Literal
+from pydantic import Field, ConfigDict
+from datetime import datetime, date, time
+from decimal import Decimal
+from ..base.base import FIXFieldBase
 
 class BidTradeTypeField(FIXFieldBase):
-    """"""
-    tag: str = "418"
-    name: str = "BidTradeType"
-    type: str = "CHAR"
-    value: Literal["R", "G", "A", "J"]
+    """FIX BidTradeType Field"""
 
-    # Helper methods for enum values
-    @property
-    def is_r(self) -> bool:
-        return self.value == "R"
-    @property
-    def is_g(self) -> bool:
-        return self.value == "G"
-    @property
-    def is_a(self) -> bool:
-        return self.value == "A"
-    @property
-    def is_j(self) -> bool:
-        return self.value == "J"
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat() if v else None,
+            date: lambda v: v.isoformat() if v else None,
+            time: lambda v: v.isoformat() if v else None
+        }
+    )
+
+    value: Optional[str] = Field(None, alias='418', description='')
+
+    def __str__(self) -> str:
+        return f"{self.__class__.__name__}(value={self.value})"

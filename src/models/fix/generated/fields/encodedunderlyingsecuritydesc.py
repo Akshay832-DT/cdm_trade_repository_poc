@@ -1,13 +1,24 @@
-"""
-FIX EncodedUnderlyingSecurityDesc field (tag 365).
-"""
-from .base import FIXFieldBase
-from typing import Optional
-from .types import *
+"""FIX Field Model"""
+from typing import Optional, List, Dict, Any, Union, Literal
+from pydantic import Field, ConfigDict
+from datetime import datetime, date, time
+from decimal import Decimal
+from ..base.base import FIXFieldBase
 
 class EncodedUnderlyingSecurityDescField(FIXFieldBase):
-    """"""
-    tag: str = "365"
-    name: str = "EncodedUnderlyingSecurityDesc"
-    type: str = "DATA"
-    value: str
+    """FIX EncodedUnderlyingSecurityDesc Field"""
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat() if v else None,
+            date: lambda v: v.isoformat() if v else None,
+            time: lambda v: v.isoformat() if v else None
+        }
+    )
+
+    value: Optional[str] = Field(None, alias='365', description='')
+
+    def __str__(self) -> str:
+        return f"{self.__class__.__name__}(value={self.value})"

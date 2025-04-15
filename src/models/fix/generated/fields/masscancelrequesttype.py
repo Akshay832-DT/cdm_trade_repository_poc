@@ -1,46 +1,24 @@
-"""
-FIX MassCancelRequestType field (tag 530).
-"""
-from .base import FIXFieldBase
-from typing import Optional
-from .types import *
-
-class MassCancelRequestTypeValues:
-    """Enumerated values for MassCancelRequestType."""
-    VALUE_1 = "1"  # CANCEL_ORDERS_FOR_A_SECURITY
-    VALUE_2 = "2"  # CANCEL_ORDERS_FOR_AN_UNDERLYING_SECURITY
-    VALUE_3 = "3"  # CANCEL_ORDERS_FOR_A_PRODUCT
-    VALUE_4 = "4"  # CANCEL_ORDERS_FOR_ACFI_CODE
-    VALUE_5 = "5"  # CANCEL_ORDERS_FOR_A_SECURITY_TYPE
-    VALUE_6 = "6"  # CANCEL_ORDERS_FOR_A_TRADING_SESSION
-    VALUE_7 = "7"  # CANCEL_ALL_ORDERS
+"""FIX Field Model"""
+from typing import Optional, List, Dict, Any, Union, Literal
+from pydantic import Field, ConfigDict
+from datetime import datetime, date, time
+from decimal import Decimal
+from ..base.base import FIXFieldBase
 
 class MassCancelRequestTypeField(FIXFieldBase):
-    """"""
-    tag: str = "530"
-    name: str = "MassCancelRequestType"
-    type: str = "CHAR"
-    value: Literal["1", "2", "3", "4", "5", "6", "7"]
+    """FIX MassCancelRequestType Field"""
 
-    # Helper methods for enum values
-    @property
-    def is_value_1(self) -> bool:
-        return self.value == "1"
-    @property
-    def is_value_2(self) -> bool:
-        return self.value == "2"
-    @property
-    def is_value_3(self) -> bool:
-        return self.value == "3"
-    @property
-    def is_value_4(self) -> bool:
-        return self.value == "4"
-    @property
-    def is_value_5(self) -> bool:
-        return self.value == "5"
-    @property
-    def is_value_6(self) -> bool:
-        return self.value == "6"
-    @property
-    def is_value_7(self) -> bool:
-        return self.value == "7"
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat() if v else None,
+            date: lambda v: v.isoformat() if v else None,
+            time: lambda v: v.isoformat() if v else None
+        }
+    )
+
+    value: Optional[str] = Field(None, alias='530', description='')
+
+    def __str__(self) -> str:
+        return f"{self.__class__.__name__}(value={self.value})"

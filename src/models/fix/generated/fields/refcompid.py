@@ -1,13 +1,24 @@
-"""
-FIX RefCompID field (tag 930).
-"""
-from .base import FIXFieldBase
-from typing import Optional
-from .types import *
+"""FIX Field Model"""
+from typing import Optional, List, Dict, Any, Union, Literal
+from pydantic import Field, ConfigDict
+from datetime import datetime, date, time
+from decimal import Decimal
+from ..base.base import FIXFieldBase
 
 class RefCompIDField(FIXFieldBase):
-    """"""
-    tag: str = "930"
-    name: str = "RefCompID"
-    type: str = "STRING"
-    value: str
+    """FIX RefCompID Field"""
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat() if v else None,
+            date: lambda v: v.isoformat() if v else None,
+            time: lambda v: v.isoformat() if v else None
+        }
+    )
+
+    value: Optional[str] = Field(None, alias='930', description='')
+
+    def __str__(self) -> str:
+        return f"{self.__class__.__name__}(value={self.value})"

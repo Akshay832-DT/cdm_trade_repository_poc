@@ -1,67 +1,60 @@
 """
-FIX 4.4 Instrument Component
-
-This module contains the Pydantic model for the Instrument component.
+FIX Component Model - Instrument
 """
-from datetime import datetime, date, time
-from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import Field, ConfigDict
-from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXComponentBase
+
+from ..base import FIXComponentBase
+from .evntgrp import EvntGrpComponent
+from .secaltidgrp import SecAltIDGrpComponent
+from datetime import date, datetime, time
+from pydantic import Field
+from typing import Optional, List
+
+
+
+
 class InstrumentComponent(FIXComponentBase):
-    """
-    FIX 4.4 Instrument Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    Symbol: Optional[str] = Field(None, description='', alias='55')
-    SymbolSfx: Optional[str] = Field(None, description='', alias='65')
-    SecurityID: Optional[str] = Field(None, description='', alias='48')
-    SecurityIDSource: Optional[str] = Field(None, description='', alias='22')
-    Product: Optional[int] = Field(None, description='', alias='460')
-    CFICode: Optional[str] = Field(None, description='', alias='461')
-    SecurityType: Optional[str] = Field(None, description='', alias='167')
-    SecuritySubType: Optional[str] = Field(None, description='', alias='762')
-    MaturityMonthYear: Optional[str] = Field(None, description='', alias='200')
-    MaturityDate: Optional[date] = Field(None, description='', alias='541')
-    PutOrCall: Optional[int] = Field(None, description='', alias='201')
-    CouponPaymentDate: Optional[date] = Field(None, description='', alias='224')
-    IssueDate: Optional[date] = Field(None, description='', alias='225')
-    RepoCollateralSecurityType: Optional[str] = Field(None, description='', alias='239')
-    RepurchaseTerm: Optional[int] = Field(None, description='', alias='226')
-    RepurchaseRate: Optional[float] = Field(None, description='', alias='227')
-    Factor: Optional[float] = Field(None, description='', alias='228')
-    CreditRating: Optional[str] = Field(None, description='', alias='255')
-    InstrRegistry: Optional[str] = Field(None, description='', alias='543')
-    CountryOfIssue: Optional[str] = Field(None, description='', alias='470')
-    StateOrProvinceOfIssue: Optional[str] = Field(None, description='', alias='471')
-    LocaleOfIssue: Optional[str] = Field(None, description='', alias='472')
-    RedemptionDate: Optional[date] = Field(None, description='', alias='240')
-    StrikePrice: Optional[float] = Field(None, description='', alias='202')
-    StrikeCurrency: Optional[str] = Field(None, description='', alias='947')
-    OptAttribute: Optional[str] = Field(None, description='', alias='206')
-    ContractMultiplier: Optional[float] = Field(None, description='', alias='231')
-    CouponRate: Optional[float] = Field(None, description='', alias='223')
-    SecurityExchange: Optional[str] = Field(None, description='', alias='207')
-    Issuer: Optional[str] = Field(None, description='', alias='106')
-    EncodedIssuerLen: Optional[int] = Field(None, description='', alias='348')
-    EncodedIssuer: Optional[str] = Field(None, description='', alias='349')
-    SecurityDesc: Optional[str] = Field(None, description='', alias='107')
-    EncodedSecurityDescLen: Optional[int] = Field(None, description='', alias='350')
-    EncodedSecurityDesc: Optional[str] = Field(None, description='', alias='351')
-    Pool: Optional[str] = Field(None, description='', alias='691')
-    ContractSettlMonth: Optional[str] = Field(None, description='', alias='667')
-    CPProgram: Optional[int] = Field(None, description='', alias='875')
-    CPRegType: Optional[str] = Field(None, description='', alias='876')
-    DatedDate: Optional[date] = Field(None, description='', alias='873')
-    InterestAccrualDate: Optional[date] = Field(None, description='', alias='874')
-    SecAltIDGrp: Optional[SecAltIDGrpComponent] = Field(None, description='SecAltIDGrp component')
-    EvntGrp: Optional[EvntGrpComponent] = Field(None, description='EvntGrp component')
+    """FIX Component - Instrument"""
+    Symbol: Optional[str] = Field(None, alias='55', description='')
+    SymbolSfx: Optional[str] = Field(None, alias='65', description='')
+    SecurityID: Optional[str] = Field(None, alias='48', description='')
+    SecurityIDSource: Optional[str] = Field(None, alias='22', description='')
+    Product: Optional[int] = Field(None, alias='460', description='')
+    CFICode: Optional[str] = Field(None, alias='461', description='')
+    SecurityType: Optional[str] = Field(None, alias='167', description='')
+    SecuritySubType: Optional[str] = Field(None, alias='762', description='')
+    MaturityMonthYear: Optional[str] = Field(None, alias='200', description='')
+    MaturityDate: Optional[date] = Field(None, alias='541', description='')
+    PutOrCall: Optional[int] = Field(None, alias='201', description='')
+    CouponPaymentDate: Optional[date] = Field(None, alias='224', description='')
+    IssueDate: Optional[date] = Field(None, alias='225', description='')
+    RepoCollateralSecurityType: Optional[str] = Field(None, alias='239', description='')
+    RepurchaseTerm: Optional[int] = Field(None, alias='226', description='')
+    RepurchaseRate: Optional[float] = Field(None, alias='227', description='')
+    Factor: Optional[float] = Field(None, alias='228', description='')
+    CreditRating: Optional[str] = Field(None, alias='255', description='')
+    InstrRegistry: Optional[str] = Field(None, alias='543', description='')
+    CountryOfIssue: Optional[str] = Field(None, alias='470', description='')
+    StateOrProvinceOfIssue: Optional[str] = Field(None, alias='471', description='')
+    LocaleOfIssue: Optional[str] = Field(None, alias='472', description='')
+    RedemptionDate: Optional[date] = Field(None, alias='240', description='')
+    StrikePrice: Optional[float] = Field(None, alias='202', description='')
+    StrikeCurrency: Optional[str] = Field(None, alias='947', description='')
+    OptAttribute: Optional[str] = Field(None, alias='206', description='')
+    ContractMultiplier: Optional[float] = Field(None, alias='231', description='')
+    CouponRate: Optional[float] = Field(None, alias='223', description='')
+    SecurityExchange: Optional[str] = Field(None, alias='207', description='')
+    Issuer: Optional[str] = Field(None, alias='106', description='')
+    EncodedIssuerLen: Optional[int] = Field(None, alias='348', description='')
+    EncodedIssuer: Optional[str] = Field(None, alias='349', description='')
+    SecurityDesc: Optional[str] = Field(None, alias='107', description='')
+    EncodedSecurityDescLen: Optional[int] = Field(None, alias='350', description='')
+    EncodedSecurityDesc: Optional[str] = Field(None, alias='351', description='')
+    Pool: Optional[str] = Field(None, alias='691', description='')
+    ContractSettlMonth: Optional[str] = Field(None, alias='667', description='')
+    CPProgram: Optional[int] = Field(None, alias='875', description='')
+    CPRegType: Optional[str] = Field(None, alias='876', description='')
+    DatedDate: Optional[date] = Field(None, alias='873', description='')
+    InterestAccrualDate: Optional[date] = Field(None, alias='874', description='')
+    SecAltIDGrp: Optional[SecAltIDGrpComponent] = Field(None, description='')
+    EvntGrp: Optional[EvntGrpComponent] = Field(None, description='')
+

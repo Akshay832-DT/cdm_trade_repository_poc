@@ -1,53 +1,36 @@
 """
-FIX 4.4 LegQuotGrp Component
-
-This module contains the Pydantic model for the LegQuotGrp component.
+FIX Component Model - LegQuotGrp
 """
-from datetime import datetime, date, time
-from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import Field, ConfigDict
-from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXComponentBase
+
+from ..base import FIXComponentBase
+from .instrumentleg import InstrumentLegComponent
+from .legbenchmarkcurvedata import LegBenchmarkCurveDataComponent
+from .legstipulations import LegStipulationsComponent
+from .nestedparties import NestedPartiesComponent
+from datetime import date, datetime, time
+from pydantic import Field
+from typing import Optional, List
+
+
 class NoLegsGroup(FIXComponentBase):
-    """
-    NoLegs group fields
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    LegQty: Optional[float] = Field(None, description='', alias='687')
-    LegSwapType: Optional[int] = Field(None, description='', alias='690')
-    LegSettlType: Optional[str] = Field(None, description='', alias='587')
-    LegSettlDate: Optional[date] = Field(None, description='', alias='588')
-    LegPriceType: Optional[int] = Field(None, description='', alias='686')
-    LegBidPx: Optional[float] = Field(None, description='', alias='681')
-    LegOfferPx: Optional[float] = Field(None, description='', alias='684')
+
+    """FIX Group - NoLegs"""
+
+    LegQty: Optional[float] = Field(None, alias='687', description='')
+    LegSwapType: Optional[int] = Field(None, alias='690', description='')
+    LegSettlType: Optional[str] = Field(None, alias='587', description='')
+    LegSettlDate: Optional[date] = Field(None, alias='588', description='')
+    LegPriceType: Optional[int] = Field(None, alias='686', description='')
+    LegBidPx: Optional[float] = Field(None, alias='681', description='')
+    LegOfferPx: Optional[float] = Field(None, alias='684', description='')
+    InstrumentLeg: Optional[InstrumentLegComponent] = Field(None, description='')
+    LegStipulations: Optional[LegStipulationsComponent] = Field(None, description='')
+    NestedParties: Optional[NestedPartiesComponent] = Field(None, description='')
+    LegBenchmarkCurveData: Optional[LegBenchmarkCurveDataComponent] = Field(None, description='')
+
 
 
 class LegQuotGrpComponent(FIXComponentBase):
-    """
-    FIX 4.4 LegQuotGrp Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    InstrumentLeg: Optional[InstrumentLegComponent] = Field(None, description='InstrumentLeg component')
-    LegStipulations: Optional[LegStipulationsComponent] = Field(None, description='LegStipulations component')
-    NestedParties: Optional[NestedPartiesComponent] = Field(None, description='NestedParties component')
-    LegBenchmarkCurveData: Optional[LegBenchmarkCurveDataComponent] = Field(None, description='LegBenchmarkCurveData component')
-    NoLegs: Optional[int] = Field(None, description='Number of NoLegs entries', alias='')
-    NoLegs_items: List[NoLegsGroup] = Field(default_factory=list)
+    """FIX Component - LegQuotGrp"""
+
+

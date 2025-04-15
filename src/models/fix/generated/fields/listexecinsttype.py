@@ -1,38 +1,24 @@
-"""
-FIX ListExecInstType field (tag 433).
-"""
-from .base import FIXFieldBase
-from typing import Optional
-from .types import *
-
-class ListExecInstTypeValues:
-    """Enumerated values for ListExecInstType."""
-    VALUE_1 = "1"  # IMMEDIATE
-    VALUE_2 = "2"  # WAIT_FOR_INSTRUCTION
-    VALUE_3 = "3"  # SELL_DRIVEN
-    VALUE_4 = "4"  # BUY_DRIVEN_CASH_TOP_UP
-    VALUE_5 = "5"  # BUY_DRIVEN_CASH_WITHDRAW
+"""FIX Field Model"""
+from typing import Optional, List, Dict, Any, Union, Literal
+from pydantic import Field, ConfigDict
+from datetime import datetime, date, time
+from decimal import Decimal
+from ..base.base import FIXFieldBase
 
 class ListExecInstTypeField(FIXFieldBase):
-    """"""
-    tag: str = "433"
-    name: str = "ListExecInstType"
-    type: str = "CHAR"
-    value: Literal["1", "2", "3", "4", "5"]
+    """FIX ListExecInstType Field"""
 
-    # Helper methods for enum values
-    @property
-    def is_value_1(self) -> bool:
-        return self.value == "1"
-    @property
-    def is_value_2(self) -> bool:
-        return self.value == "2"
-    @property
-    def is_value_3(self) -> bool:
-        return self.value == "3"
-    @property
-    def is_value_4(self) -> bool:
-        return self.value == "4"
-    @property
-    def is_value_5(self) -> bool:
-        return self.value == "5"
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat() if v else None,
+            date: lambda v: v.isoformat() if v else None,
+            time: lambda v: v.isoformat() if v else None
+        }
+    )
+
+    value: Optional[str] = Field(None, alias='433', description='')
+
+    def __str__(self) -> str:
+        return f"{self.__class__.__name__}(value={self.value})"

@@ -1,30 +1,24 @@
-"""
-FIX SideMultiLegReportingType field (tag 752).
-"""
-from .base import FIXFieldBase
-from typing import Optional
-from .types import *
-
-class SideMultiLegReportingTypeValues:
-    """Enumerated values for SideMultiLegReportingType."""
-    VALUE_1 = "1"  # SINGLE_SECURITY
-    VALUE_2 = "2"  # INDIVIDUAL_LEG_OF_A_MULTILEG_SECURITY
-    VALUE_3 = "3"  # MULTILEG_SECURITY
+"""FIX Field Model"""
+from typing import Optional, List, Dict, Any, Union, Literal
+from pydantic import Field, ConfigDict
+from datetime import datetime, date, time
+from decimal import Decimal
+from ..base.base import FIXFieldBase
 
 class SideMultiLegReportingTypeField(FIXFieldBase):
-    """"""
-    tag: str = "752"
-    name: str = "SideMultiLegReportingType"
-    type: str = "INT"
-    value: Literal["1", "2", "3"]
+    """FIX SideMultiLegReportingType Field"""
 
-    # Helper methods for enum values
-    @property
-    def is_value_1(self) -> bool:
-        return self.value == "1"
-    @property
-    def is_value_2(self) -> bool:
-        return self.value == "2"
-    @property
-    def is_value_3(self) -> bool:
-        return self.value == "3"
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat() if v else None,
+            date: lambda v: v.isoformat() if v else None,
+            time: lambda v: v.isoformat() if v else None
+        }
+    )
+
+    value: Optional[int] = Field(None, alias='752', description='')
+
+    def __str__(self) -> str:
+        return f"{self.__class__.__name__}(value={self.value})"

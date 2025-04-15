@@ -1,56 +1,37 @@
 """
-FIX 4.4 SideCrossOrdCxlGrp Component
-
-This module contains the Pydantic model for the SideCrossOrdCxlGrp component.
+FIX Component Model - SideCrossOrdCxlGrp
 """
-from datetime import datetime, date, time
-from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import Field, ConfigDict
-from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXComponentBase
+
+from ..base import FIXComponentBase
+from .orderqtydata import OrderQtyDataComponent
+from .parties import PartiesComponent
+from datetime import date, datetime, time
+from pydantic import Field
+from typing import Optional, List
+
+
 class NoSidesGroup(FIXComponentBase):
-    """
-    NoSides group fields
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    Side: str = Field(..., description='', alias='54')
-    OrigClOrdID: str = Field(..., description='', alias='41')
-    ClOrdID: str = Field(..., description='', alias='11')
-    SecondaryClOrdID: Optional[str] = Field(None, description='', alias='526')
-    ClOrdLinkID: Optional[str] = Field(None, description='', alias='583')
-    OrigOrdModTime: Optional[datetime] = Field(None, description='', alias='586')
-    TradeOriginationDate: Optional[date] = Field(None, description='', alias='229')
-    TradeDate: Optional[date] = Field(None, description='', alias='75')
-    ComplianceID: Optional[str] = Field(None, description='', alias='376')
-    Text: Optional[str] = Field(None, description='', alias='58')
-    EncodedTextLen: Optional[int] = Field(None, description='', alias='354')
-    EncodedText: Optional[str] = Field(None, description='', alias='355')
+
+    """FIX Group - NoSides"""
+
+    Side: str = Field(alias='54', description='')
+    OrigClOrdID: str = Field(alias='41', description='')
+    ClOrdID: str = Field(alias='11', description='')
+    SecondaryClOrdID: Optional[str] = Field(None, alias='526', description='')
+    ClOrdLinkID: Optional[str] = Field(None, alias='583', description='')
+    OrigOrdModTime: Optional[datetime] = Field(None, alias='586', description='')
+    TradeOriginationDate: Optional[date] = Field(None, alias='229', description='')
+    TradeDate: Optional[date] = Field(None, alias='75', description='')
+    ComplianceID: Optional[str] = Field(None, alias='376', description='')
+    Text: Optional[str] = Field(None, alias='58', description='')
+    EncodedTextLen: Optional[int] = Field(None, alias='354', description='')
+    EncodedText: Optional[str] = Field(None, alias='355', description='')
+    Parties: Optional[PartiesComponent] = Field(None, description='')
+    OrderQtyData: OrderQtyDataComponent
+
 
 
 class SideCrossOrdCxlGrpComponent(FIXComponentBase):
-    """
-    FIX 4.4 SideCrossOrdCxlGrp Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    Parties: Optional[PartiesComponent] = Field(None, description='Parties component')
-    OrderQtyData: OrderQtyDataComponent = Field(..., description='OrderQtyData component')
-    NoSides: Optional[int] = Field(None, description='Number of NoSides entries', alias='')
-    NoSides_items: List[NoSidesGroup] = Field(default_factory=list)
+    """FIX Component - SideCrossOrdCxlGrp"""
+
+

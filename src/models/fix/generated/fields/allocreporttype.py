@@ -1,34 +1,24 @@
-"""
-FIX AllocReportType field (tag 794).
-"""
-from .base import FIXFieldBase
-from typing import Optional
-from .types import *
-
-class AllocReportTypeValues:
-    """Enumerated values for AllocReportType."""
-    VALUE_3 = "3"  # SELLSIDE_CALCULATED_USING_PRELIMINARY
-    VALUE_4 = "4"  # SELLSIDE_CALCULATED_WITHOUT_PRELIMINARY
-    VALUE_5 = "5"  # WAREHOUSE_RECAP
-    VALUE_8 = "8"  # REQUEST_TO_INTERMEDIARY
+"""FIX Field Model"""
+from typing import Optional, List, Dict, Any, Union, Literal
+from pydantic import Field, ConfigDict
+from datetime import datetime, date, time
+from decimal import Decimal
+from ..base.base import FIXFieldBase
 
 class AllocReportTypeField(FIXFieldBase):
-    """"""
-    tag: str = "794"
-    name: str = "AllocReportType"
-    type: str = "INT"
-    value: Literal["3", "4", "5", "8"]
+    """FIX AllocReportType Field"""
 
-    # Helper methods for enum values
-    @property
-    def is_value_3(self) -> bool:
-        return self.value == "3"
-    @property
-    def is_value_4(self) -> bool:
-        return self.value == "4"
-    @property
-    def is_value_5(self) -> bool:
-        return self.value == "5"
-    @property
-    def is_value_8(self) -> bool:
-        return self.value == "8"
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat() if v else None,
+            date: lambda v: v.isoformat() if v else None,
+            time: lambda v: v.isoformat() if v else None
+        }
+    )
+
+    value: Optional[int] = Field(None, alias='794', description='')
+
+    def __str__(self) -> str:
+        return f"{self.__class__.__name__}(value={self.value})"

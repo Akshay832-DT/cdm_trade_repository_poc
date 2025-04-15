@@ -1,44 +1,23 @@
 """
-FIX 4.4 UndSecAltIDGrp Component
-
-This module contains the Pydantic model for the UndSecAltIDGrp component.
+FIX Component Model - UndSecAltIDGrp
 """
-from datetime import datetime, date, time
-from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import Field, ConfigDict
-from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXComponentBase
+
+from ..base import FIXComponentBase
+from datetime import date, datetime, time
+from pydantic import Field
+from typing import Optional, List
+
+
 class NoUnderlyingSecurityAltIDGroup(FIXComponentBase):
-    """
-    NoUnderlyingSecurityAltID group fields
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    UnderlyingSecurityAltID: Optional[str] = Field(None, description='', alias='458')
-    UnderlyingSecurityAltIDSource: Optional[str] = Field(None, description='', alias='459')
+
+    """FIX Group - NoUnderlyingSecurityAltID"""
+
+    UnderlyingSecurityAltID: Optional[str] = Field(None, alias='458', description='')
+    UnderlyingSecurityAltIDSource: Optional[str] = Field(None, alias='459', description='')
+
 
 
 class UndSecAltIDGrpComponent(FIXComponentBase):
-    """
-    FIX 4.4 UndSecAltIDGrp Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    NoUnderlyingSecurityAltID: Optional[int] = Field(None, description='Number of NoUnderlyingSecurityAltID entries', alias='')
-    NoUnderlyingSecurityAltID_items: List[NoUnderlyingSecurityAltIDGroup] = Field(default_factory=list)
+    """FIX Component - UndSecAltIDGrp"""
+
+

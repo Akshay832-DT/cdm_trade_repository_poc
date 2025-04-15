@@ -1,8 +1,13 @@
 """
-FIX 4.4 Generated Models
-
-This package contains automatically generated Pydantic models for FIX 4.4.
+FIX models.
 """
-from .base import FIXMessageBase
-from .messages import *
+
+from .fields import *
 from .components import *
+from .messages import *
+
+__all__ = [
+    'FIXFieldBase',
+    'FIXComponentBase',
+    'FIXMessageBase',
+]

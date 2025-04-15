@@ -1,85 +1,67 @@
 """
-FIX 4.4 MDIncGrp Component
-
-This module contains the Pydantic model for the MDIncGrp component.
+FIX Component Model - MDIncGrp
 """
-from datetime import datetime, date, time
-from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import Field, ConfigDict
-from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXComponentBase
+
+from ..base import FIXComponentBase
+from .instrmtleggrp import InstrmtLegGrpComponent
+from .instrument import InstrumentComponent
+from .undinstrmtgrp import UndInstrmtGrpComponent
+from datetime import date, datetime, time
+from pydantic import Field
+from typing import Optional, List
+
+
 class NoMDEntriesGroup(FIXComponentBase):
-    """
-    NoMDEntries group fields
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    MDUpdateAction: str = Field(..., description='', alias='279')
-    DeleteReason: Optional[str] = Field(None, description='', alias='285')
-    MDEntryType: Optional[str] = Field(None, description='', alias='269')
-    MDEntryID: Optional[str] = Field(None, description='', alias='278')
-    MDEntryRefID: Optional[str] = Field(None, description='', alias='280')
-    FinancialStatus: Optional[List[str]] = Field(None, description='', alias='291')
-    CorporateAction: Optional[List[str]] = Field(None, description='', alias='292')
-    MDEntryPx: Optional[float] = Field(None, description='', alias='270')
-    Currency: Optional[str] = Field(None, description='', alias='15')
-    MDEntrySize: Optional[float] = Field(None, description='', alias='271')
-    MDEntryDate: Optional[date] = Field(None, description='', alias='272')
-    MDEntryTime: Optional[time] = Field(None, description='', alias='273')
-    TickDirection: Optional[str] = Field(None, description='', alias='274')
-    MDMkt: Optional[str] = Field(None, description='', alias='275')
-    TradingSessionID: Optional[str] = Field(None, description='', alias='336')
-    TradingSessionSubID: Optional[str] = Field(None, description='', alias='625')
-    QuoteCondition: Optional[List[str]] = Field(None, description='', alias='276')
-    TradeCondition: Optional[List[str]] = Field(None, description='', alias='277')
-    MDEntryOriginator: Optional[str] = Field(None, description='', alias='282')
-    LocationID: Optional[str] = Field(None, description='', alias='283')
-    DeskID: Optional[str] = Field(None, description='', alias='284')
-    OpenCloseSettlFlag: Optional[List[str]] = Field(None, description='', alias='286')
-    TimeInForce: Optional[str] = Field(None, description='', alias='59')
-    ExpireDate: Optional[date] = Field(None, description='', alias='432')
-    ExpireTime: Optional[datetime] = Field(None, description='', alias='126')
-    MinQty: Optional[float] = Field(None, description='', alias='110')
-    ExecInst: Optional[List[str]] = Field(None, description='', alias='18')
-    SellerDays: Optional[int] = Field(None, description='', alias='287')
-    OrderID: Optional[str] = Field(None, description='', alias='37')
-    QuoteEntryID: Optional[str] = Field(None, description='', alias='299')
-    MDEntryBuyer: Optional[str] = Field(None, description='', alias='288')
-    MDEntrySeller: Optional[str] = Field(None, description='', alias='289')
-    NumberOfOrders: Optional[int] = Field(None, description='', alias='346')
-    MDEntryPositionNo: Optional[int] = Field(None, description='', alias='290')
-    Scope: Optional[List[str]] = Field(None, description='', alias='546')
-    PriceDelta: Optional[float] = Field(None, description='', alias='811')
-    NetChgPrevDay: Optional[float] = Field(None, description='', alias='451')
-    Text: Optional[str] = Field(None, description='', alias='58')
-    EncodedTextLen: Optional[int] = Field(None, description='', alias='354')
-    EncodedText: Optional[str] = Field(None, description='', alias='355')
+
+    """FIX Group - NoMDEntries"""
+
+    MDUpdateAction: str = Field(alias='279', description='')
+    DeleteReason: Optional[str] = Field(None, alias='285', description='')
+    MDEntryType: Optional[str] = Field(None, alias='269', description='')
+    MDEntryID: Optional[str] = Field(None, alias='278', description='')
+    MDEntryRefID: Optional[str] = Field(None, alias='280', description='')
+    FinancialStatus: Optional[str] = Field(None, alias='291', description='')
+    CorporateAction: Optional[str] = Field(None, alias='292', description='')
+    MDEntryPx: Optional[float] = Field(None, alias='270', description='')
+    Currency: Optional[str] = Field(None, alias='15', description='')
+    MDEntrySize: Optional[float] = Field(None, alias='271', description='')
+    MDEntryDate: Optional[date] = Field(None, alias='272', description='')
+    MDEntryTime: Optional[time] = Field(None, alias='273', description='')
+    TickDirection: Optional[str] = Field(None, alias='274', description='')
+    MDMkt: Optional[str] = Field(None, alias='275', description='')
+    TradingSessionID: Optional[str] = Field(None, alias='336', description='')
+    TradingSessionSubID: Optional[str] = Field(None, alias='625', description='')
+    QuoteCondition: Optional[str] = Field(None, alias='276', description='')
+    TradeCondition: Optional[str] = Field(None, alias='277', description='')
+    MDEntryOriginator: Optional[str] = Field(None, alias='282', description='')
+    LocationID: Optional[str] = Field(None, alias='283', description='')
+    DeskID: Optional[str] = Field(None, alias='284', description='')
+    OpenCloseSettlFlag: Optional[str] = Field(None, alias='286', description='')
+    TimeInForce: Optional[str] = Field(None, alias='59', description='')
+    ExpireDate: Optional[date] = Field(None, alias='432', description='')
+    ExpireTime: Optional[datetime] = Field(None, alias='126', description='')
+    MinQty: Optional[float] = Field(None, alias='110', description='')
+    ExecInst: Optional[str] = Field(None, alias='18', description='')
+    SellerDays: Optional[int] = Field(None, alias='287', description='')
+    OrderID: Optional[str] = Field(None, alias='37', description='')
+    QuoteEntryID: Optional[str] = Field(None, alias='299', description='')
+    MDEntryBuyer: Optional[str] = Field(None, alias='288', description='')
+    MDEntrySeller: Optional[str] = Field(None, alias='289', description='')
+    NumberOfOrders: Optional[int] = Field(None, alias='346', description='')
+    MDEntryPositionNo: Optional[int] = Field(None, alias='290', description='')
+    Scope: Optional[str] = Field(None, alias='546', description='')
+    PriceDelta: Optional[float] = Field(None, alias='811', description='')
+    NetChgPrevDay: Optional[float] = Field(None, alias='451', description='')
+    Text: Optional[str] = Field(None, alias='58', description='')
+    EncodedTextLen: Optional[int] = Field(None, alias='354', description='')
+    EncodedText: Optional[str] = Field(None, alias='355', description='')
+    Instrument: Optional[InstrumentComponent] = Field(None, description='')
+    UndInstrmtGrp: Optional[UndInstrmtGrpComponent] = Field(None, description='')
+    InstrmtLegGrp: Optional[InstrmtLegGrpComponent] = Field(None, description='')
+
 
 
 class MDIncGrpComponent(FIXComponentBase):
-    """
-    FIX 4.4 MDIncGrp Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    Instrument: Optional[InstrumentComponent] = Field(None, description='Instrument component')
-    UndInstrmtGrp: Optional[UndInstrmtGrpComponent] = Field(None, description='UndInstrmtGrp component')
-    InstrmtLegGrp: Optional[InstrmtLegGrpComponent] = Field(None, description='InstrmtLegGrp component')
-    NoMDEntries: Optional[int] = Field(None, description='Number of NoMDEntries entries', alias='')
-    NoMDEntries_items: List[NoMDEntriesGroup] = Field(default_factory=list)
+    """FIX Component - MDIncGrp"""
+
+

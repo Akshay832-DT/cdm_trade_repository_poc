@@ -1,30 +1,24 @@
-"""
-FIX TargetStrategy field (tag 847).
-"""
-from .base import FIXFieldBase
-from typing import Optional
-from .types import *
-
-class TargetStrategyValues:
-    """Enumerated values for TargetStrategy."""
-    VALUE_1 = "1"  # VWAP
-    VALUE_2 = "2"  # PARTICIPATE
-    VALUE_3 = "3"  # MININIZE_MARKET_IMPACT
+"""FIX Field Model"""
+from typing import Optional, List, Dict, Any, Union, Literal
+from pydantic import Field, ConfigDict
+from datetime import datetime, date, time
+from decimal import Decimal
+from ..base.base import FIXFieldBase
 
 class TargetStrategyField(FIXFieldBase):
-    """"""
-    tag: str = "847"
-    name: str = "TargetStrategy"
-    type: str = "INT"
-    value: Literal["1", "2", "3"]
+    """FIX TargetStrategy Field"""
 
-    # Helper methods for enum values
-    @property
-    def is_value_1(self) -> bool:
-        return self.value == "1"
-    @property
-    def is_value_2(self) -> bool:
-        return self.value == "2"
-    @property
-    def is_value_3(self) -> bool:
-        return self.value == "3"
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat() if v else None,
+            date: lambda v: v.isoformat() if v else None,
+            time: lambda v: v.isoformat() if v else None
+        }
+    )
+
+    value: Optional[int] = Field(None, alias='847', description='')
+
+    def __str__(self) -> str:
+        return f"{self.__class__.__name__}(value={self.value})"

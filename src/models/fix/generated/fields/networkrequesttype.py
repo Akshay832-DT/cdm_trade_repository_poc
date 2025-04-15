@@ -1,34 +1,24 @@
-"""
-FIX NetworkRequestType field (tag 935).
-"""
-from .base import FIXFieldBase
-from typing import Optional
-from .types import *
-
-class NetworkRequestTypeValues:
-    """Enumerated values for NetworkRequestType."""
-    VALUE_1 = "1"  # SNAPSHOT
-    VALUE_2 = "2"  # SUBSCRIBE
-    VALUE_4 = "4"  # STOP_SUBSCRIBING
-    VALUE_8 = "8"  # LEVEL_OF_DETAIL
+"""FIX Field Model"""
+from typing import Optional, List, Dict, Any, Union, Literal
+from pydantic import Field, ConfigDict
+from datetime import datetime, date, time
+from decimal import Decimal
+from ..base.base import FIXFieldBase
 
 class NetworkRequestTypeField(FIXFieldBase):
-    """"""
-    tag: str = "935"
-    name: str = "NetworkRequestType"
-    type: str = "INT"
-    value: Literal["1", "2", "4", "8"]
+    """FIX NetworkRequestType Field"""
 
-    # Helper methods for enum values
-    @property
-    def is_value_1(self) -> bool:
-        return self.value == "1"
-    @property
-    def is_value_2(self) -> bool:
-        return self.value == "2"
-    @property
-    def is_value_4(self) -> bool:
-        return self.value == "4"
-    @property
-    def is_value_8(self) -> bool:
-        return self.value == "8"
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat() if v else None,
+            date: lambda v: v.isoformat() if v else None,
+            time: lambda v: v.isoformat() if v else None
+        }
+    )
+
+    value: Optional[int] = Field(None, alias='935', description='')
+
+    def __str__(self) -> str:
+        return f"{self.__class__.__name__}(value={self.value})"

@@ -1,44 +1,23 @@
 """
-FIX 4.4 NstdPtysSubGrp Component
-
-This module contains the Pydantic model for the NstdPtysSubGrp component.
+FIX Component Model - NstdPtysSubGrp
 """
-from datetime import datetime, date, time
-from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import Field, ConfigDict
-from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXComponentBase
+
+from ..base import FIXComponentBase
+from datetime import date, datetime, time
+from pydantic import Field
+from typing import Optional, List
+
+
 class NoNestedPartySubIDsGroup(FIXComponentBase):
-    """
-    NoNestedPartySubIDs group fields
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    NestedPartySubID: Optional[str] = Field(None, description='', alias='545')
-    NestedPartySubIDType: Optional[int] = Field(None, description='', alias='805')
+
+    """FIX Group - NoNestedPartySubIDs"""
+
+    NestedPartySubID: Optional[str] = Field(None, alias='545', description='')
+    NestedPartySubIDType: Optional[int] = Field(None, alias='805', description='')
+
 
 
 class NstdPtysSubGrpComponent(FIXComponentBase):
-    """
-    FIX 4.4 NstdPtysSubGrp Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    NoNestedPartySubIDs: Optional[int] = Field(None, description='Number of NoNestedPartySubIDs entries', alias='')
-    NoNestedPartySubIDs_items: List[NoNestedPartySubIDsGroup] = Field(default_factory=list)
+    """FIX Component - NstdPtysSubGrp"""
+
+

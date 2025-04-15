@@ -1,44 +1,23 @@
 """
-FIX 4.4 UnderlyingStipulations Component
-
-This module contains the Pydantic model for the UnderlyingStipulations component.
+FIX Component Model - UnderlyingStipulations
 """
-from datetime import datetime, date, time
-from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import Field, ConfigDict
-from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXComponentBase
+
+from ..base import FIXComponentBase
+from datetime import date, datetime, time
+from pydantic import Field
+from typing import Optional, List
+
+
 class NoUnderlyingStipsGroup(FIXComponentBase):
-    """
-    NoUnderlyingStips group fields
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    UnderlyingStipType: Optional[str] = Field(None, description='', alias='888')
-    UnderlyingStipValue: Optional[str] = Field(None, description='', alias='889')
+
+    """FIX Group - NoUnderlyingStips"""
+
+    UnderlyingStipType: Optional[str] = Field(None, alias='888', description='')
+    UnderlyingStipValue: Optional[str] = Field(None, alias='889', description='')
+
 
 
 class UnderlyingStipulationsComponent(FIXComponentBase):
-    """
-    FIX 4.4 UnderlyingStipulations Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    NoUnderlyingStips: Optional[int] = Field(None, description='Number of NoUnderlyingStips entries', alias='')
-    NoUnderlyingStips_items: List[NoUnderlyingStipsGroup] = Field(default_factory=list)
+    """FIX Component - UnderlyingStipulations"""
+
+

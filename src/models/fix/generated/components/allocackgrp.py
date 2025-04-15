@@ -1,50 +1,29 @@
 """
-FIX 4.4 AllocAckGrp Component
-
-This module contains the Pydantic model for the AllocAckGrp component.
+FIX Component Model - AllocAckGrp
 """
-from datetime import datetime, date, time
-from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import Field, ConfigDict
-from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXComponentBase
+
+from ..base import FIXComponentBase
+from datetime import date, datetime, time
+from pydantic import Field
+from typing import Optional, List
+
+
 class NoAllocsGroup(FIXComponentBase):
-    """
-    NoAllocs group fields
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    AllocAccount: Optional[str] = Field(None, description='', alias='79')
-    AllocAcctIDSource: Optional[int] = Field(None, description='', alias='661')
-    AllocPrice: Optional[float] = Field(None, description='', alias='366')
-    IndividualAllocID: Optional[str] = Field(None, description='', alias='467')
-    IndividualAllocRejCode: Optional[int] = Field(None, description='', alias='776')
-    AllocText: Optional[str] = Field(None, description='', alias='161')
-    EncodedAllocTextLen: Optional[int] = Field(None, description='', alias='360')
-    EncodedAllocText: Optional[str] = Field(None, description='', alias='361')
+
+    """FIX Group - NoAllocs"""
+
+    AllocAccount: Optional[str] = Field(None, alias='79', description='')
+    AllocAcctIDSource: Optional[int] = Field(None, alias='661', description='')
+    AllocPrice: Optional[float] = Field(None, alias='366', description='')
+    IndividualAllocID: Optional[str] = Field(None, alias='467', description='')
+    IndividualAllocRejCode: Optional[int] = Field(None, alias='776', description='')
+    AllocText: Optional[str] = Field(None, alias='161', description='')
+    EncodedAllocTextLen: Optional[int] = Field(None, alias='360', description='')
+    EncodedAllocText: Optional[str] = Field(None, alias='361', description='')
+
 
 
 class AllocAckGrpComponent(FIXComponentBase):
-    """
-    FIX 4.4 AllocAckGrp Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    NoAllocs: Optional[int] = Field(None, description='Number of NoAllocs entries', alias='')
-    NoAllocs_items: List[NoAllocsGroup] = Field(default_factory=list)
+    """FIX Component - AllocAckGrp"""
+
+

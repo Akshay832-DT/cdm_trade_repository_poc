@@ -1,30 +1,24 @@
-"""
-FIX TradeAllocIndicator field (tag 826).
-"""
-from .base import FIXFieldBase
-from typing import Optional
-from .types import *
-
-class TradeAllocIndicatorValues:
-    """Enumerated values for TradeAllocIndicator."""
-    VALUE_0 = "0"  # ALLOCATION_NOT_REQUIRED
-    VALUE_1 = "1"  # ALLOCATION_REQUIRED
-    VALUE_2 = "2"  # USE_ALLOCATION_PROVIDED_WITH_THE_TRADE
+"""FIX Field Model"""
+from typing import Optional, List, Dict, Any, Union, Literal
+from pydantic import Field, ConfigDict
+from datetime import datetime, date, time
+from decimal import Decimal
+from ..base.base import FIXFieldBase
 
 class TradeAllocIndicatorField(FIXFieldBase):
-    """"""
-    tag: str = "826"
-    name: str = "TradeAllocIndicator"
-    type: str = "INT"
-    value: Literal["0", "1", "2"]
+    """FIX TradeAllocIndicator Field"""
 
-    # Helper methods for enum values
-    @property
-    def is_value_0(self) -> bool:
-        return self.value == "0"
-    @property
-    def is_value_1(self) -> bool:
-        return self.value == "1"
-    @property
-    def is_value_2(self) -> bool:
-        return self.value == "2"
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat() if v else None,
+            date: lambda v: v.isoformat() if v else None,
+            time: lambda v: v.isoformat() if v else None
+        }
+    )
+
+    value: Optional[int] = Field(None, alias='826', description='')
+
+    def __str__(self) -> str:
+        return f"{self.__class__.__name__}(value={self.value})"

@@ -1,30 +1,24 @@
-"""
-FIX OwnershipType field (tag 517).
-"""
-from .base import FIXFieldBase
-from typing import Optional
-from .types import *
-
-class OwnershipTypeValues:
-    """Enumerated values for OwnershipType."""
-    J = "J"  # JOINT_INVESTORS
-    T = "T"  # TENANTS_IN_COMMON
-    VALUE_2 = "2"  # JOINT_TRUSTEES
+"""FIX Field Model"""
+from typing import Optional, List, Dict, Any, Union, Literal
+from pydantic import Field, ConfigDict
+from datetime import datetime, date, time
+from decimal import Decimal
+from ..base.base import FIXFieldBase
 
 class OwnershipTypeField(FIXFieldBase):
-    """"""
-    tag: str = "517"
-    name: str = "OwnershipType"
-    type: str = "CHAR"
-    value: Literal["J", "T", "2"]
+    """FIX OwnershipType Field"""
 
-    # Helper methods for enum values
-    @property
-    def is_j(self) -> bool:
-        return self.value == "J"
-    @property
-    def is_t(self) -> bool:
-        return self.value == "T"
-    @property
-    def is_value_2(self) -> bool:
-        return self.value == "2"
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat() if v else None,
+            date: lambda v: v.isoformat() if v else None,
+            time: lambda v: v.isoformat() if v else None
+        }
+    )
+
+    value: Optional[str] = Field(None, alias='517', description='')
+
+    def __str__(self) -> str:
+        return f"{self.__class__.__name__}(value={self.value})"

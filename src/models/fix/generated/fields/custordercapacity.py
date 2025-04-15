@@ -1,34 +1,24 @@
-"""
-FIX CustOrderCapacity field (tag 582).
-"""
-from .base import FIXFieldBase
-from typing import Optional
-from .types import *
-
-class CustOrderCapacityValues:
-    """Enumerated values for CustOrderCapacity."""
-    VALUE_1 = "1"  # MEMBER_TRADING_FOR_THEIR_OWN_ACCOUNT
-    VALUE_2 = "2"  # CLEARING_FIRM_TRADING_FOR_ITS_PROPRIETARY_ACCOUNT
-    VALUE_3 = "3"  # MEMBER_TRADING_FOR_ANOTHER_MEMBER
-    VALUE_4 = "4"  # ALL_OTHER
+"""FIX Field Model"""
+from typing import Optional, List, Dict, Any, Union, Literal
+from pydantic import Field, ConfigDict
+from datetime import datetime, date, time
+from decimal import Decimal
+from ..base.base import FIXFieldBase
 
 class CustOrderCapacityField(FIXFieldBase):
-    """"""
-    tag: str = "582"
-    name: str = "CustOrderCapacity"
-    type: str = "INT"
-    value: Literal["1", "2", "3", "4"]
+    """FIX CustOrderCapacity Field"""
 
-    # Helper methods for enum values
-    @property
-    def is_value_1(self) -> bool:
-        return self.value == "1"
-    @property
-    def is_value_2(self) -> bool:
-        return self.value == "2"
-    @property
-    def is_value_3(self) -> bool:
-        return self.value == "3"
-    @property
-    def is_value_4(self) -> bool:
-        return self.value == "4"
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat() if v else None,
+            date: lambda v: v.isoformat() if v else None,
+            time: lambda v: v.isoformat() if v else None
+        }
+    )
+
+    value: Optional[int] = Field(None, alias='582', description='')
+
+    def __str__(self) -> str:
+        return f"{self.__class__.__name__}(value={self.value})"

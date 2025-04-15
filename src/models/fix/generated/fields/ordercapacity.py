@@ -1,42 +1,24 @@
-"""
-FIX OrderCapacity field (tag 528).
-"""
-from .base import FIXFieldBase
-from typing import Optional
-from .types import *
-
-class OrderCapacityValues:
-    """Enumerated values for OrderCapacity."""
-    A = "A"  # AGENCY
-    G = "G"  # PROPRIETARY
-    I = "I"  # INDIVIDUAL
-    P = "P"  # PRINCIPAL
-    R = "R"  # RISKLESS_PRINCIPAL
-    W = "W"  # AGENT_FOR_OTHER_MEMBER
+"""FIX Field Model"""
+from typing import Optional, List, Dict, Any, Union, Literal
+from pydantic import Field, ConfigDict
+from datetime import datetime, date, time
+from decimal import Decimal
+from ..base.base import FIXFieldBase
 
 class OrderCapacityField(FIXFieldBase):
-    """"""
-    tag: str = "528"
-    name: str = "OrderCapacity"
-    type: str = "CHAR"
-    value: Literal["A", "G", "I", "P", "R", "W"]
+    """FIX OrderCapacity Field"""
 
-    # Helper methods for enum values
-    @property
-    def is_a(self) -> bool:
-        return self.value == "A"
-    @property
-    def is_g(self) -> bool:
-        return self.value == "G"
-    @property
-    def is_i(self) -> bool:
-        return self.value == "I"
-    @property
-    def is_p(self) -> bool:
-        return self.value == "P"
-    @property
-    def is_r(self) -> bool:
-        return self.value == "R"
-    @property
-    def is_w(self) -> bool:
-        return self.value == "W"
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat() if v else None,
+            date: lambda v: v.isoformat() if v else None,
+            time: lambda v: v.isoformat() if v else None
+        }
+    )
+
+    value: Optional[str] = Field(None, alias='528', description='')
+
+    def __str__(self) -> str:
+        return f"{self.__class__.__name__}(value={self.value})"

@@ -1,26 +1,24 @@
-"""
-FIX ExerciseMethod field (tag 747).
-"""
-from .base import FIXFieldBase
-from typing import Optional
-from .types import *
-
-class ExerciseMethodValues:
-    """Enumerated values for ExerciseMethod."""
-    A = "A"  # AUTOMATIC
-    M = "M"  # MANUAL
+"""FIX Field Model"""
+from typing import Optional, List, Dict, Any, Union, Literal
+from pydantic import Field, ConfigDict
+from datetime import datetime, date, time
+from decimal import Decimal
+from ..base.base import FIXFieldBase
 
 class ExerciseMethodField(FIXFieldBase):
-    """"""
-    tag: str = "747"
-    name: str = "ExerciseMethod"
-    type: str = "CHAR"
-    value: Literal["A", "M"]
+    """FIX ExerciseMethod Field"""
 
-    # Helper methods for enum values
-    @property
-    def is_a(self) -> bool:
-        return self.value == "A"
-    @property
-    def is_m(self) -> bool:
-        return self.value == "M"
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat() if v else None,
+            date: lambda v: v.isoformat() if v else None,
+            time: lambda v: v.isoformat() if v else None
+        }
+    )
+
+    value: Optional[str] = Field(None, alias='747', description='')
+
+    def __str__(self) -> str:
+        return f"{self.__class__.__name__}(value={self.value})"

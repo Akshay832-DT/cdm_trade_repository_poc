@@ -1,44 +1,23 @@
 """
-FIX 4.4 PtysSubGrp Component
-
-This module contains the Pydantic model for the PtysSubGrp component.
+FIX Component Model - PtysSubGrp
 """
-from datetime import datetime, date, time
-from typing import List, Optional, Union, Dict, Any, Literal
-from pydantic import Field, ConfigDict
-from src.models.fix.generated.fields.common import *
-from src.models.fix.base import FIXComponentBase
+
+from ..base import FIXComponentBase
+from datetime import date, datetime, time
+from pydantic import Field
+from typing import Optional, List
+
+
 class NoPartySubIDsGroup(FIXComponentBase):
-    """
-    NoPartySubIDs group fields
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    PartySubID: Optional[str] = Field(None, description='', alias='523')
-    PartySubIDType: Optional[int] = Field(None, description='', alias='803')
+
+    """FIX Group - NoPartySubIDs"""
+
+    PartySubID: Optional[str] = Field(None, alias='523', description='')
+    PartySubIDType: Optional[int] = Field(None, alias='803', description='')
+
 
 
 class PtysSubGrpComponent(FIXComponentBase):
-    """
-    FIX 4.4 PtysSubGrp Component
-    """
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_by_name=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat(),
-            date: lambda v: v.isoformat(),
-            time: lambda v: v.isoformat()
-        }
-    )
-    
-    NoPartySubIDs: Optional[int] = Field(None, description='Number of NoPartySubIDs entries', alias='')
-    NoPartySubIDs_items: List[NoPartySubIDsGroup] = Field(default_factory=list)
+    """FIX Component - PtysSubGrp"""
+
+

@@ -1,46 +1,24 @@
-"""
-FIX DiscretionInst field (tag 388).
-"""
-from .base import FIXFieldBase
-from typing import Optional
-from .types import *
-
-class DiscretionInstValues:
-    """Enumerated values for DiscretionInst."""
-    VALUE_0 = "0"  # RELATED_TO_DISPLAYED_PRICE
-    VALUE_1 = "1"  # RELATED_TO_MARKET_PRICE
-    VALUE_2 = "2"  # RELATED_TO_PRIMARY_PRICE
-    VALUE_3 = "3"  # RELATED_TO_LOCAL_PRIMARY_PRICE
-    VALUE_4 = "4"  # RELATED_TO_MIDPOINT_PRICE
-    VALUE_5 = "5"  # RELATED_TO_LAST_TRADE_PRICE
-    VALUE_6 = "6"  # RELATED_TO_VWAP
+"""FIX Field Model"""
+from typing import Optional, List, Dict, Any, Union, Literal
+from pydantic import Field, ConfigDict
+from datetime import datetime, date, time
+from decimal import Decimal
+from ..base.base import FIXFieldBase
 
 class DiscretionInstField(FIXFieldBase):
-    """"""
-    tag: str = "388"
-    name: str = "DiscretionInst"
-    type: str = "CHAR"
-    value: Literal["0", "1", "2", "3", "4", "5", "6"]
+    """FIX DiscretionInst Field"""
 
-    # Helper methods for enum values
-    @property
-    def is_value_0(self) -> bool:
-        return self.value == "0"
-    @property
-    def is_value_1(self) -> bool:
-        return self.value == "1"
-    @property
-    def is_value_2(self) -> bool:
-        return self.value == "2"
-    @property
-    def is_value_3(self) -> bool:
-        return self.value == "3"
-    @property
-    def is_value_4(self) -> bool:
-        return self.value == "4"
-    @property
-    def is_value_5(self) -> bool:
-        return self.value == "5"
-    @property
-    def is_value_6(self) -> bool:
-        return self.value == "6"
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat() if v else None,
+            date: lambda v: v.isoformat() if v else None,
+            time: lambda v: v.isoformat() if v else None
+        }
+    )
+
+    value: Optional[str] = Field(None, alias='388', description='')
+
+    def __str__(self) -> str:
+        return f"{self.__class__.__name__}(value={self.value})"

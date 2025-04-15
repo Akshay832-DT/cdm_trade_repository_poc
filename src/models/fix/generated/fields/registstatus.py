@@ -1,34 +1,24 @@
-"""
-FIX RegistStatus field (tag 506).
-"""
-from .base import FIXFieldBase
-from typing import Optional
-from .types import *
-
-class RegistStatusValues:
-    """Enumerated values for RegistStatus."""
-    A = "A"  # ACCEPTED
-    R = "R"  # REJECTED
-    H = "H"  # HELD
-    N = "N"  # REMINDER
+"""FIX Field Model"""
+from typing import Optional, List, Dict, Any, Union, Literal
+from pydantic import Field, ConfigDict
+from datetime import datetime, date, time
+from decimal import Decimal
+from ..base.base import FIXFieldBase
 
 class RegistStatusField(FIXFieldBase):
-    """"""
-    tag: str = "506"
-    name: str = "RegistStatus"
-    type: str = "CHAR"
-    value: Literal["A", "R", "H", "N"]
+    """FIX RegistStatus Field"""
 
-    # Helper methods for enum values
-    @property
-    def is_a(self) -> bool:
-        return self.value == "A"
-    @property
-    def is_r(self) -> bool:
-        return self.value == "R"
-    @property
-    def is_h(self) -> bool:
-        return self.value == "H"
-    @property
-    def is_n(self) -> bool:
-        return self.value == "N"
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat() if v else None,
+            date: lambda v: v.isoformat() if v else None,
+            time: lambda v: v.isoformat() if v else None
+        }
+    )
+
+    value: Optional[str] = Field(None, alias='506', description='')
+
+    def __str__(self) -> str:
+        return f"{self.__class__.__name__}(value={self.value})"

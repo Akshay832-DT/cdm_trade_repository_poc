@@ -1,30 +1,24 @@
-"""
-FIX MatchStatus field (tag 573).
-"""
-from .base import FIXFieldBase
-from typing import Optional
-from .types import *
-
-class MatchStatusValues:
-    """Enumerated values for MatchStatus."""
-    VALUE_0 = "0"  # COMPARED
-    VALUE_1 = "1"  # UNCOMPARED
-    VALUE_2 = "2"  # ADVISORY_OR_ALERT
+"""FIX Field Model"""
+from typing import Optional, List, Dict, Any, Union, Literal
+from pydantic import Field, ConfigDict
+from datetime import datetime, date, time
+from decimal import Decimal
+from ..base.base import FIXFieldBase
 
 class MatchStatusField(FIXFieldBase):
-    """"""
-    tag: str = "573"
-    name: str = "MatchStatus"
-    type: str = "CHAR"
-    value: Literal["0", "1", "2"]
+    """FIX MatchStatus Field"""
 
-    # Helper methods for enum values
-    @property
-    def is_value_0(self) -> bool:
-        return self.value == "0"
-    @property
-    def is_value_1(self) -> bool:
-        return self.value == "1"
-    @property
-    def is_value_2(self) -> bool:
-        return self.value == "2"
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat() if v else None,
+            date: lambda v: v.isoformat() if v else None,
+            time: lambda v: v.isoformat() if v else None
+        }
+    )
+
+    value: Optional[str] = Field(None, alias='573', description='')
+
+    def __str__(self) -> str:
+        return f"{self.__class__.__name__}(value={self.value})"
