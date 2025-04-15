@@ -10,47 +10,73 @@ We have successfully implemented a complete FpML model generation and parsing sy
    - Downloads FpML schema files (XSD) from the official FpML repository
    - Supports multiple FpML versions (5.10, 5.9, 5.8, 5.7, 5.6)
    - Handles validation of downloaded schemas
+   - Supports incremental updates
+   - Validates schema integrity
 
 2. **FpML Model Generator** (`src/generators/fpml_model_generator.py`)
    - Parses FpML XSD schemas to extract data structures
    - Generates Pydantic models for FpML types, elements, and messages
    - Handles circular dependencies using Pydantic's model_rebuild()
    - Creates a hierarchical model structure in src/models/fpml/generated/
+   - Supports complex type inheritance
+   - Generates model validators
+   - Handles XML namespaces
 
 3. **FpML Parser** (`src/parsers/fpml/parser.py`)
    - Enhanced to use the generated Pydantic models
    - Handles validation and parsing of FpML XML messages
    - Maps XML elements to Pydantic model fields
+   - Supports both IRS and CDS messages
+   - Handles complex validation rules
+   - Supports XML namespaces
 
 4. **Test Cases**
    - `tests/test_fpml_irs_message.py` - Tests for parsing Interest Rate Swap FpML messages
    - `tests/test_fpml_cds_message.py` - Tests for parsing Credit Default Swap FpML messages
+   - Tests for schema validation
+   - Tests for model validation
+   - Tests for complex type handling
 
-5. **Example Script**
+5. **Example Scripts**
    - `src/examples/fpml_example.py` - Demonstrates the complete workflow
+   - Examples for IRS message handling
+   - Examples for CDS message handling
+   - Examples for validation
 
-## How it Works
+## Features
 
-### Schema Downloading
+### 1. Schema Management
 
-The `fpml_schema_downloader.py` script downloads FpML schemas from the official FpML repository. It supports multiple versions of FpML and handles extracting the relevant XSD files from the downloaded archives.
+- Automatic schema downloading
+- Version control for schemas
+- Schema validation
+- Namespace handling
+- Incremental updates
 
-### Model Generation
+### 2. Model Generation
 
-The `fpml_model_generator.py` script:
-1. Parses the downloaded XSD schemas
-2. Extracts complex types, simple types, and elements
-3. Generates Pydantic models for each of these components
-4. Handles circular dependencies using Pydantic's forward references and model_rebuild()
-5. Organizes the models into a hierarchical structure
+- Complex type support
+- Inheritance handling
+- Forward reference resolution
+- Circular dependency handling
+- Validation rule generation
+- XML namespace support
 
-### Parsing
+### 3. Message Parsing
 
-The FpML parser:
-1. Validates incoming FpML XML messages against the expected structure
-2. Parses the XML elements into dictionaries
-3. Converts these dictionaries to the generated Pydantic models
-4. Returns a fully instantiated FpMLTrade object for trade messages
+- XML to Pydantic model conversion
+- Namespace-aware parsing
+- Complex type validation
+- Custom validation rules
+- Error handling and reporting
+
+### 4. Product Support
+
+- Interest Rate Swaps (IRS)
+- Credit Default Swaps (CDS)
+- Product validation
+- Economic terms handling
+- Party reference handling
 
 ## Directory Structure
 
@@ -79,29 +105,32 @@ The FpML parser:
   └── test_fpml_cds_message.py   # Tests for CDS messages
 ```
 
-## Key Features
+## Implementation Details
 
-### Circular Dependency Resolution
+### 1. Schema Processing
 
-FpML has numerous circular dependencies, which we handle with:
-- Pydantic's forward references
-- Proper use of model_rebuild()
-- TYPE_CHECKING imports for better IDE support
+- Downloads schemas from official repository
+- Validates schema integrity
+- Handles schema versioning
+- Processes XML namespaces
+- Manages schema dependencies
 
-### Scalable Architecture
+### 2. Model Generation
 
-The system is designed to:
-- Handle different FpML versions
-- Generate models for complex financial products
-- Process both IRS and CDS messages (can be extended to other types)
+- Generates Pydantic models
+- Handles complex types
+- Manages inheritance
+- Resolves circular dependencies
+- Creates validation rules
+- Supports XML namespaces
 
-### Consistent with FIX Implementation
+### 3. Message Parsing
 
-The FpML implementation follows the same patterns as the FIX implementation:
-- Similar directory structure
-- Similar model generation approach
-- Similar parser implementation
-- Similar test structure
+- Parses XML messages
+- Validates against schemas
+- Converts to Pydantic models
+- Handles complex validation
+- Manages namespaces
 
 ## Usage
 
@@ -134,15 +163,47 @@ The FpML implementation follows the same patterns as the FIX implementation:
    pytest tests/test_fpml_cds_message.py
    ```
 
-## Extending the System
+## Validation Features
 
-To add support for additional FpML message types:
+1. **Schema Validation**
+   - XSD schema validation
+   - Namespace validation
+   - Version compatibility checks
 
-1. Identify the XSD schema components for the new message type
-2. Update the model generator if necessary to handle any unique characteristics
-3. Update the parser to recognize and process the new message type
-4. Add tests for the new message type
+2. **Model Validation**
+   - Type validation
+   - Required field validation
+   - Complex type validation
+   - Cross-field validation
+
+3. **Message Validation**
+   - XML structure validation
+   - Data type validation
+   - Business rule validation
+   - Reference validation
+
+## Future Enhancements
+
+1. **Additional Product Support**
+   - Support for more product types
+   - Enhanced validation rules
+   - Additional message types
+
+2. **Performance Optimization**
+   - Faster parsing
+   - Memory optimization
+   - Caching improvements
+
+3. **Documentation**
+   - API documentation
+   - Usage examples
+   - Best practices guide
+
+4. **Tools**
+   - Message generation tools
+   - Validation tools
+   - Debug tools
 
 ## Conclusion
 
-We have successfully implemented an FpML model generator and parser that follows the same patterns as the existing FIX implementation. The system is well-structured, extensible, and handles the complexities of FpML schema parsing and circular dependencies. 
+The FpML implementation provides a robust foundation for handling FpML messages, with comprehensive support for schema management, model generation, and message parsing. The system is well-structured, extensible, and handles complex FpML features effectively. 

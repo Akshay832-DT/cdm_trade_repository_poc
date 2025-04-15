@@ -11,15 +11,21 @@ This document summarizes the implementation of the ISDA CDM (Common Domain Model
    - Generates Pydantic models with proper typing
    - Handles circular dependencies using forward references
    - Creates a hierarchical module structure
+   - Supports validation of complex nested structures
+   - Implements model validators for type checking
 
 2. **CDM Parser**:
    - Validates CDM JSON messages
    - Parses messages into Pydantic model instances
    - Determines message types automatically
+   - Supports both IRS and CDS message types
+   - Handles nested object validation
 
 3. **Tests**:
    - Tests for Interest Rate Swap (IRS) messages
    - Tests for Credit Default Swap (CDS) messages
+   - Tests for basic model validation
+   - Tests for product model validation
 
 ## Architecture
 
@@ -27,18 +33,25 @@ This document summarizes the implementation of the ISDA CDM (Common Domain Model
 
 ```
 models/cdm/generated/     # Generated Pydantic models
-├── base/                # Base classes
-├── product/             # Product models
-├── metafields/          # Metafields models
-└── [other subdirectories based on CDM structure]
+├── base/                # Base classes and common types
+├── product/            # Product-related models
+│   ├── asset/         # Asset-specific models
+│   ├── collateral/    # Collateral-related models
+│   └── template/      # Product templates
+├── metafields/         # Metafields models
+├── event/             # Event-related models
+├── observable/        # Observable-related models
+└── regulation/        # Regulatory models
 
 src/parsers/cdm/         # CDM Parser
 ├── __init__.py         # Module init
 └── parser.py           # CdmParser implementation
 
 tests/                   # Tests
-├── test_cdm_irs_message.py  # IRS test
-└── test_cdm_cds_message.py  # CDS test
+├── test_cdm_irs_message.py   # IRS test
+├── test_cdm_cds_message.py   # CDS test
+├── test_cdm_models_basic.py  # Basic model tests
+└── test_cdm_product_models.py # Product model tests
 ```
 
 ### Generation Process
@@ -48,6 +61,7 @@ tests/                   # Tests
 3. **Circular Dependency Detection**: Identify circular references
 4. **Model Generation**: Generate Pydantic models with appropriate typing
 5. **Forward Reference Handling**: Use string references for circular dependencies
+6. **Validation Rules**: Generate model validators for complex types
 
 ### Parsing Process
 
@@ -55,6 +69,36 @@ tests/                   # Tests
 2. **Type Determination**: Determine the message type from the message structure
 3. **Model Selection**: Load the appropriate model class
 4. **Parsing**: Parse the message into the model instance
+5. **Validation**: Apply model validators and type checks
+
+## Features
+
+### 1. Product Models
+
+- **TransferableProduct**: Supports product transfer functionality
+- **NonTransferableProduct**: Supports non-transferable product types
+- **EconomicTerms**: Handles economic terms with validation
+- **Underlier**: Supports various underlier types with validation
+
+### 2. Event Models
+
+- **Trade Events**: Handles trade lifecycle events
+- **Credit Events**: Supports credit event processing
+- **Exercise Events**: Handles option exercise events
+
+### 3. Observable Models
+
+- **Price Observables**: Handles price-related observables
+- **Rate Observables**: Supports interest rate observables
+- **Credit Observables**: Handles credit-related observables
+
+### 4. Validation Features
+
+- Type validation for all fields
+- Model validators for complex types
+- Forward reference resolution
+- Circular dependency handling
+- Optional field support
 
 ## Challenges and Solutions
 
@@ -62,53 +106,51 @@ tests/                   # Tests
 
 **Challenge**: CDM schemas contain circular references that can't be directly represented in Python's type system.
 
-**Solution**: Used Pydantic's forward references with `TYPE_CHECKING` pattern:
-```python
-from typing import TYPE_CHECKING
+**Solution**: 
+- Used Pydantic's forward references with `TYPE_CHECKING` pattern
+- Implemented model validators to ensure type safety
+- Added runtime type checking for circular references
 
-if TYPE_CHECKING:
-    from ..product.template import Product
-else:
-    Product = "Product"  # Forward reference
-```
+### 2. Complex Validation
 
-### 2. Hierarchical Structure
+**Challenge**: CDM requires complex validation rules for various product types.
 
-**Challenge**: CDM has a complex hierarchical structure that needs to be reflected in the generated code.
+**Solution**:
+- Implemented model validators for each product type
+- Added support for nested validation
+- Created type-specific validation rules
 
-**Solution**: Implemented a module path extraction function that determines the appropriate Python module structure based on the schema names, creating directories as needed.
+### 3. Product Structure
 
-### 3. Inheritance Patterns
+**Challenge**: Products can have complex nested structures with multiple levels of inheritance.
 
-**Challenge**: Some CDM types extend other types, requiring proper inheritance.
-
-**Solution**: Determined base classes from schema references and implemented proper inheritance in the generated models.
-
-### 4. Type Mapping
-
-**Challenge**: Mapping JSON Schema types to Python/Pydantic types.
-
-**Solution**: Created a comprehensive type mapping system that handles:
-- Basic types (string, number, boolean, etc.)
-- Array types
-- Reference types (both direct and circular)
+**Solution**:
+- Created a hierarchical product model structure
+- Implemented proper inheritance patterns
+- Added validation at each level
 
 ## Testing Approach
 
-1. **Validation Testing**: Tests that verify schema validation
-2. **Parsing Testing**: Tests that verify message parsing
-3. **Data Access Testing**: Tests that verify access to parsed data
+1. **Validation Testing**: 
+   - Schema validation tests
+   - Field type validation tests
+   - Complex structure validation tests
 
-## Learned from FIX and FpML Implementations
+2. **Parsing Testing**: 
+   - Message parsing tests
+   - Type conversion tests
+   - Error handling tests
 
-1. **Circular Dependencies**: Applied the same forward reference pattern used in FIX and FpML
-2. **Model Structure**: Followed the same base model pattern with a clear hierarchy
-3. **Type System**: Improved the type mapping based on lessons from FIX and FpML
-4. **Test Structure**: Followed the same test structure to ensure consistency
+3. **Product Testing**:
+   - IRS product tests
+   - CDS product tests
+   - Product validation tests
 
 ## Future Enhancements
 
 1. **Schema Downloader**: Add ability to download latest CDM schemas
 2. **Version Support**: Add support for multiple CDM versions
-3. **Validation Rules**: Implement CDM-specific validation rules
-4. **Message Generation**: Add support for generating CDM messages from models 
+3. **Validation Rules**: Implement additional CDM-specific validation rules
+4. **Message Generation**: Add support for generating CDM messages from models
+5. **Performance Optimization**: Optimize parsing and validation performance
+6. **Documentation**: Add more detailed API documentation 
