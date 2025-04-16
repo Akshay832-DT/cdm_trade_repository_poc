@@ -83,4 +83,49 @@ bid_from_json = BidResponse.model_validate_json(json_data)
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details. 
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## CDM Database Implementation
+
+This project now includes a comprehensive database implementation for storing CDM models:
+
+### Overview
+- Database schema design for storing complex CDM models, focusing on Credit Default Swaps
+- DAO (Data Access Object) layer for persisting and retrieving CDM trade objects
+- Transaction management and circular dependency resolution
+- Complete support for the CDM trade model structure
+
+### Key Components
+- `src/dao/cdm/schema.sql`: Database schema for CDM models
+- `src/dao/cdm/db_manager.py`: Connection management and pooling
+- `src/dao/cdm/base_dao.py`: Base Data Access Object implementation
+- `src/dao/cdm/cds_dao.py`: Credit Default Swap-specific DAO
+- `tests/dao/test_cds_dao.py`: Tests for CDS DAO implementation
+- `docs/CDM_DATABASE_DESIGN.md`: Comprehensive documentation
+
+### Database Setup
+To initialize the database:
+
+```bash
+# Create the database and schema
+python -m src.dao.cdm.initialize_db
+```
+
+### Using the DAO Layer
+```python
+from src.dao.cdm.cds_dao import CreditDefaultSwapDAO
+
+# Parse a CDM message into an object
+cdm_trade = parser.parse_message(cdm_message_str, 'CDM')
+
+# Initialize CDS DAO
+cds_dao = CreditDefaultSwapDAO()
+
+# Save the trade to database
+trade_id = cds_dao.save(cdm_trade)
+
+# Retrieve CDS trade details
+trade_details = cds_dao.get_comprehensive_details(trade_id)
+```
+
+For more information, see the detailed documentation in `docs/CDM_DATABASE_DESIGN.md`. 
