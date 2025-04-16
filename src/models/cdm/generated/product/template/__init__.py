@@ -1,6 +1,12 @@
 """ISDA CDM models."""
 from typing import TYPE_CHECKING
 
+# Import the main classes that need to be exposed
+from src.models.cdm.generated.product.template.product import Product
+from src.models.cdm.generated.product.template.transferable_product import TransferableProduct
+from src.models.cdm.generated.product.template.tradable_product import TradableProduct
+from src.models.cdm.generated.product.template.non_transferable_product import NonTransferableProduct
+
 if TYPE_CHECKING:
     from src.models.cdm.generated.product.template.asian import Asian
     from src.models.cdm.generated.product.template.asset_leg import AssetLeg
@@ -43,7 +49,6 @@ if TYPE_CHECKING:
     from src.models.cdm.generated.product.template.manual_exercise import ManualExercise
     from src.models.cdm.generated.product.template.margin_type_enum import MarginTypeEnum
     from src.models.cdm.generated.product.template.multiple_exercise import MultipleExercise
-    from src.models.cdm.generated.product.template.non_transferable_product import NonTransferableProduct
     from src.models.cdm.generated.product.template.option_exercise_style_enum import OptionExerciseStyleEnum
     from src.models.cdm.generated.product.template.option_feature import OptionFeature
     from src.models.cdm.generated.product.template.option_payout import OptionPayout
@@ -57,7 +62,6 @@ if TYPE_CHECKING:
     from src.models.cdm.generated.product.template.payout import Payout
     from src.models.cdm.generated.product.template.performance_payout import PerformancePayout
     from src.models.cdm.generated.product.template.portfolio_return_terms import PortfolioReturnTerms
-    from src.models.cdm.generated.product.template.product import Product
     from src.models.cdm.generated.product.template.quanto import Quanto
     from src.models.cdm.generated.product.template.repo_duration_enum import RepoDurationEnum
     from src.models.cdm.generated.product.template.return_terms import ReturnTerms
@@ -68,7 +72,12 @@ if TYPE_CHECKING:
     from src.models.cdm.generated.product.template.strike_schedule import StrikeSchedule
     from src.models.cdm.generated.product.template.strike_spread import StrikeSpread
     from src.models.cdm.generated.product.template.termination_provision import TerminationProvision
-    from src.models.cdm.generated.product.template.tradable_product import TradableProduct
     from src.models.cdm.generated.product.template.trade_lot import TradeLot
-    from src.models.cdm.generated.product.template.transferable_product import TransferableProduct
     from src.models.cdm.generated.product.template.underlier import Underlier
+
+__all__ = [
+    'Product',
+    'TransferableProduct',
+    'TradableProduct',
+    'NonTransferableProduct'
+]

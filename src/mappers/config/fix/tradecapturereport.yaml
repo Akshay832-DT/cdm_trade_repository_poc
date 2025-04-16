@@ -1,0 +1,390 @@
+metadata:
+  source_type: "TradeCaptureReport"
+  target_type: "WorkflowStep"
+  description: "Maps FIX TradeCaptureReport to CDM WorkflowStep"
+  version: "1.0"
+
+mappings:
+  # Message-level fields
+  - source_field: "TradeReportID"
+    target_field: "event_identifier[0].identifier.value"
+    description: "Maps trade report ID to event identifier"
+    transformer: "direct"
+  
+  - source_field: "TradeID"
+    target_field: "business_event.trade.party_trade_information[0].trade_id.identifier.value"
+    description: "Maps trade ID to trade identifier"
+    transformer: "direct"
+  
+  - source_field: "SecondaryTradeID"
+    target_field: "business_event.trade.party_trade_information[0].secondary_trade_id.identifier.value"
+    description: "Maps secondary trade ID to secondary trade identifier"
+    transformer: "direct"
+  
+  - source_field: "FirmTradeID"
+    target_field: "business_event.trade.party_trade_information[1].trade_id.identifier.value"
+    description: "Maps firm trade ID to party trade identifier"
+    transformer: "direct"
+  
+  - source_field: "ExecID"
+    target_field: "business_event.trade.execution_details.execution_id.value"
+    description: "Maps execution ID to execution ID"
+    transformer: "direct"
+  
+  # Party and account information
+  - source_field: "Account"
+    target_field: "account[0].account_id.value"
+    description: "Maps account to account ID"
+    transformer: "direct"
+  
+  - source_field: "ReportingPartyID"
+    target_field: "party[0].party_id.value"
+    description: "Maps reporting party ID to party ID"
+    transformer: "direct"
+  
+  - source_field: "ReportingPartyRole"
+    target_field: "party[0].party_role[0]"
+    description: "Maps reporting party role to party role"
+    transformer: "enum_map"
+    transformer_params:
+      mappings:
+        "1": "EXECUTING_ENTITY"
+        "2": "BROKER_OF_CREDIT"
+        "3": "CLIENT_ID"
+        "4": "CLEARING_FIRM"
+        "5": "INVESTOR_ID"
+        "6": "INTRODUCING_FIRM"
+        "7": "ENTERING_FIRM"
+        "8": "LOCATE_LENDING_FIRM"
+        "9": "FUND_MANAGER_CLIENT_ID"
+        "10": "SETTLEMENT_LOCATION"
+        "11": "ORDER_ORIGINATION_TRADER"
+        "12": "EXECUTING_TRADER"
+        "13": "ORDER_ORIGINATION_FIRM"
+        "14": "GIVEUP_CLEARING_FIRM"
+        "15": "CORRESPONDENT_CLEARING_FIRM"
+        "16": "EXECUTING_SYSTEM"
+        "17": "CONTRA_FIRM"
+        "18": "CONTRA_CLEARING_FIRM"
+        "19": "SPONSORING_FIRM"
+        "20": "UNDERLYING_CONTRA_FIRM"
+        "21": "CLEARING_ORGANIZATION"
+        "22": "EXCHANGE"
+        "24": "CUSTOMER_ACCOUNT"
+        "25": "CORRESPONDENT_CLEARING_ORGANIZATION"
+        "26": "CORRESPONDENT_BROKER"
+        "27": "BUYER_SELLER"
+        "28": "CUSTODIAN"
+        "29": "INTERMEDIARY"
+        "30": "AGENT"
+        "31": "SUB_CUSTODIAN"
+        "32": "BENEFICIARY"
+        "33": "INTERESTED_PARTY"
+        "34": "REGULATORY_BODY"
+        "35": "LIQUIDITY_PROVIDER"
+        "36": "ENTERING_TRADER"
+        "37": "CONTRA_TRADER"
+        "38": "POSITION_ACCOUNT"
+        "39": "CONTRA_INVESTOR_ID"
+        "40": "TRANSFER_TO_FIRM"
+        "41": "CONTRA_POSITION_ACCOUNT"
+        "42": "CONTRA_EXCHANGE"
+        "43": "INTERNAL_CARRYING_FIRM"
+        "44": "CONTRA_INTERNAL_CARRYING_FIRM"
+        "45": "CLEARING_ACCOUNT"
+        "46": "ACCEPTABLE_SETTLING_COUNTERPARTY"
+        "47": "UNACCEPTABLE_SETTLING_COUNTERPARTY"
+        "default": "OTHER"
+  
+  - source_field: "ContraPartyID"
+    target_field: "party[1].party_id.value"
+    description: "Maps contra party ID to party ID"
+    transformer: "direct"
+  
+  - source_field: "ContraPartyRole"
+    target_field: "party[1].party_role[0]"
+    description: "Maps contra party role to party role"
+    transformer: "enum_map"
+    transformer_params:
+      mappings:
+        "17": "CONTRA_FIRM"
+        "37": "CONTRA_TRADER"
+        "39": "CONTRA_INVESTOR_ID"
+        "41": "CONTRA_POSITION_ACCOUNT"
+        "42": "CONTRA_EXCHANGE"
+        "44": "CONTRA_INTERNAL_CARRYING_FIRM"
+        "default": "COUNTERPARTY"
+  
+  # Trade details
+  - source_field: "TradeDate"
+    target_field: "business_event.trade.trade_date.value"
+    description: "Maps trade date to trade date"
+    transformer: "date_format"
+  
+  - source_field: "TransactTime"
+    target_field: "timestamp[0].value"
+    description: "Maps transaction time to timestamp"
+    transformer: "date_format"
+    transformer_params:
+      format: "%Y%m%d-%H:%M:%S"
+  
+  - source_field: "PreviouslyReported"
+    target_field: "business_event.trade.execution_details.execution_instructions.previously_reported"
+    description: "Maps previously reported flag"
+    transformer: "bool_transform"
+    transformer_params:
+      true_values: ["Y", "YES", "1", "TRUE"]
+  
+  - source_field: "TradeReportType"
+    target_field: "workflow_state.workflow_status"
+    description: "Maps trade report type to workflow status"
+    transformer: "enum_map"
+    transformer_params:
+      mappings:
+        "0": "NEW"
+        "1": "CANCEL"
+        "2": "REPLACE"
+        "3": "RELEASE"
+        "4": "REVERSE"
+        "5": "CANCEL_DUE_TO_BACK_OUT_AGREEMENT"
+        "default": "PENDING"
+  
+  - source_field: "TradeReportTransType"
+    target_field: "business_event.trade.execution_details.execution_instructions.transaction_type"
+    description: "Maps trade report transaction type"
+    transformer: "enum_map"
+    transformer_params:
+      mappings:
+        "0": "NEW"
+        "1": "CANCEL"
+        "2": "REPLACE"
+        "3": "RELEASE"
+        "4": "REVERSE"
+        "default": "OTHER"
+  
+  # Order/Execution details
+  - source_field: "ExecType"
+    target_field: "business_event.trade.execution_details.execution_state"
+    description: "Maps execution type to execution state"
+    transformer: "enum_map"
+    transformer_params:
+      mappings:
+        "0": "NEW"
+        "1": "PARTIALLY_FILLED"
+        "2": "FILLED"
+        "3": "DONE_FOR_DAY"
+        "4": "CANCELLED"
+        "5": "REPLACED"
+        "6": "PENDING_CANCEL"
+        "7": "STOPPED"
+        "8": "REJECTED"
+        "9": "SUSPENDED"
+        "A": "PENDING_NEW"
+        "B": "CALCULATED"
+        "C": "EXPIRED"
+        "D": "RESTATED"
+        "E": "PENDING_REPLACE"
+        "F": "TRADE"
+        "G": "TRADE_CORRECT"
+        "H": "TRADE_CANCEL"
+        "I": "ORDER_STATUS"
+        "default": "UNKNOWN"
+  
+  # Quantity fields
+  - source_field: "LastQty"
+    target_field: "business_event.trade.execution_details.execution_quantity.executed_quantity"
+    description: "Maps last quantity to executed quantity"
+    transformer: "number_transform"
+  
+  - source_field: "OrderQty"
+    target_field: "business_event.trade.execution_details.execution_quantity.amount"
+    description: "Maps order quantity to execution quantity"
+    transformer: "number_transform"
+  
+  - source_field: "CumQty"
+    target_field: "business_event.trade.execution_details.execution_quantity.cumulative_quantity"
+    description: "Maps cumulative quantity to execution cumulative quantity"
+    transformer: "number_transform"
+  
+  - source_field: "LeavesQty"
+    target_field: "business_event.trade.execution_details.execution_quantity.leaves_quantity"
+    description: "Maps leaves quantity to execution leaves quantity"
+    transformer: "number_transform"
+  
+  # Price fields
+  - source_field: "LastPx"
+    target_field: "business_event.trade.execution_details.execution_price.executed_price"
+    description: "Maps last price to executed price"
+    transformer: "number_transform"
+  
+  - source_field: "AvgPx"
+    target_field: "business_event.trade.execution_details.execution_price.average_price"
+    description: "Maps average price to average price"
+    transformer: "number_transform"
+  
+  - source_field: "Currency"
+    target_field: "business_event.trade.execution_details.execution_price.currency.value"
+    description: "Maps currency to execution price currency"
+    transformer: "direct"
+  
+  - source_field: "SettlCurrency"
+    target_field: "business_event.trade.settlement_terms.settlement_currency.value"
+    description: "Maps settlement currency to settlement currency"
+    transformer: "direct"
+  
+  # Instrument identification fields
+  - source_field: "Symbol"
+    target_field: "business_event.trade.product.security.security_details.instrument_details.description"
+    description: "Maps symbol to instrument description"
+    transformer: "direct"
+  
+  - source_field: "SecurityID"
+    target_field: "business_event.trade.product.security.security_details.instrument_identification.identifier.value"
+    description: "Maps security ID to instrument identifier"
+    transformer: "direct"
+  
+  - source_field: "SecurityIDSource"
+    target_field: "business_event.trade.product.security.security_details.instrument_identification.identifier.issuer.value"
+    description: "Maps security ID source to instrument identifier issuer"
+    transformer: "direct"
+  
+  - source_field: "SecurityDesc"
+    target_field: "business_event.trade.product.security.security_details.instrument_details.full_name.value"
+    description: "Maps security description to instrument full name"
+    transformer: "direct"
+  
+  - source_field: "CFICode"
+    target_field: "business_event.trade.product.security.security_details.instrument_classification.cfi_code"
+    description: "Maps CFI code to instrument CFI code"
+    transformer: "direct"
+  
+  # Buy/Sell information
+  - source_field: "Side"
+    target_field: "business_event.trade.execution_details.execution_type"
+    description: "Maps side to execution type"
+    transformer: "enum_map"
+    transformer_params:
+      mappings:
+        "1": "BUY"
+        "2": "SELL"
+        "3": "BUY_TO_COVER"
+        "4": "SELL_SHORT"
+        "5": "SELL_SHORT_EXEMPT"
+        "6": "SELL_SHORT_NON_EXEMPT"
+        "7": "UNDISCLOSED"
+        "8": "CROSS"
+        "9": "CROSS_SHORT"
+        "A": "CROSS_SHORT_EXEMPT"
+        "B": "AS_DEFINED"
+        "C": "OPPOSITE"
+        "default": "UNKNOWN"
+  
+  # Commission details
+  - source_field: "Commission"
+    target_field: "business_event.trade.execution_details.commission.commission_amount.amount"
+    description: "Maps commission to commission amount"
+    transformer: "number_transform"
+  
+  - source_field: "CommType"
+    target_field: "business_event.trade.execution_details.commission.commission_type"
+    description: "Maps commission type to commission type"
+    transformer: "enum_map"
+    transformer_params:
+      mappings:
+        "1": "PER_UNIT"
+        "2": "PERCENTAGE"
+        "3": "ABSOLUTE"
+        "4": "PERCENTAGE_WAIVED"
+        "5": "PERCENTAGE_WAIVED_ENHANCED"
+        "6": "POINTS_PER_BOND"
+        "default": "OTHER"
+  
+  # Settlement details
+  - source_field: "SettlType"
+    target_field: "business_event.trade.settlement_terms.settlement_type"
+    description: "Maps settlement type to settlement type"
+    transformer: "enum_map"
+    transformer_params:
+      mappings:
+        "0": "REGULAR"
+        "1": "CASH"
+        "2": "NEXT_DAY"
+        "3": "T_PLUS_2"
+        "4": "T_PLUS_3"
+        "5": "T_PLUS_4"
+        "6": "FUTURE"
+        "7": "WHEN_AND_IF_ISSUED"
+        "8": "SELLERS_OPTION"
+        "9": "T_PLUS_5"
+        "default": "OTHER"
+  
+  - source_field: "SettlDate"
+    target_field: "business_event.trade.settlement_terms.settlement_date.value"
+    description: "Maps settlement date to settlement date"
+    transformer: "date_format"
+  
+  # Venue information
+  - source_field: "LastMkt"
+    target_field: "business_event.trade.execution_details.execution_venue.value"
+    description: "Maps last market to execution venue"
+    transformer: "direct"
+  
+  - source_field: "TradingSessionID"
+    target_field: "business_event.trade.execution_details.trading_session.value"
+    description: "Maps trading session ID to trading session"
+    transformer: "direct"
+  
+  # Clearing and allocation information
+  - source_field: "ClearingFeeIndicator"
+    target_field: "business_event.trade.clearing_terms.clearing_fee_indicator"
+    description: "Maps clearing fee indicator to clearing fee indicator"
+    transformer: "direct"
+  
+  - source_field: "ClearingBusinessDate"
+    target_field: "business_event.trade.clearing_timestamp.value"
+    description: "Maps clearing business date to clearing timestamp"
+    transformer: "date_format"
+  
+  - source_field: "PositionEffect"
+    target_field: "business_event.trade.execution_details.execution_instructions.position_effect"
+    description: "Maps position effect to position effect"
+    transformer: "enum_map"
+    transformer_params:
+      mappings:
+        "O": "OPEN"
+        "C": "CLOSE"
+        "R": "ROLLED"
+        "F": "FIFO"
+        "default": "OTHER"
+  
+  # Additional information
+  - source_field: "Text"
+    target_field: "business_event.trade.execution_details.execution_instructions.additional_text"
+    description: "Maps text to additional text"
+    transformer: "direct"
+  
+  - source_field: "TradeInputSource"
+    target_field: "business_event.trade.execution_details.execution_instructions.trade_input_source"
+    description: "Maps trade input source to trade input source"
+    transformer: "direct"
+  
+  - source_field: "TradeInputDevice"
+    target_field: "business_event.trade.execution_details.execution_instructions.trade_input_device"
+    description: "Maps trade input device to trade input device"
+    transformer: "direct"
+  
+  - source_field: "NoDates"
+    target_field: "business_event.trade.trade_date_adjustment"
+    description: "Maps dates indicator to trade date adjustment"
+    transformer: "direct"
+  
+  - source_field: "MatchStatus"
+    target_field: "business_event.trade.execution_details.match_status"
+    description: "Maps match status to match status"
+    transformer: "enum_map"
+    transformer_params:
+      mappings:
+        "0": "COMPARED_MATCHED_AFFIRMED"
+        "1": "UNCOMPARED_UNMATCHED_UNAFFIRMED"
+        "2": "ADVISORY_MATCH"
+        "default": "UNKNOWN" 

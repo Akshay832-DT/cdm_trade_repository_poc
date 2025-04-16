@@ -1,85 +1,28 @@
-"""ISDA CDM models."""
+"""ISDA CDM event common models."""
 from typing import TYPE_CHECKING
 
+# Import the main classes that need to be exposed
+from src.models.cdm.generated.event.common.instruction_models import ExerciseInstruction, PrimitiveInstruction, ContractFormationInstruction
+
 if TYPE_CHECKING:
-    from src.models.cdm.generated.event.common.action_enum import ActionEnum
-    from src.models.cdm.generated.event.common.affirmation_status_enum import AffirmationStatusEnum
-    from src.models.cdm.generated.event.common.asset_transfer_type_enum import AssetTransferTypeEnum
-    from src.models.cdm.generated.event.common.billing_instruction import BillingInstruction
-    from src.models.cdm.generated.event.common.billing_record import BillingRecord
-    from src.models.cdm.generated.event.common.billing_record_instruction import BillingRecordInstruction
-    from src.models.cdm.generated.event.common.billing_summary import BillingSummary
-    from src.models.cdm.generated.event.common.billing_summary_instruction import BillingSummaryInstruction
+    from src.models.cdm.generated.event.common.allocation_instruction import AllocationInstruction
     from src.models.cdm.generated.event.common.business_event import BusinessEvent
-    from src.models.cdm.generated.event.common.calculate_transfer_instruction import CalculateTransferInstruction
-    from src.models.cdm.generated.event.common.call_type_enum import CallTypeEnum
-    from src.models.cdm.generated.event.common.clearing_instruction import ClearingInstruction
-    from src.models.cdm.generated.event.common.closed_state import ClosedState
-    from src.models.cdm.generated.event.common.closed_state_enum import ClosedStateEnum
-    from src.models.cdm.generated.event.common.collateral_balance import CollateralBalance
-    from src.models.cdm.generated.event.common.collateral_portfolio import CollateralPortfolio
-    from src.models.cdm.generated.event.common.collateral_position import CollateralPosition
-    from src.models.cdm.generated.event.common.collateral_status_enum import CollateralStatusEnum
-    from src.models.cdm.generated.event.common.confirmation_status_enum import ConfirmationStatusEnum
-    from src.models.cdm.generated.event.common.contract_details import ContractDetails
-    from src.models.cdm.generated.event.common.contract_formation_instruction import ContractFormationInstruction
-    from src.models.cdm.generated.event.common.corporate_action import CorporateAction
-    from src.models.cdm.generated.event.common.corporate_action_type_enum import CorporateActionTypeEnum
-    from src.models.cdm.generated.event.common.counterparty_position_business_event import CounterpartyPositionBusinessEvent
-    from src.models.cdm.generated.event.common.counterparty_position_state import CounterpartyPositionState
-    from src.models.cdm.generated.event.common.credit_event import CreditEvent
-    from src.models.cdm.generated.event.common.credit_event_type_enum import CreditEventTypeEnum
-    from src.models.cdm.generated.event.common.event_intent_enum import EventIntentEnum
-    from src.models.cdm.generated.event.common.execution_details import ExecutionDetails
     from src.models.cdm.generated.event.common.execution_instruction import ExecutionInstruction
-    from src.models.cdm.generated.event.common.execution_type_enum import ExecutionTypeEnum
-    from src.models.cdm.generated.event.common.exercise_event import ExerciseEvent
-    from src.models.cdm.generated.event.common.exercise_instruction import ExerciseInstruction
-    from src.models.cdm.generated.event.common.exposure import Exposure
-    from src.models.cdm.generated.event.common.haircut_indicator_enum import HaircutIndicatorEnum
     from src.models.cdm.generated.event.common.index_transition_instruction import IndexTransitionInstruction
     from src.models.cdm.generated.event.common.instruction import Instruction
-    from src.models.cdm.generated.event.common.instruction_function_enum import InstructionFunctionEnum
-    from src.models.cdm.generated.event.common.lineage import Lineage
-    from src.models.cdm.generated.event.common.margin_call_action_enum import MarginCallActionEnum
-    from src.models.cdm.generated.event.common.margin_call_base import MarginCallBase
-    from src.models.cdm.generated.event.common.margin_call_exposure import MarginCallExposure
-    from src.models.cdm.generated.event.common.margin_call_instruction_type import MarginCallInstructionType
-    from src.models.cdm.generated.event.common.margin_call_issuance import MarginCallIssuance
-    from src.models.cdm.generated.event.common.margin_call_response import MarginCallResponse
-    from src.models.cdm.generated.event.common.margin_call_response_action import MarginCallResponseAction
-    from src.models.cdm.generated.event.common.margin_call_response_type_enum import MarginCallResponseTypeEnum
-    from src.models.cdm.generated.event.common.observation_event import ObservationEvent
     from src.models.cdm.generated.event.common.observation_instruction import ObservationInstruction
     from src.models.cdm.generated.event.common.party_change_instruction import PartyChangeInstruction
-    from src.models.cdm.generated.event.common.performance_transfer_type_enum import PerformanceTransferTypeEnum
-    from src.models.cdm.generated.event.common.position_event_intent_enum import PositionEventIntentEnum
-    from src.models.cdm.generated.event.common.position_identifier import PositionIdentifier
-    from src.models.cdm.generated.event.common.price_timing_enum import PriceTimingEnum
-    from src.models.cdm.generated.event.common.primitive_instruction import PrimitiveInstruction
     from src.models.cdm.generated.event.common.quantity_change_instruction import QuantityChangeInstruction
-    from src.models.cdm.generated.event.common.record_amount_type_enum import RecordAmountTypeEnum
-    from src.models.cdm.generated.event.common.reg_im_role_enum import RegIMRoleEnum
-    from src.models.cdm.generated.event.common.reg_margin_type_enum import RegMarginTypeEnum
-    from src.models.cdm.generated.event.common.reset import Reset
     from src.models.cdm.generated.event.common.reset_instruction import ResetInstruction
-    from src.models.cdm.generated.event.common.return_instruction import ReturnInstruction
-    from src.models.cdm.generated.event.common.scheduled_transfer import ScheduledTransfer
-    from src.models.cdm.generated.event.common.security_lending_invoice import SecurityLendingInvoice
     from src.models.cdm.generated.event.common.split_instruction import SplitInstruction
-    from src.models.cdm.generated.event.common.state import State
     from src.models.cdm.generated.event.common.stock_split_instruction import StockSplitInstruction
     from src.models.cdm.generated.event.common.terms_change_instruction import TermsChangeInstruction
-    from src.models.cdm.generated.event.common.trade import Trade
     from src.models.cdm.generated.event.common.trade_identifier import TradeIdentifier
-    from src.models.cdm.generated.event.common.trade_pricing_report import TradePricingReport
-    from src.models.cdm.generated.event.common.trade_state import TradeState
-    from src.models.cdm.generated.event.common.transfer import Transfer
-    from src.models.cdm.generated.event.common.transfer_expression import TransferExpression
     from src.models.cdm.generated.event.common.transfer_instruction import TransferInstruction
-    from src.models.cdm.generated.event.common.transfer_state import TransferState
-    from src.models.cdm.generated.event.common.transfer_status_enum import TransferStatusEnum
-    from src.models.cdm.generated.event.common.valuation import Valuation
     from src.models.cdm.generated.event.common.valuation_instruction import ValuationInstruction
-    from src.models.cdm.generated.event.common.valuation_source_enum import ValuationSourceEnum
-    from src.models.cdm.generated.event.common.valuation_type_enum import ValuationTypeEnum
+
+__all__ = [
+    'ExerciseInstruction',
+    'PrimitiveInstruction',
+    'ContractFormationInstruction'
+]

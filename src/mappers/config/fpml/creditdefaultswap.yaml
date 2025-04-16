@@ -1,0 +1,442 @@
+metadata:
+  source_type: "FpMLCreditDefaultSwap"
+  target_type: "WorkflowStep"
+  description: "Maps FpML Credit Default Swap to CDM WorkflowStep"
+  version: "1.0"
+
+mappings:
+  # Trade Header and Basic Information
+  - source_field: "tradeHeader.partyTradeIdentifier[0].tradeId"
+    target_field: "business_event.trade.party_trade_information[0].trade_id.identifier.value"
+    description: "Maps trade ID to trade identifier"
+    transformer: "direct"
+  
+  - source_field: "tradeHeader.partyTradeIdentifier[1].tradeId"
+    target_field: "business_event.trade.party_trade_information[1].trade_id.identifier.value"
+    description: "Maps counterparty trade ID to trade identifier"
+    transformer: "direct"
+  
+  - source_field: "tradeHeader.tradeDate"
+    target_field: "business_event.trade.trade_date.value"
+    description: "Maps trade date to trade date"
+    transformer: "date_format"
+  
+  - source_field: "tradeHeader.partyTradeIdentifier[0].partyReference.href"
+    target_field: "business_event.trade.party_trade_information[0].party_reference.reference.value"
+    description: "Maps party reference to party reference"
+    transformer: "direct"
+  
+  - source_field: "tradeHeader.partyTradeIdentifier[1].partyReference.href"
+    target_field: "business_event.trade.party_trade_information[1].party_reference.reference.value"
+    description: "Maps counterparty reference to party reference"
+    transformer: "direct"
+  
+  # Timestamp Information
+  - source_field: "tradeHeader.tradeDate"
+    target_field: "timestamp[0].value"
+    description: "Maps trade date to timestamp"
+    transformer: "date_format"
+  
+  # Credit Default Swap Basic Terms
+  - source_field: "product.credit.generalTerms.effectiveDate.unadjustedDate"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.effective_date.unadjusted_date.value"
+    description: "Maps unadjusted effective date to CDS unadjusted effective date"
+    transformer: "date_format"
+  
+  - source_field: "product.credit.generalTerms.effectiveDate.dateAdjustments.businessDayConvention"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.effective_date.date_adjustment.business_day_convention.value"
+    description: "Maps effective date business day convention"
+    transformer: "direct"
+  
+  - source_field: "product.credit.generalTerms.scheduledTerminationDate.unadjustedDate"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.scheduled_termination_date.unadjusted_date.value"
+    description: "Maps unadjusted scheduled termination date"
+    transformer: "date_format"
+  
+  - source_field: "product.credit.generalTerms.scheduledTerminationDate.dateAdjustments.businessDayConvention"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.scheduled_termination_date.date_adjustment.business_day_convention.value"
+    description: "Maps termination date business day convention"
+    transformer: "direct"
+  
+  - source_field: "product.credit.generalTerms.effectiveDate.adjustedDate"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.effective_date.adjusted_date.value"
+    description: "Maps adjusted effective date to CDS effective date"
+    transformer: "date_format"
+  
+  - source_field: "product.credit.generalTerms.scheduledTerminationDate.adjustedDate"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.scheduled_termination_date.adjusted_date.value"
+    description: "Maps adjusted scheduled termination date"
+    transformer: "date_format"
+  
+  - source_field: "product.credit.generalTerms.tradeDate"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.trade_date.value"
+    description: "Maps trade date to CDS trade date"
+    transformer: "date_format"
+  
+  # Buyer/Seller Relationship
+  - source_field: "product.credit.generalTerms.buyerSeller.buyer.href"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.buyer_seller.buyer.reference.value"
+    description: "Maps protection buyer reference"
+    transformer: "direct"
+  
+  - source_field: "product.credit.generalTerms.buyerSeller.seller.href"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.buyer_seller.seller.reference.value"
+    description: "Maps protection seller reference"
+    transformer: "direct"
+  
+  # Reference Information - Entity
+  - source_field: "product.credit.generalTerms.referenceInformation.referenceEntity.entityName"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.reference_information.reference_entity.reference_entity_name.name.value"
+    description: "Maps reference entity name to CDS reference entity name"
+    transformer: "direct"
+  
+  - source_field: "product.credit.generalTerms.referenceInformation.referenceEntity.entityId.entityId"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.reference_information.reference_entity.reference_entity_id.identifier.value"
+    description: "Maps reference entity ID to CDS reference entity ID"
+    transformer: "direct"
+  
+  - source_field: "product.credit.generalTerms.referenceInformation.referenceEntity.entityId.entityIdScheme"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.reference_information.reference_entity.reference_entity_id.identifier.issuer.value"
+    description: "Maps reference entity ID scheme to issuer"
+    transformer: "direct"
+  
+  - source_field: "product.credit.generalTerms.referenceInformation.referenceEntity.entityType"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.reference_information.reference_entity.entity_type"
+    description: "Maps reference entity type"
+    transformer: "direct"
+  
+  - source_field: "product.credit.generalTerms.referenceInformation.referenceEntity.creditRating.agency"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.reference_information.reference_entity.credit_rating.rating_agency"
+    description: "Maps credit rating agency"
+    transformer: "direct"
+  
+  - source_field: "product.credit.generalTerms.referenceInformation.referenceEntity.creditRating.rating"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.reference_information.reference_entity.credit_rating.rating_value"
+    description: "Maps credit rating value"
+    transformer: "direct"
+  
+  # Reference Information - Obligation
+  - source_field: "product.credit.generalTerms.referenceInformation.referenceObligation.bond.instrumentId.id"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.reference_information.reference_obligation.reference_obligation_id.identifier.value"
+    description: "Maps reference obligation ID to CDS reference obligation ID"
+    transformer: "direct"
+  
+  - source_field: "product.credit.generalTerms.referenceInformation.referenceObligation.bond.instrumentId.instrumentIdScheme"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.reference_information.reference_obligation.reference_obligation_id.identifier.issuer.value"
+    description: "Maps reference obligation ID scheme"
+    transformer: "direct"
+  
+  - source_field: "product.credit.generalTerms.referenceInformation.referenceObligation.bond.issuer"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.reference_information.reference_obligation.reference_obligation_issuer.value"
+    description: "Maps reference obligation issuer to CDS reference obligation issuer"
+    transformer: "direct"
+  
+  - source_field: "product.credit.generalTerms.referenceInformation.referenceObligation.bond.maturityDate"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.reference_information.reference_obligation.maturity_date.value"
+    description: "Maps reference obligation maturity date"
+    transformer: "date_format"
+  
+  - source_field: "product.credit.generalTerms.referenceInformation.referenceObligation.bond.couponRate"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.reference_information.reference_obligation.coupon.rate.value"
+    description: "Maps reference obligation coupon rate"
+    transformer: "number_transform"
+  
+  - source_field: "product.credit.generalTerms.referenceInformation.referenceObligation.bond.couponType"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.reference_information.reference_obligation.coupon_type"
+    description: "Maps reference obligation coupon type"
+    transformer: "direct"
+  
+  - source_field: "product.credit.generalTerms.referenceInformation.referenceObligation.bond.faceAmount.amount"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.reference_information.reference_obligation.face_amount.amount"
+    description: "Maps reference obligation face amount"
+    transformer: "number_transform"
+  
+  - source_field: "product.credit.generalTerms.referenceInformation.referenceObligation.bond.faceAmount.currency"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.reference_information.reference_obligation.face_amount.currency.value"
+    description: "Maps reference obligation face amount currency"
+    transformer: "direct"
+  
+  # Credit Events Terms
+  - source_field: "product.credit.generalTerms.creditEvents.bankruptcy.applicable"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.credit_events.bankruptcy"
+    description: "Maps bankruptcy applicable flag"
+    transformer: "bool_transform"
+    transformer_params:
+      true_values: ["true", "yes", "1", "Y"]
+  
+  - source_field: "product.credit.generalTerms.creditEvents.failureToPay.applicable"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.credit_events.failure_to_pay"
+    description: "Maps failure to pay applicable flag"
+    transformer: "bool_transform"
+    transformer_params:
+      true_values: ["true", "yes", "1", "Y"]
+  
+  - source_field: "product.credit.generalTerms.creditEvents.failureToPay.paymentRequirement.amount"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.credit_events.failure_to_pay_threshold.amount"
+    description: "Maps failure to pay threshold amount"
+    transformer: "number_transform"
+  
+  - source_field: "product.credit.generalTerms.creditEvents.failureToPay.paymentRequirement.currency"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.credit_events.failure_to_pay_threshold.currency.value"
+    description: "Maps failure to pay threshold currency"
+    transformer: "direct"
+  
+  - source_field: "product.credit.generalTerms.creditEvents.restructuring.applicable"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.credit_events.restructuring"
+    description: "Maps restructuring applicable flag"
+    transformer: "bool_transform"
+    transformer_params:
+      true_values: ["true", "yes", "1", "Y"]
+  
+  - source_field: "product.credit.generalTerms.creditEvents.restructuring.restructuringType"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.credit_events.restructuring_type"
+    description: "Maps restructuring type"
+    transformer: "enum_map"
+    transformer_params:
+      mappings:
+        "ModR": "MODIFIED_RESTRUCTURING"
+        "ModModR": "MODIFIED_MODIFIED_RESTRUCTURING"
+        "NoR": "NO_RESTRUCTURING"
+        "FullR": "FULL_RESTRUCTURING"
+        "default": "STANDARD_RESTRUCTURING"
+  
+  - source_field: "product.credit.generalTerms.creditEvents.obligationAcceleration.applicable"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.credit_events.obligation_acceleration"
+    description: "Maps obligation acceleration flag"
+    transformer: "bool_transform"
+    transformer_params:
+      true_values: ["true", "yes", "1", "Y"]
+  
+  - source_field: "product.credit.generalTerms.creditEvents.obligationDefault.applicable"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.credit_events.obligation_default"
+    description: "Maps obligation default flag"
+    transformer: "bool_transform"
+    transformer_params:
+      true_values: ["true", "yes", "1", "Y"]
+  
+  - source_field: "product.credit.generalTerms.creditEvents.repudiationMoratorium.applicable"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.credit_events.repudiation_moratorium"
+    description: "Maps repudiation moratorium flag"
+    transformer: "bool_transform"
+    transformer_params:
+      true_values: ["true", "yes", "1", "Y"]
+  
+  - source_field: "product.credit.generalTerms.creditEvents.governmentalIntervention.applicable"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.credit_events.governmental_intervention"
+    description: "Maps governmental intervention flag"
+    transformer: "bool_transform"
+    transformer_params:
+      true_values: ["true", "yes", "1", "Y"]
+  
+  - source_field: "product.credit.generalTerms.creditEvents.defaultRequirement.amount"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.credit_events.default_requirement.amount"
+    description: "Maps default requirement amount"
+    transformer: "number_transform"
+  
+  - source_field: "product.credit.generalTerms.creditEvents.defaultRequirement.currency"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.credit_events.default_requirement.currency.value"
+    description: "Maps default requirement currency"
+    transformer: "direct"
+  
+  # Obligations Terms
+  - source_field: "product.credit.generalTerms.obligations.category"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.obligations[0].category"
+    description: "Maps obligations category"
+    transformer: "direct"
+  
+  - source_field: "product.credit.generalTerms.obligations.notSubordinated"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.obligations[0].not_subordinated"
+    description: "Maps obligations not subordinated flag"
+    transformer: "bool_transform"
+    transformer_params:
+      true_values: ["true", "yes", "1", "Y"]
+  
+  - source_field: "product.credit.generalTerms.obligations.notContingent"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.obligations[0].not_contingent"
+    description: "Maps obligations not contingent flag"
+    transformer: "bool_transform"
+    transformer_params:
+      true_values: ["true", "yes", "1", "Y"]
+  
+  - source_field: "product.credit.generalTerms.obligations.notDomesticCurrency"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.obligations[0].not_domestic_currency"
+    description: "Maps obligations not domestic currency flag"
+    transformer: "bool_transform"
+    transformer_params:
+      true_values: ["true", "yes", "1", "Y"]
+  
+  - source_field: "product.credit.generalTerms.obligations.notDomesticLaw"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.obligations[0].not_domestic_law"
+    description: "Maps obligations not domestic law flag"
+    transformer: "bool_transform"
+    transformer_params:
+      true_values: ["true", "yes", "1", "Y"]
+  
+  - source_field: "product.credit.generalTerms.obligations.notSovereignLender"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.obligations[0].not_sovereign_lender"
+    description: "Maps obligations not sovereign lender flag"
+    transformer: "bool_transform"
+    transformer_params:
+      true_values: ["true", "yes", "1", "Y"]
+  
+  - source_field: "product.credit.generalTerms.obligations.deliverable"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.obligations[0].deliverable"
+    description: "Maps obligations deliverable flag"
+    transformer: "bool_transform"
+    transformer_params:
+      true_values: ["true", "yes", "1", "Y"]
+  
+  - source_field: "product.credit.generalTerms.obligations.specifiedCurrency"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.obligations[0].specified_currency.value"
+    description: "Maps obligations specified currency"
+    transformer: "direct"
+  
+  # Fee Leg Terms
+  - source_field: "product.credit.feeLeg.periodicPayment.paymentFrequency.periodMultiplier"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.fee_leg.payment_frequency.period_multiplier"
+    description: "Maps payment frequency period multiplier"
+    transformer: "number_transform"
+  
+  - source_field: "product.credit.feeLeg.periodicPayment.paymentFrequency.period"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.fee_leg.payment_frequency.period"
+    description: "Maps payment frequency period"
+    transformer: "direct"
+  
+  - source_field: "product.credit.feeLeg.periodicPayment.firstPaymentDate"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.fee_leg.first_payment_date.value"
+    description: "Maps first payment date"
+    transformer: "date_format"
+  
+  - source_field: "product.credit.feeLeg.periodicPayment.lastRegularPaymentDate"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.fee_leg.last_regular_payment_date.value"
+    description: "Maps last regular payment date"
+    transformer: "date_format"
+  
+  - source_field: "product.credit.feeLeg.periodicPayment.fixedAmountCalculation.dayCountFraction"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.fee_leg.day_count_fraction.value"
+    description: "Maps day count fraction to CDS day count fraction"
+    transformer: "direct"
+  
+  - source_field: "product.credit.feeLeg.periodicPayment.fixedAmountCalculation.calculationAmount.amount"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.fee_leg.protection_terms.notional_amount.amount.amount"
+    description: "Maps calculation amount to CDS notional amount"
+    transformer: "number_transform"
+  
+  - source_field: "product.credit.feeLeg.periodicPayment.fixedAmountCalculation.calculationAmount.currency"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.fee_leg.protection_terms.notional_amount.amount.currency.value"
+    description: "Maps calculation amount currency to CDS notional currency"
+    transformer: "direct"
+  
+  - source_field: "product.credit.feeLeg.periodicPayment.fixedAmountCalculation.fixedRate"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.fee_leg.fixed_rate.rate.value"
+    description: "Maps fixed rate to CDS fixed rate"
+    transformer: "number_transform"
+  
+  - source_field: "product.credit.feeLeg.initialPayment.payerPartyReference.href"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.fee_leg.initial_payment.payer.reference.value"
+    description: "Maps initial payment payer reference"
+    transformer: "direct"
+  
+  - source_field: "product.credit.feeLeg.initialPayment.receiverPartyReference.href"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.fee_leg.initial_payment.receiver.reference.value"
+    description: "Maps initial payment receiver reference"
+    transformer: "direct"
+  
+  - source_field: "product.credit.feeLeg.initialPayment.paymentAmount.amount"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.fee_leg.initial_payment.payment_amount.amount"
+    description: "Maps initial payment amount"
+    transformer: "number_transform"
+  
+  - source_field: "product.credit.feeLeg.initialPayment.paymentAmount.currency"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.fee_leg.initial_payment.payment_amount.currency.value"
+    description: "Maps initial payment currency"
+    transformer: "direct"
+  
+  - source_field: "product.credit.feeLeg.initialPayment.paymentDate"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.fee_leg.initial_payment.payment_date.value"
+    description: "Maps initial payment date"
+    transformer: "date_format"
+  
+  # Settlement Terms
+  - source_field: "product.credit.protectionTerms.settlementTerms.settlementMethod"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.settlement_terms.settlement_type"
+    description: "Maps settlement method to settlement type"
+    transformer: "enum_map"
+    transformer_params:
+      mappings:
+        "Cash": "CASH"
+        "Physical": "PHYSICAL"
+        "Auction": "AUCTION"
+        "default": "CASH"
+  
+  - source_field: "product.credit.protectionTerms.settlementTerms.valuationMethod.valorSource"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.settlement_terms.valuation_method.value"
+    description: "Maps valuation method"
+    transformer: "direct"
+  
+  - source_field: "product.credit.protectionTerms.settlementTerms.settlementCurrency"
+    target_field: "business_event.trade.settlement_terms.settlement_currency.value"
+    description: "Maps settlement currency to settlement currency"
+    transformer: "direct"
+  
+  - source_field: "product.credit.protectionTerms.settlementTerms.physicalSettlementPeriod.periodMultiplier"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.settlement_terms.physical_settlement_period.period_multiplier"
+    description: "Maps physical settlement period multiplier"
+    transformer: "number_transform"
+  
+  - source_field: "product.credit.protectionTerms.settlementTerms.physicalSettlementPeriod.period"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.settlement_terms.physical_settlement_period.period"
+    description: "Maps physical settlement period"
+    transformer: "direct"
+  
+  - source_field: "product.credit.protectionTerms.settlementTerms.cashSettlementAmount.currency"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.settlement_terms.cash_settlement_amount.currency.value"
+    description: "Maps cash settlement amount currency"
+    transformer: "direct"
+  
+  - source_field: "product.credit.protectionTerms.settlementTerms.cashSettlementDate"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.settlement_terms.cash_settlement_date.value"
+    description: "Maps cash settlement date"
+    transformer: "date_format"
+  
+  # Documentation
+  - source_field: "documentation.contractualDefinitions"
+    target_field: "business_event.trade.contract_details.agreement.agreement_type.name.value"
+    description: "Maps contractual definitions to agreement type"
+    transformer: "direct"
+  
+  - source_field: "documentation.contractualMatrix"
+    target_field: "business_event.trade.contract_details.agreement.contractual_matrix"
+    description: "Maps contractual matrix"
+    transformer: "direct"
+  
+  - source_field: "documentation.masterAgreement.masterAgreementType"
+    target_field: "business_event.trade.contract_details.master_agreement.agreement_type.name.value"
+    description: "Maps master agreement type"
+    transformer: "direct"
+  
+  - source_field: "documentation.masterAgreement.masterAgreementDate"
+    target_field: "business_event.trade.contract_details.master_agreement.agreement_date.value"
+    description: "Maps master agreement date"
+    transformer: "date_format"
+  
+  - source_field: "documentation.masterAgreement.masterAgreementId"
+    target_field: "business_event.trade.contract_details.master_agreement.identifier.value"
+    description: "Maps master agreement ID"
+    transformer: "direct"
+  
+  # Trade Execution Details
+  - source_field: "tradingParty"
+    target_field: "business_event.trade.execution_details.trading_party"
+    description: "Maps trading party"
+    transformer: "direct"
+  
+  - source_field: "executionVenue"
+    target_field: "business_event.trade.execution_details.execution_venue.value"
+    description: "Maps execution venue"
+    transformer: "direct"
+  
+  - source_field: "executionDateTime"
+    target_field: "business_event.trade.execution_details.execution_date_time.value"
+    description: "Maps execution date time"
+    transformer: "date_format" 

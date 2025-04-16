@@ -1,0 +1,391 @@
+metadata:
+  source_type: "ExecutionReport"
+  target_type: "WorkflowStep"
+  description: "Maps FIX ExecutionReport to CDM WorkflowStep"
+  version: "1.0"
+
+mappings:
+  # Message-level fields
+  - source_field: "ClOrdID"
+    target_field: "business_event.trade.party_trade_information[0].trade_id.identifier.value"
+    description: "Maps client order ID to trade identifier"
+    transformer: "direct"
+  
+  - source_field: "OrderID"
+    target_field: "business_event.trade.party_trade_information[0].trade_id.issuer.value"
+    description: "Maps order ID to trade identifier issuer"
+    transformer: "direct"
+  
+  - source_field: "ExecID"
+    target_field: "event_identifier[0].identifier.value"
+    description: "Maps execution ID to event identifier"
+    transformer: "direct"
+    
+  - source_field: "OrigClOrdID"
+    target_field: "business_event.trade.party_trade_information[0].previous_trade_id.identifier.value"
+    description: "Maps original client order ID to previous trade ID"
+    transformer: "direct"
+  
+  - source_field: "SecondaryClOrdID"
+    target_field: "business_event.trade.party_trade_information[0].secondary_trade_id.identifier.value"
+    description: "Maps secondary client order ID to secondary trade ID"
+    transformer: "direct"
+  
+  - source_field: "SecondaryOrderID"
+    target_field: "business_event.trade.party_trade_information[0].secondary_trade_id.issuer.value"
+    description: "Maps secondary order ID to secondary trade ID issuer"
+    transformer: "direct"
+  
+  # Execution-related fields
+  - source_field: "TransactTime"
+    target_field: "timestamp[0].value"
+    description: "Maps transaction time to timestamp"
+    transformer: "date_format"
+    transformer_params:
+      format: "%Y%m%d-%H:%M:%S"
+  
+  - source_field: "ExecType"
+    target_field: "workflow_state.workflow_status"
+    description: "Maps execution type to workflow status"
+    transformer: "enum_map"
+    transformer_params:
+      mappings:
+        "0": "NEW"
+        "1": "PARTIALLY_EXECUTED"
+        "2": "EXECUTED"
+        "3": "DONE_FOR_DAY"
+        "4": "CANCELLED"
+        "5": "REPLACED"
+        "6": "PENDING_CANCEL"
+        "7": "STOPPED"
+        "8": "REJECTED"
+        "9": "SUSPENDED"
+        "A": "PENDING_NEW"
+        "B": "CALCULATED"
+        "C": "EXPIRED"
+        "D": "RESTATED"
+        "E": "PENDING_REPLACE"
+        "F": "TRADE"
+        "G": "TRADE_CORRECT"
+        "H": "TRADE_CANCEL"
+        "I": "ORDER_STATUS"
+        "default": "PENDING"
+  
+  - source_field: "OrdStatus"
+    target_field: "business_event.trade.execution_details.execution_state"
+    description: "Maps order status to execution state"
+    transformer: "enum_map"
+    transformer_params:
+      mappings:
+        "0": "NEW"
+        "1": "PARTIALLY_FILLED"
+        "2": "FILLED"
+        "3": "DONE_FOR_DAY"
+        "4": "CANCELLED"
+        "5": "REPLACED"
+        "6": "PENDING_CANCEL"
+        "7": "STOPPED"
+        "8": "REJECTED"
+        "9": "SUSPENDED"
+        "A": "PENDING_NEW"
+        "B": "CALCULATED"
+        "C": "EXPIRED"
+        "D": "ACCEPTED_FOR_BIDDING"
+        "E": "PENDING_REPLACE"
+        "default": "UNKNOWN"
+  
+  - source_field: "ExecRestatementReason"
+    target_field: "business_event.trade.execution_details.execution_instructions.restatement_reason"
+    description: "Maps execution restatement reason"
+    transformer: "direct"
+    
+  - source_field: "LastRptRequested"
+    target_field: "business_event.trade.execution_details.execution_instructions.is_last_report"
+    description: "Indicates whether this is the last report"
+    transformer: "bool_transform"
+    transformer_params:
+      true_values: ["Y", "YES", "1", "TRUE"]
+  
+  # Order/Execution quantity fields
+  - source_field: "OrderQty"
+    target_field: "business_event.trade.execution_details.execution_quantity.amount"
+    description: "Maps order quantity to execution quantity"
+    transformer: "number_transform"
+  
+  - source_field: "LeavesQty"
+    target_field: "business_event.trade.execution_details.execution_quantity.leaves_quantity"
+    description: "Maps leaves quantity to execution leaves quantity"
+    transformer: "number_transform"
+  
+  - source_field: "CumQty"
+    target_field: "business_event.trade.execution_details.execution_quantity.cumulative_quantity"
+    description: "Maps cumulative quantity to execution cumulative quantity"
+    transformer: "number_transform"
+  
+  - source_field: "LastQty"
+    target_field: "business_event.trade.execution_details.execution_quantity.executed_quantity"
+    description: "Maps last quantity to executed quantity"
+    transformer: "number_transform"
+  
+  # Price-related fields
+  - source_field: "Price"
+    target_field: "business_event.trade.execution_details.execution_price.value"
+    description: "Maps price to execution price"
+    transformer: "number_transform"
+  
+  - source_field: "StopPx"
+    target_field: "business_event.trade.execution_details.execution_price.stop_price"
+    description: "Maps stop price to execution stop price"
+    transformer: "number_transform"
+  
+  - source_field: "Currency"
+    target_field: "business_event.trade.execution_details.execution_price.currency.value"
+    description: "Maps currency to execution price currency"
+    transformer: "direct"
+  
+  - source_field: "LastPx"
+    target_field: "business_event.trade.execution_details.execution_price.executed_price"
+    description: "Maps last price to executed price"
+    transformer: "number_transform"
+  
+  - source_field: "AvgPx"
+    target_field: "business_event.trade.execution_details.execution_price.average_price"
+    description: "Maps average price to average price"
+    transformer: "number_transform"
+    
+  - source_field: "PriceType"
+    target_field: "business_event.trade.execution_details.execution_price.price_type"
+    description: "Maps price type to execution price type"
+    transformer: "enum_map"
+    transformer_params:
+      mappings:
+        "1": "PERCENTAGE"
+        "2": "YIELD"
+        "3": "SPREAD"
+        "4": "PER_UNIT"
+        "5": "FIXED_AMOUNT"
+        "default": "PRICE"
+  
+  # Instrument identification fields
+  - source_field: "Symbol"
+    target_field: "business_event.trade.product.security.security_details.instrument_details.description"
+    description: "Maps symbol to instrument description"
+    transformer: "direct"
+  
+  - source_field: "SecurityID"
+    target_field: "business_event.trade.product.security.security_details.instrument_identification.identifier.value"
+    description: "Maps security ID to instrument identifier"
+    transformer: "direct"
+  
+  - source_field: "SecurityIDSource"
+    target_field: "business_event.trade.product.security.security_details.instrument_identification.identifier.issuer.value"
+    description: "Maps security ID source to instrument identifier issuer"
+    transformer: "direct"
+    
+  - source_field: "SecurityDesc"
+    target_field: "business_event.trade.product.security.security_details.instrument_details.full_name.value"
+    description: "Maps security description to instrument full name"
+    transformer: "direct"
+  
+  - source_field: "CFICode"
+    target_field: "business_event.trade.product.security.security_details.instrument_classification.cfi_code"
+    description: "Maps CFI code to instrument CFI code"
+    transformer: "direct"
+  
+  # Order-related fields
+  - source_field: "Side"
+    target_field: "business_event.trade.execution_details.execution_type"
+    description: "Maps side to execution type"
+    transformer: "enum_map"
+    transformer_params:
+      mappings:
+        "1": "BUY"
+        "2": "SELL"
+        "3": "BUY_TO_COVER"
+        "4": "SELL_SHORT"
+        "5": "SELL_SHORT_EXEMPT"
+        "6": "SELL_SHORT_NON_EXEMPT"
+        "7": "UNDISCLOSED"
+        "8": "CROSS"
+        "9": "CROSS_SHORT"
+        "A": "CROSS_SHORT_EXEMPT"
+        "B": "AS_DEFINED"
+        "C": "OPPOSITE"
+        "default": "UNKNOWN"
+  
+  - source_field: "OrdType"
+    target_field: "business_event.trade.execution_details.execution_instructions.order_type"
+    description: "Maps order type to execution instructions"
+    transformer: "enum_map"
+    transformer_params:
+      mappings:
+        "1": "MARKET"
+        "2": "LIMIT"
+        "3": "STOP"
+        "4": "STOP_LIMIT"
+        "5": "MARKET_ON_CLOSE"
+        "6": "WITH_OR_WITHOUT"
+        "7": "LIMIT_OR_BETTER"
+        "8": "LIMIT_WITH_OR_WITHOUT"
+        "9": "ON_BASIS"
+        "A": "ON_CLOSE"
+        "B": "LIMIT_ON_CLOSE"
+        "C": "FOREX_MARKET"
+        "D": "PREVIOUSLY_QUOTED"
+        "E": "PREVIOUSLY_INDICATED"
+        "F": "FOREX_LIMIT"
+        "G": "FOREX_SWAP"
+        "H": "FOREX_PREVIOUSLY_QUOTED"
+        "I": "FUNARI"
+        "J": "MARKET_IF_TOUCHED"
+        "K": "MARKET_WITH_LEFTOVER_AS_LIMIT"
+        "L": "PREVIOUS_FUND_VALUATION_POINT"
+        "M": "NEXT_FUND_VALUATION_POINT"
+        "P": "PEGGED"
+        "default": "OTHER"
+  
+  - source_field: "TimeInForce"
+    target_field: "business_event.trade.execution_details.execution_instructions.time_in_force"
+    description: "Maps time in force to execution instructions"
+    transformer: "enum_map"
+    transformer_params:
+      mappings:
+        "0": "DAY"
+        "1": "GOOD_TILL_CANCEL"
+        "2": "AT_THE_OPENING"
+        "3": "IMMEDIATE_OR_CANCEL"
+        "4": "FILL_OR_KILL"
+        "5": "GOOD_TILL_CROSSING"
+        "6": "GOOD_TILL_DATE"
+        "7": "AT_THE_CLOSE"
+        "8": "GOOD_THROUGH_CROSSING"
+        "9": "AT_CROSSING"
+        "default": "OTHER"
+  
+  - source_field: "ExpireTime"
+    target_field: "business_event.trade.execution_details.execution_instructions.expiry_date"
+    description: "Maps expire time to execution instructions expiry date"
+    transformer: "date_format"
+  
+  # Party and account information
+  - source_field: "Account"
+    target_field: "account[0].account_id.value"
+    description: "Maps account to account ID"
+    transformer: "direct"
+  
+  - source_field: "SenderCompID"
+    target_field: "party[0].party_id.value"
+    description: "Maps sender comp ID to party ID"
+    transformer: "direct"
+  
+  - source_field: "TargetCompID"
+    target_field: "party[1].party_id.value"
+    description: "Maps target comp ID to party ID"
+    transformer: "direct"
+  
+  - source_field: "OrderCapacity"
+    target_field: "business_event.trade.execution_details.execution_instructions.capacity"
+    description: "Maps order capacity to execution capacity"
+    transformer: "enum_map"
+    transformer_params:
+      mappings:
+        "A": "AGENCY"
+        "G": "PROPRIETARY"
+        "I": "INDIVIDUAL"
+        "P": "PRINCIPAL"
+        "R": "RISKLESS_PRINCIPAL"
+        "W": "AGENT_FOR_OTHER_MEMBER"
+        "default": "OTHER"
+  
+  # Commission details
+  - source_field: "Commission"
+    target_field: "business_event.trade.execution_details.commission.commission_amount.amount"
+    description: "Maps commission to commission amount"
+    transformer: "number_transform"
+  
+  - source_field: "CommType"
+    target_field: "business_event.trade.execution_details.commission.commission_type"
+    description: "Maps commission type to commission type"
+    transformer: "enum_map"
+    transformer_params:
+      mappings:
+        "1": "PER_UNIT"
+        "2": "PERCENTAGE"
+        "3": "ABSOLUTE"
+        "4": "PERCENTAGE_WAIVED"
+        "5": "PERCENTAGE_WAIVED_ENHANCED"
+        "6": "POINTS_PER_BOND"
+        "default": "OTHER"
+  
+  # Settlement details
+  - source_field: "SettlmntTyp"
+    target_field: "business_event.trade.settlement_terms.settlement_type"
+    description: "Maps settlement type to settlement type"
+    transformer: "enum_map"
+    transformer_params:
+      mappings:
+        "0": "REGULAR"
+        "1": "CASH"
+        "2": "NEXT_DAY"
+        "3": "T_PLUS_2"
+        "4": "T_PLUS_3"
+        "5": "T_PLUS_4"
+        "6": "FUTURE"
+        "7": "WHEN_AND_IF_ISSUED"
+        "8": "SELLERS_OPTION"
+        "9": "T_PLUS_5"
+        "default": "OTHER"
+  
+  - source_field: "SettlDate"
+    target_field: "business_event.trade.settlement_terms.settlement_date.value"
+    description: "Maps settlement date to settlement date"
+    transformer: "date_format"
+  
+  # Additional text/reference information
+  - source_field: "Text"
+    target_field: "business_event.trade.execution_details.execution_instructions.additional_text"
+    description: "Maps text to additional text"
+    transformer: "direct"
+  
+  - source_field: "TradeDate"
+    target_field: "business_event.trade.trade_date.value"
+    description: "Maps trade date to trade date"
+    transformer: "date_format"
+    
+  - source_field: "TransactionType"
+    target_field: "business_event.trade.execution_details.execution_instructions.transaction_type"
+    description: "Maps transaction type to transaction type"
+    transformer: "direct"
+    
+  - source_field: "MatchStatus"
+    target_field: "business_event.trade.execution_details.match_status"
+    description: "Maps match status to match status"
+    transformer: "enum_map"
+    transformer_params:
+      mappings:
+        "0": "COMPARED_MATCHED_AFFIRMED"
+        "1": "UNCOMPARED_UNMATCHED_UNAFFIRMED"
+        "2": "ADVISORY_MATCH"
+        "default": "UNKNOWN"
+    
+  # Trade venue information
+  - source_field: "ExDestination"
+    target_field: "business_event.trade.execution_details.execution_venue.value"
+    description: "Maps execution destination to execution venue"
+    transformer: "direct"
+    
+  - source_field: "ExecBroker"
+    target_field: "business_event.trade.execution_details.execution_broker.value"
+    description: "Maps execution broker to execution broker"
+    transformer: "direct"
+    
+  # Market data/reference information 
+  - source_field: "VenueType"
+    target_field: "business_event.trade.execution_details.venue_type"
+    description: "Maps venue type to venue type"
+    transformer: "direct"
+    
+  - source_field: "MarketSegmentID"
+    target_field: "business_event.trade.execution_details.market_segment.value"
+    description: "Maps market segment ID to market segment"
+    transformer: "direct" 

@@ -1,0 +1,91 @@
+---
+# Credit Default Swap mapping configuration
+# Maps FpML CDS fields to CDM fields
+
+# Base mappings that can be expressed in YAML
+mappings:
+  # Trade header mappings
+  - source: "tradeHeader.partyTradeIdentifier[0].tradeId"
+    target: "business_event.trade.party_trade_information[0].trade_id.identifier.value"
+  
+  - source: "tradeHeader.partyTradeIdentifier[1].tradeId"
+    target: "business_event.trade.party_trade_information[1].trade_id.identifier.value"
+  
+  - source: "tradeHeader.tradeDate"
+    target: "business_event.trade.trade_date.value"
+  
+  # General terms mappings
+  - source: "product.credit.generalTerms.effectiveDate.unadjustedDate"
+    target: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.effective_date.unadjusted_date.value"
+  
+  - source: "product.credit.generalTerms.creditEvents.bankruptcy.applicable"
+    target: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.credit_events.bankruptcy"
+    transform: "boolean"
+  
+  - source: "product.credit.generalTerms.creditEvents.failureToPay.applicable"
+    target: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.credit_events.failure_to_pay"
+    transform: "boolean"
+  
+  - source: "product.credit.generalTerms.creditEvents.failureToPay.gracePeriodExtension.applicable"
+    target: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.credit_events.grace_period_extension"
+    transform: "boolean"
+  
+  - source: "product.credit.generalTerms.creditEvents.failureToPay.gracePeriodExtension.gracePeriod.periodMultiplier"
+    target: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.credit_events.grace_period.period_multiplier"
+    transform: "integer"
+  
+  - source: "product.credit.generalTerms.creditEvents.failureToPay.gracePeriodExtension.gracePeriod.period"
+    target: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.credit_events.grace_period.period"
+  
+  # Reference entity mappings
+  - source: "product.credit.generalTerms.referenceInformation.referenceEntity.entityName"
+    target: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.reference_information.reference_entity.entity_name"
+  
+  - source: "product.credit.generalTerms.referenceInformation.referenceEntity.entityId[0].identifier.value"
+    target: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.reference_information.reference_entity.entity_id.identifier.value"
+  
+  # Party role mappings
+  - source: "product.credit.generalTerms.buyerSeller.buyer.href"
+    target: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.buyer_seller.buyer.href"
+  
+  - source: "product.credit.generalTerms.buyerSeller.seller.href"
+    target: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.buyer_seller.seller.href"
+  
+  # Basic fee leg mappings
+  - source: "product.credit.feeLeg.initialPayment.paymentAmount.amount"
+    target: "business_event.trade.product.contract_terms.credit_default_swap.fee_leg.initial_payment.payment_amount.amount"
+  
+  - source: "product.credit.feeLeg.initialPayment.paymentAmount.currency"
+    target: "business_event.trade.product.contract_terms.credit_default_swap.fee_leg.initial_payment.payment_amount.currency.value"
+  
+  # Settlement type mapping
+  - source: "product.credit.protectionTerms.settlementTerms.settlementType"
+    target: "business_event.trade.product.contract_terms.credit_default_swap.settlement_terms.settlement_type"
+  
+  # Obligations mappings
+  - source: "product.credit.generalTerms.obligations.category"
+    target: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.obligations[0].category"
+  
+  - source: "product.credit.generalTerms.obligations.listed"
+    target: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.obligations[0].listed"
+    transform: "boolean"
+  
+  # Settlement Terms mappings
+  - source: "product.credit.protectionTerms.settlementTerms.numberOfValuationDates"
+    target: "business_event.trade.product.contract_terms.credit_default_swap.settlement_terms.number_of_valuation_dates"
+    transform: "integer"
+  
+  - source: "product.credit.protectionTerms.settlementTerms.valuationDate"
+    target: "business_event.trade.product.contract_terms.credit_default_swap.settlement_terms.valuation_date.value"
+  
+  - source: "product.credit.protectionTerms.settlementTerms.auctionSettlementTerms.auctionSettlementDate"
+    target: "business_event.trade.product.contract_terms.credit_default_swap.settlement_terms.auction_settlement_terms.auction_settlement_date.value"
+  
+  - source: "product.credit.protectionTerms.settlementTerms.auctionSettlementTerms.auctionFinalPriceDate"
+    target: "business_event.trade.product.contract_terms.credit_default_swap.settlement_terms.auction_settlement_terms.auction_final_price_date.value"
+
+# Complex mappings that require custom logic in the mapper's _apply_complex_mappings method:
+# - Credit events (bankruptcy, failure to pay, restructuring)
+# - Obligations (category, not domestic currency, etc.)
+# - Fee leg details (periodic payments, calculations)
+# - Settlement terms (valuation dates, auction settlement) 

@@ -1,0 +1,259 @@
+metadata:
+  source_type: "FpMLTrade"
+  target_type: "WorkflowStep"
+  description: "Maps FpML Trade to CDM WorkflowStep"
+  version: "1.0"
+
+mappings:
+  # Trade Header and Identification
+  - source_field: "tradeHeader.partyTradeIdentifier[0].tradeId"
+    target_field: "business_event.trade.party_trade_information[0].trade_id.identifier.value"
+    description: "Maps trade ID to trade identifier"
+    transformer: "direct"
+    
+  - source_field: "tradeHeader.partyTradeIdentifier[1].tradeId"
+    target_field: "business_event.trade.party_trade_information[1].trade_id.identifier.value"
+    description: "Maps counterparty trade ID to trade identifier"
+    transformer: "direct"
+  
+  - source_field: "tradeHeader.tradeDate"
+    target_field: "business_event.trade.trade_date.value"
+    description: "Maps trade date to trade date"
+    transformer: "date_format"
+  
+  - source_field: "tradeHeader.clearedDate"
+    target_field: "business_event.trade.clearing_timestamp.value"
+    description: "Maps cleared date to clearing timestamp"
+    transformer: "date_format"
+    
+  - source_field: "tradeHeader.effectiveDate"
+    target_field: "business_event.trade.effective_date.value"
+    description: "Maps effective date to effective date"
+    transformer: "date_format"
+    
+  - source_field: "tradeHeader.terminationDate"
+    target_field: "business_event.trade.termination_date.value"
+    description: "Maps termination date to termination date"
+    transformer: "date_format"
+    
+  # Party References
+  - source_field: "tradeHeader.partyTradeIdentifier[0].partyReference.href"
+    target_field: "business_event.trade.party_trade_information[0].party_reference.reference.value"
+    description: "Maps party reference to party reference"
+    transformer: "direct"
+    
+  - source_field: "tradeHeader.partyTradeIdentifier[1].partyReference.href"
+    target_field: "business_event.trade.party_trade_information[1].party_reference.reference.value"
+    description: "Maps counterparty reference to party reference"
+    transformer: "direct"
+    
+  # Event Information
+  - source_field: "tradeHeader.tradeDate"
+    target_field: "timestamp[0].value"
+    description: "Maps trade date to timestamp"
+    transformer: "date_format"
+    
+  - source_field: "tradeHeader.tradeId"
+    target_field: "event_identifier[0].identifier.value"
+    description: "Maps trade ID to event identifier"
+    transformer: "direct"
+    
+  # Interest Rate Swap
+  - source_field: "product.interestRate.swapStream[0].payerReceiver.payerPartyReference.href"
+    target_field: "business_event.trade.product.contract_terms.swap.swap_stream[0].payer_receiver.payer.reference.value"
+    description: "Maps payer party reference to swap stream payer"
+    transformer: "direct"
+  
+  - source_field: "product.interestRate.swapStream[0].payerReceiver.receiverPartyReference.href"
+    target_field: "business_event.trade.product.contract_terms.swap.swap_stream[0].payer_receiver.receiver.reference.value"
+    description: "Maps receiver party reference to swap stream receiver"
+    transformer: "direct"
+    
+  - source_field: "product.interestRate.swapStream[1].payerReceiver.payerPartyReference.href"
+    target_field: "business_event.trade.product.contract_terms.swap.swap_stream[1].payer_receiver.payer.reference.value"
+    description: "Maps payer party reference to swap stream payer for second leg"
+    transformer: "direct"
+  
+  - source_field: "product.interestRate.swapStream[1].payerReceiver.receiverPartyReference.href"
+    target_field: "business_event.trade.product.contract_terms.swap.swap_stream[1].payer_receiver.receiver.reference.value"
+    description: "Maps receiver party reference to swap stream receiver for second leg"
+    transformer: "direct"
+  
+  - source_field: "product.interestRate.swapStream[0].notionalAmount.amount"
+    target_field: "business_event.trade.product.contract_terms.swap.swap_stream[0].calculation_period_amount.calculation.notional_amount.amount.amount"
+    description: "Maps notional amount to swap notional amount"
+    transformer: "number_transform"
+  
+  - source_field: "product.interestRate.swapStream[0].notionalAmount.currency"
+    target_field: "business_event.trade.product.contract_terms.swap.swap_stream[0].calculation_period_amount.calculation.notional_amount.amount.currency.value"
+    description: "Maps notional currency to swap notional currency"
+    transformer: "direct"
+    
+  - source_field: "product.interestRate.swapStream[1].notionalAmount.amount"
+    target_field: "business_event.trade.product.contract_terms.swap.swap_stream[1].calculation_period_amount.calculation.notional_amount.amount.amount"
+    description: "Maps notional amount to swap notional amount for second leg"
+    transformer: "number_transform"
+  
+  - source_field: "product.interestRate.swapStream[1].notionalAmount.currency"
+    target_field: "business_event.trade.product.contract_terms.swap.swap_stream[1].calculation_period_amount.calculation.notional_amount.amount.currency.value"
+    description: "Maps notional currency to swap notional currency for second leg"
+    transformer: "direct"
+  
+  - source_field: "product.interestRate.swapStream[0].paymentFrequency"
+    target_field: "business_event.trade.product.contract_terms.swap.swap_stream[0].payment_terms.payment_frequency.period"
+    description: "Maps payment frequency to swap payment frequency"
+    transformer: "direct"
+    
+  - source_field: "product.interestRate.swapStream[1].paymentFrequency"
+    target_field: "business_event.trade.product.contract_terms.swap.swap_stream[1].payment_terms.payment_frequency.period"
+    description: "Maps payment frequency to swap payment frequency for second leg"
+    transformer: "direct"
+    
+  # Interest Rate Terms
+  - source_field: "product.interestRate.swapStream[0].floatingRateIndex"
+    target_field: "business_event.trade.product.contract_terms.swap.swap_stream[0].floating_rate_calculation.floating_rate_index.value"
+    description: "Maps floating rate index to floating rate index"
+    transformer: "direct"
+    
+  - source_field: "product.interestRate.swapStream[0].indexTenor"
+    target_field: "business_event.trade.product.contract_terms.swap.swap_stream[0].floating_rate_calculation.index_tenor.period"
+    description: "Maps index tenor to index tenor"
+    transformer: "direct"
+    
+  - source_field: "product.interestRate.swapStream[0].dayCountFraction"
+    target_field: "business_event.trade.product.contract_terms.swap.swap_stream[0].calculation_period_amount.day_count_fraction.value"
+    description: "Maps day count fraction to day count fraction"
+    transformer: "direct"
+    
+  - source_field: "product.interestRate.swapStream[1].dayCountFraction"
+    target_field: "business_event.trade.product.contract_terms.swap.swap_stream[1].calculation_period_amount.day_count_fraction.value"
+    description: "Maps day count fraction to day count fraction for second leg"
+    transformer: "direct"
+    
+  - source_field: "product.interestRate.swapStream[0].resetFrequency"
+    target_field: "business_event.trade.product.contract_terms.swap.swap_stream[0].reset_dates.reset_frequency.period"
+    description: "Maps reset frequency to reset frequency"
+    transformer: "direct"
+    
+  - source_field: "product.interestRate.swapStream[0].businessDayConvention"
+    target_field: "business_event.trade.product.contract_terms.swap.swap_stream[0].calculation_period_dates.business_day_convention.value"
+    description: "Maps business day convention to business day convention"
+    transformer: "direct"
+    
+  - source_field: "product.interestRate.swapStream[1].businessDayConvention"
+    target_field: "business_event.trade.product.contract_terms.swap.swap_stream[1].calculation_period_dates.business_day_convention.value"
+    description: "Maps business day convention to business day convention for second leg"
+    transformer: "direct"
+    
+  - source_field: "product.interestRate.swapStream[0].fixedRate"
+    target_field: "business_event.trade.product.contract_terms.swap.swap_stream[0].fixed_rate.fixed_rate_value"
+    description: "Maps fixed rate to fixed rate"
+    transformer: "number_transform"
+    
+  - source_field: "product.interestRate.swapStream[0].spreadRate"
+    target_field: "business_event.trade.product.contract_terms.swap.swap_stream[0].floating_rate_calculation.spread.spread_value"
+    description: "Maps spread rate to spread"
+    transformer: "number_transform"
+    
+  - source_field: "product.interestRate.swapStream[0].effectiveDate"
+    target_field: "business_event.trade.product.contract_terms.swap.swap_stream[0].calculation_period_dates.effective_date.adjusted_date.value"
+    description: "Maps effective date to effective date"
+    transformer: "date_format"
+    
+  - source_field: "product.interestRate.swapStream[0].terminationDate"
+    target_field: "business_event.trade.product.contract_terms.swap.swap_stream[0].calculation_period_dates.termination_date.adjusted_date.value"
+    description: "Maps termination date to termination date"
+    transformer: "date_format"
+    
+  # Credit Default Swap
+  - source_field: "product.credit.protectionTerms.referenceEntity"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.reference_information.reference_entity.reference_entity_name.name.value"
+    description: "Maps reference entity to CDS reference entity"
+    transformer: "direct"
+  
+  - source_field: "product.credit.protectionTerms.creditEvent"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.credit_events.credit_events_reference"
+    description: "Maps credit event to CDS credit events"
+    transformer: "direct"
+  
+  - source_field: "product.credit.protectionTerms.settlementType"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.settlement_terms.settlement_type"
+    description: "Maps settlement type to CDS settlement type"
+    transformer: "direct"
+  
+  - source_field: "product.credit.referenceInformation.referenceEntity"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.reference_information.reference_entity.reference_entity_name.name.value"
+    description: "Maps reference information entity to CDS reference entity"
+    transformer: "direct"
+  
+  - source_field: "product.credit.referenceInformation.referenceObligation"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.reference_information.reference_obligation.reference_obligation_description"
+    description: "Maps reference obligation to CDS reference obligation"
+    transformer: "direct"
+    
+  - source_field: "product.credit.protectionTerms.notionalAmount.amount"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.fee_leg.protection_terms.notional_amount.amount.amount"
+    description: "Maps notional amount to CDS notional amount"
+    transformer: "number_transform"
+    
+  - source_field: "product.credit.protectionTerms.notionalAmount.currency"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.fee_leg.protection_terms.notional_amount.amount.currency.value"
+    description: "Maps notional currency to CDS notional currency"
+    transformer: "direct"
+    
+  - source_field: "product.credit.protectionTerms.fixedRate"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.fee_leg.fixed_rate.rate.value"
+    description: "Maps fixed rate to CDS fixed rate"
+    transformer: "number_transform"
+    
+  - source_field: "product.credit.protectionTerms.dayCountFraction"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.fee_leg.day_count_fraction.value"
+    description: "Maps day count fraction to CDS day count fraction"
+    transformer: "direct"
+    
+  - source_field: "product.credit.protectionTerms.tradeDate"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.trade_date.value"
+    description: "Maps trade date to CDS trade date"
+    transformer: "date_format"
+    
+  - source_field: "product.credit.protectionTerms.effectiveDate"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.effective_date.value"
+    description: "Maps effective date to CDS effective date"
+    transformer: "date_format"
+    
+  - source_field: "product.credit.protectionTerms.scheduledTerminationDate"
+    target_field: "business_event.trade.product.contract_terms.credit_default_swap.general_terms.scheduled_termination_date.value"
+    description: "Maps scheduled termination date to CDS scheduled termination date"
+    transformer: "date_format"
+    
+  # Settlement Terms
+  - source_field: "product.commonTerms.settlementCurrency"
+    target_field: "business_event.trade.settlement_terms.settlement_currency.value"
+    description: "Maps settlement currency to settlement currency"
+    transformer: "direct"
+    
+  - source_field: "product.commonTerms.settlementDate"
+    target_field: "business_event.trade.settlement_terms.settlement_date.value"
+    description: "Maps settlement date to settlement date"
+    transformer: "date_format"
+    
+  - source_field: "product.commonTerms.settlementType"
+    target_field: "business_event.trade.settlement_terms.settlement_type"
+    description: "Maps settlement type to settlement type"
+    transformer: "direct"
+    
+  # Documentation
+  - source_field: "documentation.masterAgreement.agreementType"
+    target_field: "business_event.trade.contract_details.agreement.agreement_type.name.value"
+    description: "Maps master agreement type to agreement type"
+    transformer: "direct"
+    
+  - source_field: "documentation.masterAgreement.agreementDate"
+    target_field: "business_event.trade.contract_details.agreement.agreement_date.value"
+    description: "Maps master agreement date to agreement date"
+    transformer: "date_format"
+    
+  - source_field: "documentation.masterAgreement.agreementId"
+    target_field: "business_event.trade.contract_details.agreement.identifier.value"
+    description: "Maps master agreement ID to agreement identifier"
+    transformer: "direct" 
